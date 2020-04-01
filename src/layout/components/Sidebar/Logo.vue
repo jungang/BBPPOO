@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: 'Vue Element Admin',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: 'BPO运营数据分析工具',
+      logo: 'https://www.easyicon.net/api/resizeApi.php?id=1212945&size=128'
     }
   }
 }

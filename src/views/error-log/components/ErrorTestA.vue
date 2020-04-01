@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--error code-->
-    {{ a.a }}
+    {{ a1.a }}
     <!--error code-->
   </div>
 </template>
