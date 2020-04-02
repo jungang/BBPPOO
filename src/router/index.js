@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-// import componentsRouter from './modules/components'
+import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 // import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
@@ -130,6 +130,71 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
+  {
+    path: '/configuration',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/configuration/index'),
+        name: 'Configuration',
+        meta: { title: '项目配置', icon: 'list', noCache: true }
+      }
+    ]
+  },
+
+  {
+    path: '/management',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/table/complex-table'),
+        name: 'management',
+        meta: { title: '数据管理', icon: 'component', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/objectives',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/table/complex-table'),
+        name: 'objectives',
+        meta: { title: '项目目标', icon: 'star', noCache: true }
+      }
+    ]
+  },
+
+  {
+    path: '/panels',
+    component: Layout,
+    redirect: '/panels/list',
+    name: 'Panels',
+    meta: {
+      title: '项目面板',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'view/:id(\\d+)',
+        component: () => import('@/views/panels/view'),
+        name: 'panelView',
+        meta: { title: '面板', noCache: true, activeMenu: '/panels/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/panels/list'),
+        name: 'panelsLst',
+        meta: { title: '项目面板', icon: 'list' }
+      }
+    ]
+  },
+
   // {
   //   path: '/permission',
   //   component: Layout,
@@ -185,93 +250,11 @@ export const asyncRoutes = [
   //   ]
   // },
 
-  {
-    path: '/configuration',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/table/complex-table'),
-        name: 'Icons',
-        meta: { title: '项目配置', icon: 'list', noCache: true }
-      }
-    ]
-  },
-
-  {
-    path: '/management',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/table/complex-table'),
-        name: 'Icons',
-        meta: { title: '数据管理', icon: 'component', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/objectives',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/table/complex-table'),
-        name: 'Icons',
-        meta: { title: '项目目标', icon: 'star', noCache: true }
-      }
-    ]
-  },
-  {
-    path: '/panels',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/table/complex-table'),
-        name: 'Icons',
-        meta: { title: '项目面板', icon: 'dashboard', noCache: true }
-      }
-    ]
-  },
-
   /** when your routing map is too long, you can split it into small modules **/
-  // componentsRouter,
+  componentsRouter,
   // chartsRouter,
   // nestedRouter,
   // tableRouter,
-
-  // {
-  //   path: '/example',
-  //   component: Layout,
-  //   redirect: '/example/list',
-  //   name: 'Example',
-  //   meta: {
-  //     title: 'Example',
-  //     icon: 'example'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'create',
-  //       component: () => import('@/views/example/create'),
-  //       name: 'CreateArticle',
-  //       meta: { title: 'Create Article', icon: 'edit' }
-  //     },
-  //     {
-  //       path: 'edit/:id(\\d+)',
-  //       component: () => import('@/views/example/edit'),
-  //       name: 'EditArticle',
-  //       meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-  //       hidden: true
-  //     },
-  //     {
-  //       path: 'list',
-  //       component: () => import('@/views/example/list'),
-  //       name: 'ArticleList',
-  //       meta: { title: 'Article List', icon: 'list' }
-  //     }
-  //   ]
-  // },
 
   // {
   //   path: '/tab',
