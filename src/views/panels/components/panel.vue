@@ -1,9 +1,6 @@
 <template>
   <div class="app-container">
 
-    <el-button type="primary" @click="saveLayout">保存版式</el-button>
-    <el-button @click="loadLayout">读取版式</el-button>
-
     <draggable
       :list="list"
       v-bind="dragOptions"
@@ -11,7 +8,7 @@
       :set-data="setData"
       handle=".handle-drag"
       @start="drag = true"
-      @end="drag = false"
+      @end="onEnd"
     >
       <transition-group type="transition" :name="!drag ? 'flip-list' : null" class="list-group">
 
@@ -35,10 +32,8 @@
             @resizing="(x, y, width, height)=>onResize(x, y, width, height, element)"
           >
 
-            <div class="chartDiv">
+            <component :is="element.component" :data="element" />
 
-              图表
-            </div>
           </vue-draggable-resizable>
 
           <div class="title handle-drag">{{ element.name }} {{ element.id }}</div>
@@ -48,45 +43,24 @@
 
     </draggable>
 
-    <div class="panel" style="width: 550px">
-      <iframe
-        src="http://172.20.95.130:8086/hi?dir=Sample%20Reports/panel-1&file=sample_dashboard.efw&mode=open"
-        height="100%"
-        width="100%"
-        class="ifm"
-      />
-    </div>
-    <div class="panel">
-      <iframe
-        src="http://172.20.95.130:8086/hi.html?dir=Sample%20Reports/panel-1&file=sample_dashboard.efw&mode=open"
-        height="100%"
-        width="100%"
-        class="ifm"
-      />
-    </div>
-    <div class="panel">
-      <iframe
-        src="http://172.20.95.130:8086/hi.html?dir=Sample%20Reports/panel-1&file=sample_dashboard.efw&mode=open"
-        height="100%"
-        width="100%"
-        class="ifm"
-      />
-    </div>
-
   </div>
 </template>
 
 <script>
-
+import { fetchData } from '@/api/chart-data'
 import draggable from 'vuedraggable'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+
+// eslint-disable-next-line no-unused-vars
+import charts from './charts/charts'
 
 export default {
   name: 'Panel',
   components: {
     draggable,
-    VueDraggableResizable
+    VueDraggableResizable,
+    charts
   },
   props: {
     isEdit: {
@@ -97,44 +71,24 @@ export default {
   data() {
     return {
       id: 0,
+      timer: {},
       loading: false,
       drag: false,
       tempRoute: {},
       list: [
         { name: '视图',
           id: 1,
+          component: 'charts',
+          parameters: {},
           width: 500,
           height: 300
         },
         { name: '视图',
           id: 2,
+          component: 'charts',
+          parameters: {},
           width: 400,
           height: 200
-        },
-        { name: '视图',
-          id: 3,
-          width: 300,
-          height: 500
-        },
-        { name: '视图',
-          id: 4,
-          width: 200,
-          height: 600
-        },
-        { name: '视图',
-          id: 5,
-          width: 800,
-          height: 700
-        },
-        { name: '视图',
-          id: 6,
-          width: 800,
-          height: 500
-        },
-        { name: '视图',
-          id: 7,
-          width: 800,
-          height: 400
         }
       ],
       width: 0,
@@ -158,21 +112,56 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
     this.setTagsViewTitle()
     this.setPageTitle()
+    this.loadLayout()
+
+    this.getData()
   },
   methods: {
+    onEnd() {
+      this.drag = false
+      this.saveLayout()
+    },
+    getData() {
+      // console.log('getData........')
+      const data1 = {
+        'dir': 'Sample Reports/panel-1',
+        'start_date': '2015-01-01 12:00:00',
+        'end_date': '2016-01-01 12:00:00',
+        'vf_id': 2,
+        'vf_file': 'sample_dashboard2.efwvf'
+      }
+
+      /*      const data2 = {
+        'dir': 'Sample Reports/subject-0b394b00-fd83-48f2-9bb3-f13facf61c8a1473a497-87bd-4020-abf9-25388c1a539e',
+        'start_date': '2015-01-01 12:00:00',
+        'end_date': '2015-02-01 12:00:00',
+        'vf_id': 1,
+        'vf_file': 'sample_dashboard.efwvf'
+      }*/
+
+      fetchData(JSON.stringify(data1)).then(response => {
+        console.log(response)
+        // console.log(typeof response.data.script)
+      })
+    },
+
     saveLayout() {
-      console.log('saveLayout....')
-      localStorage.setItem('layout' + this.id, JSON.stringify(this.list))
-      console.log(JSON.parse(localStorage.getItem('layout' + this.id)))
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
+        // console.log('saveLayout....')
+        localStorage.setItem('layout' + this.id, JSON.stringify(this.list))
+        // console.log(JSON.parse(localStorage.getItem('layout' + this.id)))
+      }, 1000)
     },
     loadLayout() {
-      console.log('loadLayout....')
+      // console.log('loadLayout....')
       this.list = JSON.parse(localStorage.getItem('layout' + this.id)) || this.list
-      console.log(this.list)
+      // console.log(this.list)
     },
     onResize: function(x, y, width, height, el) {
       el.width = width
       el.height = height
+      this.saveLayout()
     },
     onResizeStart: function(el) {
     },
@@ -238,7 +227,7 @@ export default {
     position: relative;
     border: 1px solid #cecece;
     list-style: none;
-    margin: 10px 10px 0 0;
+    margin: 12px 12px 0 0;
   }
   .chartDiv{
     margin-top: 25px;
@@ -251,6 +240,9 @@ export default {
 
   .my-active-class {
     border: none;
+    +.handle-drag{
+      background: rgba(130, 129, 168, 0.75);
+    }
     /*box-shadow: 5px 5px 10px 10px rgba(124, 124, 124, 0.6);*/
   }
   ul{

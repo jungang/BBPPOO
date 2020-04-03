@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
@@ -9,6 +9,27 @@ const service = axios.create({
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
+
+const request2 = axios.create({
+  baseURL: process.env.VUE_APP_BASE_API2, // api 的 base_url
+  timeout: 5000 // request timeout
+})
+request2.interceptors.response.use(
+
+  response => {
+    // eslint-disable-next-line no-eval
+    return eval(response.data.script)
+  },
+  error => {
+    console.log('err' + error) // for debug
+    Message({
+      message: error.message,
+      type: 'error',
+      duration: 5 * 1000
+    })
+    return Promise.reject(error)
+  }
+)
 
 // request interceptor
 service.interceptors.request.use(
@@ -83,3 +104,4 @@ service.interceptors.response.use(
 )
 
 export default service
+export { request2 }
