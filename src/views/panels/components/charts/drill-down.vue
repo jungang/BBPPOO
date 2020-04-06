@@ -1,0 +1,216 @@
+<template>
+  <div class="drill-container">
+    <el-row style="margin-bottom: 10px">
+      <el-col :span="20">
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="item.id">
+            <el-button type="text" @click="handleBread(item, index)"> {{ item.breadName || item.name }}</el-button>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+      </el-col>
+      <el-col :span="4" style="text-align: right">
+        <el-button type="primary" @click="handleAdd">加入仪表盘</el-button>
+
+      </el-col>
+    </el-row>
+
+    <div :id="data.name" class="chart" style="width:100%; height:50vh;">{{ data.name }}</div>
+
+  </div>
+</template>
+
+<script>
+// import { fetchData } from '@/api/panel'
+var echarts = require('echarts')
+import uuidv1 from 'uuid/v1'
+import { format, getData } from '@/utils/chart-data'
+// import { format } from '@/utils/chart-data'
+
+export default {
+  name: 'Drill',
+  components: { },
+  directives: { },
+  props: {
+    data: {
+      type: Object,
+      default: function() {
+        return {
+          name: 'default'
+        }
+      }
+    },
+    panel: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    },
+    title: {
+      type: String,
+      default: function() {
+        return ''
+      }
+    }
+  },
+  data() {
+    return {
+      currentView: {},
+      breadcrumb: [],
+      temp: {},
+      query: {
+        id: 1
+      },
+      chart: {},
+      loading: {
+        text: 'loading',
+        color: '#4cbbff',
+        textColor: '#4cbbff',
+        maskColor: 'rgba(255, 255, 255, 0.7)'
+      },
+      options: {
+        legend: {},
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow'
+          }
+        },
+        toolbox: {
+          show: true,
+          // orient: 'vertical',
+          left: 'right',
+          top: 'top',
+          feature: {
+            magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+            restore: { show: true }
+          }
+        },
+        dataset: {},
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: {
+          axisLabel: {
+            show: true,
+            formatter: (value, index) => {
+              const drillName = this.options.dataset.source[index].drillName
+              const drill = !this.currentView.items[drillName]
+
+              return drill ? value : value + '(含下钻图表)'
+            }
+          },
+          type: 'category'
+        },
+        yAxis: {},
+        series: []
+      }
+    }
+  },
+  created() { },
+  mounted() {
+  },
+  methods: {
+    async init(params, isBread) {
+      // console.log('init.....')
+      params = params || { ...this.data }
+
+      isBread || this.breadcrumb.push({ ...params })
+
+      // console.log(params)
+      this.currentView = this.$store.state.options.views.find(item => item.name === params._drillName)
+
+      this.temp = params
+      this.$emit('update:title', this.temp.breadName)
+
+      // 发起请求
+      this.chart.id && this.chart.showLoading(this.loading)
+
+      /*
+      let res_s = []
+      let res_y = []
+
+      const data1 = {
+        'dir': 'Sample Reports/' + params._drillName,
+        'name': params.drillName,
+        'month': '1',
+        'projectId': '00000000-0000-0000-0000-000000000000',
+        'vf_id': 0,
+        'vf_file': 'dashboard.efwvf'
+      }
+
+      console.log(data1)
+      res_s = await fetchData(data1)
+
+      const data2 = {
+        'dir': 'Sample Reports/' + params._drillName,
+        'name': params.drillName,
+        'month': '1',
+        'projectId': '00000000-0000-0000-0000-000000000000',
+        'vf_id': 1,
+        'vf_file': 'dashboard.efwvf'
+      }
+      if (this.currentView.compare) {
+        res_y = await fetchData(data2)
+      }
+*/
+
+      const [res_s, res_y] = await getData(this.currentView, params)
+
+      this.options = (format(this.options, this.currentView, res_s, res_y))
+      this.renderChart(this.options)
+    },
+    handleBread(item, index) {
+      this.breadcrumb.splice(index + 1)
+      this.init(item, true)
+    },
+
+    initChart() {
+      // console.log('initChart....')
+      this.chart = echarts.init(document.getElementById(this.data.name))
+      this.chart.on('click', (params) => {
+        params.drillName = params.value.drillName // 下钻所用名称
+        if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
+          params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称
+          params.breadName = params.name // 面包屑名字
+          this.drillData = params
+          this.dialogVisible = true
+          this.$nextTick(() => {
+            this.init(params)
+          })
+        }
+      })
+    },
+
+    renderChart(options) {
+      !this.chart.id && this.initChart()
+      this.chart.hideLoading()
+      this.chart.setOption(options)
+    },
+
+    handleAdd() {
+      console.log(this.temp)
+      const newPanel = {
+        id: uuidv1(),
+        title: this.temp.breadName,
+        viewName: this.temp.name,
+        _name: this.temp._name,
+        component: 'charts',
+        parameters: {},
+        width: 600,
+        height: 400
+      }
+      console.log(newPanel)
+      this.panel.list.unshift(newPanel)
+      this.$emit('close')
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+  .drill-container{
+    margin: 0;
+  }
+  .el-breadcrumb__inner{
+    cursor: pointer;
+  }
+
+</style>

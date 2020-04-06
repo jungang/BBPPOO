@@ -7,7 +7,7 @@ Vue.use(Router)
 import Layout from '@/layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
+// import componentsRouter from './modules/components'
 // import chartsRouter from './modules/charts'
 // import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
@@ -150,7 +150,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/table/complex-table'),
+        component: () => import('@/views/management/index'),
         name: 'management',
         meta: { title: '数据管理', icon: 'component', noCache: true }
       }
@@ -162,7 +162,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/table/complex-table'),
+        component: () => import('@/views/objectives/index'),
         name: 'objectives',
         meta: { title: '项目目标', icon: 'star', noCache: true }
       }

@@ -32,10 +32,22 @@ request2.interceptors.response.use(
 )
 
 // request interceptor
+request2.interceptors.request.use(
+  config => {
+    config.data = config.data.replace('+', '%2B')
+    return config
+  },
+  error => {
+    // do something with request error
+    console.log(error) // for debug
+    return Promise.reject(error)
+  }
+)
+
+// request interceptor
 service.interceptors.request.use(
   config => {
     // do something before request is sent
-
     if (store.getters.token) {
       // let each request carry token
       // ['X-Token'] is a custom headers key

@@ -1,8 +1,19 @@
 <template>
   <div class="app-container">
 
+    <el-row type="flex">
+      <el-col :span="12">
+        <h3>
+          报表
+        </h3>
+      </el-col>
+      <el-col :span="12" style="text-align: end">
+        <el-button type="primary">新建图表</el-button>
+      </el-col>
+    </el-row>
+
     <draggable
-      :list="list"
+      :list="panel.list"
       v-bind="dragOptions"
       tag="ul"
       :set-data="setData"
@@ -13,12 +24,11 @@
       <transition-group type="transition" :name="!drag ? 'flip-list' : null" class="list-group">
 
         <li
-          v-for="element in list"
+          v-for="element in panel.list"
           :key="element.id"
           class="list-group-item"
           :style="{ width: element.width + 'px', height: element.height + 'px' }"
         >
-
           <vue-draggable-resizable
             :w="element.width"
             :h="element.height"
@@ -31,12 +41,16 @@
             class-name="my-class"
             @resizing="(x, y, width, height)=>onResize(x, y, width, height, element)"
           >
-
-            <component :is="element.component" :data="element" />
+            <component
+              :is="element.component"
+              :data="element"
+              :panel.sync="panel"
+              :view="element.viewName"
+            />
 
           </vue-draggable-resizable>
 
-          <div class="title handle-drag">{{ element.name }} {{ element.id }}</div>
+          <div class="title handle-drag">{{ element.title }}</div>
 
         </li>
       </transition-group>
@@ -47,20 +61,21 @@
 </template>
 
 <script>
-import { fetchData } from '@/api/chart-data'
+import { fetchPanel, saveLayout } from '@/api/panel'
 import draggable from 'vuedraggable'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
-
 // eslint-disable-next-line no-unused-vars
 import charts from './charts/charts'
+import charts2 from './charts/charts2'
 
 export default {
   name: 'Panel',
   components: {
     draggable,
     VueDraggableResizable,
-    charts
+    charts,
+    charts2
   },
   props: {
     isEdit: {
@@ -75,22 +90,15 @@ export default {
       loading: false,
       drag: false,
       tempRoute: {},
-      list: [
-        { name: '视图',
-          id: 1,
-          component: 'charts',
-          parameters: {},
-          width: 500,
-          height: 300
-        },
-        { name: '视图',
-          id: 2,
-          component: 'charts',
-          parameters: {},
-          width: 400,
-          height: 200
-        }
-      ],
+      panel: {
+        id: 0,
+        title: '',
+        isCreate: false,
+        dateType: '',
+        dateValue: 1,
+        list: []
+      },
+
       width: 0,
       height: 0,
       x: 0,
@@ -107,55 +115,54 @@ export default {
       }
     }
   },
+  watch: {
+    'panel.list'(val, oldVal) {
+      if (oldVal.length !== 0) {
+        this.saveLayout()
+      }
+    }
+  },
   created() {
     this.id = this.$route.params && this.$route.params.id
     this.tempRoute = Object.assign({}, this.$route)
-    this.setTagsViewTitle()
-    this.setPageTitle()
-    this.loadLayout()
-
-    this.getData()
+    this.getPanel(this.id)
+    // this.setTagsViewTitle()
+    // this.setPageTitle()
+    // this.loadLayout()
   },
   methods: {
-    onEnd() {
-      this.drag = false
-      this.saveLayout()
-    },
-    getData() {
-      // console.log('getData........')
-      const data1 = {
-        'dir': 'Sample Reports/panel-1',
-        'start_date': '2015-01-01 12:00:00',
-        'end_date': '2016-01-01 12:00:00',
-        'vf_id': 2,
-        'vf_file': 'sample_dashboard2.efwvf'
-      }
-
-      /*      const data2 = {
-        'dir': 'Sample Reports/subject-0b394b00-fd83-48f2-9bb3-f13facf61c8a1473a497-87bd-4020-abf9-25388c1a539e',
-        'start_date': '2015-01-01 12:00:00',
-        'end_date': '2015-02-01 12:00:00',
-        'vf_id': 1,
-        'vf_file': 'sample_dashboard.efwvf'
-      }*/
-
-      fetchData(JSON.stringify(data1)).then(response => {
-        console.log(response)
-        // console.log(typeof response.data.script)
+    getPanel(id) {
+      fetchPanel(id).then(response => {
+        this.panel = response.data
+        this.setTagsViewTitle()
+        this.setPageTitle()
+      }).catch(err => {
+        console.log(err)
       })
     },
-
+    onEnd() {
+      this.drag = false
+      // this.saveLayout()
+    },
     saveLayout() {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         // console.log('saveLayout....')
-        localStorage.setItem('layout' + this.id, JSON.stringify(this.list))
+
+        saveLayout({ id: this.id, layout: this.panel.list }).then(response => {
+          this.$message({
+            message: '版式布局更新',
+            type: 'success'
+          })
+        })
+
+        localStorage.setItem('layout' + this.id, JSON.stringify(this.panel.list))
         // console.log(JSON.parse(localStorage.getItem('layout' + this.id)))
       }, 1000)
     },
     loadLayout() {
       // console.log('loadLayout....')
-      this.list = JSON.parse(localStorage.getItem('layout' + this.id)) || this.list
+      this.panel.list = JSON.parse(localStorage.getItem('layout' + this.id)) || this.panel.list
       // console.log(this.list)
     },
     onResize: function(x, y, width, height, el) {
@@ -175,8 +182,9 @@ export default {
       dataTransfer.setData('Text', '')
     },
     setTagsViewTitle() {
-      const title = '面板'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.id}` })
+      const title = '报表-' + this.panel.title
+      // const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.id}` })
+      const route = Object.assign({}, this.tempRoute, { title: `${title}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
@@ -247,6 +255,7 @@ export default {
   }
   ul{
     padding: 0;
+    margin: 0;
   }
 </style>
 
