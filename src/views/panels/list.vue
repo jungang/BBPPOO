@@ -104,7 +104,7 @@ export default {
       temp: {
         id: undefined,
         title: '',
-        isCreate: true,
+        isCreate: false,
         dateType: 'day',
         dateValue: 1
       },
@@ -140,7 +140,7 @@ export default {
       this.temp = {
         id: 0,
         title: '名称',
-        isCreate: true,
+        isCreate: false,
         dateType: 'month',
         dateValue: 1
       }

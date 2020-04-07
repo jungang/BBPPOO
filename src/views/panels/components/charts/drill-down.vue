@@ -190,8 +190,8 @@ export default {
       const newPanel = {
         id: uuidv1(),
         title: this.temp.breadName,
-        viewName: this.temp.name,
-        _name: this.temp._name,
+        viewName: this.temp._drillName, // -this.view
+        drillName: this.temp.name,
         component: 'charts',
         parameters: {},
         width: 600,

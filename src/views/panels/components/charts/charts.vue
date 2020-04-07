@@ -1,29 +1,7 @@
 <template>
   <div class="app-container">
     <el-row style="margin-bottom: 10px">
-      <el-col :span="3">
-        &nbsp;
-      <!--        <el-checkbox v-model="checked">预实</el-checkbox>-->
-      </el-col>
-      <el-col :span="3">
-      <!--        <el-checkbox v-model="checked2">完成率</el-checkbox>-->
-      </el-col>
-      <el-col :span="5">
-        <el-select
-          v-model="value3"
-          size="mini"
-          placeholder="请选择"
-          style="width: 100px"
-        >
-          <el-option label="表头信息" value="">表头信息</el-option>
-          <el-option label="表头1" value="1">表头1</el-option>
-          <el-option label="表头2" value="2">表头2</el-option>
-          <el-option label="表头3" value="3">表头3</el-option>
-          <el-option label="表头4" value="4">表头4</el-option>
-        </el-select>
-      </el-col>
-
-      <el-col :span="5">
+      <el-col :span="6">
         <span class="demonstration">月</span>
         <el-date-picker
           v-model="value1"
@@ -34,25 +12,17 @@
         />
       </el-col>
 
-      <el-col :span="5">
-        <div class="block">
-          <span class="demonstration">天</span>
-          <el-date-picker
-            v-model="value2"
-            type="date"
-            size="mini"
-            placeholder="选择日期"
-            style="width: 100px"
-          />
-        </div>
-      </el-col>
-      <el-col :span="3">
+      <el-col :span="18" style="text-align: right;padding-right: 10px">
         <div class="block">
           <el-button
             type="primary"
             size="mini"
             @click="handleCopy"
           >复制</el-button>
+          <el-button
+            size="mini"
+            @click="handleDelete"
+          >删除</el-button>
         </div></el-col>
     </el-row>
     <div :id="data.id" class="chart" style="width:100%; height:90%;" />
@@ -180,15 +150,20 @@ export default {
     }
   },
   created() {
+    // console.log('this.view:', this.view)
     this.currentView = this.$store.state.options.views.find(item => item.name === this.view)
+    // console.log('this.currentView:', this.currentView)
     this.getData()
     // console.log(this.currentView)
     // console.log(this.$store.state.options.views)
   },
   mounted() {},
   methods: {
+    handleDelete() {
+      console.log(this.data.id)
+      // this.panel.list.unshift(newPanel)
+    },
     handleCopy() {
-      console.log('handleCopy...')
       const newPanel = { ...this.data }
       newPanel.id = uuidv1()
       console.log(newPanel)
@@ -197,6 +172,7 @@ export default {
     },
     async getData() {
       this.data._drillName = this.view
+
       const [res_s, res_y] = await getData(this.currentView, this.data)
       this.options = (format(this.options, this.currentView, res_s, res_y))
       this.renderChart(this.options)

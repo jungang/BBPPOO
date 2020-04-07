@@ -9,7 +9,11 @@ export function format(...arg) {
     {
       name: '实际',
       type: 'bar',
-      label: { show: true },
+      label: {
+        show: true,
+        // position: 'top',
+        formatter: '{@实际}\n({@完成率}%)'
+      },
       shadowColor: 'rgba(0, 0, 0, 0.5)',
       shadowBlur: 50
 
@@ -35,7 +39,10 @@ export function format(...arg) {
       {
         name: '预计',
         type: 'bar',
-        label: { show: true }
+        label: {
+          show: true,
+          // position: 'top'
+        }
       }
     )
     y.forEach((item, index) => {
@@ -47,7 +54,7 @@ export function format(...arg) {
   // 计算完成率 ///////////////////////////////////////////////////////////////////////////////
   if (currentView.completion) {
     options.dataset.dimensions = ['类目', '预计', '实际', '完成率']
-    options.series.push(
+    /*    options.series.push(
       {
         name: '完成率',
         type: 'bar',
@@ -55,7 +62,7 @@ export function format(...arg) {
           show: true,
           formatter: '{@完成率}%'
         }
-      })
+      })*/
     options.dataset.source.forEach((item, index) => {
       item.完成率 = (item.实际 / item.预计 * 100).toFixed(0)
     })
@@ -67,7 +74,7 @@ export function format(...arg) {
 export async function getData(...arg) {
   const [currentView, data] = arg
 
-  console.log(data)
+  // console.log(data)
   let res_s = []
   let res_y = []
 
@@ -80,7 +87,7 @@ export async function getData(...arg) {
     'vf_file': 'dashboard.efwvf'
   }
 
-  console.log(data1)
+  // console.log(data1)
   res_s = await fetchData(data1)
 
   const data2 = {
