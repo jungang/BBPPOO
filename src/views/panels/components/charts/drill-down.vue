@@ -17,7 +17,7 @@
 
   </div>
 </template>
-
+1
 <script>
 // import { fetchData } from '@/api/panel'
 var echarts = require('echarts')

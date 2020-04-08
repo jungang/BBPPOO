@@ -226,7 +226,7 @@ export default {
         message: '文件上传成功。',
         type: 'success'
       })
-      calculate({ projectId: this.projectId, batch: this.temp.year + this.temp.month }).then((res) => {
+      calculate({ projectId: this.projectId, batch: this.temp.year + this.temp.month, refresh: true }).then((res) => {
         this.$message({
           message: '开始计算。。。。',
           type: 'success'
