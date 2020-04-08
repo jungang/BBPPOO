@@ -1,14 +1,28 @@
 <template>
   <div class="app-container">
     <el-row type="flex" align="middle">
-      <el-col :span="15">
+
+      <el-col :span="12">
+        批次:
+        <el-select v-model="temp.year" class="filter-item" placeholder="请选择">
+          <el-option v-for="item in $store.state.options.dateValueYear" :key="item.key" :label="item.label" :value="item.key" />
+        </el-select>
+        <el-select v-model="temp.month" class="filter-item" placeholder="请选择">
+          <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />
+        </el-select>
+
+      </el-col>
+
+      <el-col :span="10">
         <el-upload
           class="upload-demo"
-          action="/dev-api/objectives/upload"
+          action="http://39.98.167.246:8096/upload/all"
           :show-file-list="false"
           multiple
           :limit="10"
+          :data="{projectId,batch:temp.year + temp.month}"
           :on-exceed="handleExceed"
+          :on-error="handleError"
           :on-success="handleSuccess"
         >
           <el-button v-waves type="primary">上传文件</el-button>
@@ -16,36 +30,7 @@
 
       </el-col>
     </el-row>
-
-    <el-table
-      v-if="fileList.length > 0"
-      :data="fileList"
-      border
-      size="mini"
-      style="width: 100%"
-    >
-      <el-table-column
-        prop="id"
-        label="ID"
-        width="200"
-      />
-      <el-table-column
-        prop="fileName"
-        label="文件名"
-        width="200"
-      />
-      <el-table-column
-        align="center"
-        label="操作"
-        width="180"
-      >
-        <template slot-scope="{row}">
-          <el-button size="mini" @click="openGenerate(row)">
-            生成目标
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+    <!--
     <el-table
       :data="list.items"
       border
@@ -73,34 +58,20 @@
         </template>
 
       </el-table-column>
-    </el-table>
-    <pagination
+    </el-table>-->
+    <!--    <pagination
       :total="list.total"
       hide-on-single-page
       :page.sync="list.listQuery.page"
       :limit.sync="list.listQuery.limit"
       @pagination="getList"
-    />
+    />-->
 
     <el-dialog
       title="目标"
       :visible.sync="generateDialogVisible"
       width="30%"
     >
-      <el-form ref="dataForm" :model="temp" label-position="right" label-width="30%" style="width: 100%;">
-        <el-form-item label="选择年：">
-          <el-select v-model="temp.year" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in $store.state.options.dateValueYear" :key="item.key" :label="item.label" :value="item.key" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="选择月：">
-          <el-select v-model="temp.month" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />
-          </el-select>
-        </el-form-item>
-
-      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="generateDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleGenerate">确 定</el-button>
@@ -152,7 +123,7 @@
 
 <script>
 import waves from '@/directive/waves' // waves directive
-import { fetchFileList, generate, fetchList, fetchDetail } from '@/api/objectives'
+import { fetchFileList, generate, fetchList, fetchDetail, calculate } from '@/api/objectives'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -162,7 +133,11 @@ export default {
   filters: {},
   data() {
     return {
-      temp: {},
+      temp: {
+        year: 2020,
+        month: '01'
+      },
+      projectId: '00000000-0000-0000-0000-000000000000',
       listLoading: true,
       generateDialogVisible: false,
       detailDialogVisible: false,
@@ -188,10 +163,9 @@ export default {
     }
   },
   created() {
-    this.getFileList()
-    this.getList()
+    // this.getFileList()
+    // this.getList()
   },
-
   methods: {
     handleDetail(row) {
       console.log(row)
@@ -248,10 +222,26 @@ export default {
       this.$message.warning(`当前限制选择 10 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },
     handleSuccess(response) {
-      this.getFileList()
       this.$message({
         message: '文件上传成功。',
         type: 'success'
+      })
+      calculate({ projectId: this.projectId, batch: this.temp.year + this.temp.month }).then((res) => {
+        this.$message({
+          message: '开始计算。。。。',
+          type: 'success'
+        })
+      }).catch(() => {
+        this.$message({
+          message: '未能开始计算',
+          type: 'error'
+        })
+      })
+    },
+    handleError(response) {
+      this.$message({
+        message: '文件上传失败',
+        type: 'error'
       })
     }
   }

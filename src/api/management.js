@@ -1,25 +1,8 @@
 import request from '@/utils/request'
 
-export function calculate(query) {
-  return request({
-    url: '/calculate',
-    method: 'get',
-    params: query,
-    baseURL: 'http://39.98.167.246:8096'
-  })
-}
-
-export function fetchFileList(query) {
-  return request({
-    url: '/objectives/file-list',
-    method: 'get',
-    params: query
-  })
-}
-
 export function fetchList(query) {
   return request({
-    url: '/objectives/list',
+    url: '/management/list',
     method: 'get',
     params: query
   })

@@ -1,18 +1,19 @@
 <template>
   <div class="app-container">
     <el-row style="margin-bottom: 10px">
-      <el-col :span="6">
-        <span class="demonstration">月</span>
-        <el-date-picker
-          v-model="value1"
-          type="month"
-          size="mini"
-          placeholder="选择月"
-          style="width: 100px"
-        />
-      </el-col>
 
-      <el-col :span="18" style="text-align: right;padding-right: 10px">
+      <el-col :span="18">
+        &nbsp;
+      <!--        <span class="demonstration" style="padding-left: 10px">月</span>-->
+      <!--        <el-select v-model="value1" class="filter-item" placeholder="请选择">-->
+      <!--          <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />-->
+      <!--        </el-select>-->
+      <!--        到-->
+      <!--        <el-select v-model="value2" class="filter-item" placeholder="请选择">-->
+      <!--          <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />-->
+      <!--        </el-select>-->
+      </el-col>
+      <el-col :span="6" style="text-align: right;padding-right: 10px">
         <div class="block">
           <el-button
             type="primary"
@@ -20,11 +21,13 @@
             @click="handleCopy"
           >复制</el-button>
           <el-button
+            v-if="data.type !== 'def'"
             size="mini"
             @click="handleDelete"
           >删除</el-button>
         </div></el-col>
     </el-row>
+    {{ data.id }}
     <div :id="data.id" class="chart" style="width:100%; height:90%;" />
 
     <el-dialog
@@ -160,12 +163,27 @@ export default {
   mounted() {},
   methods: {
     handleDelete() {
-      console.log(this.data.id)
+      console.log(this.data)
+      this.$confirm('删除' + this.data.title, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async() => {
+          const _index = this.panel.list.findIndex(item => item.id === this.data.id)
+          this.panel.list.splice(_index, 1)
+          this.$message({
+            type: 'success',
+            message: '完成删除。'
+          })
+        })
+        .catch(err => { console.error(err) })
       // this.panel.list.unshift(newPanel)
     },
     handleCopy() {
       const newPanel = { ...this.data }
       newPanel.id = uuidv1()
+      newPanel.type = 'cus'
       console.log(newPanel)
       this.panel.list.unshift(newPanel)
       console.log(this.panel.list)

@@ -13,18 +13,18 @@ const state = {
     { label: '2020年', key: 2020 }
   ],
   dateValueMonth: [
-    { label: '一月', key: 1 },
-    { label: '二月', key: 2 },
-    { label: '三月', key: 3 },
-    { label: '四月', key: 4 },
-    { label: '五月', key: 5 },
-    { label: '六月', key: 6 },
-    { label: '七月', key: 7 },
-    { label: '八月', key: 8 },
-    { label: '九月', key: 9 },
-    { label: '十月', key: 10 },
-    { label: '十一月', key: 11 },
-    { label: '十二月', key: 12 }
+    { label: '一月', key: '01' },
+    { label: '二月', key: '02' },
+    { label: '三月', key: '03' },
+    { label: '四月', key: '04' },
+    { label: '五月', key: '05' },
+    { label: '六月', key: '06' },
+    { label: '七月', key: '07' },
+    { label: '八月', key: '08' },
+    { label: '九月', key: '09' },
+    { label: '十月', key: '10' },
+    { label: '十一月', key: '11' },
+    { label: '十二月', key: '12' }
   ],
   dateValueDay: [
     { label: '1日', key: 1 },

@@ -10,7 +10,6 @@
       </el-col>
       <el-col :span="4" style="text-align: right">
         <el-button type="primary" @click="handleAdd">加入仪表盘</el-button>
-
       </el-col>
     </el-row>
 
@@ -189,6 +188,7 @@ export default {
       console.log(this.temp)
       const newPanel = {
         id: uuidv1(),
+        type: 'cus',
         title: this.temp.breadName,
         viewName: this.temp._drillName, // -this.view
         drillName: this.temp.name,

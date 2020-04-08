@@ -83,6 +83,7 @@
 <script>
 // import { fetchList } from '@/api/article'
 import { panelsFetchList, createPanel, deletePanel } from '@/api/panels'
+import uuidv1 from 'uuid/v1'
 import draggable from 'vuedraggable'
 
 export default {
@@ -138,11 +139,34 @@ export default {
   methods: {
     resetTemp() {
       this.temp = {
-        id: 0,
+        id: uuidv1(),
         title: '名称',
         isCreate: false,
         dateType: 'month',
-        dateValue: 1
+        dateValue: 1,
+        projectId: '00000000-0000-0000-0000-000000000000',
+        'list': [
+          {
+            id: uuidv1(),
+            title: '利润分析',
+            type: 'def',
+            component: 'charts',
+            parameters: {},
+            width: 600,
+            height: 700,
+            viewName: 'profit_income_expanse'
+          },
+          {
+            id: uuidv1(),
+            title: '利润分析',
+            type: 'def',
+            component: 'charts',
+            parameters: {},
+            width: 600,
+            height: 700,
+            viewName: 'profit_income_expanse'
+          }
+        ]
       }
     },
     handleCreate() {
@@ -191,7 +215,7 @@ export default {
     },
     onEnd() {
       this.drag = false
-      // this.saveLayout()
+      this.saveLayout()
     },
     getList() {
       this.listLoading = true
