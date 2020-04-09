@@ -14,9 +14,10 @@ export function fetchData(data) {
 
 export function fetchPanel(id) {
   return request({
-    url: '/panels/detail',
+    url: '/chart/get',
     method: 'get',
-    params: { id }
+    params: { id },
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 
