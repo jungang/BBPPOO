@@ -37,9 +37,10 @@ export function fetchDrillObjective(params) {
 
 export function saveLayout(data) {
   return request({
-    url: '/panel/save-layout',
+    url: '/chart/set',
     method: 'post',
-    data
+    data,
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 

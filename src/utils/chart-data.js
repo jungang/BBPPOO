@@ -12,7 +12,7 @@ export function format(...arg) {
       label: {
         show: true,
         // position: 'top',
-        formatter: '{@实际}\n({@完成率}%)'
+        formatter: '{@实际}\n({@完成率}%)\n占:??.??%'
       },
       shadowColor: 'rgba(0, 0, 0, 0.5)',
       shadowBlur: 50
@@ -41,7 +41,8 @@ export function format(...arg) {
         type: 'bar',
         label: {
           show: true,
-          // position: 'top'
+          // position: 'top',
+          formatter: '{@实际}\n占:??.??%'
         }
       }
     )

@@ -149,7 +149,7 @@ export default {
       this.timer = setTimeout(() => {
         // console.log('saveLayout....')
 
-        saveLayout({ id: this.id, layout: this.panel.list }).then(response => {
+        saveLayout(this.panel).then(response => {
           this.$message({
             message: '版式布局更新',
             type: 'success'

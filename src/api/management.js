@@ -1,9 +1,26 @@
 import request from '@/utils/request'
 
+export function fetchStatus(query) {
+  return request({
+    url: '/calstatus',
+    method: 'get',
+    params: query,
+    baseURL: 'http://39.98.167.246:8096'
+  })
+}
+
 export function fetchList(query) {
   return request({
     url: '/management/list',
     method: 'get',
+    params: query
+  })
+}
+
+export function actionDelete(query) {
+  return request({
+    url: '/objectives/delete',
+    method: 'delete',
     params: query
   })
 }

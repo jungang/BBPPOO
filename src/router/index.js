@@ -180,7 +180,7 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'view/:id(\\d+)',
+        path: 'view/:id(\\S+)',
         component: () => import('@/views/panels/view'),
         name: 'panelView',
         meta: { title: '面板', noCache: true, activeMenu: '/panels/list' },

@@ -17,7 +17,7 @@
       tag="ul"
       v-bind="dragOptions"
       @start="drag = true"
-      @end="drag = false"
+      @end="onEnd"
     >
       <transition-group type="transition" :name="!drag ? 'flip-list' : null">
         <li
@@ -82,7 +82,7 @@
 
 <script>
 // import { fetchList } from '@/api/article'
-import { panelsFetchList, createPanel, deletePanel } from '@/api/panels'
+import { panelsFetchList, createPanel, deletePanel, saveQueue } from '@/api/panels'
 import uuidv1 from 'uuid/v1'
 import draggable from 'vuedraggable'
 
@@ -98,8 +98,7 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        page: 1,
-        limit: 10
+        id: '00000000-0000-0000-0000-000000000000'
       },
       statusOptions: ['day', 'month', 'year'],
       temp: {
@@ -195,6 +194,8 @@ export default {
       })
     },
     toDetail(item) {
+      console.log('xxx')
+      console.log(item.id)
       this.$router.push('/panels/view/' + item.id)
     },
     handleDelete(item, index) {
@@ -204,7 +205,9 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await deletePanel(item.id)
+          deletePanel(item.id).then((res) => {
+            console.log(res)
+          })
           this.list.splice(index, 1)
           this.$message({
             type: 'success',
@@ -215,12 +218,22 @@ export default {
     },
     onEnd() {
       this.drag = false
-      this.saveLayout()
+      const data = {
+        'projectId': '00000000-0000-0000-0000-000000000000',
+        list: this.list.map(item => { return item.id })
+      }
+      saveQueue(data).then((res) => {
+        this.$message({
+          message: '报表顺序已更新。',
+          type: 'success'
+        })
+      })
     },
     getList() {
       this.listLoading = true
       panelsFetchList(this.listQuery).then(response => {
-        this.list = response.data.items
+        // this.list = response.data.items
+        this.list = response.data
         this.total = response.data.total
         this.listLoading = false
       })

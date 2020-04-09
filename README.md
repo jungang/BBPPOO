@@ -17,8 +17,12 @@ Dashboard/Excel/Upload Excel 上传，展开表格
 图表页面无法嵌套
 
     src="http://172.20.95.130:8086/hi.html?dir=Sample%20Reports/custom-0331&file=sample_dashboard.efw&mode=open"
-    
-    
-    
+   
     Alias——
     <projectRoot>/node_modules/@vue/cli-service/webpack.config.js
+    
+mongodb连接
+# network interfaces
+net:
+  port: 27017
+  bindIpAll: true

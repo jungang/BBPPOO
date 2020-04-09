@@ -2,25 +2,38 @@ import request from '@/utils/request'
 
 export function panelsFetchList(query) {
   return request({
-    url: '/panels/list',
+    url: '/chart/list',
+    // url: '/panels/list',
     method: 'get',
-    params: query
+    params: query,
+    baseURL: 'http://39.98.167.246:8096'
+  })
+}
+
+export function saveQueue(data) {
+  return request({
+    url: '/chart/order',
+    method: 'post',
+    data,
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 
 export function createPanel(data) {
   return request({
-    url: '/panels/create',
+    url: '/chart/set',
     method: 'post',
-    data
+    data,
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 
 export function deletePanel(id) {
   return request({
-    url: `/panels/delete`,
+    url: `/chart/delete`,
     method: 'delete',
-    params: { id: id }
+    params: { id: id },
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 

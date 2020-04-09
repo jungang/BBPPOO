@@ -20,7 +20,7 @@
           :show-file-list="false"
           multiple
           :limit="10"
-          :data="{projectId,batch:temp.year + temp.month}"
+          :data="{projectId,batch:temp.year + temp.month,refresh:true}"
           :on-exceed="handleExceed"
           :on-error="handleError"
           :on-success="handleSuccess"

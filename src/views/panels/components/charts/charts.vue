@@ -27,7 +27,7 @@
           >删除</el-button>
         </div></el-col>
     </el-row>
-    {{ data.id }}
+
     <div :id="data.id" class="chart" style="width:100%; height:90%;" />
 
     <el-dialog
