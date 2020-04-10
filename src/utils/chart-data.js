@@ -2,8 +2,9 @@ import { fetchData } from '@/api/panel'
 
 export function format(...arg) {
   // console.log(arg)
-  const [options, currentView, s, y] = arg
+  const [options, currentView, s, y, s_zb, y_zb] = arg
   options.series = []
+
   // 实际数据 基础数据 ///////////////////////////////////////////////////////////////////////////////
   options.series.push(
     {
@@ -12,7 +13,7 @@ export function format(...arg) {
       label: {
         show: true,
         // position: 'top',
-        formatter: '{@实际}\n({@完成率}%)\n占:??.??%'
+        formatter: '{@实际}\n({@完成率}%)\n占:{@实际占比}%'
       },
       shadowColor: 'rgba(0, 0, 0, 0.5)',
       shadowBlur: 50
@@ -42,7 +43,7 @@ export function format(...arg) {
         label: {
           show: true,
           // position: 'top',
-          formatter: '{@实际}\n占:??.??%'
+          formatter: '{@预计}\n占:??.??%'
         }
       }
     )
@@ -51,58 +52,83 @@ export function format(...arg) {
     })
   }
 
+  // 实际占比 ///////////////////////////////////////////////////////////////////////////////
+  options.dataset.dimensions = ['类目', '预计', '实际', '完成率', '实际占比']
+  options.dataset.source.forEach((item, index) => {
+    item.实际占比 = 10
+  })
+
+  // 实际占比 ///////////////////////////////////////////////////////////////////////////////
+  // options.dataset.dimensions = ['类目', '预计', '实际']
+  // y_zb.forEach((item, index) => {
+  //   options.dataset.source[index].预计占比 = item.value
+  // })
+
   // currentView.completion = false // todo
   // 计算完成率 ///////////////////////////////////////////////////////////////////////////////
   if (currentView.completion) {
-    options.dataset.dimensions = ['类目', '预计', '实际', '完成率']
-    /*    options.series.push(
-      {
-        name: '完成率',
-        type: 'bar',
-        label: {
-          show: true,
-          formatter: '{@完成率}%'
-        }
-      })*/
+    options.dataset.dimensions = ['类目', '预计', '实际', '实际占比', '完成率']
     options.dataset.source.forEach((item, index) => {
       item.完成率 = (item.实际 / item.预计 * 100).toFixed(0)
     })
   }
-  // console.log('options.series:', options.series)
+  console.log('options.dataset:', options.dataset)
   return options
 }
 
 export async function getData(...arg) {
   const [currentView, data] = arg
-
-  // console.log(data)
+  console.log(data)
   let res_s = []
   let res_y = []
+  let res_s_zb = []
+  let res_y_zb = []
 
+  // 实际
   const data1 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
-    'month': '1',
+    'month': data.parameters.month,
     'projectId': '00000000-0000-0000-0000-000000000000',
     'vf_id': 0,
     'vf_file': 'dashboard.efwvf'
   }
-
-  // console.log(data1)
   res_s = await fetchData(data1)
 
+  // 预计
   const data2 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
-    'month': '1',
+    'month': data.parameters.month,
     'projectId': '00000000-0000-0000-0000-000000000000',
     'vf_id': 1,
     'vf_file': 'dashboard.efwvf'
   }
-
   if (currentView.compare) {
     res_y = await fetchData(data2)
   }
 
-  return [res_s, res_y]
+  // 实际  占比
+  const data3 = {
+    'dir': 'Sample Reports/' + data._drillName,
+    'name': data.drillName,
+    'month': data.parameters.month,
+    'projectId': '00000000-0000-0000-0000-000000000000',
+    'vf_id': 0,
+    'vf_file': 'dashboard.efwvf'
+  }
+  res_s_zb = await fetchData(data3)
+
+  // 实际  占比
+  const data4 = {
+    'dir': 'Sample Reports/' + data._drillName,
+    'name': data.drillName,
+    'month': data.parameters.month,
+    'projectId': '00000000-0000-0000-0000-000000000000',
+    'vf_id': 0,
+    'vf_file': 'dashboard.efwvf'
+  }
+  res_y_zb = await fetchData(data4)
+
+  return [res_s, res_y, res_s_zb, res_y_zb]
 }

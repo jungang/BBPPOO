@@ -40,13 +40,19 @@
     </draggable>
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="50%" style="width: 100%;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="right" label-width="30%" style="width: 100%;">
 
         <el-form-item label="是否生成自定义报表：" prop="isCreate">
           <el-switch
             v-model="temp.isCreate"
           />
         </el-form-item>
+
+        <!--
+        <el-form-item label="名称：" prop="title">
+          <el-input v-model="temp.title" placeholder="请输入内容" style="width: 46%" />
+        </el-form-item>
+-->
 
         <el-form-item label="选择生成对象：" prop="dateType">
           <el-select v-model="temp.dateType" class="filter-item" placeholder="请选择" @change="temp.dateValue = ''">
@@ -59,7 +65,13 @@
             <el-option v-for="item in $store.state.options.dateValueYear" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
           <el-select v-if="temp.dateType==='month'" v-model="temp.dateValue" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />
+            <el-option
+              v-for="item in monthOptions"
+              :key="item.key"
+              :label="item.label"
+              :value="item.key"
+              :disabled="item.disabled"
+            />
           </el-select>
           <el-select v-if="temp.dateType==='day'" v-model="temp.dateValue" class="filter-item" placeholder="请选择">
             <el-option v-for="item in $store.state.options.dateValueDay" :key="item.key" :label="item.label" :value="item.key" />
@@ -93,6 +105,7 @@ export default {
   },
   data() {
     return {
+      monthOptions: [],
       drag: false,
       list: null,
       total: 0,
@@ -103,10 +116,10 @@ export default {
       statusOptions: ['day', 'month', 'year'],
       temp: {
         id: undefined,
-        title: '',
+        title: '一月',
         isCreate: false,
         dateType: 'day',
-        dateValue: 1
+        dateValue: ''
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -117,7 +130,8 @@ export default {
       rules: {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
+        title: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        dateValue: [{ required: true, message: '请选择', trigger: 'blur' }]
       }
     }
   },
@@ -136,13 +150,22 @@ export default {
     // console.log(this.$store.state)
   },
   methods: {
+    month() {
+      console.log('month...')
+      console.log(this.list)
+      this.monthOptions = [...this.$store.state.options.dateValueMonth]
+      this.monthOptions.forEach(item => {
+        // console.log(this.list)
+        item.disabled = !!this.list.find(item2 => parseInt(item2.dateValue) === item.num)
+      })
+    },
     resetTemp() {
       this.temp = {
         id: uuidv1(),
-        title: '名称',
+        title: '一月',
         isCreate: false,
         dateType: 'month',
-        dateValue: 1,
+        dateValue: '',
         projectId: '00000000-0000-0000-0000-000000000000',
         'list': [
           {
@@ -170,6 +193,7 @@ export default {
     },
     handleCreate() {
       this.resetTemp()
+      this.month()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -178,10 +202,18 @@ export default {
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
+        this.temp.list.forEach(item => {
+          item.parameters.month = this.temp.dateValue
+        })
+
+        this.temp.title = this.$store.state.options.dateValueMonth.find(item => { return item.key === this.temp.dateValue }).label
+        // 生成
         if (valid) {
           createPanel(this.temp).then(() => {
             // this.getList()
             this.list.unshift(this.temp) // 插入数组
+
+            this.onEnd()
             this.dialogFormVisible = false
             this.$notify({
               title: '完成',
@@ -194,7 +226,7 @@ export default {
       })
     },
     toDetail(item) {
-      console.log('xxx')
+      // console.log('xxx')
       console.log(item.id)
       this.$router.push('/panels/view/' + item.id)
     },

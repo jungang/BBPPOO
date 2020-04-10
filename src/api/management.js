@@ -11,17 +11,19 @@ export function fetchStatus(query) {
 
 export function fetchList(query) {
   return request({
-    url: '/management/list',
+    url: '/excel/list',
     method: 'get',
-    params: query
+    params: query,
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 
 export function actionDelete(query) {
   return request({
-    url: '/objectives/delete',
+    url: '/excel/delete',
     method: 'delete',
-    params: query
+    params: query,
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 

@@ -32,8 +32,8 @@
           <vue-draggable-resizable
             :w="element.width"
             :h="element.height"
-            :min-width="100"
-            :min-height="100"
+            :min-width="400"
+            :min-height="400"
             :parent="false"
             :draggable="false"
             :resizable="true"
