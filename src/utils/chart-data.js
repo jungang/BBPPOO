@@ -13,7 +13,7 @@ export function format(...arg) {
       label: {
         show: true,
         // position: 'top',
-        formatter: '{@实际}\n({@完成率}%)\n占:{@预计占比}%'
+        formatter: '{@实际}\n({@完成率}%)\n占:{@实际占比}%'
       },
       shadowColor: 'rgba(0, 0, 0, 0.5)',
       shadowBlur: 50
@@ -54,19 +54,6 @@ export function format(...arg) {
 
   // 实际占比 ///////////////////////////////////////////////////////////////////////////////
   options.dataset.dimensions = ['类目', '预计', '实际', '完成率', '实际占比']
-  options.series.push(
-    {
-      name: '实际占比',
-      type: 'bar',
-      label: {
-        show: true
-      }
-    }
-  )
-
-  // s_zb.forEach((item, index) => {
-  //   options.dataset.source[index].实际占比 = item.value
-  // })
   options.dataset.source.forEach((item, index) => {
     item.实际占比 = 10
   })

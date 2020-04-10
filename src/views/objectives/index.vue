@@ -30,7 +30,6 @@
 
       <el-col :span="10" />
     </el-row>
-    <!--
     <el-table
       :data="list.items"
       border
@@ -58,14 +57,14 @@
         </template>
 
       </el-table-column>
-    </el-table>-->
-    <!--    <pagination
+    </el-table>
+    <pagination
       :total="list.total"
       hide-on-single-page
       :page.sync="list.listQuery.page"
       :limit.sync="list.listQuery.limit"
       @pagination="getList"
-    />-->
+    />
 
     <el-dialog
       title="目标"
@@ -164,7 +163,7 @@ export default {
   },
   created() {
     // this.getFileList()
-    // this.getList()
+    this.getList()
   },
   methods: {
     handleDetail(row) {
