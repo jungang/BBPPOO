@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row style="margin-bottom: 10px">
 
-      <el-col :span="18">
+      <el-col :span="4">
         &nbsp;
       <!--        <span class="demonstration" style="padding-left: 10px">月</span>-->
       <!--        <el-select v-model="value1" class="filter-item" placeholder="请选择">-->
@@ -13,7 +13,7 @@
       <!--          <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />-->
       <!--        </el-select>-->
       </el-col>
-      <el-col :span="6" style="text-align: right;padding-right: 10px">
+      <el-col :span="20" style="text-align: right;padding-right: 10px">
         <div class="block">
           <el-button
             type="primary"
@@ -105,6 +105,30 @@ export default {
           left: 'right',
           top: 'top',
           feature: {
+            dataView: {
+              readOnly: false,
+              optionToContent: function(opt) {
+                var axisData = opt.dataset[0].source
+
+                var table = '<table style="width:100%;text-align:center; user-select: text;"><tbody><tr>' +
+                  '<td>' + opt.dataset[0].dimensions[0] + '</td>' +
+                  '<td>' + opt.dataset[0].dimensions[1] + '</td>' +
+                  '<td>' + opt.dataset[0].dimensions[2] + '</td>' +
+                  '<td>' + opt.dataset[0].dimensions[3] + '</td>' +
+                  '</tr>'
+
+                for (var i = 0; i < axisData.length; i++) {
+                  table += '<tr>' +
+                    '<td>' + axisData[i].类目 + '</td>' +
+                    '<td>' + axisData[i].实际 + '</td>' +
+                    '<td>' + axisData[i].预计 + '</td>' +
+                    '<td>' + axisData[i].完成率 + '</td>' +
+                    '</tr>'
+                }
+                table += '</tbody></table>'
+                return table
+              }
+            },
             magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
             restore: { show: true }
           }
@@ -114,6 +138,7 @@ export default {
         xAxis: {
           axisLabel: {
             show: true,
+            interval: 0,
             formatter: (value, index) => {
               const drillName = this.options.dataset.source[index].drillName
               const drill = !this.currentView.items[drillName]
@@ -191,14 +216,18 @@ export default {
     async getData() {
       this.data._drillName = this.view
 
-      const [res_s, res_y] = await getData(this.currentView, this.data)
-      this.options = (format(this.options, this.currentView, res_s, res_y))
+      // console.log('this.data:', this.data)
+      const [res_s, res_y, res_s_zb, res_y_zb] = await getData(this.currentView, this.data)
+      this.options = (format(this.options, this.currentView, res_s, res_y, res_s_zb, res_y_zb))
       this.renderChart(this.options)
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.data.id))
       this.chart.on('click', (params) => {
         params.drillName = params.value.drillName // 下钻所用名称
+
+        params.parameters = this.data.parameters
+
         if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
           params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称
           params.breadName = params.name // 面包屑名字

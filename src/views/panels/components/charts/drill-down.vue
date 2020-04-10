@@ -80,6 +80,30 @@ export default {
           left: 'right',
           top: 'top',
           feature: {
+            dataView: {
+              readOnly: false,
+              optionToContent: function(opt) {
+                var axisData = opt.dataset[0].source
+
+                var table = '<table style="width:100%;text-align:center; user-select: text;"><tbody><tr>' +
+                  '<td>' + opt.dataset[0].dimensions[0] + '</td>' +
+                  '<td>' + opt.dataset[0].dimensions[1] + '</td>' +
+                  '<td>' + opt.dataset[0].dimensions[2] + '</td>' +
+                  '<td>' + opt.dataset[0].dimensions[3] + '</td>' +
+                  '</tr>'
+
+                for (var i = 0; i < axisData.length; i++) {
+                  table += '<tr>' +
+                    '<td>' + axisData[i].类目 + '</td>' +
+                    '<td>' + axisData[i].实际 + '</td>' +
+                    '<td>' + axisData[i].预计 + '</td>' +
+                    '<td>' + axisData[i].完成率 + '</td>' +
+                    '</tr>'
+                }
+                table += '</tbody></table>'
+                return table
+              }
+            },
             magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
             restore: { show: true }
           }
@@ -166,6 +190,9 @@ export default {
       this.chart = echarts.init(document.getElementById(this.data.name))
       this.chart.on('click', (params) => {
         params.drillName = params.value.drillName // 下钻所用名称
+
+        params.parameters = this.data.parameters
+
         if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
           params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称
           params.breadName = params.name // 面包屑名字
@@ -193,7 +220,7 @@ export default {
         viewName: this.temp._drillName, // -this.view
         drillName: this.temp.name,
         component: 'charts',
-        parameters: {},
+        parameters: this.data.parameters,
         width: 600,
         height: 400
       }

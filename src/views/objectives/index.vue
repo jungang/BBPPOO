@@ -11,9 +11,6 @@
           <el-option v-for="item in $store.state.options.dateValueMonth" :key="item.key" :label="item.label" :value="item.key" />
         </el-select>
 
-      </el-col>
-
-      <el-col :span="10">
         <el-upload
           class="upload-demo"
           action="http://39.98.167.246:8096/upload/all"
@@ -24,11 +21,14 @@
           :on-exceed="handleExceed"
           :on-error="handleError"
           :on-success="handleSuccess"
+          style="width: 60px;display: inline-block;"
         >
           <el-button v-waves type="primary">上传文件</el-button>
         </el-upload>
 
       </el-col>
+
+      <el-col :span="10" />
     </el-row>
     <!--
     <el-table
