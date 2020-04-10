@@ -53,10 +53,23 @@ export function format(...arg) {
   }
 
   // 实际占比 ///////////////////////////////////////////////////////////////////////////////
-  // options.dataset.dimensions = ['类目', '预计', '实际']
+  options.dataset.dimensions = ['类目', '预计', '实际', '完成率', '实际占比']
+  options.series.push(
+    {
+      name: '实际占比',
+      type: 'bar',
+      label: {
+        show: true
+      }
+    }
+  )
+
   // s_zb.forEach((item, index) => {
   //   options.dataset.source[index].实际占比 = item.value
   // })
+  options.dataset.source.forEach((item, index) => {
+    item.实际占比 = 10
+  })
 
   // 实际占比 ///////////////////////////////////////////////////////////////////////////////
   // options.dataset.dimensions = ['类目', '预计', '实际']
@@ -67,7 +80,7 @@ export function format(...arg) {
   // currentView.completion = false // todo
   // 计算完成率 ///////////////////////////////////////////////////////////////////////////////
   if (currentView.completion) {
-    options.dataset.dimensions = ['类目', '预计', '实际', '完成率']
+    options.dataset.dimensions = ['类目', '预计', '实际', '实际占比', '完成率']
     options.dataset.source.forEach((item, index) => {
       item.完成率 = (item.实际 / item.预计 * 100).toFixed(0)
     })
