@@ -1,34 +1,91 @@
 import { fetchData } from '@/api/panel'
+import { unique, sort } from '@/utils/index'
+
+function standardize(data) {
+  // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
+  // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
+
+  let _titles = []
+  Object.keys(data).forEach((key) => { // 集合title
+    _titles = [..._titles, ...data[key].map(item => {
+      return {
+        name: item.name,
+        title: item.title,
+        value: undefined // 空值填充 默认值
+      }
+    })]
+  })
+
+  _titles = unique(_titles) // 去重
+
+  Object.keys(data).forEach((key) => { // 统一
+    _titles.forEach(item => {
+      const v = data[key].find(item2 => item2.title === item.title)
+      !v && data[key].push(item) // 填补空缺
+    })
+    data[key] = sort(data[key]) // 重新排序 确保各维度位置正确必须步骤
+  })
+
+  return data
+}
 
 export function format(...arg) {
   // console.log(arg)
-  const [options, currentView, s, y, s_zb, y_zb] = arg
+  const [options, currentView, data] = [...arg]
   options.series = []
+
+  const _data = standardize(data)
+  // console.log('_data:', _data)
 
   // 实际数据 基础数据 ///////////////////////////////////////////////////////////////////////////////
   options.series.push(
     {
       name: '实际',
       type: 'bar',
+      itemStyle: {
+        opacity: 1
+      },
       label: {
         show: true,
-        // position: 'top',
-        formatter: '{@实际}\n({@完成率}%)\n占:{@实际占比}%'
+        position: 'inside',
+        // formatter: '{@实际}\n({@完成率}%)\n占:{@实际占比}%{@isDrill}'
+        formatter: (params) => {
+          let res = ''
+          if (params.value.isDrill) {
+            res = params.value.实际 + '\n（' + params.value.完成率 + '%）\n占：' + params.value.实际占比 + '%\n'
+            res = '{a|' + res + '}'
+          } else {
+            res = params.value.实际
+          }
+          return res
+        },
+        rich: {
+          a: {
+            align: 'center',
+            textShadowBlur: 2,
+            textShadowColor: '#000',
+            textShadowOffsetX: 1,
+            textShadowOffsetY: 1,
+            color: 'yellow'
+          }
+        }
       },
       shadowColor: 'rgba(0, 0, 0, 0.5)',
       shadowBlur: 50
-
     }
   )
+
   options.dataset = {
     dimensions: ['类目', '实际'],
     source: []
   }
-  s.forEach((item, index) => {
+  _data.res_s.forEach((item, index) => {
     options.dataset.source.push({
       类目: item.title,
       实际: item.value,
-      drillName: item.name
+      drillName: item.name,
+      drillNameNode: currentView.items[item.name],
+      isDrill: !!currentView.items[item.name]
     })
   })
 
@@ -42,20 +99,43 @@ export function format(...arg) {
         type: 'bar',
         label: {
           show: true,
-          // position: 'top',
-          formatter: '{@预计}\n占:??.??%'
+          position: 'inside',
+          formatter: (params) => {
+            let res = ''
+            if (params.value.isDrill) {
+              res = params.value.预计 + '\n占：' + params.value.预计占比 + '%'
+              res = '{a|' + res + '}'
+            } else {
+              res = params.value.预计
+            }
+            return res
+          },
+          rich: {
+            a: {
+              align: 'center',
+              textShadowBlur: 2,
+              textShadowColor: '#000',
+              textShadowOffsetX: 1,
+              textShadowOffsetY: 1,
+              color: 'yellow'
+            }
+          }
         }
       }
     )
-    y.forEach((item, index) => {
+    _data.res_y.forEach((item, index) => {
       options.dataset.source[index].预计 = item.value
     })
   }
 
+  console.log(_data)
   // 实际占比 ///////////////////////////////////////////////////////////////////////////////
-  options.dataset.dimensions = ['类目', '预计', '实际', '完成率', '实际占比']
-  options.dataset.source.forEach((item, index) => {
-    item.实际占比 = 10
+  _data.res_s_zb.forEach((item, index) => {
+    options.dataset.source[index].实际占比 = item.value
+  })
+  // 预计占比 ///////////////////////////////////////////////////////////////////////////////
+  _data.res_y_zb.forEach((item, index) => {
+    options.dataset.source[index].预计占比 = item.value
   })
 
   // 实际占比 ///////////////////////////////////////////////////////////////////////////////
@@ -67,18 +147,60 @@ export function format(...arg) {
   // currentView.completion = false // todo
   // 计算完成率 ///////////////////////////////////////////////////////////////////////////////
   if (currentView.completion) {
-    options.dataset.dimensions = ['类目', '预计', '实际', '实际占比', '完成率']
+    options.dataset.dimensions = ['类目', '预计', '实际', '完成率', '实际占比', '预计占比', 'isDrill']
     options.dataset.source.forEach((item, index) => {
       item.完成率 = (item.实际 / item.预计 * 100).toFixed(0)
     })
   }
-  console.log('options.dataset:', options.dataset)
+
+  // console.log('options:', options)
+
+  options.toolbox = {
+    show: true,
+    // orient: 'vertical',
+    left: 'right',
+    top: 'top',
+    feature: {
+      dataView: {
+        readOnly: true,
+        optionToContent: function(opt) {
+          var axisData = opt.dataset[0].source
+          // console.log(opt.dataset)
+          // console.log(axisData)
+          var table = '<table class="chart-table"><tbody><tr>' +
+          '<th>' + opt.dataset[0].dimensions[0] + '</th>' +
+          '<th>' + opt.dataset[0].dimensions[1] + '</th>' +
+          '<th>' + opt.dataset[0].dimensions[5] + '</th>' +
+          '<th>' + opt.dataset[0].dimensions[2] + '</th>' +
+          '<th>' + opt.dataset[0].dimensions[4] + '</th>' +
+          '<th>' + opt.dataset[0].dimensions[3] + '</th>' +
+          '</tr>'
+
+          for (var i = 0; i < axisData.length; i++) {
+            table += '<tr>' +
+            '<td>' + axisData[i].类目 + '</td>' +
+            '<td>' + axisData[i].预计 + '</td>' +
+            '<td>' + axisData[i].预计占比 + '%</td>' +
+            '<td>' + axisData[i].实际 + '</td>' +
+            '<td>' + axisData[i].实际占比 + '%</td>' +
+            '<td>' + axisData[i].完成率 + '%</td>' +
+            '</tr>'
+          }
+          table += '</tbody></table>'
+          return table
+        }
+      },
+      magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
+      restore: { show: true }
+    }
+  }
+
   return options
 }
 
 export async function getData(...arg) {
   const [currentView, data] = arg
-  console.log(data)
+  // console.log(data)
   let res_s = []
   let res_y = []
   let res_s_zb = []
@@ -93,9 +215,6 @@ export async function getData(...arg) {
     'vf_id': 0,
     'vf_file': 'dashboard.efwvf'
   }
-  res_s = await fetchData(data1)
-
-  // 预计
   const data2 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
@@ -104,11 +223,6 @@ export async function getData(...arg) {
     'vf_id': 1,
     'vf_file': 'dashboard.efwvf'
   }
-  if (currentView.compare) {
-    res_y = await fetchData(data2)
-  }
-
-  // 实际  占比
   const data3 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
@@ -117,9 +231,6 @@ export async function getData(...arg) {
     'vf_id': 0,
     'vf_file': 'dashboard.efwvf'
   }
-  res_s_zb = await fetchData(data3)
-
-  // 实际  占比
   const data4 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
@@ -128,7 +239,18 @@ export async function getData(...arg) {
     'vf_id': 0,
     'vf_file': 'dashboard.efwvf'
   }
+
+  res_s = await fetchData(data1)
+  // 预计
+  if (currentView.compare) {
+    res_y = await fetchData(data2)
+  }
+  // 实际  占比
+  res_s_zb = await fetchData(data3)
+  // 预计  占比
   res_y_zb = await fetchData(data4)
 
-  return [res_s, res_y, res_s_zb, res_y_zb]
+  // console.log({ res_s, res_y, res_s_zb, res_y_zb })
+
+  return { res_s, res_y, res_s_zb, res_y_zb }
 }

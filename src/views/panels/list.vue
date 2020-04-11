@@ -180,9 +180,9 @@ export default {
           },
           {
             id: uuidv1(),
-            title: '利润分析',
+            title: '表格',
             type: 'def',
-            component: 'charts',
+            component: 'chartTable',
             parameters: {},
             width: 600,
             height: 700,

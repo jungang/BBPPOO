@@ -315,6 +315,22 @@ export function uniqueArr(arr) {
 }
 
 /**
+ * @param {Array} arr
+ * @returns {Array}
+ */
+export function unique(arr1) {
+  const res = new Map()
+  return arr1.filter((a) => !res.has(a.title) && res.set(a.title, 1))
+}
+/**
+ * @param {Array} arr
+ * @returns {Array}
+ */
+export function sort(arr1) {
+  return arr1.sort((a, b) => { return a.name.charCodeAt(0) - b.name.charCodeAt(0) })
+}
+
+/**
  * @returns {string}
  */
 export function createUniqueString() {

@@ -88,10 +88,15 @@ export default {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
-            type: 'shadow'
+            type: 'shadow',
+            shadowColor: 'red'
           },
           transitionDuration: 1,
-          enterable: true
+          enterable: true,
+          shadowStyle: {
+            shadowColor: 'rgba(0, 0, 0, 0.5)',
+            shadowBlur: 10
+          }
         },
         // formatter: (params, ticket, callback) => {
         //   if (params[0].data !== undefined) {
@@ -99,52 +104,16 @@ export default {
         //   }
         //   return '{a}'
         // },
-        toolbox: {
-          show: true,
-          // orient: 'vertical',
-          left: 'right',
-          top: 'top',
-          feature: {
-            dataView: {
-              readOnly: false,
-              optionToContent: function(opt) {
-                var axisData = opt.dataset[0].source
-
-                var table = '<table style="width:100%;text-align:center; user-select: text;"><tbody><tr>' +
-                  '<td>' + opt.dataset[0].dimensions[0] + '</td>' +
-                  '<td>' + opt.dataset[0].dimensions[1] + '</td>' +
-                  '<td>' + opt.dataset[0].dimensions[2] + '</td>' +
-                  '<td>' + opt.dataset[0].dimensions[3] + '</td>' +
-                  '</tr>'
-
-                for (var i = 0; i < axisData.length; i++) {
-                  table += '<tr>' +
-                    '<td>' + axisData[i].类目 + '</td>' +
-                    '<td>' + axisData[i].实际 + '</td>' +
-                    '<td>' + axisData[i].预计 + '</td>' +
-                    '<td>' + axisData[i].完成率 + '</td>' +
-                    '</tr>'
-                }
-                table += '</tbody></table>'
-                return table
-              }
-            },
-            magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-            restore: { show: true }
-          }
-        },
+        toolbox: {},
         dataset: {},
         grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
         xAxis: {
           axisLabel: {
             show: true,
-            interval: 0,
             formatter: (value, index) => {
-              const drillName = this.options.dataset.source[index].drillName
-              const drill = !this.currentView.items[drillName]
-
-              return drill ? value : value + '(含下钻图表)'
-            }
+              return !this.options.dataset.source[index].drillNameNode ? value : '{a|' + value + '}'
+            },
+            rich: { a: { color: 'blue' }}
           },
           type: 'category'
         },
@@ -217,8 +186,8 @@ export default {
       this.data._drillName = this.view
 
       // console.log('this.data:', this.data)
-      const [res_s, res_y, res_s_zb, res_y_zb] = await getData(this.currentView, this.data)
-      this.options = (format(this.options, this.currentView, res_s, res_y, res_s_zb, res_y_zb))
+      // const [res_s, res_y, res_s_zb, res_y_zb] = await getData(this.currentView, this.data)
+      this.options = (format(this.options, this.currentView, await getData(this.currentView, this.data)))
       this.renderChart(this.options)
     },
     initChart() {
@@ -243,6 +212,11 @@ export default {
         // console.log('finished...')
         // console.log(this.chart)
       })
+      this.chart.on('mouseover', (params) => {
+        // console.log('mouseover...')
+        // console.log(params)
+        // console.log(this.chart)
+      })
     },
     renderChart(options) {
       !this.chart.id && this.initChart()
@@ -265,4 +239,19 @@ export default {
     height: 100%;
   }
 
+</style>
+<style lang="scss">
+  .chart-table{
+    width: 100%;
+    font-size: 14px;
+    user-select: text;
+    border-collapse:collapse;
+    th{
+      font-weight: bold;
+    }
+    th, td{
+      text-align: center;
+      border: 1px solid rgb(214, 206, 227);
+    }
+  }
 </style>

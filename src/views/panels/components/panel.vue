@@ -50,7 +50,17 @@
 
           </vue-draggable-resizable>
 
-          <div class="title handle-drag">{{ element.title }}</div>
+          <div class="title handle-drag">
+            <el-row>
+              <el-col :span="12">{{ element.title }}</el-col>
+              <el-col :span="12" align="end">
+                <!--                <div @click="maxPanel(element)">-->
+                <!--                  放大-->
+                <!--                </div>-->
+              </el-col>
+            </el-row>
+
+          </div>
 
         </li>
       </transition-group>
@@ -67,7 +77,7 @@ import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // eslint-disable-next-line no-unused-vars
 import charts from './charts/charts'
-import charts2 from './charts/charts2'
+import chartTable from './tables/table'
 
 export default {
   name: 'Panel',
@@ -75,7 +85,7 @@ export default {
     draggable,
     VueDraggableResizable,
     charts,
-    charts2
+    chartTable
   },
   props: {
     isEdit: {
@@ -131,6 +141,9 @@ export default {
     // this.loadLayout()
   },
   methods: {
+    maxPanel(element) {
+      console.log('maxPanel...')
+    },
     getPanel(id) {
       fetchPanel(id).then(response => {
         this.panel = response.data
@@ -163,25 +176,12 @@ export default {
         // console.log(JSON.parse(localStorage.getItem('layout' + this.id)))
       }, 1000)
     },
-    loadLayout() {
-      // console.log('loadLayout....')
-      this.panel.list = JSON.parse(localStorage.getItem('layout' + this.id)) || this.panel.list
-      // console.log(this.list)
-    },
     onResize: function(x, y, width, height, el) {
       el.width = width
       el.height = height
       this.saveLayout()
     },
-    onResizeStart: function(el) {
-    },
-    onDrag: function(x, y) {
-      this.x = x
-      this.y = y
-    },
     setData(dataTransfer) {
-      // to avoid Firefox bug
-      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
       dataTransfer.setData('Text', '')
     },
     setTagsViewTitle() {

@@ -28,6 +28,15 @@ export function fetchDrill(params) {
     params: params
   })
 }
+
+export function test(params) {
+  return request({
+    url: '/panel/test',
+    method: 'get',
+    params: params
+  })
+}
+
 export function fetchDrillObjective(params) {
   return request({
     url: '/panel/detail-objective',

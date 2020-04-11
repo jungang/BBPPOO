@@ -81,7 +81,7 @@ export default {
           top: 'top',
           feature: {
             dataView: {
-              readOnly: false,
+              readOnly: true,
               optionToContent: function(opt) {
                 var axisData = opt.dataset[0].source
 
@@ -175,9 +175,7 @@ export default {
       }
 */
 
-      const [res_s, res_y] = await getData(this.currentView, params)
-
-      this.options = (format(this.options, this.currentView, res_s, res_y))
+      this.options = (format(this.options, this.currentView, await getData(this.currentView, params)))
       this.renderChart(this.options)
     },
     handleBread(item, index) {
