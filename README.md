@@ -26,3 +26,14 @@ mongodb连接
 net:
   port: 27017
   bindIpAll: true
+  
+  
+
+todo
+最大化面板
+    1. 设置最大化标记 flag max
+    记录原始值（高、宽）
+    计算最大高、宽
+    收缩菜单栏
+    放大面板，还原面板（高宽）
+    

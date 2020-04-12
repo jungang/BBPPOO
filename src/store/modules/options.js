@@ -88,8 +88,10 @@ const actions = {
       'vf_file': 'dashboard.efwvf'
     }
 
+    console.log('data:', data)
     return new Promise((resolve, reject) => {
       fetchData(data).then(response => {
+        // console.log(response)
         commit('SET_VIEWS', response)
         resolve(response)
       }).catch(error => {

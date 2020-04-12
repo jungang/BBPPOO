@@ -25,6 +25,7 @@
             size="mini"
             @click="handleDelete"
           >删除</el-button>
+
         </div></el-col>
     </el-row>
 
@@ -40,6 +41,19 @@
       <drill ref="drill" :data="{...drillData}" :panel.sync="panel" :title.sync="title" @close="dialogVisible = false" />
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog
+      title="全屏"
+      :visible.sync="maxVisible"
+      width="100%"
+      top="0"
+      style="height: 100vh"
+    >
+      <div id="maxChart" class="chart" style="width:100%; height:79vh;" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="maxVisible = false">关闭</el-button>
       </span>
     </el-dialog>
   </div>
@@ -81,6 +95,7 @@ export default {
       dataset: {},
       currentView: {},
       chart: {},
+      maxChart: {},
       timer: {},
 
       options: {
@@ -123,6 +138,7 @@ export default {
 
       chartData: [],
       dialogVisible: false,
+      maxVisible: false,
       title: '111',
       drillData: {},
       checked: true,
@@ -207,16 +223,19 @@ export default {
           })
         }
       })
-
-      this.chart.on('finished', (params) => {
-        // console.log('finished...')
-        // console.log(this.chart)
+    },
+    maxPanel() {
+      this.maxVisible = true
+      console.log('maxPanel...')
+      this.$nextTick(() => {
+        this.maxChart = echarts.init(document.getElementById('maxChart'))
+        this.maxChart.setOption(this.options)
       })
-      this.chart.on('mouseover', (params) => {
-        // console.log('mouseover...')
-        // console.log(params)
-        // console.log(this.chart)
-      })
+      // this.maxChart = echarts.init(document.getElementById('maxChart'))
+      // this.maxChart.setOption(this.options)
+    },
+    handleMaxOpend() {
+      // console.log('handleMaxOpend...')
     },
     renderChart(options) {
       !this.chart.id && this.initChart()

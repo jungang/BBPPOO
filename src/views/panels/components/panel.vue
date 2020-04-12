@@ -22,7 +22,6 @@
       @end="onEnd"
     >
       <transition-group type="transition" :name="!drag ? 'flip-list' : null" class="list-group">
-
         <li
           v-for="element in panel.list"
           :key="element.id"
@@ -43,6 +42,7 @@
           >
             <component
               :is="element.component"
+              :ref="element.id"
               :data="element"
               :panel.sync="panel"
               :view="element.viewName"
@@ -54,6 +54,7 @@
             <el-row>
               <el-col :span="12">{{ element.title }}</el-col>
               <el-col :span="12" align="end">
+                <i class="el-icon-arrow-up" @click="maxPanel(element)" />
                 <!--                <div @click="maxPanel(element)">-->
                 <!--                  放大-->
                 <!--                </div>-->
@@ -142,7 +143,7 @@ export default {
   },
   methods: {
     maxPanel(element) {
-      console.log('maxPanel...')
+      this.$refs[element.id][0].maxPanel()
     },
     getPanel(id) {
       fetchPanel(id).then(response => {

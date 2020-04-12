@@ -48,11 +48,11 @@
           />
         </el-form-item>
 
-        <!--
-        <el-form-item label="名称：" prop="title">
-          <el-input v-model="temp.title" placeholder="请输入内容" style="width: 46%" />
+        <el-form-item label="年份：" prop="year">
+          <el-select v-model="temp.year" class="filter-item" placeholder="请选择">
+            <el-option v-for="item in $store.state.options.dateValueYear" :key="item.key" :label="item.label" :value="item.key" />
+          </el-select>
         </el-form-item>
--->
 
         <el-form-item label="选择生成对象：" prop="dateType">
           <el-select v-model="temp.dateType" class="filter-item" placeholder="请选择" @change="temp.dateValue = ''">
@@ -61,9 +61,7 @@
         </el-form-item>
 
         <el-form-item label="选择生成维度：" prop="dateValue">
-          <el-select v-if="temp.dateType==='year'" v-model="temp.dateValue" class="filter-item" placeholder="请选择">
-            <el-option v-for="item in $store.state.options.dateValueYear" :key="item.key" :label="item.label" :value="item.key" />
-          </el-select>
+
           <el-select v-if="temp.dateType==='month'" v-model="temp.dateValue" class="filter-item" placeholder="请选择">
             <el-option
               v-for="item in monthOptions"
@@ -73,9 +71,11 @@
               :disabled="item.disabled"
             />
           </el-select>
+
           <el-select v-if="temp.dateType==='day'" v-model="temp.dateValue" class="filter-item" placeholder="请选择">
             <el-option v-for="item in $store.state.options.dateValueDay" :key="item.key" :label="item.label" :value="item.key" />
           </el-select>
+
         </el-form-item>
 
       </el-form>
@@ -118,6 +118,7 @@ export default {
         id: undefined,
         title: '一月',
         isCreate: false,
+        year: 2020,
         dateType: 'day',
         dateValue: ''
       },
@@ -164,6 +165,7 @@ export default {
         id: uuidv1(),
         title: '一月',
         isCreate: false,
+        year: 2020,
         dateType: 'month',
         dateValue: '',
         projectId: '00000000-0000-0000-0000-000000000000',
@@ -174,8 +176,8 @@ export default {
             type: 'def',
             component: 'charts',
             parameters: {},
-            width: 600,
-            height: 700,
+            width: 500,
+            height: 500,
             viewName: 'profit_income_expanse'
           },
           {
@@ -184,8 +186,8 @@ export default {
             type: 'def',
             component: 'chartTable',
             parameters: {},
-            width: 600,
-            height: 700,
+            width: 500,
+            height: 500,
             viewName: 'profit_income_expanse'
           }
         ]
@@ -202,11 +204,16 @@ export default {
     },
     createData() {
       this.$refs['dataForm'].validate((valid) => {
+        this.temp.title = this.$store.state.options.dateValueMonth.find(item => { return item.key === this.temp.dateValue }).label
         this.temp.list.forEach(item => {
           item.parameters.month = this.temp.dateValue
+          item.parameters.year = this.temp.year
+
+          if (item.component === 'chartTable') {
+            item.title = this.temp.title
+          }
         })
 
-        this.temp.title = this.$store.state.options.dateValueMonth.find(item => { return item.key === this.temp.dateValue }).label
         // 生成
         if (valid) {
           createPanel(this.temp).then(() => {
@@ -227,7 +234,7 @@ export default {
     },
     toDetail(item) {
       // console.log('xxx')
-      console.log(item.id)
+      // console.log(item.id)
       this.$router.push('/panels/view/' + item.id)
     },
     handleDelete(item, index) {

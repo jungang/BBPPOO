@@ -320,7 +320,7 @@ export function uniqueArr(arr) {
  */
 export function unique(arr1) {
   const res = new Map()
-  return arr1.filter((a) => !res.has(a.title) && res.set(a.title, 1))
+  return arr1.filter((a) => !res.has(a.name) && res.set(a.name, 1))
 }
 /**
  * @param {Array} arr
