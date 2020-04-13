@@ -327,7 +327,8 @@ export function unique(arr1) {
  * @returns {Array}
  */
 export function sort(arr1) {
-  return arr1.sort((a, b) => { return a.name.charCodeAt(0) - b.name.charCodeAt(0) })
+  // return arr1.sort((a, b) => { return a.name.charCodeAt(0) - b.name.charCodeAt(0) })
+  return arr1.sort((a, b) => { return a.title.localeCompare(b.title) })
 }
 
 /**

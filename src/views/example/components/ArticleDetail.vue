@@ -7,10 +7,10 @@
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          Publish
+          立即发布
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">
-          Draft
+          保存草稿
         </el-button>
       </sticky>
 

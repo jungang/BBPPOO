@@ -91,7 +91,7 @@ const actions = {
     console.log('data:', data)
     return new Promise((resolve, reject) => {
       fetchData(data).then(response => {
-        // console.log(response)
+        console.log('view:', response)
         commit('SET_VIEWS', response)
         resolve(response)
       }).catch(error => {

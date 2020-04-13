@@ -1,7 +1,7 @@
 import { fetchData } from '@/api/panel'
 import { unique, sort, deepClone } from '@/utils/index'
 
-function standardize(data) {
+export function standardize(data) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
@@ -25,6 +25,19 @@ function standardize(data) {
     })
     data[key] = sort(data[key]) // 重新排序 确保各维度位置正确必须步骤
   })
+
+  console.log(data)
+  // eslint-disable-next-line no-return-assign
+  data.res_s.forEach(item => item.value = item.value && parseFloat(item.value.toFixed(2)))
+  // eslint-disable-next-line no-return-assign
+  data.res_y.forEach(item => item.value = item.value && parseFloat(item.value.toFixed(2)))
+
+  console.log(data.res_s_zb)
+  // eslint-disable-next-line no-return-assign
+  data.res_s_zb.forEach(item => item.value = item.value && (item.value * 100))
+  // eslint-disable-next-line no-return-assign
+  data.res_y_zb.forEach(item => item.value = item.value && (item.value * 100).toFixed(1))
+  // data.res_y_zb.forEach(item => item.value = item.value && (item.value * 100).toFixed(1))
 
   return data
 }
@@ -54,7 +67,8 @@ export function format(...arg) {
           // console.log(params)
           let res = ''
           if (params.value.isDrill) {
-            res = params.value.实际 + '\n（' + params.value.完成率 + '%）\n占：' + params.value.实际占比 + '%\n'
+            res = params.value.实际 + '\n(' + params.value.完成率 + '%)'
+            // '%）\n占：' + params.value.实际占比 + '%\n'
             res = '{a|' + res + '}'
           } else {
             res = params.value.实际
@@ -107,7 +121,8 @@ export function format(...arg) {
           formatter: (params) => {
             let res = ''
             if (params.value.isDrill) {
-              res = params.value.预计 + '\n占：' + params.value.预计占比 + '%'
+              res = params.value.预计 + ''
+              // '\n占：' + params.value.预计占比 + '%'
               res = '{a|' + res + '}'
             } else {
               res = params.value.预计
@@ -253,9 +268,9 @@ export async function getData(...arg) {
   res_s = await fetchData(data1)
   // console.log('res_s::', res_s)
   // 预计
-  if (currentView.compare) {
-    res_y = await fetchData(data2)
-  }
+  // if (currentView.compare) {
+  res_y = await fetchData(data2)
+  // }
 
   // console.log('currentView:', currentView)
   // 实际  占比

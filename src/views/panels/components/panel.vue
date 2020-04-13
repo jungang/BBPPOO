@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-
+<!--
     <el-row type="flex">
       <el-col :span="12">
         <h3>
@@ -10,7 +10,7 @@
       <el-col :span="12" style="text-align: end">
         <el-button type="primary">新建图表</el-button>
       </el-col>
-    </el-row>
+    </el-row>-->
 
     <draggable
       :list="panel.list"
@@ -78,7 +78,7 @@ import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // eslint-disable-next-line no-unused-vars
 import charts from './charts/charts'
-import chartTable from './tables/table'
+import tabular from './tables/table'
 
 export default {
   name: 'Panel',
@@ -86,7 +86,7 @@ export default {
     draggable,
     VueDraggableResizable,
     charts,
-    chartTable
+    tabular
   },
   props: {
     isEdit: {

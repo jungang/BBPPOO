@@ -184,11 +184,11 @@ export default {
             id: uuidv1(),
             title: '表格',
             type: 'def',
-            component: 'chartTable',
+            component: 'tabular',
             parameters: {},
             width: 500,
             height: 500,
-            viewName: 'profit_income_expanse'
+            viewName: 'monthly_items_list'
           }
         ]
       }
@@ -208,14 +208,34 @@ export default {
         this.temp.list.forEach(item => {
           item.parameters.month = this.temp.dateValue
           item.parameters.year = this.temp.year
-
-          if (item.component === 'chartTable') {
+          if (item.component === 'tabular') {
             item.title = this.temp.title
           }
         })
 
+        console.log(this.temp)
+        console.log(this.$store.state.options.views)
+        this.$store.state.options.views.forEach(item => {
+          if (item.name) { // todo 判读缺省 item.default_show
+            this.temp.list.push({
+              id: uuidv1(),
+              title: item.title,
+              type: 'def',
+              component: item.default_style, // 'tabular' | chart,
+              parameters: {
+                month: this.temp.dateValue,
+                year: this.temp.year
+              },
+              width: 500,
+              height: 500,
+              viewName: item.name
+            })
+          }
+        })
+
+        console.log(this.temp)
         // 生成
-        if (valid) {
+        /*        if (valid) {
           createPanel(this.temp).then(() => {
             // this.getList()
             this.list.unshift(this.temp) // 插入数组
@@ -229,7 +249,7 @@ export default {
               duration: 2000
             })
           })
-        }
+        }*/
       })
     },
     toDetail(item) {

@@ -81,9 +81,17 @@
           label="序号"
           width="50"
         />
-        <el-table-column prop="name" label="名称" />
-        <el-table-column prop="title" label="标题" />
-        <el-table-column prop="value" label="值" />
+        <el-table-column prop="res_s_title" label="科目" />
+        <el-table-column prop="res_y_value" label="金额">
+          <template slot-scope="{row}">
+            {{ row.res_y_value }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="res_y_zb_value" label="占比">
+          <template slot-scope="{row}">
+            {{ row.res_y_zb_value }}
+          </template>
+        </el-table-column>
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="detailDialogVisible = false">关闭</el-button>
@@ -96,7 +104,8 @@
 <script>
 import waves from '@/directive/waves' // waves directive
 import { fetchData } from '@/api/panel'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
+import { getData, standardize } from '@/utils/chart-data' // Secondary package based on el-pagination
 
 export default {
   name: 'BaseConfig',
@@ -144,24 +153,33 @@ export default {
       this.getDetail(row)
     },
 
-    getDetail(row) {
+    async getDetail(row) {
       console.log(row)
       this.listLoading = true
+
       const data = {
-        'dir': 'Sample Reports/monthly_items_list',
-        'year': row.year,
-        'month': row.month,
-        'projectId': '00000000-0000-0000-0000-000000000000',
-        'vf_id': 1,
-        'vf_file': 'dashboard.efwvf'
+        _drillName: 'monthly_items_list',
+        drillName: '',
+        parameters: {
+          year: row.year,
+          month: row.month
+        }
       }
-      return new Promise((resolve, reject) => {
-        fetchData(data).then(response => {
-          this.detailList.items = response
-          console.log(response)
+      const mixed = standardize(await getData({}, data))
+      console.log(mixed)
+      this.detailList.items = []
+      mixed.res_s.forEach((item, index) => {
+        this.detailList.items.push({
+          res_s_title: item.title,
+          res_s_value: item.value,
+          res_y_title: mixed.res_y[index].title,
+          res_y_value: mixed.res_y[index].value,
+          res_s_zb_title: mixed.res_s_zb[index].title,
+          res_s_zb_value: mixed.res_s_zb[index].value,
+          res_y_zb_title: mixed.res_y_zb[index].title,
+          res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
         })
       })
-
       // fetchDetail(this.detailList.listQuery).then(response => {
       //   this.detailList.items = response.data.items
       //   this.detailList.total = response.data.total

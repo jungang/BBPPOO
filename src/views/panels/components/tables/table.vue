@@ -9,9 +9,11 @@
       :max-height="data.height-30"
     >
       <el-table-column type="index" label="序号" width="50" />
-      <el-table-column prop="name" label="名称" />
-      <el-table-column prop="title" label="标题" />
-      <el-table-column prop="value" label="值" />
+      <el-table-column prop="res_s_title" label="名称" />
+      <el-table-column prop="res_y_value" label="预计" />
+      <el-table-column prop="res_s_value" label="实际" />
+      <el-table-column prop="res_y_zb_value" label="预计占比" />
+      <el-table-column prop="res_s_zb_value" label="实际占比" />
     </el-table>
 
     <el-dialog
@@ -29,9 +31,11 @@
         max-height="700px"
       >
         <el-table-column type="index" label="序号" width="50" />
-        <el-table-column prop="name" label="名称" />
-        <el-table-column prop="title" label="标题" />
-        <el-table-column prop="value" label="值" />
+        <el-table-column prop="res_s_title" label="名称" />
+        <el-table-column prop="res_y_value" label="预计" />
+        <el-table-column prop="res_s_value" label="实际" />
+        <el-table-column prop="res_y_zb_value" label="预计占比" />
+        <el-table-column prop="res_s_zb_value" label="实际占比" />
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="maxVisible = false">关闭</el-button>
@@ -43,10 +47,11 @@
 
 <script>
 
-import { fetchData } from '@/api/panel'
+import { standardize, getData } from '@/utils/chart-data'
+// import { fetchData } from '@/api/panel'
 
 export default {
-  name: 'ChartTable',
+  name: 'Tabular',
   components: {
   },
   props: {
@@ -74,7 +79,8 @@ export default {
       listLoading: true,
       maxVisible: false,
       list: [],
-      timer: {}
+      timer: {},
+      currentView: {}
     }
   },
   computed: {
@@ -94,7 +100,7 @@ export default {
   },
   created() {
     this.getList()
-    console.log(this.data.title)
+    // console.log(this.data.title)
   },
   mounted() {},
   methods: {
@@ -106,7 +112,7 @@ export default {
         // this.maxChart.setOption(this.options)
       })
     },
-    getList() {
+    async getList() {
       this.listLoading = true
       // test().then(response => {
       //   // console.log(response)
@@ -114,21 +120,29 @@ export default {
       //   this.listLoading = false
       // })
 
-      console.log(this.data)
+      // console.log(this.data)
       const data = {
-        'dir': 'Sample Reports/monthly_items_list',
-        'year': +this.data.parameters.year,
-        'month': +this.data.parameters.month,
-        'projectId': '00000000-0000-0000-0000-000000000000',
-        'vf_id': 1,
-        'vf_file': 'dashboard.efwvf'
+        _drillName: 'monthly_items_list',
+        drillName: '',
+        parameters: this.data.parameters
       }
-      return new Promise((resolve, reject) => {
-        fetchData(data).then(response => {
-          this.list = response
-          console.log(response)
+      const mixed = standardize(await getData(this.currentView, data))
+      console.log(mixed)
+
+      this.list = []
+      mixed.res_s.forEach((item, index) => {
+        this.list.push({
+          res_s_title: item.title,
+          res_s_value: item.value,
+          res_y_title: mixed.res_s[index].title,
+          res_y_value: mixed.res_s[index].value,
+          res_s_zb_title: mixed.res_s_zb[index].title,
+          res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
+          res_y_zb_title: mixed.res_y_zb[index].title,
+          res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
         })
       })
+      // console.log('list:', this.list)
     }
   }
 }

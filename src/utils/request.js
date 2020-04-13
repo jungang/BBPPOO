@@ -21,7 +21,7 @@ request2.interceptors.response.use(
     return eval(response.data.script)
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log('err' + error) // for debug request2
     Message({
       message: error.message,
       type: 'error',
