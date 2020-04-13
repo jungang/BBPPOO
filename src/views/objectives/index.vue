@@ -114,6 +114,7 @@ export default {
   filters: {},
   data() {
     return {
+      currentView: {},
       temp: {
         year: 2020,
         month: '01'
@@ -145,6 +146,7 @@ export default {
   },
   created() {
     this.getList()
+    this.currentView = this.$store.state.options.views.find(item => item.name === 'monthly_items_list')
   },
   methods: {
     handleDetail(row) {
@@ -165,7 +167,7 @@ export default {
           month: row.month
         }
       }
-      const mixed = standardize(await getData({}, data))
+      const mixed = standardize(await getData(this.currentView, data))
       console.log(mixed)
       this.detailList.items = []
       mixed.res_s.forEach((item, index) => {

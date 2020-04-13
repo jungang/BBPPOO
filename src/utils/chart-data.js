@@ -265,18 +265,21 @@ export async function getData(...arg) {
 
   console.log({ data1, data2, data3, data4 })
 
-  res_s = await fetchData(data1)
-  // console.log('res_s::', res_s)
-  // 预计
-  // if (currentView.compare) {
-  res_y = await fetchData(data2)
-  // }
+  console.log('currentView:', currentView)
 
-  // console.log('currentView:', currentView)
-  // 实际  占比
-  res_s_zb = await fetchData(data3)
-  // 预计  占比
-  res_y_zb = await fetchData(data4)
+  res_s = await fetchData(data1)
+
+  // 预计
+  if (currentView.compare === 'true') {
+    res_y = await fetchData(data2)
+  }
+
+  if (currentView.ratio === 'true') {
+    // 实际  占比
+    res_s_zb = await fetchData(data3)
+    // 预计  占比
+    res_y_zb = await fetchData(data4)
+  }
 
   // console.log('console.lo...')
   // console.log(currentView)

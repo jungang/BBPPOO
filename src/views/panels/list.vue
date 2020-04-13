@@ -215,13 +215,14 @@ export default {
 
         console.log(this.temp)
         console.log(this.$store.state.options.views)
+        this.temp.list = []
         this.$store.state.options.views.forEach(item => {
-          if (item.name) { // todo 判读缺省 item.default_show
+          if (item.show === 'true') { // todo 判读缺省 item.default_show
             this.temp.list.push({
               id: uuidv1(),
               title: item.title,
               type: 'def',
-              component: item.default_style, // 'tabular' | chart,
+              component: item.style, // 'tabular' | chart,
               parameters: {
                 month: this.temp.dateValue,
                 year: this.temp.year
@@ -235,7 +236,7 @@ export default {
 
         console.log(this.temp)
         // 生成
-        /*        if (valid) {
+        if (valid) {
           createPanel(this.temp).then(() => {
             // this.getList()
             this.list.unshift(this.temp) // 插入数组
@@ -249,7 +250,7 @@ export default {
               duration: 2000
             })
           })
-        }*/
+        }
       })
     },
     toDetail(item) {
