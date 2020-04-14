@@ -81,7 +81,7 @@
           label="序号"
           width="50"
         />
-        <el-table-column prop="res_s_title" label="科目" />
+        <el-table-column prop="res_y_title" label="科目" />
         <el-table-column prop="res_y_value" label="金额">
           <template slot-scope="{row}">
             {{ row.res_y_value }}
@@ -156,7 +156,7 @@ export default {
     },
 
     async getDetail(row) {
-      console.log(row)
+      // console.log(row)
       this.listLoading = true
 
       const data = {
@@ -170,15 +170,19 @@ export default {
       const mixed = standardize(await getData(this.currentView, data))
       console.log(mixed)
       this.detailList.items = []
-      mixed.res_s.forEach((item, index) => {
+
+      mixed.res_y.forEach(item => {
+        // console.log(item.type)
+        if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
+          item.value = item.value * 100 + '%'
+        }
+      })
+
+      mixed.res_y.forEach((item, index) => {
         this.detailList.items.push({
-          res_s_title: item.title,
-          res_s_value: item.value,
           res_y_title: mixed.res_y[index].title,
           res_y_value: mixed.res_y[index].value,
-          res_s_zb_title: mixed.res_s_zb[index].title,
-          res_s_zb_value: mixed.res_s_zb[index].value,
-          res_y_zb_title: mixed.res_y_zb[index].title,
+          // res_y_zb_title: mixed.res_y_zb[index].title,
           res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
         })
       })
@@ -200,6 +204,7 @@ export default {
       return new Promise((resolve, reject) => {
         fetchData(data).then(response => {
           this.list.items = response
+          console.log(this.list)
         })
       })
     },

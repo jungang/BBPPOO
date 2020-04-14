@@ -124,15 +124,28 @@ export default {
         grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
         xAxis: {
           axisLabel: {
-            show: true,
-            formatter: (value, index) => {
-              return !this.options.dataset.source[index].drillNameNode ? value : '{a|' + value + '}'
-            },
-            rich: { a: { color: 'blue' }}
+            show: true
+            // formatter: (value, index) => {
+            //   return !this.options.dataset.source[index].drillNameNode ? value : '{a|' + value + '}'
+            // },
+            // rich: { a: { color: 'blue' }}
           },
           type: 'category'
         },
-        yAxis: {},
+        yAxis: [{
+          type: 'value'
+        },
+        {
+          type: 'value',
+          name: '百分比',
+          min: 0,
+          max: 200,
+          interval: 50,
+          axisLabel: {
+            formatter: '{value} %'
+          }
+        }
+        ],
         series: []
       },
 
@@ -243,7 +256,7 @@ export default {
       this.chart.setOption(options)
     },
     handleClosed() {
-      console.log('handleClosed')
+      // console.log('handleClosed')
       this.$refs.drill.breadcrumb = []
     }
 

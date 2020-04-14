@@ -1,86 +1,39 @@
 <template>
   <div class="app-container">
     <el-row style="margin-bottom: 10px">
-      <el-col :span="3">
-        <el-checkbox v-model="checked">预实</el-checkbox>
+      <el-col :span="4">
+        &nbsp;
       </el-col>
-      <el-col :span="3">
-        <el-checkbox v-model="checked2">完成率</el-checkbox>
-      </el-col>
-      <el-col :span="5">
-        <el-select
-          v-model="value3"
-          size="mini"
-          placeholder="请选择"
-          style="width: 100px"
-        >
-          <el-option label="表头信息" value="">表头信息</el-option>
-          <el-option label="表头1" value="1">表头1</el-option>
-          <el-option label="表头2" value="2">表头2</el-option>
-          <el-option label="表头3" value="3">表头3</el-option>
-          <el-option label="表头4" value="4">表头4</el-option>
-        </el-select>
-      </el-col>
-
-      <el-col :span="5">
-        <span class="demonstration">月</span>
-        <el-date-picker
-          v-model="value1"
-          type="month"
-          size="mini"
-          placeholder="选择月"
-          style="width: 100px"
-        />
-      </el-col>
-
-      <el-col :span="5">
-        <div class="block">
-          <span class="demonstration">天</span>
-          <el-date-picker
-            v-model="value2"
-            type="date"
-            size="mini"
-            placeholder="选择日期"
-            style="width: 100px"
-          />
-        </div>
-      </el-col>
-      <el-col :span="3">
+      <el-col :span="20" style="text-align: right;padding-right: 10px">
         <div class="block">
           <el-button
             type="primary"
             size="mini"
+            @click="handleCopy"
           >复制</el-button>
+          <el-button
+            v-if="data.type !== 'def'"
+            size="mini"
+            @click="handleDelete"
+          >删除</el-button>
         </div></el-col>
     </el-row>
 
     <div :id="data.id" class="chart" style="width:100%; height:90%;" />
 
-    <el-dialog
-      title="详情"
-      :visible.sync="dialogVisible"
-      width="800"
-      @closed="handleClosed"
-    >
-
-      <drill ref="drill" :data="{...drillData}" :panel.sync="panel" />
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">关闭</el-button>
-      </span>
-    </el-dialog>
   </div>
-
 </template>
 
 <script>
+
+// import { format, getData } from '@/utils/chart-data'
+import uuidv1 from 'uuid/v1'
 const echarts = require('echarts')
-import drill from './drill-down'
 
 export default {
-  name: 'Charts',
+  name: 'Chart2',
   components: {
-    drill
+
   },
   props: {
     data: {
@@ -94,17 +47,69 @@ export default {
       default: function() {
         return {}
       }
+    },
+    view: {
+      type: String,
+      default: function() {
+        return ''
+      }
     }
   },
   data() {
     return {
-      myChart: {},
+      dataset: {},
+      currentView: {},
+      chart: {},
+      maxChart: {},
       timer: {},
-      dialogVisible: false,
-      dialog: {
-        name: '111',
-        value: 1
+
+      options: {
+        xAxis: {
+          type: 'category'
+        },
+        yAxis: [
+          {
+            type: 'value',
+            name: '数量',
+            min: -100
+          },
+          {
+            type: 'value',
+            name: '百分比',
+            min: 0,
+            max: 100,
+            interval: 50,
+            axisLabel: {
+              formatter: '{value} %'
+            }
+          }
+        ],
+        dataset: [{
+          // 按行的 key-value 形式（对象数组），这是个比较常见的格式。
+          source: [
+            { product: '综合系统接起率', count: 444, score: 50.8 },
+            { product: '本地接起率', count: 555, score: 60.8 },
+            { product: '集团解决率', count: 666, score: 50.8 },
+            { product: '本地解决率', count: 235, score: 70.4 },
+            { product: '合计解决率', count: 999, score: 80.2 },
+            { product: '合计解决率', count: 888, score: 92.2 },
+            { product: '本地满意度', count: 777, score: 91.2 },
+            { product: '合计满意度', count: 988, score: 76.9 }
+          ]
+        }],
+        series: [
+          { type: 'bar' },
+          {
+            type: 'line',
+            yAxisIndex: 1
+          }
+        ]
       },
+
+      chartData: [],
+      dialogVisible: false,
+      maxVisible: false,
+      title: '111',
       drillData: {},
       checked: true,
       checked2: true,
@@ -122,81 +127,89 @@ export default {
         clearTimeout(this.timer)
         this.timer = setTimeout(() => {
           // console.log('resize...')
-          this.myChart.resize()
+          this.chart.resize()
         }, 100)
       }
     }
   },
   created() {
-
+    this.currentView = this.$store.state.options.views.find(item => item.name === this.view)
+    this.getData()
   },
-  mounted() {
-    this.init()
-  },
+  mounted() {},
   methods: {
-    init() {
-      this.myChart = echarts.init(document.getElementById(this.data.id))
-
-      const option = {
-        legend: {},
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow'
-          }
-        },
-        toolbox: {
-          show: true,
-          // orient: 'vertical',
-          left: 'right',
-          top: 'top',
-          feature: {
-            magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-            restore: { show: true }
-          }
-        },
-        dataset: {
-          source: [
-            ['product', '预算', '实际'],
-            ['收入', 43.3, 85.8],
-            ['成本', 83.1, 73.4],
-            ['利润率', 86.4, 65.2],
-            ['人数', 72.4, 53.9]
-          ]
-        },
-        grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
-        },
-        xAxis: {
-          type: 'category'
-        },
-        yAxis: {
-
-        },
-        // Declare several bar series, each will be mapped
-        // to a column of dataset.source by default.
-        series: [
-          { type: 'bar' },
-          { type: 'bar' }
-        ]
-      }
-
-      this.myChart.setOption(option)
-
-      this.myChart.on('click', (params) => {
-        this.dialogVisible = true
-        this.drillData = params
+    handleDelete() {
+      console.log(this.data)
+      this.$confirm('删除' + this.data.title, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(async() => {
+          const _index = this.panel.list.findIndex(item => item.id === this.data.id)
+          this.panel.list.splice(_index, 1)
+          this.$message({
+            type: 'success',
+            message: '完成删除。'
+          })
+        })
+        .catch(err => { console.error(err) })
+        // this.panel.list.unshift(newPanel)
+    },
+    handleCopy() {
+      const newPanel = { ...this.data }
+      newPanel.id = uuidv1()
+      newPanel.type = 'cus'
+      console.log(newPanel)
+      this.panel.list.unshift(newPanel)
+      console.log(this.panel.list)
+    },
+    async getData() {
+      this.data._drillName = this.view
 
+      console.log(this.options)
+      // this.options = (format(this.options, this.currentView, await getData(this.currentView, this.data)))
+      // /////////////////////////////////////////////////////////////////////////////////////////////////////
+      console.log(this.options.dataset)
+
+      // ///////////////////////////////////////////////////////////////////////////////////////////////////////
       this.$nextTick(() => {
-        this.myChart.resize()
+        this.renderChart(this.options)
       })
     },
+    initChart() {
+      this.chart = echarts.init(document.getElementById(this.data.id))
+      this.chart.on('click', (params) => {
+        params.drillName = params.value.drillName // 下钻所用名称
+        params.parameters = this.data.parameters
+        if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
+          params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称
+          params.breadName = params.name // 面包屑名字
+          this.drillData = params
+          this.dialogVisible = true
+          this.$nextTick(() => {
+            this.$refs.drill.init()
+          })
+        }
+      })
+    },
+    maxPanel() {
+      this.maxVisible = true
+      console.log('maxPanel...')
+      this.$nextTick(() => {
+        this.maxChart = echarts.init(document.getElementById('maxChart'))
+        this.maxChart.setOption(this.options)
+      })
+      // this.maxChart = echarts.init(document.getElementById('maxChart'))
+      // this.maxChart.setOption(this.options)
+    },
+    renderChart(options) {
+      !this.chart.id && this.initChart()
+      this.chart.hideLoading()
+      this.chart.setOption(options)
+    },
     handleClosed() {
-      console.log('handleClosed')
+      // console.log('handleClosed')
       this.$refs.drill.breadcrumb = []
     }
 
@@ -212,4 +225,18 @@ export default {
   }
 
 </style>
-
+<style lang="scss">
+  .chart-table{
+    width: 100%;
+    font-size: 14px;
+    user-select: text;
+    border-collapse:collapse;
+    th{
+      font-weight: bold;
+    }
+    th, td{
+      text-align: center;
+      border: 1px solid rgb(214, 206, 227);
+    }
+  }
+</style>

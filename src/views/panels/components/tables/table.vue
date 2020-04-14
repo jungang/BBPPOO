@@ -11,8 +11,8 @@
       <el-table-column type="index" label="序号" width="50" />
       <el-table-column prop="res_s_title" label="名称" />
       <el-table-column prop="res_y_value" label="预计" />
-      <el-table-column prop="res_s_value" label="实际" />
       <el-table-column prop="res_y_zb_value" label="预计占比" />
+      <el-table-column prop="res_s_value" label="实际" />
       <el-table-column prop="res_s_zb_value" label="实际占比" />
     </el-table>
 
@@ -33,8 +33,8 @@
         <el-table-column type="index" label="序号" width="50" />
         <el-table-column prop="res_s_title" label="名称" />
         <el-table-column prop="res_y_value" label="预计" />
-        <el-table-column prop="res_s_value" label="实际" />
         <el-table-column prop="res_y_zb_value" label="预计占比" />
+        <el-table-column prop="res_s_value" label="实际" />
         <el-table-column prop="res_s_zb_value" label="实际占比" />
       </el-table>
       <span slot="footer" class="dialog-footer">
@@ -99,6 +99,7 @@ export default {
     }
   },
   created() {
+    this.currentView = this.$store.state.options.views.find(item => item.name === this.data.viewName)
     this.getList()
     // console.log(this.data.title)
   },
@@ -120,6 +121,7 @@ export default {
       //   this.listLoading = false
       // })
 
+      // console.log('getList....')
       // console.log(this.data)
       const data = {
         _drillName: 'monthly_items_list',
@@ -127,22 +129,27 @@ export default {
         parameters: this.data.parameters
       }
       const mixed = standardize(await getData(this.currentView, data))
-      console.log(mixed)
+      mixed.res_y.forEach(item => {
+        // console.log(item.type)
+        if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
+          item.value = item.value * 100 + '%'
+        }
+      })
+      // console.log('mixed:', mixed)
 
       this.list = []
       mixed.res_s.forEach((item, index) => {
         this.list.push({
           res_s_title: item.title,
           res_s_value: item.value,
-          res_y_title: mixed.res_s[index].title,
-          res_y_value: mixed.res_s[index].value,
+          res_y_title: mixed.res_y[index].title,
+          res_y_value: mixed.res_y[index].value,
           res_s_zb_title: mixed.res_s_zb[index].title,
           res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
           res_y_zb_title: mixed.res_y_zb[index].title,
           res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
         })
       })
-      // console.log('list:', this.list)
     }
   }
 }

@@ -77,7 +77,7 @@ import draggable from 'vuedraggable'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // eslint-disable-next-line no-unused-vars
-import charts from './charts/charts'
+import chart from './charts/charts'
 import tabular from './tables/table'
 
 export default {
@@ -85,7 +85,7 @@ export default {
   components: {
     draggable,
     VueDraggableResizable,
-    charts,
+    chart,
     tabular
   },
   props: {
@@ -147,6 +147,7 @@ export default {
     },
     getPanel(id) {
       fetchPanel(id).then(response => {
+        console.log(response)
         this.panel = response.data
         this.setTagsViewTitle()
         this.setPageTitle()

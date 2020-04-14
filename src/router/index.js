@@ -195,9 +195,9 @@ export const asyncRoutes = [
     ]
   },
 
-
   {
     path: '/example',
+    // hidden: true,
     component: Layout,
     redirect: '/example/list',
     name: 'Example',
@@ -208,26 +208,33 @@ export const asyncRoutes = [
     children: [
       {
         path: 'create',
+        hidden: true,
         component: () => import('@/views/example/create'),
         name: 'CreateArticle',
         meta: { title: 'Create Article', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
+        hidden: true,
         component: () => import('@/views/example/edit'),
         name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
-        hidden: true
+        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' }
       },
       {
         path: 'list',
+        hidden: true,
         component: () => import('@/views/example/list'),
         name: 'ArticleList',
         meta: { title: 'Article List', icon: 'list' }
+      },
+      {
+        path: 'dev',
+        component: () => import('@/views/panels/components/charts/dev'),
+        name: 'ArticleList',
+        meta: { title: 'dev', icon: 'bug' }
       }
     ]
   },
-
 
   // {
   //   path: '/permission',

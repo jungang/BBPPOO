@@ -23,6 +23,7 @@
 var echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
 import { format, getData } from '@/utils/chart-data'
+import { deepClone } from '@/utils/index'
 // import { format } from '@/utils/chart-data'
 
 export default {
@@ -112,13 +113,12 @@ export default {
         grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
         xAxis: {
           axisLabel: {
-            show: true,
-            formatter: (value, index) => {
-              const drillName = this.options.dataset.source[index].drillName
-              const drill = !this.currentView.items[drillName]
-
-              return drill ? value : value + '(含下钻图表)'
-            }
+            show: false
+            // formatter: (value, index) => {
+            //   const drillName = this.options.dataset.source[index].drillName
+            //   const drill = !this.currentView.items[drillName]
+            //   return drill ? value : value + '(含下钻图表)'
+            // }
           },
           type: 'category'
         },
@@ -132,7 +132,7 @@ export default {
   },
   methods: {
     async init(params, isBread) {
-      // console.log('init.....')
+      console.log('init.....')
       params = params || { ...this.data }
 
       isBread || this.breadcrumb.push({ ...params })
@@ -141,41 +141,13 @@ export default {
       this.currentView = this.$store.state.options.views.find(item => item.name === params._drillName)
 
       this.temp = params
-      this.$emit('update:title', this.temp.breadName)
+      this.$emit('update:title', this.currentView.title)
 
       // 发起请求
       this.chart.id && this.chart.showLoading(this.loading)
 
-      /*
-      let res_s = []
-      let res_y = []
+      this.options = (format(deepClone(this.options), this.currentView, await getData(this.currentView, params)))
 
-      const data1 = {
-        'dir': 'Sample Reports/' + params._drillName,
-        'name': params.drillName,
-        'month': '1',
-        'projectId': '00000000-0000-0000-0000-000000000000',
-        'vf_id': 0,
-        'vf_file': 'dashboard.efwvf'
-      }
-
-      console.log(data1)
-      res_s = await fetchData(data1)
-
-      const data2 = {
-        'dir': 'Sample Reports/' + params._drillName,
-        'name': params.drillName,
-        'month': '1',
-        'projectId': '00000000-0000-0000-0000-000000000000',
-        'vf_id': 1,
-        'vf_file': 'dashboard.efwvf'
-      }
-      if (this.currentView.compare) {
-        res_y = await fetchData(data2)
-      }
-*/
-
-      this.options = (format(this.options, this.currentView, await getData(this.currentView, params)))
       this.renderChart(this.options)
     },
     handleBread(item, index) {
@@ -204,7 +176,11 @@ export default {
     },
 
     renderChart(options) {
-      !this.chart.id && this.initChart()
+      console.log('this.chart.id:', this.chart.id)
+      if (this.chart.id) {
+        this.chart.dispose()
+      }
+      this.initChart()
       this.chart.hideLoading()
       this.chart.setOption(options)
     },
@@ -217,7 +193,7 @@ export default {
         title: this.temp.breadName,
         viewName: this.temp._drillName, // -this.view
         drillName: this.temp.name,
-        component: 'charts',
+        component: 'chart',
         parameters: this.data.parameters,
         width: 600,
         height: 400
