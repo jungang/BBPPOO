@@ -109,20 +109,10 @@ export default {
       this.maxVisible = true
       console.log('maxPanel...')
       this.$nextTick(() => {
-        // this.maxChart = echarts.init(document.getElementById('maxChart'))
-        // this.maxChart.setOption(this.options)
       })
     },
     async getList() {
       this.listLoading = true
-      // test().then(response => {
-      //   // console.log(response)
-      //   this.list = response.data.items
-      //   this.listLoading = false
-      // })
-
-      // console.log('getList....')
-      // console.log(this.data)
       const data = {
         _drillName: 'monthly_items_list',
         drillName: '',
@@ -135,7 +125,8 @@ export default {
           item.value = item.value * 100 + '%'
         }
       })
-      // console.log('mixed:', mixed)
+
+      console.log('mixed:', mixed)
 
       this.list = []
       mixed.res_s.forEach((item, index) => {

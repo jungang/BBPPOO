@@ -70,39 +70,24 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '数量',
-            min: -100
-          },
-          {
-            type: 'value',
-            name: '百分比',
-            min: 0,
-            max: 100,
-            interval: 50,
-            axisLabel: {
-              formatter: '{value} %'
-            }
+            name: '数量'
           }
         ],
         dataset: [{
           // 按行的 key-value 形式（对象数组），这是个比较常见的格式。
           source: [
-            { product: '综合系统接起率', count: 444, score: 50.8 },
-            { product: '本地接起率', count: 555, score: 60.8 },
-            { product: '集团解决率', count: 666, score: 50.8 },
-            { product: '本地解决率', count: 235, score: 70.4 },
-            { product: '合计解决率', count: 999, score: 80.2 },
-            { product: '合计解决率', count: 888, score: 92.2 },
-            { product: '本地满意度', count: 777, score: 91.2 },
-            { product: '合计满意度', count: 988, score: 76.9 }
+            { product: '综合系统接起率', count: 444 },
+            { product: '本地接起率', count: 555 },
+            { product: '集团解决率', count: 666 },
+            { product: '本地解决率', count: 235 },
+            { product: '合计解决率', count: 999 },
+            { product: '合计解决率', count: 888 },
+            { product: '本地满意度', count: 777 },
+            { product: '合计满意度', count: 988 }
           ]
         }],
         series: [
-          { type: 'bar' },
-          {
-            type: 'line',
-            yAxisIndex: 1
-          }
+          { type: 'bar' }
         ]
       },
 

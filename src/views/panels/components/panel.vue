@@ -162,9 +162,9 @@ export default {
     saveLayout() {
       clearTimeout(this.timer)
       this.timer = setTimeout(() => {
-        console.log('saveLayout....')
-        console.log(this.id)
-        console.log(this.panel.id)
+        // console.log('saveLayout....')
+        // console.log(this.id)
+        // console.log(this.panel.id)
         // this.panel.id = this.id
 
         saveLayout(this.panel).then(response => {

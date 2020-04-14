@@ -134,18 +134,7 @@ export default {
         },
         yAxis: [{
           type: 'value'
-        },
-        {
-          type: 'value',
-          name: '百分比',
-          min: 0,
-          max: 200,
-          interval: 50,
-          axisLabel: {
-            formatter: '{value} %'
-          }
-        }
-        ],
+        }],
         series: []
       },
 
