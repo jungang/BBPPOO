@@ -30,7 +30,7 @@
 
             <!--            <component-->
             <!--              :is="element.component" -->
-            <!--              :is="'tabular'"   -->
+            <!--              is="tabular"   -->
             <component
               :is="'tabular'"
               :ref="element.id"

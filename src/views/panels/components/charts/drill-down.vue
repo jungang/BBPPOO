@@ -1,19 +1,58 @@
 <template>
   <div class="drill-container">
     <el-row style="margin-bottom: 10px">
-      <el-col :span="20">
+      <el-col :span="18">
         <el-breadcrumb separator="/">
           <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="item.id">
             <el-button type="text" @click="handleBread(item, index)"> {{ item.breadName || item.name }}</el-button>
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
-      <el-col :span="4" style="text-align: right">
+      <el-col :span="6" style="text-align: right">
         <el-button type="primary" @click="handleAdd">加入仪表盘</el-button>
       </el-col>
     </el-row>
 
-    <div :id="data.name" class="chart" style="width:100%; height:50vh;">{{ data.name }}</div>
+    <el-tabs
+      v-model="activeName"
+      type="border-card"
+      @tab-click="handleClick"
+    >
+
+      <el-tab-pane name="first">
+        <span slot="label"><i class="el-icon-s-data" /> 图表</span>
+        <div :id="data.chartId" class="chart" style="width:100%; height:50vh;">{{ data.name }}</div>
+      </el-tab-pane>
+      <el-tab-pane label="表格" name="second">
+        <span slot="label"><i class="el-icon-s-grid" /> 表格</span>
+        <el-table
+          :data="list"
+          style="width: 100%"
+          size="mini"
+          border
+          fit
+          stripe
+        >
+          <el-table-column type="index" label="序号" width="50" />
+          <el-table-column
+            prop="res_s_title"
+            label="名称"
+          >
+            <template slot-scope="{row}">
+              <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
+              <span v-else> {{ row.res_s_title }} </span>
+            </template>
+          </el-table-column>
+
+          <el-table-column v-if="list[0].res_y_value" prop="res_y_value" label="预计" />
+          <el-table-column v-if="list[0].res_y_zb_value" prop="res_y_zb_value" label="预计占比" />
+          <el-table-column v-if="list[0].res_s_value" prop="res_s_value" label="实际" />
+          <el-table-column v-if="list[0].res_s_zb_value" prop="res_s_zb_value" label="实际占比" />
+          <el-table-column v-if="list[0].res_finish_rate_value" prop="res_finish_rate_value" label="完成率" />
+
+        </el-table>
+      </el-tab-pane>
+    </el-tabs>
 
   </div>
 </template>
@@ -54,6 +93,9 @@ export default {
   },
   data() {
     return {
+      list: [{}],
+      activeName: 'first',
+      renderType: 'chart',
       currentView: {},
       breadcrumb: [],
       temp: {},
@@ -131,14 +173,30 @@ export default {
   mounted() {
   },
   methods: {
+    handelDrill(row) {
+      console.log('handelDrill...')
+      console.log(row)
+
+      this.init(row)
+    },
+    handleClick() {
+      console.log(this.chart)
+      this.$nextTick(() => {
+        this.chart.resize()
+      })
+    },
     async init(params, isBread) {
       console.log('init.....')
       params = params || { ...this.data }
-
       isBread || this.breadcrumb.push({ ...params })
 
-      // console.log(params)
+      console.log(params)
+      console.log(params._drillName)
       this.currentView = this.$store.state.options.views.find(item => item.name === params._drillName)
+
+      params.parameters = this.data.parameters
+      console.log(this.$store.state.options.views)
+      console.log(this.currentView)
 
       this.temp = params
       this.$emit('update:title', this.currentView.title)
@@ -148,6 +206,33 @@ export default {
 
       this.options = (format(deepClone(this.options), this.currentView, await getData(this.currentView, params)))
 
+      console.log('init this.list-------------')
+      this.list = []
+      this.options.dataset.source.forEach((item, index) => {
+        console.log(item)
+
+        this.list.push({
+          chartId: uuidv1(),
+          name: item.类目,
+          drillName: item.drillName,
+          drillNameNode: item.drillNameNode,
+          isDrill: item.isDrill,
+          _drillName: item.drillNameNode,
+          breadName: item.类目,
+          res_s_title: item.类目,
+          res_s_value: item.实际,
+          res_y_title: item.类目,
+          res_y_value: item.预计,
+          res_s_zb_title: item.类目,
+          res_s_zb_value: item.实际占比 && item.实际占比 + '%',
+          res_y_zb_title: item.类目,
+          res_y_zb_value: item.预计占比 && item.预计占比 + '%',
+          res_finish_rate_value: item.完成率 && item.完成率 + '%'
+        })
+      })
+
+      console.log('this.list:', this.list)
+
       this.renderChart(this.options)
     },
     handleBread(item, index) {
@@ -156,12 +241,15 @@ export default {
     },
 
     initChart() {
-      // console.log('initChart....')
-      this.chart = echarts.init(document.getElementById(this.data.name))
+      console.log('initChart....')
+      console.log(this.data)
+      console.log(this.data.name)
+      console.log(document.getElementById(this.data.chartId))
+
+      this.chart = echarts.init(document.getElementById(this.data.chartId))
       this.chart.on('click', (params) => {
         params.drillName = params.value.drillName // 下钻所用名称
 
-        params.parameters = this.data.parameters
 
         if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
           params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称

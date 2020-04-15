@@ -216,6 +216,7 @@ export default {
         params.drillName = params.value.drillName // 下钻所用名称
 
         params.parameters = this.data.parameters
+        params.chartId = uuidv1()
 
         if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
           params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称

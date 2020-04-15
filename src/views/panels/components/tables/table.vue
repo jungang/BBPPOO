@@ -6,14 +6,26 @@
       style="width: 100%"
       size="mini"
       border
+      fit
+      stripe
       :max-height="data.height-30"
     >
       <el-table-column type="index" label="序号" width="50" />
-      <el-table-column prop="res_s_title" label="名称" />
-      <el-table-column prop="res_y_value" label="预计" />
-      <el-table-column prop="res_y_zb_value" label="预计占比" />
-      <el-table-column prop="res_s_value" label="实际" />
-      <el-table-column prop="res_s_zb_value" label="实际占比" />
+      <el-table-column
+        prop="res_s_title"
+        label="名称"
+      >
+        <template slot-scope="{row}">
+          <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
+          <span v-else> {{ row.res_s_title }} </span>
+        </template>
+      </el-table-column>
+
+      <el-table-column v-if="list[0].res_y_value" prop="res_y_value" label="预计" />
+      <el-table-column v-if="list[0].res_y_zb_value" prop="res_y_zb_value" label="预计占比" />
+      <el-table-column v-if="list[0].res_s_value" prop="res_s_value" label="实际" />
+      <el-table-column v-if="list[0].res_s_zb_value" prop="res_s_zb_value" label="实际占比" />
+
     </el-table>
 
     <el-dialog
@@ -28,31 +40,56 @@
         style="width: 100%"
         size="mini"
         border
+        fit
+        stripe
         max-height="700px"
       >
         <el-table-column type="index" label="序号" width="50" />
-        <el-table-column prop="res_s_title" label="名称" />
-        <el-table-column prop="res_y_value" label="预计" />
-        <el-table-column prop="res_y_zb_value" label="预计占比" />
-        <el-table-column prop="res_s_value" label="实际" />
-        <el-table-column prop="res_s_zb_value" label="实际占比" />
+        <el-table-column
+          prop="res_s_title"
+          label="名称"
+        >
+          <template slot-scope="{row}">
+            <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
+            <span v-else> {{ row.res_s_title }} </span>
+          </template>
+        </el-table-column>
+
+        <el-table-column v-if="list[0].res_y_value" prop="res_y_value" label="预计" />
+        <el-table-column v-if="list[0].res_y_zb_value" prop="res_y_zb_value" label="预计占比" />
+        <el-table-column v-if="list[0].res_s_value" prop="res_s_value" label="实际" />
+        <el-table-column v-if="list[0].res_s_zb_value" prop="res_s_zb_value" label="实际占比" />
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button @click="maxVisible = false">关闭</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      :title="title"
+      :visible.sync="dialogVisible"
+      width="800"
+      @closed="handleClosed"
+    >
 
+      <drill ref="drill" :data="{...drillData}" :panel.sync="panel" :title.sync="title" @close="dialogVisible = false" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 
+import drill from '../charts/drill-down'
 import { standardize, getData } from '@/utils/chart-data'
+import uuidv1 from 'uuid/v1'
+
 // import { fetchData } from '@/api/panel'
 
 export default {
   name: 'Tabular',
-  components: {
+  components: { drill
   },
   props: {
     data: {
@@ -78,9 +115,12 @@ export default {
     return {
       listLoading: true,
       maxVisible: false,
-      list: [],
+      dialogVisible: false,
+      list: [{}],
       timer: {},
-      currentView: {}
+      currentView: {},
+      title: '222',
+      drillData: {}
     }
   },
   computed: {
@@ -104,6 +144,19 @@ export default {
   },
   mounted() {},
   methods: {
+    handleClosed() {
+      // console.log('handleClosed')
+      this.$refs.drill.breadcrumb = []
+    },
+    handelDrill(row) {
+      console.log('handelDrill...')
+      this.drillData = row
+      this.drillData.parameters = this.data.parameters
+      this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs.drill.init()
+      })
+    },
     maxPanel() {
       this.maxVisible = true
       console.log('maxPanel...')
@@ -121,10 +174,18 @@ export default {
         }
       })
       console.log('mixed:', mixed)
-
+      // console.log('this.currentView:', this.currentView)
       this.list = []
       mixed.res_s.forEach((item, index) => {
+        // console.log(item.name)
+        // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
+
         this.list.push({
+          chartId: uuidv1(),
+          name: item.title,
+          drillName: item.name,
+          _drillName: this.currentView.items[item.name] || this.currentView.items['*'],
+          breadName: item.title,
           res_s_title: item.title,
           res_s_value: item.value,
           res_y_title: mixed.res_y[index].title,
@@ -135,6 +196,8 @@ export default {
           res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
         })
       })
+
+      // console.log('this.list:', this.list)
     }
   }
 }
@@ -146,11 +209,20 @@ export default {
     padding: 18px 0 0 0;
     height: 100%;
   }
+
 </style>
 <style lang="scss">
   .max-table-dialog{
     .el-dialog__body{
       padding: 0 20px;
+      min-height: 700px;
     }
+  }
+  .table-row-is-drill-class{
+    color: blue;
+    cursor: pointer;
+  }
+  .table-row-is-drill-class:hover{
+    text-decoration:underline;
   }
 </style>

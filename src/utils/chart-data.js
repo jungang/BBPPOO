@@ -272,7 +272,7 @@ export async function getData(...arg) {
     'vf_file': 'dashboard.efwvf'
   }
 
-  console.log(currentView)
+  // console.log(currentView)
   console.log(
     'compare:', currentView.compare,
     'ratio:', currentView.ratio,
