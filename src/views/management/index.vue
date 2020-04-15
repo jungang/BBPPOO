@@ -12,8 +12,8 @@
       </el-col>
 
       <el-col :span="6" style="text-align: right">
-        <el-button type="primary" :disabled="calstatus" @click="handleCalculate">
-          {{ calstatus?"计算进行中...":"开始计算" }}
+        <el-button type="primary" :disabled="calstatusPending" @click="handleCalculate">
+          {{ calstatusPending?"计算进行中...":"开始计算" }}
         </el-button>
       </el-col>
     </el-row>
@@ -56,6 +56,7 @@
             :data="{
               fileName:row.name,
               projectId,
+              refresh:true,
               batch:temp.year + temp.month}"
             :show-file-list="false"
             action="http://39.98.167.246:8096/upload/all"
@@ -120,7 +121,8 @@ export default {
   data() {
     return {
       timer: {},
-      calstatus: false,
+      calstatusPending: false, // false 未在计算中 ，true 正在计算中
+      pageClick: false, // 手动开始计算
       uploadUrl: '',
       projectId: '00000000-0000-0000-0000-000000000000',
       curRowIndex: null,
@@ -141,26 +143,70 @@ export default {
   },
   created() {
     this.getList()
-
-    this.timer = setInterval(() => {
-      console.log('setInterval...')
-      this.getStatus()
-    }, 10000)
     this.getStatus()
   },
 
   methods: {
+    start() {
+      this.timer = setInterval(() => {
+        this.getStatus()
+      }, 3000)
+    },
+
     handleFilter() {
       console.log('handleFilter...')
     },
     getStatus() {
       fetchStatus().then((res) => {
-        if (!this.calstatus) {
+        this.calstatusPending = res.data
+        // console.log('this.calstatusPending:', this.calstatusPending)
+        if (!this.calstatusPending) {
           clearInterval(this.timer)
+        } else {
+          clearInterval(this.timer)
+          this.start()
         }
-        this.calstatus = res.content
+
+        if (res.data) {
+          // console.log('正在计算中。。')
+        } else {
+          clearInterval(this.timer)
+          if (this.pageClick) {
+            this.$message({
+              message: '计算完成。',
+              type: 'success'
+            })
+            this.getList()
+            this.$confirm('计算完成。', '提示', {
+              confirmButtonText: '查看详情',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              console.log('跳转。。。')
+              this.$router.push('/panels/list') // 跳转到指定页面
+            }).catch(() => {})
+          }
+        }
       })
     },
+
+    handleCalculate() {
+      this.calstatusPending = true
+      this.pageClick = true
+      calculate({ projectId: this.projectId, batch: this.temp.year + this.temp.month, refresh: true }).then((res) => {
+        this.getStatus()
+        this.$message({
+          message: '已经开始计算。。。',
+          type: 'info'
+        })
+      }).catch(() => {
+        this.$message({
+          message: '未能开始计算',
+          type: 'error'
+        })
+      })
+    },
+
     handleDelete(row) {
       this.$confirm('删除 ' + row.name, '提示', {
         confirmButtonText: '确定',
@@ -178,19 +224,6 @@ export default {
         })
         .catch(err => { console.error(err) })
     },
-
-    handleCalculate() {
-      this.calstatus = true
-      calculate({ projectId: this.projectId, batch: this.temp.year + this.temp.month, refresh: true }).then((res) => {
-        this.getStatus()
-      }).catch(() => {
-        this.$message({
-          message: '未能开始计算',
-          type: 'error'
-        })
-      })
-    },
-
     handleSuccess(response) {
       this.getList()
       this.$message({

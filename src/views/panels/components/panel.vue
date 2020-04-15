@@ -1,17 +1,5 @@
 <template>
   <div class="app-container">
-    <!--
-    <el-row type="flex">
-      <el-col :span="12">
-        <h3>
-          报表
-        </h3>
-      </el-col>
-      <el-col :span="12" style="text-align: end">
-        <el-button type="primary">新建图表</el-button>
-      </el-col>
-    </el-row>-->
-
     <draggable
       :list="panel.list"
       v-bind="dragOptions"
@@ -36,12 +24,15 @@
             :parent="false"
             :draggable="false"
             :resizable="true"
-            class-name-active="my-active-class"
             class-name="my-class"
             @resizing="(x, y, width, height)=>onResize(x, y, width, height, element)"
           >
+
+            <!--            <component-->
+            <!--              :is="element.component" -->
+            <!--              :is="'tabular'"   -->
             <component
-              :is="element.component"
+              :is="'tabular'"
               :ref="element.id"
               :data="element"
               :panel.sync="panel"

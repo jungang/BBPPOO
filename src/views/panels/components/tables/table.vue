@@ -100,8 +100,7 @@ export default {
   },
   created() {
     this.currentView = this.$store.state.options.views.find(item => item.name === this.data.viewName)
-    this.getList()
-    // console.log(this.data.title)
+    this.getData()
   },
   mounted() {},
   methods: {
@@ -111,21 +110,16 @@ export default {
       this.$nextTick(() => {
       })
     },
-    async getList() {
-      this.listLoading = true
-      const data = {
-        _drillName: 'monthly_items_list',
-        drillName: '',
-        parameters: this.data.parameters
-      }
-      const mixed = standardize(await getData(this.currentView, data))
+    async getData() {
+      this.data._drillName = this.view
+      const mixed = standardize(await getData(this.currentView, this.data))
+
       mixed.res_y.forEach(item => {
         // console.log(item.type)
         if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
-          item.value = item.value * 100 + '%'
+          item.value = item.value + '%'
         }
       })
-
       console.log('mixed:', mixed)
 
       this.list = []

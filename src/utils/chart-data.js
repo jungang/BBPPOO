@@ -42,18 +42,35 @@ export function standardize(data) {
     data[key] = sort(data[key]) // 重新排序 确保各维度位置正确必须步骤
   })
 
-  // console.log(data)
-  // eslint-disable-next-line no-return-assign
-  data.res_s.forEach(item => item.value = item.value && parseFloat(item.value.toFixed(2)))
-  // eslint-disable-next-line no-return-assign
-  data.res_y.forEach(item => item.value = item.value && parseFloat(item.value.toFixed(2)))
-
-  // console.log(data.res_s_zb)
-  // eslint-disable-next-line no-return-assign
-  data.res_s_zb.forEach(item => item.value = item.value && (item.value * 100).toFixed(2))
-  // eslint-disable-next-line no-return-assign
-  data.res_y_zb.forEach(item => item.value = item.value && (item.value * 100).toFixed(2))
-  // data.res_y_zb.forEach(item => item.value = item.value && (item.value * 100).toFixed(1))
+  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间
+  Object.keys(data).forEach((key) => { // 统一
+    data[key].forEach(item => {
+      item.original = item.value
+      // console.log(item.type)
+      switch (item.type) {
+        case 'Duration':
+          item.value = (item.value * 1440).toFixed(2)
+          // console.log(item)
+          break
+        case 'Currency':
+          item.value = item.value.toFixed(2)
+          // console.log(item)
+          break
+        case 'Double':
+          item.value = item.value.toFixed(2)
+          break
+        case 'Integer':
+          item.value = Math.round(item.value)
+          // console.log(item)
+          break
+        case 'Percentage':
+          item.value = (item.value * 100).toFixed(2)
+          // console.log(item)
+          break
+        default:
+      }
+    })
+  })
 
   return data
 }

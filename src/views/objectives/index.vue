@@ -171,13 +171,6 @@ export default {
       console.log(mixed)
       this.detailList.items = []
 
-      mixed.res_y.forEach(item => {
-        // console.log(item.type)
-        if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
-          item.value = item.value * 100 + '%'
-        }
-      })
-
       mixed.res_y.forEach((item, index) => {
         this.detailList.items.push({
           res_y_title: mixed.res_y[index].title,
