@@ -155,7 +155,10 @@ export default {
         grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
         xAxis: {
           axisLabel: {
-            show: false
+            show: true,
+            interval: 0, // 'auto'
+            fontSize: 9,
+            fontWeight:100
             // formatter: (value, index) => {
             //   const drillName = this.options.dataset.source[index].drillName
             //   const drill = !this.currentView.items[drillName]
@@ -249,7 +252,6 @@ export default {
       this.chart = echarts.init(document.getElementById(this.data.chartId))
       this.chart.on('click', (params) => {
         params.drillName = params.value.drillName // 下钻所用名称
-
 
         if (this.currentView.items[params.drillName] || this.currentView.items['*']) {
           params._drillName = this.currentView.items[params.drillName] || this.currentView.items['*'] // 下钻名称

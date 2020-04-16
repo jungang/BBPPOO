@@ -32,7 +32,7 @@
             <!--              :is="element.component" -->
             <!--              is="tabular"   -->
             <component
-              :is="'tabular'"
+              :is="element.component"
               :ref="element.id"
               :data="element"
               :panel.sync="panel"
