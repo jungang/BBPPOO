@@ -5,7 +5,7 @@ export function fetchStatus(query) {
     url: '/calstatus',
     method: 'get',
     params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 
@@ -14,7 +14,7 @@ export function fetchList(query) {
     url: '/excel/list',
     method: 'get',
     params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 
@@ -23,7 +23,7 @@ export function actionDelete(query) {
     url: '/excel/delete',
     method: 'delete',
     params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 

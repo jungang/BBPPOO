@@ -10,7 +10,7 @@ Dashboard/Excel/Upload Excel 上传，展开表格
 
 
 39.98.167.246 用户名 root 密码 8ql6,yhY
-
+172.20.95.131  172.20.95.131，用户名 root 密码 smartdot
 
 ？问题
 

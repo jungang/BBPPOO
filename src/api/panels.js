@@ -6,7 +6,7 @@ export function panelsFetchList(query) {
     // url: '/panels/list',
     method: 'get',
     params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 
@@ -15,7 +15,7 @@ export function saveQueue(data) {
     url: '/chart/order',
     method: 'post',
     data,
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 
@@ -24,7 +24,7 @@ export function createPanel(data) {
     url: '/chart/set',
     method: 'post',
     data,
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 
@@ -33,7 +33,7 @@ export function deletePanel(id) {
     url: `/chart/delete`,
     method: 'delete',
     params: { id: id },
-    baseURL: 'http://39.98.167.246:8096'
+    baseURL: 'http://172.20.95.131:8096'
   })
 }
 

@@ -193,7 +193,7 @@ export default {
         }
       })
       console.log('mixed:', mixed)
-      // console.log('this.currentView:', this.currentView)
+      console.log('this.currentView:', this.currentView)
 
       this.list = []
       mixed.res_s.forEach((item, index) => {

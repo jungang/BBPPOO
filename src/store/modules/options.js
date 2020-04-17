@@ -86,7 +86,7 @@ const mutations = {
           break
         case 'foldTable':
           item.style = 'tabular'
-          item.fold = false
+          item.fold = true
           // console.log(item.style)
           break
         case 'sortTable':
