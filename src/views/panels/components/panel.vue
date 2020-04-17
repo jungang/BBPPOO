@@ -31,6 +31,7 @@
             <!--            <component-->
             <!--              :is="element.component" -->
             <!--              is="tabular"   -->
+            <!--              is="drill"   -->
             <component
               :is="element.component"
               :ref="element.id"
@@ -70,6 +71,7 @@ import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // eslint-disable-next-line no-unused-vars
 import chart from './charts/charts'
 import tabular from './tables/table'
+import drill from './charts/drill-down'
 
 export default {
   name: 'Panel',
@@ -77,7 +79,8 @@ export default {
     draggable,
     VueDraggableResizable,
     chart,
-    tabular
+    tabular,
+    drill
   },
   props: {
     isEdit: {

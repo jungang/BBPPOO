@@ -71,6 +71,34 @@ const mutations = {
   SET_VIEWS: (state, response) => {
     state.views = response
     state.views.forEach(item => {
+      item.fold = false
+      item.sort = false
+      switch (item.style) {
+        case 'chart':
+          // console.log(item.style)
+          break
+        case 'multicols':
+          // console.log(item.style)
+          break
+        case 'tabular':
+          item.style = 'tabular'
+          // console.log(item.style)
+          break
+        case 'foldTable':
+          item.style = 'tabular'
+          item.fold = false
+          // console.log(item.style)
+          break
+        case 'sortTable':
+          item.style = 'tabular'
+          item.sort = true
+          // console.log(item.style)
+          break
+        default:
+          item.style = 'chart'
+          // console.log(item.style)
+      }
+
       item.items = (item.items !== 'Null') ? JSON.parse(item.items) : {}
     })
   }

@@ -212,7 +212,7 @@ export default {
     initChart() {
       this.chart = echarts.init(document.getElementById(this.data.id))
       this.chart.on('click', (params) => {
-        console.log(params)
+        // console.log(params)
         params.drillName = params.value.drillName // 下钻所用名称
 
         params.parameters = this.data.parameters

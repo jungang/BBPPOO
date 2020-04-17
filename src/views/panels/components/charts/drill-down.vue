@@ -19,11 +19,11 @@
       @tab-click="handleClick"
     >
 
-      <el-tab-pane name="first">
+      <el-tab-pane name="chart">
         <span slot="label"><i class="el-icon-s-data" /> 图表</span>
         <div :id="data.chartId" class="chart" style="width:100%; height:50vh;">{{ data.name }}</div>
       </el-tab-pane>
-      <el-tab-pane label="表格" name="second">
+      <el-tab-pane name="tabular">
         <span slot="label"><i class="el-icon-s-grid" /> 表格</span>
         <el-table
           :data="list"
@@ -33,7 +33,7 @@
           fit
           stripe
         >
-          <el-table-column type="index" label="序号" width="50" />
+          <!--          <el-table-column type="index" label="序号" width="50" />-->
           <el-table-column
             prop="res_s_title"
             label="名称"
@@ -45,10 +45,10 @@
           </el-table-column>
 
           <el-table-column v-if="list[0].res_y_value" prop="res_y_value" label="预计" />
-          <el-table-column v-if="list[0].res_y_zb_value" prop="res_y_zb_value" label="预计占比" />
+          <el-table-column v-if="list[0].res_y_zb_value" prop="res_y_zb_value" label="预计占比%" />
           <el-table-column v-if="list[0].res_s_value" prop="res_s_value" label="实际" />
-          <el-table-column v-if="list[0].res_s_zb_value" prop="res_s_zb_value" label="实际占比" />
-          <el-table-column v-if="list[0].res_finish_rate_value" prop="res_finish_rate_value" label="完成率" />
+          <el-table-column v-if="list[0].res_s_zb_value" prop="res_s_zb_value" label="实际占比%" />
+          <el-table-column v-if="list[0].res_finish_rate_value" prop="res_finish_rate_value" label="完成率%" />
 
         </el-table>
       </el-tab-pane>
@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       list: [{}],
-      activeName: 'first',
+      activeName: 'chart',
       renderType: 'chart',
       currentView: {},
       breadcrumb: [],
@@ -158,7 +158,7 @@ export default {
             show: true,
             interval: 0, // 'auto'
             fontSize: 9,
-            fontWeight:100
+            fontWeight: 100
             // formatter: (value, index) => {
             //   const drillName = this.options.dataset.source[index].drillName
             //   const drill = !this.currentView.items[drillName]
@@ -193,13 +193,15 @@ export default {
       params = params || { ...this.data }
       isBread || this.breadcrumb.push({ ...params })
 
-      console.log(params)
-      console.log(params._drillName)
+      // console.log(params)
+      // console.log(params._drillName)
       this.currentView = this.$store.state.options.views.find(item => item.name === params._drillName)
 
       params.parameters = this.data.parameters
-      console.log(this.$store.state.options.views)
-      console.log(this.currentView)
+      // console.log(this.$store.state.options.views)
+      console.log('this.currentView:', this.currentView)
+      console.log('currentView.style:', this.currentView.style)
+      this.activeName = this.currentView.style
 
       this.temp = params
       this.$emit('update:title', this.currentView.title)
@@ -212,8 +214,7 @@ export default {
       console.log('init this.list-------------')
       this.list = []
       this.options.dataset.source.forEach((item, index) => {
-        console.log(item)
-
+        // console.log(item)
         this.list.push({
           chartId: uuidv1(),
           name: item.类目,
@@ -245,9 +246,9 @@ export default {
 
     initChart() {
       console.log('initChart....')
-      console.log(this.data)
-      console.log(this.data.name)
-      console.log(document.getElementById(this.data.chartId))
+      // console.log(this.data)
+      // console.log(this.data.name)
+      // console.log(document.getElementById(this.data.chartId))
 
       this.chart = echarts.init(document.getElementById(this.data.chartId))
       this.chart.on('click', (params) => {

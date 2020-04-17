@@ -1,4 +1,4 @@
-
+import { deepClone } from '@/utils'
 export function formatter_s(params) {
   // console.log('params...')
   // console.log(params)
@@ -34,7 +34,6 @@ export function formatter_y(params) {
   }
   return res
 }
-
 export function optionToContent(opt) {
   let table = ''
   var source = opt.dataset[0].source
@@ -59,4 +58,66 @@ export function optionToContent(opt) {
 
   table += '</tbody></table>'
   return table
+}
+
+export function planeToHierarchy(arr) {
+  // 1.标记父级，从而可以从高级向低级组织结构
+  arr = deepClone(arr)
+  const resArr = []
+
+  // console.log('planeToHierarchy...')
+
+  // 初始化准备
+  arr = arr.map(item => {
+    item.children = JSON.parse(item.children) // fixJson 字符串 =>>变数组
+    item.childrenRow = [] // 默认无子元素
+    item.parent = undefined // 默认父级未定义
+    return item
+  })
+
+  // 标记父级
+  arr.forEach(item => {
+    if (item.children.length !== 0) { // 有下级元素
+      item.children.forEach(childrenName => {
+        const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
+        if (childrenItem) {
+          childrenItem.parent = item.name
+        }
+      })
+    }
+  })
+
+  //
+  arr.forEach(item => {
+    if (!item.parent) {
+      resArr.push(item)
+      if (item.children.length > 0) {
+        findChildren(item, arr)
+      }
+    }
+  })
+
+  // console.log('-----------------------------------------------------')
+
+  // console.log('arr:', arr)
+  return resArr
+}
+
+// tooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
+
+// 递归子元素
+// const n = 1
+function findChildren(parent, arr) {
+  // console.log('findChildren....', n++)
+  // console.log('parent:', parent)
+  parent.children.forEach(childrenName => {
+    const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
+    if (childrenItem) {
+      parent.childrenRow.push(childrenItem)
+      if (childrenItem.children.length > 0) {
+        // console.log(childrenItem.children)
+        findChildren(childrenItem, arr)
+      }
+    }
+  })
 }
