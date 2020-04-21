@@ -101,6 +101,7 @@ const mutations = {
 
       item.items = (item.items !== 'Null') ? JSON.parse(item.items) : {}
     })
+    // console.log('state.views:', state.views)
   }
 }
 

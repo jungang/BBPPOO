@@ -4,9 +4,9 @@ export function formatter_s(params) {
   // console.log(params)
   let res = ''
   res += `${params.value.实际}\n`
-  if (!isNaN(params.value.完成率)) {
-    res += `(${params.value.完成率}%)\n`
-  }
+  // if (!isNaN(params.value.完成率)) {
+  //   res += `(${params.value.完成率}%)\n`
+  // }
   if (params.value.实际占比) {
     res += `占${params.value.实际占比}%`
   }
@@ -69,6 +69,7 @@ export function planeToHierarchy(arr) {
 
   // 初始化准备
   arr = arr.map(item => {
+    // console.log(item.children)
     item.children = JSON.parse(item.children) // fixJson 字符串 =>>变数组
     item.childrenRow = [] // 默认无子元素
     item.parent = undefined // 默认父级未定义

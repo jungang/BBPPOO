@@ -273,11 +273,11 @@ export async function getData(...arg) {
   }
 
   // console.log(currentView)
-  console.log(
+  /*  console.log(
     'compare:', currentView.compare,
     'ratio:', currentView.ratio,
-    'completion:', currentView.completion)
-  console.log({ data0, data1, data2, data3 })
+    'completion:', currentView.completion)*/
+  // console.log({ data0, data1, data2, data3 })
 
   res_s = await fetchData(data0)
 

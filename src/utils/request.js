@@ -35,6 +35,9 @@ request2.interceptors.response.use(
 request2.interceptors.request.use(
   config => {
     config.data = config.data.replace('+', '%2B')
+    if (store.getters.token) {
+      config.headers['X-Token'] = getToken()
+    }
     return config
   },
   error => {

@@ -27,16 +27,11 @@
             class-name="my-class"
             @resizing="(x, y, width, height)=>onResize(x, y, width, height, element)"
           >
-
-            <!--            <component-->
-            <!--              :is="element.component" -->
-            <!--              is="tabular"   -->
-            <!--              is="drill"   -->
-            <component
-              :is="element.component"
+            <drill
               :ref="element.id"
               :data="element"
               :panel.sync="panel"
+              :title.sync="element.panelTitle"
               :view="element.viewName"
             />
 
@@ -44,7 +39,7 @@
 
           <div class="title handle-drag">
             <el-row>
-              <el-col :span="12">{{ element.title }}</el-col>
+              <el-col :span="12">{{ element.panelTitle }}</el-col>
               <el-col :span="12" align="end">
                 <i class="el-icon-arrow-up" @click="maxPanel(element)" />
                 <!--                <div @click="maxPanel(element)">-->
@@ -60,6 +55,26 @@
 
     </draggable>
 
+    <el-dialog
+      :title="max_element.panelTitle"
+      :visible.sync="maxVisible"
+      width="100%"
+      top="0"
+      style="height: 100vh"
+    >
+      <drill
+        ref="maxPanel"
+        :key="max_element.id"
+        :data="max_element"
+        :panel.sync="panel"
+        :title.sync="max_element.panelTitle"
+        :view="max_element.viewName"
+      />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="maxVisible = false">关闭</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -69,17 +84,19 @@ import draggable from 'vuedraggable'
 import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // eslint-disable-next-line no-unused-vars
-import chart from './charts/charts'
-import tabular from './tables/table'
+// import chart from './charts/charts'
+// import tabular from './tables/table'
+import uuidv1 from 'uuid/v1'
 import drill from './charts/drill-down'
+import { deepClone } from '@/utils'
 
 export default {
   name: 'Panel',
   components: {
     draggable,
     VueDraggableResizable,
-    chart,
-    tabular,
+    // chart,
+    // tabular,
     drill
   },
   props: {
@@ -90,6 +107,9 @@ export default {
   },
   data() {
     return {
+      max_element: {},
+      maxVisible: false,
+      title: '',
       id: 0,
       timer: {},
       loading: false,
@@ -123,6 +143,7 @@ export default {
   watch: {
     'panel.list'(val, oldVal) {
       if (oldVal.length !== 0) {
+        console.log('watch....')
         this.saveLayout()
       }
     }
@@ -137,12 +158,30 @@ export default {
   },
   methods: {
     maxPanel(element) {
-      this.$refs[element.id][0].maxPanel()
+      const _max_element = deepClone(element)
+      _max_element.id = uuidv1()
+      _max_element.chartId = uuidv1()
+
+      this.max_element = _max_element
+      this.maxVisible = true
+      this.$nextTick(() => {
+        console.log(this.$refs.maxPanel)
+        console.log(this.$refs.maxPanel.chart.id)
+        if (this.$refs.maxPanel.chart.id) {
+          // this.$refs.maxPanel.chart.dispose()
+          // this.$refs.maxPanel.init()
+        }
+        // this.$refs.maxPanel.init()
+        // this.maxChart = echarts.init(document.getElementById('maxChart'))
+        // this.maxChart.setOption(this.options)
+      })
     },
     getPanel(id) {
       fetchPanel(id).then(response => {
-        console.log(response)
         this.panel = response.data
+
+        // console.log('this.panel.list', this.panel.list)
+
         this.setTagsViewTitle()
         this.setPageTitle()
       }).catch(err => {
@@ -168,7 +207,7 @@ export default {
           })
         })
 
-        localStorage.setItem('layout' + this.id, JSON.stringify(this.panel.list))
+        // localStorage.setItem('layout' + this.id, JSON.stringify(this.panel.list))
         // console.log(JSON.parse(localStorage.getItem('layout' + this.id)))
       }, 1000)
     },

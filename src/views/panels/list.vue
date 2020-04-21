@@ -220,7 +220,9 @@ export default {
           if (item.show === 'true') { // todo 判读缺省 item.default_show
             this.temp.list.push({
               id: uuidv1(),
+              chartId: uuidv1(),
               title: item.title,
+              panelTitle: item.title,
               type: 'def',
               component: item.style, // 'tabular' | chart,
               parameters: {

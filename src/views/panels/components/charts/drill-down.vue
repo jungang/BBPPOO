@@ -1,27 +1,39 @@
 <template>
   <div class="drill-container">
-    <el-row style="margin-bottom: 10px">
+    <el-row type="flex" justify="end">
       <el-col :span="18">
-        <el-breadcrumb separator="/">
+        <el-breadcrumb v-if="breadcrumb.length>1" separator="/" style="margin-left: 10px">
+          <!--        <el-breadcrumb separator="/" style="margin-left: 10px">-->
           <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="item.id">
-            <el-button type="text" @click="handleBread(item, index)"> {{ item.breadName || item.name }}</el-button>
+            <el-button
+              type="text"
+              style="padding:0"
+              @click="handleBread(item, index)"
+            >
+              {{ item.breadName }}
+            </el-button>
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
-      <el-col :span="6" style="text-align: right">
-        <el-button type="primary" @click="handleAdd">加入仪表盘</el-button>
+      <el-col :span="6" style="text-align: right; padding-right: 10px">
+        <!--        <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>-->
+        <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>
+        <el-button
+          v-if="data.type !== 'def'"
+          size="mini"
+          @click="handleDelete"
+        >删除</el-button>
       </el-col>
     </el-row>
 
     <el-tabs
       v-model="activeName"
-      type="border-card"
+      type="border"
       @tab-click="handleClick"
     >
-
       <el-tab-pane name="chart">
         <span slot="label"><i class="el-icon-s-data" /> 图表</span>
-        <div :id="data.chartId" class="chart" style="width:100%; height:50vh;">{{ data.name }}</div>
+        <div :id="data.chartId" class="chart" :style="`width:100%; height:`+(data.height-140)+`px`">{{ data.name }}</div>
       </el-tab-pane>
       <el-tab-pane name="tabular">
         <span slot="label"><i class="el-icon-s-grid" /> 表格</span>
@@ -32,6 +44,9 @@
           border
           fit
           stripe
+          row-key="name"
+          :tree-props="{children: 'childrenRow',hasChildren: 'hasChildren'}"
+          :max-height="data.height-138"
         >
           <!--          <el-table-column type="index" label="序号" width="50" />-->
           <el-table-column
@@ -61,8 +76,9 @@
 // import { fetchData } from '@/api/panel'
 var echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
-import { format, getData } from '@/utils/chart-data'
+import { format, getData, standardize } from '@/utils/chart-data'
 import { deepClone } from '@/utils/index'
+import { planeToHierarchy } from '@/utils/chartType'
 // import { format } from '@/utils/chart-data'
 
 export default {
@@ -93,6 +109,9 @@ export default {
   },
   data() {
     return {
+      fold: true,
+      sort: true,
+      timer: {},
       list: [{}],
       activeName: 'chart',
       renderType: 'chart',
@@ -115,7 +134,30 @@ export default {
           trigger: 'axis',
           axisPointer: {
             type: 'shadow'
+          },
+          // backgroundColor: '#eee',
+          padding: 20,
+          extraCssText: 'box-shadow: 0 0 3px rgba(10px,10px, 10px, 1,black);',
+          borderColor: '#aaa',
+          borderWidth: 1,
+          borderRadius: 4,
+          position: ['80%', '10%'],
+          alwaysShowContentL: true,
+          transitionDuration: 0,
+          showDelay: 0,
+          formatter: (params, ticket, callback) => {
+            // console.log(params)
+            let str = ''
+            str += `${params[0].name}<br>`
+            str += `完成率: ${params[0].data.完成率}%`
+            return str
           }
+          /*          position: function(pos, params, dom, rect, size) {
+            // 鼠标在左侧时 tooltip 显示到右侧，鼠标在右侧时 tooltip 显示到左侧。
+            var obj = { top: 60 }
+            obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 5
+            return obj
+          }*/
         },
         toolbox: {
           show: true,
@@ -172,10 +214,43 @@ export default {
       }
     }
   },
-  created() { },
+  watch: {
+    data: {
+      deep: true,
+      handler() {
+        clearTimeout(this.timer)
+        this.timer = setTimeout(() => {
+          // console.log('resize...')
+          // console.log('data:', this.data)
+          this.chart.id && this.chart.resize()
+        }, 100)
+      }
+    }
+  },
+  created() {
+    this.init()
+  },
   mounted() {
   },
   methods: {
+    handleDelete() {
+      console.log(this.data)
+      this.$confirm('删除' + this.data.title, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(async() => {
+          const _index = this.panel.list.findIndex(item => item.id === this.data.id)
+          this.panel.list.splice(_index, 1)
+          this.$message({
+            type: 'success',
+            message: '完成删除。'
+          })
+        })
+        .catch(err => { console.error(err) })
+      // this.panel.list.unshift(newPanel)
+    },
     handelDrill(row) {
       console.log('handelDrill...')
       console.log(row)
@@ -189,18 +264,49 @@ export default {
       })
     },
     async init(params, isBread) {
-      console.log('init.....')
-      params = params || { ...this.data }
-      isBread || this.breadcrumb.push({ ...params })
+      // console.log('init.....')
 
-      // console.log(params)
-      // console.log(params._drillName)
+      // console.log('this.data:', this.data)
+      // console.log('params:', params)
+      params = params || deepClone(this.data)
+
+      // console.log('params:', params)
+
+      isBread || this.breadcrumb.push({
+        id: params.id,
+        type: params.type,
+        title: params.title,
+        breadName: params.breadName || params.drillName || params.title,
+        width: params.width,
+        height: params.height,
+        chartId: params.chartId,
+        viewName: params.viewName,
+        component: params.component,
+        drillName: params.drillName,
+        _drillName: params.viewName || params._drillName,
+        parameters: this.data.parameters
+      })
+
+      // console.log('this.breadcrumb:', this.breadcrumb)
+
+      params._drillName = params._drillName || params.viewName
+
+      // console.log('params:', params)
+
+      this.$store.state.options.views.forEach(item => {
+        // console.log(item.name)
+      })
+
+      // console.log('params._drillName:', params._drillName)
       this.currentView = this.$store.state.options.views.find(item => item.name === params._drillName)
+      this.fold = this.currentView.fold
+      this.sort = this.currentView.sort
 
       params.parameters = this.data.parameters
       // console.log(this.$store.state.options.views)
       console.log('this.currentView:', this.currentView)
-      console.log('currentView.style:', this.currentView.style)
+      console.log('this.fold:', this.fold)
+      // console.log('currentView.style:', this.currentView.style)
       this.activeName = this.currentView.style
 
       this.temp = params
@@ -211,13 +317,53 @@ export default {
 
       this.options = (format(deepClone(this.options), this.currentView, await getData(this.currentView, params)))
 
-      console.log('init this.list-------------')
+      const mixed = standardize(await getData(this.currentView, params))
+      mixed.res_y.forEach(item => {
+        // console.log(item.type)
+        if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
+          item.value = item.value + '%'
+        }
+      })
+      mixed.res_s.forEach(item => {
+        // console.log(item.type)
+        if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
+          item.value = item.value + '%'
+        }
+      })
+      console.log('mixed:', mixed)
+
+      const _list = []
+
+      mixed.res_s.forEach((item, index) => {
+        // console.log(item.name)
+        // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
+        _list.push({
+          chartId: uuidv1(),
+          name: item.name,
+          children: item.children,
+          drillName: item.name,
+          _drillName: this.currentView.items[item.name] || this.currentView.items['*'],
+          breadName: item.title,
+          res_s_title: item.title,
+          res_s_value: item.value,
+          res_y_title: mixed.res_y[index].title,
+          res_y_value: mixed.res_y[index].value,
+          res_s_zb_title: mixed.res_s_zb[index].title,
+          res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
+          res_y_zb_title: mixed.res_y_zb[index].title,
+          res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%',
+          finish_value: mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
+        })
+      })
+
+      // console.log('init this.list-------------')
       this.list = []
       this.options.dataset.source.forEach((item, index) => {
         // console.log(item)
         this.list.push({
           chartId: uuidv1(),
           name: item.类目,
+          children: item.children,
           drillName: item.drillName,
           drillNameNode: item.drillNameNode,
           isDrill: item.isDrill,
@@ -235,7 +381,10 @@ export default {
         })
       })
 
-      console.log('this.list:', this.list)
+      // todo 未解决的数据源 图表 、表格
+      // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
+      // this.list = this.fold ? planeToHierarchy([..._list]) : _list
+      this.list = this.fold ? planeToHierarchy([..._list]) : this.list
 
       this.renderChart(this.options)
     },
@@ -245,7 +394,7 @@ export default {
     },
 
     initChart() {
-      console.log('initChart....')
+      // console.log('initChart.......')
       // console.log(this.data)
       // console.log(this.data.name)
       // console.log(document.getElementById(this.data.chartId))
@@ -267,7 +416,6 @@ export default {
     },
 
     renderChart(options) {
-      console.log('this.chart.id:', this.chart.id)
       if (this.chart.id) {
         this.chart.dispose()
       }
@@ -275,19 +423,31 @@ export default {
       this.chart.hideLoading()
       this.chart.setOption(options)
     },
-
+    handleCopy() {
+      console.log('this.temp:', this.temp)
+      const newPanel = { ...this.data }
+      newPanel.id = uuidv1()
+      newPanel.chartId = uuidv1()
+      newPanel.type = 'cus'
+      // console.log(this.breadcrumb)
+      newPanel.breadcrumb = deepClone(this.breadcrumb)
+      console.log('newPanel:', newPanel)
+      this.panel.list.unshift(newPanel)
+      console.log(this.panel.list)
+    },
     handleAdd() {
-      console.log(this.temp)
+      console.log('this.temp:', this.temp)
       const newPanel = {
         id: uuidv1(),
+        chartId: uuidv1(),
         type: 'cus',
         title: this.temp.breadName,
         viewName: this.temp._drillName, // -this.view
-        drillName: this.temp.name,
-        component: 'chart',
+        drillName: this.temp.name || this.temp.drillName,
+        // component: 'chart',
         parameters: this.data.parameters,
-        width: 600,
-        height: 400
+        width: this.data.width,
+        height: this.data.height
       }
       console.log(newPanel)
       this.panel.list.unshift(newPanel)
@@ -299,10 +459,31 @@ export default {
 
 <style lang="scss" scoped>
   .drill-container{
-    margin: 0;
+    margin-top: 45px;
+    height: 100%;
+  }
+  .el-tabs{
+    height: 100%;
   }
   .el-breadcrumb__inner{
     cursor: pointer;
   }
+  .el-tab-pane{
+    height: 100%;
+  }
+  .table-row-is-drill-class{
+    color: blue;
+    cursor: pointer;
+  }
+  .table-row-is-drill-class:hover{
+    text-decoration:underline;
+  }
+</style>
 
+<style lang="scss">
+  .drill-container {
+    .el-tabs__content {
+      height: 100% !important;
+    }
+  }
 </style>
