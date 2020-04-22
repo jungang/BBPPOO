@@ -218,6 +218,7 @@ export default {
         this.temp.list = []
         this.$store.state.options.views.forEach(item => {
           if (item.show === 'true') { // todo 判读缺省 item.default_show
+            // console.log(item)
             this.temp.list.push({
               id: uuidv1(),
               chartId: uuidv1(),
@@ -229,7 +230,7 @@ export default {
                 month: this.temp.dateValue,
                 year: this.temp.year
               },
-              width: 500,
+              width: 1000,
               height: 500,
               viewName: item.name
             })

@@ -45,26 +45,35 @@ export function standardize(data) {
   // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
+      if (item.value === 'Null') {
+        // item.value = '-'
+        console.log(!!item)
+      }
+
       item.original = item.value
       // console.log(item.type)
       switch (item.type) {
         case 'Duration':
-          item.value = (item.value * 1440).toFixed(2)
+          item.value = item.value && (item.value * 1440).toFixed(2)
           // console.log(item)
           break
         case 'Currency':
-          item.value = item.value.toFixed(2)
+          item.value = item.value && item.value.toFixed(2)
           // console.log(item)
           break
         case 'Double':
-          item.value = item.value.toFixed(2)
+          item.value = item.value && item.value.toFixed(2)
           break
         case 'Integer':
-          item.value = Math.round(item.value)
+          item.value = item.value && Math.round(item.value)
           // console.log(item)
           break
         case 'Percentage':
-          item.value = (item.value * 100).toFixed(2)
+          item.value = item.value && (item.value * 100).toFixed(2)
+          // console.log(item)
+          break
+        case 'String':
+          item.value = (item.value === 'Null') ? ' ' : item.value
           // console.log(item)
           break
         default:
@@ -286,6 +295,7 @@ export async function getData(...arg) {
     res_y = await fetchData(data1)
   }
 
+  currentView.ratio = false // todo 暂时取消占比数据读取
   if (currentView.ratio === 'true') {
     // 实际  占比
     res_s_zb = await fetchData(data2)

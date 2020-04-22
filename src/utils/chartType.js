@@ -69,7 +69,7 @@ export function planeToHierarchy(arr) {
 
   // 初始化准备
   arr = arr.map(item => {
-    // console.log(item.children)
+    // console.log(item.breadName,item.children)
     item.children = JSON.parse(item.children) // fixJson 字符串 =>>变数组
     item.childrenRow = [] // 默认无子元素
     item.parent = undefined // 默认父级未定义
@@ -79,6 +79,8 @@ export function planeToHierarchy(arr) {
   // 标记父级
   arr.forEach(item => {
     if (item.children.length !== 0) { // 有下级元素
+      // console.log("item.name:", item.name)
+      // console.log("item.children:", item.children)
       item.children.forEach(childrenName => {
         const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
         if (childrenItem) {

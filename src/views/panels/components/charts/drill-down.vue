@@ -59,11 +59,19 @@
             </template>
           </el-table-column>
 
-          <el-table-column v-if="list[0].res_y_value" prop="res_y_value" label="预计" />
-          <el-table-column v-if="list[0].res_y_zb_value" prop="res_y_zb_value" label="预计占比%" />
-          <el-table-column v-if="list[0].res_s_value" prop="res_s_value" label="实际" />
-          <el-table-column v-if="list[0].res_s_zb_value" prop="res_s_zb_value" label="实际占比%" />
-          <el-table-column v-if="list[0].res_finish_rate_value" prop="res_finish_rate_value" label="完成率%" />
+          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计" />
+          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
+          <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际" />
+          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
+          <el-table-column v-if="list[0].res_finish_rate_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
+            <template slot-scope="{row}">
+
+              <span v-if="row.res_finish_rate_value > 100" class="success">{{ row.res_finish_rate_value }}%</span>
+              <span v-if="row.res_finish_rate_value === 100" class="info">{{ row.res_finish_rate_value }}%</span>
+              <span v-if="row.res_finish_rate_value < 100" class="danger">{{ row.res_finish_rate_value }}%</span>
+
+            </template>
+          </el-table-column>
 
         </el-table>
       </el-tab-pane>
@@ -229,6 +237,11 @@ export default {
   },
   created() {
     this.init()
+    window.onresize = () => {
+      // console.log('window.onresize...')
+      // console.log(this.chart)
+      // this.chart.id && this.chart.resize()
+    }
   },
   mounted() {
   },
@@ -304,8 +317,8 @@ export default {
 
       params.parameters = this.data.parameters
       // console.log(this.$store.state.options.views)
-      console.log('this.currentView:', this.currentView)
-      console.log('this.fold:', this.fold)
+      // console.log('this.currentView:', this.currentView)
+      // console.log('this.fold:', this.fold)
       // console.log('currentView.style:', this.currentView.style)
       this.activeName = this.currentView.style
 
@@ -377,14 +390,17 @@ export default {
           res_s_zb_value: item.实际占比 && item.实际占比 + '%',
           res_y_zb_title: item.类目,
           res_y_zb_value: item.预计占比 && item.预计占比 + '%',
-          res_finish_rate_value: item.完成率 && item.完成率 + '%'
+          res_finish_rate_value: item.完成率 && +item.完成率
         })
       })
 
+      console.log('_list:', _list)
       // todo 未解决的数据源 图表 、表格
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
       // this.list = this.fold ? planeToHierarchy([..._list]) : _list
       this.list = this.fold ? planeToHierarchy([..._list]) : this.list
+
+      console.log('this.list:', this.list)
 
       this.renderChart(this.options)
     },
