@@ -17,7 +17,7 @@ export function fetchPanel(id) {
     url: '/chart/get',
     method: 'get',
     params: { id },
-    baseURL: 'http://172.20.95.131:8096'
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 
@@ -50,7 +50,7 @@ export function saveLayout(data) {
     url: '/chart/set',
     method: 'post',
     data,
-    baseURL: 'http://172.20.95.131:8096'
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 

@@ -59,7 +59,7 @@
               refresh:true,
               batch:temp.year + temp.month}"
             :show-file-list="false"
-            action="http://172.20.95.131:8096/upload/all"
+            action="http://39.98.167.246:8096/upload/all"
             :on-success="handleSuccess"
             :on-error="handleError"
             :auto-upload="true"
@@ -75,7 +75,7 @@
             </el-button>
           </a>
 
-          <a v-if="row.id" :href="'http://172.20.95.131:8096/excel/download?id='+row.id">
+          <a v-if="row.id" :href="'http://39.98.167.246:8096/excel/download?id='+row.id">
             <el-button size="mini">
               下载
             </el-button>

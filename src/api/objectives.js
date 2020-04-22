@@ -5,7 +5,7 @@ export function calculate(query) {
     url: '/calculate',
     method: 'get',
     params: query,
-    baseURL: 'http://172.20.95.131:8096'
+    baseURL: 'http://39.98.167.246:8096'
   })
 }
 

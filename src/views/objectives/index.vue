@@ -13,7 +13,7 @@
 
         <el-upload
           class="upload-demo"
-          action="http://172.20.95.131:8096/upload/target"
+          action="http://39.98.167.246:8096/upload/target"
           :show-file-list="false"
           multiple
           :limit="10"
