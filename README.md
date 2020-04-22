@@ -8,10 +8,6 @@ Dashboard/Table/Drag Table 拖拽表格微信
 Dashboard/Excel/Upload Excel 上传，展开表格
 
 
-
-39.98.167.246 用户名 root 密码 8ql6,yhY
-
-
 ？问题
 
 图表页面无法嵌套
