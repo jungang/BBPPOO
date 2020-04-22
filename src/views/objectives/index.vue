@@ -13,7 +13,7 @@
 
         <el-upload
           class="upload-demo"
-          action="http://39.98.167.246:8096/upload/target"
+          :action="this.$store.state.options.API+'/upload/target'"
           :show-file-list="false"
           multiple
           :limit="10"
@@ -23,6 +23,7 @@
           :on-success="handleSuccess"
           style="width: 60px;display: inline-block;"
         >
+
           <el-button v-waves type="primary">上传文件</el-button>
         </el-upload>
 
@@ -147,6 +148,7 @@ export default {
   created() {
     this.getList()
     this.currentView = this.$store.state.options.views.find(item => item.name === 'monthly_items_list')
+    console.log(this.$store.state.options.API)
   },
   methods: {
     handleDetail(row) {

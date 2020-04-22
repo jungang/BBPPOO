@@ -8,7 +8,8 @@ function resolve(dir) {
 
 const name = defaultSettings.title || 'BPO运营数据分析工具' // page title
 
-const rap2 = `http://rap2api.taobao.org/app/mock/249653/dev-api`
+// const rap2 = `http://rap2api.taobao.org/app/mock/249653/dev-api`
+const rap2 = `http://172.20.95.131:8096`
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.

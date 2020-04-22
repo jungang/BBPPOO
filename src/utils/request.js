@@ -11,7 +11,7 @@ const service = axios.create({
 })
 
 const request2 = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API2, // api 的 base_url
+  baseURL: process.env.VUE_APP_BASE_API, // api 的 base_url
   timeout: 10000 // request timeout
 })
 request2.interceptors.response.use(

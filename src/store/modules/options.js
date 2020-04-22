@@ -59,7 +59,8 @@ const state = {
     { label: '30日', key: 30 },
     { label: '31日', key: 31 }
   ],
-  views: []
+  views: [],
+  API: ''
 }
 
 const mutations = {
@@ -102,6 +103,10 @@ const mutations = {
       item.items = (item.items !== 'Null') ? JSON.parse(item.items) : {}
     })
     // console.log('state.views:', state.views)
+  },
+  SET_API: (state) => {
+    state.API = process.env.VUE_APP_BASE_API
+    // console.log('state.views:', state.views)
   }
 }
 
@@ -110,6 +115,8 @@ const actions = {
     commit('CHANGE_OPTIONS', data)
   },
   getView({ commit, state }) {
+    commit('SET_API')
+
     const data = {
       'dir': 'Sample Reports/view',
       'projectId': '00000000-0000-0000-0000-000000000000',

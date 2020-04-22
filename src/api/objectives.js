@@ -4,8 +4,7 @@ export function calculate(query) {
   return request({
     url: '/calculate',
     method: 'get',
-    params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    params: query
   })
 }
 

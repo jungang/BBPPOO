@@ -4,8 +4,7 @@ export function fetchStatus(query) {
   return request({
     url: '/calstatus',
     method: 'get',
-    params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    params: query
   })
 }
 
@@ -13,8 +12,7 @@ export function fetchList(query) {
   return request({
     url: '/excel/list',
     method: 'get',
-    params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    params: query
   })
 }
 
@@ -22,8 +20,7 @@ export function actionDelete(query) {
   return request({
     url: '/excel/delete',
     method: 'delete',
-    params: query,
-    baseURL: 'http://39.98.167.246:8096'
+    params: query
   })
 }
 

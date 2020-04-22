@@ -16,8 +16,7 @@ export function fetchPanel(id) {
   return request({
     url: '/chart/get',
     method: 'get',
-    params: { id },
-    baseURL: 'http://39.98.167.246:8096'
+    params: { id }
   })
 }
 
@@ -49,8 +48,7 @@ export function saveLayout(data) {
   return request({
     url: '/chart/set',
     method: 'post',
-    data,
-    baseURL: 'http://39.98.167.246:8096'
+    data
   })
 }
 
