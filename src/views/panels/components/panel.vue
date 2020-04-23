@@ -281,6 +281,7 @@ export default {
   }
   .my-class {
     border: none;
+    position: absolute;
     transition: background-color 200ms linear;
   }
 
