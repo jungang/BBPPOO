@@ -176,8 +176,9 @@ export default {
           top: 'top',
           feature: {
             dataView: {
-              readOnly: true,
-              optionToContent: function(opt) {
+              show: false
+              // readOnly: true,
+              /*              optionToContent: function(opt) {
                 var axisData = opt.dataset[0].source
 
                 var table = '<table style="width:100%;text-align:center; user-select: text;"><tbody><tr>' +
@@ -197,7 +198,7 @@ export default {
                 }
                 table += '</tbody></table>'
                 return table
-              }
+              }*/
             },
             magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
             restore: { show: true }
@@ -375,12 +376,12 @@ export default {
           res_s_title: item.title,
           res_s_value: item.value,
           res_y_title: mixed.res_y[index] && mixed.res_y[index].title,
-          res_y_value: mixed.res_y[index].value,
-          res_s_zb_title: mixed.res_s_zb[index].title,
-          res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
-          res_y_zb_title: mixed.res_y_zb[index].title,
-          res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%',
-          finish_value: mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
+          res_y_value: mixed.res_y[index] && mixed.res_y[index].value,
+          res_s_zb_title: mixed.res_s_zb[index] && mixed.res_s_zb[index].title,
+          res_s_zb_value: mixed.res_s_zb[index] && mixed.res_s_zb[index].value + '%',
+          res_y_zb_title: mixed.res_s_zb[index] && mixed.res_y_zb[index].title,
+          res_y_zb_value: mixed.res_y_zb[index] && mixed.res_y_zb[index].value + '%',
+          finish_value: mixed.res_y[index] && mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
         })
       })
 
@@ -424,7 +425,7 @@ export default {
         this.list.push({})
       }
 
-      this.renderChart(this.options)
+      this.currentView.switch && this.renderChart(this.options)
     },
     handleBread(item, index) {
       this.breadcrumb.splice(index + 1)
