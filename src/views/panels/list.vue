@@ -213,6 +213,7 @@ export default {
           }
         })
 
+        // nsdh
         console.log(this.temp)
         console.log(this.$store.state.options.views)
         this.temp.list = []

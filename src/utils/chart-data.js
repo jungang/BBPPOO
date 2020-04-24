@@ -47,7 +47,7 @@ export function standardize(data) {
     data[key].forEach(item => {
       if (item.value === 'Null') {
         // item.value = '-'
-        console.log(!!item)
+        // console.log(!!item)
       }
 
       item.original = item.value
@@ -286,7 +286,7 @@ export async function getData(...arg) {
     'compare:', currentView.compare,
     'ratio:', currentView.ratio,
     'completion:', currentView.completion)*/
-  // console.log({ data0, data1, data2, data3 })
+  console.log({ data0, data1, data2, data3 })
 
   res_s = await fetchData(data0)
 

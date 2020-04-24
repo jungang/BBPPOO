@@ -87,6 +87,7 @@ import uuidv1 from 'uuid/v1'
 import { format, getData, standardize } from '@/utils/chart-data'
 import { deepClone } from '@/utils/index'
 import { planeToHierarchy } from '@/utils/chartType'
+import { getFullData } from '@/utils/dataProce'
 // import { format } from '@/utils/chart-data'
 
 export default {
@@ -117,6 +118,7 @@ export default {
   },
   data() {
     return {
+      fullData: {},
       fold: true,
       sort: true,
       timer: {},
@@ -328,6 +330,19 @@ export default {
       // 发起请求
       this.chart.id && this.chart.showLoading(this.loading)
 
+      // todo 重构数据API S
+
+      // this.currentView.drill_name = params.name
+      this.currentView.drill_drillName = params.drillName
+      this.currentView.drill__drillName = params._drillName
+      this.currentView.drill_parameters = this.data.parameters
+
+      this.fullData = await getFullData(this.currentView)
+
+      console.log('fullData:', this.fullData)
+
+      // todo 重构数据API E
+
       this.options = (format(deepClone(this.options), this.currentView, await getData(this.currentView, params)))
 
       const mixed = standardize(await getData(this.currentView, params))
@@ -394,7 +409,7 @@ export default {
         })
       })
 
-      console.log('_list:', _list)
+      // console.log('_list:', _list)
       // todo 未解决的数据源 图表 、表格
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
       // this.list = this.fold ? planeToHierarchy([..._list]) : _list

@@ -7,7 +7,12 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  api_dir: 'Sample Reports/',
+  apiTemplate: {
+    projectId: '00000000-0000-0000-0000-000000000000',
+    vf_file: 'dashboard.efwvf'
+  }
 }
 
 const mutations = {
@@ -106,6 +111,7 @@ const actions = {
 
   // dynamically modify permissions
   changeRoles({ commit, dispatch }, role) {
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise(async resolve => {
       const token = role + '-token'
 

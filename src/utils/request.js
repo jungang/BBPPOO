@@ -3,6 +3,8 @@ import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
+axios.defaults.withCredentials = true
+
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -37,6 +39,7 @@ request2.interceptors.request.use(
     config.data = config.data.replace('+', '%2B')
     if (store.getters.token) {
       config.headers['X-Token'] = getToken()
+      // config.headers['withCredentials'] = true
     }
     return config
   },
@@ -56,6 +59,7 @@ service.interceptors.request.use(
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
+      // config.headers['withCredentials'] = true
     }
     return config
   },
@@ -84,17 +88,17 @@ service.interceptors.response.use(
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000) {
       Message({
-        message: res.message || 'Error:' + res.code,
+        message: res.message || 'Error:' + res.code + '  msg:' + res.msg,
         type: 'error',
         duration: 5 * 1000
       })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (res.code === 50000 || res.code === 50008 || res.code === 50012 || res.code === 50014) {
         // to re-login
-        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: 'Re-Login',
-          cancelButtonText: 'Cancel',
+        MessageBox.confirm('您已经登出，您可以停留在此页面，或重新登录', '账号退出', {
+          confirmButtonText: '重新登陆',
+          cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {
