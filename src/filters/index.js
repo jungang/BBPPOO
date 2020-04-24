@@ -32,7 +32,9 @@ export function dataType(value, type) {
     default:
   }
 
-  // console.log(value, typeof value, type)
+  value = parseFloat(value) || value
+
+  console.log(value, typeof value, type)
   return value
 }
 

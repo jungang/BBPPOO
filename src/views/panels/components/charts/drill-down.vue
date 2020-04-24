@@ -29,6 +29,7 @@
     <el-tabs
       v-model="activeName"
       type="border"
+      :class="!currentView.switch?'only-table':''"
       @tab-click="handleClick"
     >
       <el-tab-pane v-if="currentView.switch" name="chart">
@@ -62,13 +63,13 @@
 
           <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计">
             <template slot-scope="{row}">
-              <span> {{ row.res_y_value | dataType(row.type) }}</span>
+              <span> {{ row.res_y_value }}</span>
             </template>
           </el-table-column>
           <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
           <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
-              <span> {{ row.res_s_value | dataType(row.type) }}</span>
+              <span> {{ row.res_s_value }}</span>
 
             </template>
           </el-table-column>
@@ -416,9 +417,9 @@ export default {
           _drillName: item.drillNameNode,
           breadName: item.类目,
           res_s_title: item.类目,
-          res_s_value: item.实际 === 0 ? ' ' : item.实际,
+          res_s_value: dataType(item.实际, item.type),
           res_y_title: item.类目,
-          res_y_value: item.预计 === 0 ? ' ' : item.预计,
+          res_y_value: dataType(item.预计, item.type),
           res_s_zb_title: item.类目,
           res_s_zb_value: item.实际占比 && item.实际占比 + '%',
           res_y_zb_title: item.类目,
@@ -438,8 +439,8 @@ export default {
           item.res_finish_rate_value = item.res_finish_rate_value.toFixed(2)
         }
 
-        console.log('item.res_s_title:', item.res_s_title)
-        console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
+        // console.log('item.res_s_title:', item.res_s_title)
+        // console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
       })
 
       // todo 未解决的数据源 图表 、表格
@@ -512,7 +513,7 @@ export default {
         type: 'cus',
         title: this.temp.breadName,
         viewName: this.temp._drillName, // -this.view
-        drillName: this.temp.name || this.temp.drillName,
+        drillName: this.temp.drillName || this.temp.name,
         // component: 'chart',
         parameters: this.data.parameters,
         width: this.data.width,
@@ -553,6 +554,11 @@ export default {
   .drill-container {
     .el-tabs__content {
       height: 100% !important;
+    }
+  }
+  .only-table{
+    .is-top{
+      /*display: none !important;*/
     }
   }
 </style>
