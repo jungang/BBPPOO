@@ -374,7 +374,7 @@ export default {
           breadName: item.title,
           res_s_title: item.title,
           res_s_value: item.value,
-          res_y_title: mixed.res_y[index].title,
+          res_y_title: mixed.res_y[index] && mixed.res_y[index].title,
           res_y_value: mixed.res_y[index].value,
           res_s_zb_title: mixed.res_s_zb[index].title,
           res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
