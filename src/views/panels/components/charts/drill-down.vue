@@ -36,7 +36,7 @@
         <div :id="data.chartId" class="chart" :style="`width:100%; height:`+(data.height-140)+`px`">{{ data.name }}</div>
       </el-tab-pane>
       <el-tab-pane name="tabular">
-        <span slot="label"><i class="el-icon-s-grid" /> 表格</span>
+        <span v-if="currentView.switch" slot="label"><i class="el-icon-s-grid" /> 表格</span>
         <el-table
           :data="list"
           style="width: 100%"

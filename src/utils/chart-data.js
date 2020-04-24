@@ -229,7 +229,7 @@ export function format(...arg) {
           return optionToContent(opt)
         }*/
       },
-      magicType: { show: true, type: ['line', 'bar'] }
+      magicType: { show: true, type: ['line', 'bar', 'stack'] }
       // restore: { show: true }
     }
   }
