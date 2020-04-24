@@ -26,13 +26,13 @@ export function dataType(value, type) {
       value = value && value + '%'
       break
     case 'String':
-      console.log('String:', value)
+      // console.log('String:', value)
       value = (value === 0) ? ' ' : value
       break
     default:
   }
 
-  console.log(value, typeof value, type)
+  // console.log(value, typeof value, type)
   return value
 }
 

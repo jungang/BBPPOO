@@ -76,9 +76,9 @@
           <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
 
-              <span v-if="row.res_finish_rate_value > 100" class="success">{{ row.res_finish_rate_value }}%</span>
-              <span v-if="row.res_finish_rate_value === 100" class="info">{{ row.res_finish_rate_value }}%</span>
-              <span v-if="row.res_finish_rate_value < 100" class="danger">{{ row.res_finish_rate_value }}%</span>
+              <span v-if="row.res_finish_rate_value > 100" class="success">{{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}</span>
+              <span v-else-if="row.res_finish_rate_value < 100" class="danger">{{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}</span>
+              <span v-else class="info">{{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}</span>
 
             </template>
           </el-table-column>
@@ -430,7 +430,16 @@ export default {
       console.log('_list:', _list)
 
       _list.forEach(item => {
-        item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100).toFixed(0)
+        item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100)
+
+        if (isNaN(item.res_finish_rate_value)) {
+          item.res_finish_rate_value = ''
+        } else {
+          item.res_finish_rate_value = item.res_finish_rate_value.toFixed(2)
+        }
+
+        console.log('item.res_s_title:', item.res_s_title)
+        console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
       })
 
       // todo 未解决的数据源 图表 、表格
