@@ -285,7 +285,7 @@ export default {
       // console.log('params:', params)
       params = params || deepClone(this.data)
 
-      // console.log('params:', params)
+      console.log('params:', params)
 
       isBread || this.breadcrumb.push({
         id: params.id,
@@ -339,7 +339,7 @@ export default {
 
       this.fullData = await getFullData(this.currentView)
 
-      console.log('fullData:', this.fullData)
+      // console.log('fullData:', this.fullData)
 
       // todo 重构数据API E
 
@@ -384,8 +384,9 @@ export default {
         })
       })
 
-      // console.log('init this.list-------------')
+      console.log('init this.list-------------')
       this.list = []
+      console.log('this.options.dataset.source:', this.options.dataset.source)
       this.options.dataset.source.forEach((item, index) => {
         // console.log(item)
         this.list.push({
@@ -415,7 +416,13 @@ export default {
       // this.list = this.fold ? planeToHierarchy([..._list]) : _list
       this.list = this.fold ? planeToHierarchy([..._list]) : this.list
 
+      console.log('this.fold:', this.fold)
       console.log('this.list:', this.list)
+
+      if (this.list.length <= 0) {
+        console.log('<=0')
+        this.list.push({})
+      }
 
       this.renderChart(this.options)
     },

@@ -13,7 +13,7 @@
 
         <el-upload
           class="upload-demo"
-          :action="this.$store.state.options.API+'/upload/target'"
+          :action="$store.state.options.API+'/upload/target'"
           :show-file-list="false"
           multiple
           :limit="10"

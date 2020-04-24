@@ -59,7 +59,7 @@
               refresh:true,
               batch:temp.year + temp.month}"
             :show-file-list="false"
-            :action="this.$store.state.options.API+'/upload/all'"
+            :action="$store.state.options.API+'/upload/all'"
             :on-success="handleSuccess"
             :on-error="handleError"
             :auto-upload="true"
@@ -75,7 +75,7 @@
             </el-button>
           </a>
 
-          <a v-if="row.id" :href="this.$store.state.options.API+'/excel/download?id='+row.id">
+          <a v-if="row.id" :href="$store.state.options.API+'/excel/download?id='+row.id">
             <el-button size="mini">
               下载
             </el-button>
@@ -241,6 +241,7 @@ export default {
       this.listLoading = true
       this.list.listQuery.batch = this.temp.year + this.temp.month
       fetchList(this.list.listQuery).then(response => {
+        console.log('response:', response)
         this.list.items = response.data
         // this.list.total = response.data.total
         this.listLoading = false
