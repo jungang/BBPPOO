@@ -1,6 +1,6 @@
 import { fetchData } from '@/api/panel'
 import { unique, sort, deepClone } from '@/utils/index'
-import { formatter_s, formatter_y, optionToContent } from '@/utils/chartType'
+import { formatter_s, formatter_y } from '@/utils/chartType'
 export function standardize(data) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
@@ -222,13 +222,14 @@ export function format(...arg) {
     top: 'top',
     feature: {
       dataView: {
-        readOnly: true,
+        show: false
+        /*       readOnly: true,
         optionToContent: function(opt) {
           return optionToContent(opt)
-        }
+        }*/
       },
-      magicType: { show: true, type: ['line', 'bar', 'stack', 'tiled'] },
-      restore: { show: true }
+      magicType: { show: true, type: ['line', 'bar'] }
+      // restore: { show: true }
     }
   }
 

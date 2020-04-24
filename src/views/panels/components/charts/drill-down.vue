@@ -60,9 +60,9 @@
           </el-table-column>
 
           <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计" />
-          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
+          <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
           <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际" />
-          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
+          <!--          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />-->
           <el-table-column v-if="list[0].res_finish_rate_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
 
@@ -377,10 +377,10 @@ export default {
           res_s_value: item.value,
           res_y_title: mixed.res_y[index] && mixed.res_y[index].title,
           res_y_value: mixed.res_y[index] && mixed.res_y[index].value,
-          res_s_zb_title: mixed.res_s_zb[index] && mixed.res_s_zb[index].title,
-          res_s_zb_value: mixed.res_s_zb[index] && mixed.res_s_zb[index].value + '%',
-          res_y_zb_title: mixed.res_s_zb[index] && mixed.res_y_zb[index].title,
-          res_y_zb_value: mixed.res_y_zb[index] && mixed.res_y_zb[index].value + '%',
+          // res_s_zb_title: mixed.res_s_zb[index] && mixed.res_s_zb[index].title,
+          // res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
+          // res_y_zb_title: mixed.res_y_zb[index].title,
+          // res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%',
           finish_value: mixed.res_y[index] && mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
         })
       })
