@@ -101,6 +101,8 @@ export default {
         password: '' // hiuser
       },
       loginRules: {
+        username: [{ required: true, message: '账号不能为空', trigger: 'blur' }],
+        password: [{ required: true, message: '密码不能为空', trigger: 'blur' }]
         // username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         // password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },

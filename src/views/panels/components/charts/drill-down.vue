@@ -44,7 +44,7 @@
           border
           fit
           stripe
-          row-key="name"
+          row-key="id"
           :tree-props="{children: 'childrenRow',hasChildren: 'hasChildren'}"
           :max-height="data.height-138"
         >
@@ -61,7 +61,11 @@
 
           <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计" />
           <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
-          <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际" />
+          <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际">
+            <template slot-scope="{row}">
+              <span> {{ row.res_s_value | dataType(row.type) }}</span>
+            </template>
+          </el-table-column>
           <!--          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />-->
           <el-table-column v-if="list[0].res_finish_rate_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
@@ -82,6 +86,8 @@
 1
 <script>
 // import { fetchData } from '@/api/panel'
+// eslint-disable-next-line no-unused-vars
+import { dataType } from '@/filters'
 var echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
 import { format, getData, standardize } from '@/utils/chart-data'
@@ -367,8 +373,10 @@ export default {
         // console.log(item.name)
         // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
         _list.push({
+          id: uuidv1(),
           chartId: uuidv1(),
           name: item.name,
+          type: item.type,
           children: item.children,
           drillName: item.name,
           _drillName: this.currentView.items[item.name] || this.currentView.items['*'],
@@ -391,8 +399,10 @@ export default {
       this.options.dataset.source.forEach((item, index) => {
         // console.log(item)
         this.list.push({
+          id: uuidv1(),
           chartId: uuidv1(),
           name: item.类目,
+          type: item.type,
           children: item.children,
           drillName: item.drillName,
           drillNameNode: item.drillNameNode,
@@ -400,7 +410,7 @@ export default {
           _drillName: item.drillNameNode,
           breadName: item.类目,
           res_s_title: item.类目,
-          res_s_value: item.实际,
+          res_s_value: item.实际 === 0 ? '0' : item.实际,
           res_y_title: item.类目,
           res_y_value: item.预计,
           res_s_zb_title: item.类目,

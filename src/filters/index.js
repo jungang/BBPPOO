@@ -3,6 +3,39 @@ export { parseTime, formatTime } from '@/utils'
 
 /**
  * Show plural label if time is plural number
+ * @return {string}
+ * @param value
+ * @param type
+ */
+export function dataType(value, type) {
+  value = value && +value
+  switch (type) {
+    case 'Duration':
+      value = value && (value * 1440).toFixed(2)
+      break
+    case 'Currency':
+      value = value && value.toFixed(2)
+      break
+    case 'Double':
+      value = value && value.toFixed(2)
+      break
+    case 'Integer':
+      value = value && Math.round(value)
+      break
+    case 'Percentage':
+      value = value && value + '%'
+      break
+    case 'String':
+      value = (value === 'Null') ? ' ' : value
+      break
+    default:
+  }
+
+  return value
+}
+
+/**
+ * Show plural label if time is plural number
  * @param {number} time
  * @param {string} label
  * @return {string}

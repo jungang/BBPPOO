@@ -142,6 +142,7 @@ export function format(...arg) {
     options.dataset.source.push({
       类目: item.title,
       实际: item.value,
+      type: item.type,
       drillName: item.name,
       drillNameNode: currentView.items[item.name],
       isDrill: !!currentView.items[item.name]
