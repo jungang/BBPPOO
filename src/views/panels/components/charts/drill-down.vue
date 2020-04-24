@@ -31,7 +31,7 @@
       type="border"
       @tab-click="handleClick"
     >
-      <el-tab-pane name="chart">
+      <el-tab-pane v-if="currentView.switch" name="chart">
         <span slot="label"><i class="el-icon-s-data" /> 图表</span>
         <div :id="data.chartId" class="chart" :style="`width:100%; height:`+(data.height-140)+`px`">{{ data.name }}</div>
       </el-tab-pane>

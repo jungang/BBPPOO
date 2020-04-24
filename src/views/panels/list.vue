@@ -220,7 +220,7 @@ export default {
         this.$store.state.options.views.forEach(item => {
           if (item.show === 'true') { // todo 判读缺省 item.default_show
             // console.log(item)
-            this.temp.list.push({
+            /*        this.temp.list.push({
               id: uuidv1(),
               chartId: uuidv1(),
               title: item.title,
@@ -234,7 +234,50 @@ export default {
               width: 1000,
               height: 500,
               viewName: item.name
-            })
+            })*/
+            this.temp.list = [{
+              id: uuidv1(),
+              type: 'def',
+              title: '当月利润分析',
+              width: 500,
+              height: 500,
+              chartId: uuidv1(),
+              viewName: 'profit_income_expanse',
+              component: 'chart',
+              panelTitle: '当月利润分析',
+              parameters: {
+                year: 2020,
+                month: '01'
+              }
+            }, {
+              id: uuidv1(),
+              type: 'def',
+              title: '本年累计利润分析',
+              width: 500,
+              height: 500,
+              chartId: uuidv1(),
+              viewName: 'profit_income_expanse_ytd',
+              component: 'chart',
+              panelTitle: '本年累计利润分析',
+              parameters: {
+                year: 2020,
+                month: '01'
+              }
+            }, {
+              id: uuidv1(),
+              type: 'def',
+              title: '月度预实一览表',
+              width: 1020,
+              height: 500,
+              chartId: uuidv1(),
+              viewName: 'monthly_items_list',
+              component: 'tabular',
+              panelTitle: '月度预实一览表',
+              parameters: {
+                year: 2020,
+                month: '01'
+              }
+            }]
           }
         })
 

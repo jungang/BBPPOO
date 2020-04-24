@@ -75,8 +75,10 @@ const mutations = {
     state.views.forEach(item => {
       item.fold = false
       item.sort = false
+      item.switch = false
       switch (item.style) {
         case 'chart':
+          item.switch = true
           // console.log(item.style)
           break
         case 'multicols':

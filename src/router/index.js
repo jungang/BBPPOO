@@ -130,7 +130,7 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-
+/*
   {
     path: '/configuration',
     component: Layout,
@@ -142,7 +142,7 @@ export const asyncRoutes = [
         meta: { title: '项目配置', icon: 'list', noCache: true }
       }
     ]
-  },
+  },*/
 
   {
     path: '/management',
@@ -201,6 +201,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/example/list',
     name: 'Example',
+    hidden: true,
     meta: {
       title: 'debug-',
       icon: 'example'
@@ -226,13 +227,13 @@ export const asyncRoutes = [
         component: () => import('@/views/example/list'),
         name: 'ArticleList2',
         meta: { title: 'Article List', icon: 'list' }
-      },
-      {
+      }
+      /*    {
         path: 'dev',
         component: () => import('@/views/panels/components/charts/dev'),
         name: 'ArticleList3',
         meta: { title: 'dev', icon: 'bug' }
-      }
+      }*/
     ]
   },
 
