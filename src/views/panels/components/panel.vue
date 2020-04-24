@@ -14,7 +14,10 @@
           v-for="element in panel.list"
           :key="element.id"
           class="list-group-item"
-          :style="{ width: element.width + 'px', height: element.height + 'px' }"
+          :style="{
+            width: element.width + 'px',
+            minWidth: element.width + 'px',
+            height: element.height + 'px' }"
         >
           <vue-draggable-resizable
             :w="element.width"

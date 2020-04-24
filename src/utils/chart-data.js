@@ -288,7 +288,7 @@ export async function getData(...arg) {
     'compare:', currentView.compare,
     'ratio:', currentView.ratio,
     'completion:', currentView.completion)*/
-  console.log({ data0, data1, data2, data3 })
+  // console.log({ data0, data1, data2, data3 })
 
   res_s = await fetchData(data0)
 
@@ -297,7 +297,7 @@ export async function getData(...arg) {
     res_y = await fetchData(data1)
   }
 
-  currentView.ratio = false // todo 暂时取消占比数据读取
+  // currentView.ratio = false // todo 暂时取消占比数据读取
   if (currentView.ratio === 'true') {
     // 实际  占比
     res_s_zb = await fetchData(data2)

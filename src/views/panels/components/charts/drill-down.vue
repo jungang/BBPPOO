@@ -52,6 +52,7 @@
           <el-table-column
             prop="res_s_title"
             label="名称"
+            :sortable="sort"
           >
             <template slot-scope="{row}">
               <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
@@ -59,15 +60,20 @@
             </template>
           </el-table-column>
 
-          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计" />
+          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计">
+            <template slot-scope="{row}">
+              <span> {{ row.res_y_value | dataType(row.type) }}</span>
+            </template>
+          </el-table-column>
           <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
           <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
               <span> {{ row.res_s_value | dataType(row.type) }}</span>
+
             </template>
           </el-table-column>
           <!--          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />-->
-          <el-table-column v-if="list[0].res_finish_rate_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
+          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
 
               <span v-if="row.res_finish_rate_value > 100" class="success">{{ row.res_finish_rate_value }}%</span>
@@ -292,7 +298,7 @@ export default {
       // console.log('params:', params)
       params = params || deepClone(this.data)
 
-      console.log('params:', params)
+      // console.log('params:', params)
 
       isBread || this.breadcrumb.push({
         id: params.id,
@@ -389,7 +395,7 @@ export default {
           // res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
           // res_y_zb_title: mixed.res_y_zb[index].title,
           // res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%',
-          finish_value: mixed.res_y[index] && mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
+          res_finish_rate_value: mixed.res_y[index] && mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
         })
       })
 
@@ -410,9 +416,9 @@ export default {
           _drillName: item.drillNameNode,
           breadName: item.类目,
           res_s_title: item.类目,
-          res_s_value: item.实际 === 0 ? '0' : item.实际,
+          res_s_value: item.实际 === 0 ? ' ' : item.实际,
           res_y_title: item.类目,
-          res_y_value: item.预计,
+          res_y_value: item.预计 === 0 ? ' ' : item.预计,
           res_s_zb_title: item.类目,
           res_s_zb_value: item.实际占比 && item.实际占比 + '%',
           res_y_zb_title: item.类目,
@@ -421,7 +427,12 @@ export default {
         })
       })
 
-      // console.log('_list:', _list)
+      console.log('_list:', _list)
+
+      _list.forEach(item => {
+        item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100).toFixed(0)
+      })
+
       // todo 未解决的数据源 图表 、表格
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
       // this.list = this.fold ? planeToHierarchy([..._list]) : _list

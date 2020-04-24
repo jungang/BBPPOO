@@ -17,7 +17,7 @@ export function dataType(value, type) {
       value = value && value.toFixed(2)
       break
     case 'Double':
-      value = value && value.toFixed(2)
+      // value = value && value.toFixed(2)
       break
     case 'Integer':
       value = value && Math.round(value)
@@ -26,11 +26,13 @@ export function dataType(value, type) {
       value = value && value + '%'
       break
     case 'String':
-      value = (value === 'Null') ? ' ' : value
+      console.log('String:', value)
+      value = (value === 0) ? ' ' : value
       break
     default:
   }
 
+  console.log(value, typeof value, type)
   return value
 }
 
