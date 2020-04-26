@@ -56,12 +56,11 @@
             :sortable="sort"
           >
             <template slot-scope="{row}">
-              <el-tooltip :disabled="!row.formula" class="item" effect="dark" :content="row.formula" placement="top-start">
+              <el-tooltip :disabled="!fold || !row.formula" class="item" effect="dark" :content="row.formula" placement="top-start">
                 <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
                 <span v-else>
                   {{ row.res_s_title }}
                 </span>
-
               </el-tooltip>
 
             </template>
@@ -75,17 +74,13 @@
           <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
           <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
-              <span> {{ row.res_s_value }}</span>
-
+              <span :class="row.highlightStyle"> {{ row.res_s_value }}</span>
             </template>
           </el-table-column>
           <!--          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />-->
           <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
-
-              <span v-if="row.res_finish_rate_value > 100" class="success">{{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}</span>
-              <span v-else-if="row.res_finish_rate_value < 100" class="danger">{{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}</span>
-              <span v-else class="info">{{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}</span>
+              {{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}
 
             </template>
           </el-table-column>
@@ -434,12 +429,13 @@ export default {
           res_s_zb_value: item.实际占比 && item.实际占比 + '%',
           res_y_zb_title: item.类目,
           res_y_zb_value: item.预计占比 && item.预计占比 + '%',
-          res_finish_rate_value: item.完成率 && +item.完成率
+          res_finish_rate_value: parseFloat(item.完成率) && +item.完成率
         })
       })
 
       // console.log('_list:', _list)
 
+      // 完成率
       _list.forEach(item => {
         item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100)
 
@@ -449,11 +445,43 @@ export default {
           item.res_finish_rate_value = item.res_finish_rate_value.toFixed(2)
         }
 
-        // console.log('item.res_s_title:', item.res_s_title)
-        // console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
+        item.res_finish_rate_value = parseFloat(item.res_finish_rate_value) || ''
+        item.res_finish_rate_value = item.res_finish_rate_value === Infinity ? '' : item.res_finish_rate_value
+
+        console.log('item.res_s_title:', item.res_s_title)
+        console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
       })
 
       // todo 未解决的数据源 图表 、表格
+
+      this.list.forEach(item => {
+        item.highlightStyle = ''
+        if (item.highlight === 'true') {
+          item.highlightStyle = item.res_finish_rate_value < 100 ? 'danger' : ''
+        } else if (item.highlight === 'false') {
+          item.highlightStyle = item.res_finish_rate_value > 100 ? 'danger' : ''
+        }
+        // console.log('item:', item)
+        // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
+
+        item.res_finish_rate_value = isNaN(item.res_finish_rate_value) ? '' : item.res_finish_rate_value
+        // 修复 完成率
+
+        console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
+      })
+
+      // todo 重复业务
+      _list.forEach(item => {
+        item.highlightStyle = ''
+        if (item.highlight === 'true') {
+          item.highlightStyle = item.res_finish_rate_value < 100 ? 'danger' : ''
+        } else if (item.highlight === 'false') {
+          item.highlightStyle = item.res_finish_rate_value > 100 ? 'danger' : ''
+        }
+        // console.log('item:', item)
+        // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
+      })
+
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
       // this.list = this.fold ? planeToHierarchy([..._list]) : _list
       this.list = this.fold ? planeToHierarchy([..._list]) : this.list
@@ -462,7 +490,6 @@ export default {
       console.log('this.list:', this.list)
 
       if (this.list.length <= 0) {
-        console.log('<=0')
         this.list.push({})
       }
 

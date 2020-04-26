@@ -8,7 +8,7 @@ export { parseTime, formatTime } from '@/utils'
  * @param type
  */
 export function dataType(value, type, item) {
-  console.log('item:', item)
+  // console.log('item:', item)
   // value = value && +value
   value = parseFloat(value) || value
 
@@ -26,7 +26,7 @@ export function dataType(value, type, item) {
       value = value && Math.round(value)
       break
     case 'Percentage':
-      console.log('Percentage..', item)
+      // console.log('Percentage..', item)
       value = value && value + '%'
       break
     case 'String':
