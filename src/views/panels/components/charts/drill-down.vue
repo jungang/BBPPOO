@@ -56,10 +56,14 @@
             :sortable="sort"
           >
             <template slot-scope="{row}">
-              <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
-              <span v-else>
-                {{ row.res_s_title }}
-              </span>
+              <el-tooltip :disabled="!row.formula" class="item" effect="dark" :content="row.formula" placement="top-start">
+                <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
+                <span v-else>
+                  {{ row.res_s_title }}
+                </span>
+
+              </el-tooltip>
+
             </template>
           </el-table-column>
 
@@ -386,6 +390,8 @@ export default {
           chartId: uuidv1(),
           name: item.name,
           type: item.type,
+          formula: item.formula === 'Null' ? undefined : item.formula,
+          highlight: item.highlight,
           children: item.children,
           drillName: item.name,
           _drillName: this.currentView.items[item.name] || this.currentView.items['*'],
@@ -402,9 +408,9 @@ export default {
         })
       })
 
-      console.log('init this.list-------------')
+      // console.log('init this.list-------------')
       this.list = []
-      console.log('this.options.dataset.source:', this.options.dataset.source)
+      // console.log('this.options.dataset.source:', this.options.dataset.source)
       this.options.dataset.source.forEach((item, index) => {
         // console.log(item)
         this.list.push({
@@ -412,6 +418,8 @@ export default {
           chartId: uuidv1(),
           name: item.类目,
           type: item.type,
+          formula: item.formula,
+          highlight: item.highlight,
           children: item.children,
           drillName: item.drillName,
           drillNameNode: item.drillNameNode,
@@ -419,9 +427,9 @@ export default {
           _drillName: item.drillNameNode,
           breadName: item.类目,
           res_s_title: item.类目,
-          res_s_value: dataType(item.实际, item.type),
+          res_s_value: dataType(item.实际, item.type, item),
           res_y_title: item.类目,
-          res_y_value: dataType(item.预计, item.type),
+          res_y_value: dataType(item.预计, item.type, item),
           res_s_zb_title: item.类目,
           res_s_zb_value: item.实际占比 && item.实际占比 + '%',
           res_y_zb_title: item.类目,
@@ -430,7 +438,7 @@ export default {
         })
       })
 
-      console.log('_list:', _list)
+      // console.log('_list:', _list)
 
       _list.forEach(item => {
         item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100)
@@ -450,7 +458,7 @@ export default {
       // this.list = this.fold ? planeToHierarchy([..._list]) : _list
       this.list = this.fold ? planeToHierarchy([..._list]) : this.list
 
-      console.log('this.fold:', this.fold)
+      // console.log('this.fold:', this.fold)
       console.log('this.list:', this.list)
 
       if (this.list.length <= 0) {

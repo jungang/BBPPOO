@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import logo from '@/assets/logo.png'
 export default {
   name: 'SidebarLogo',
   props: {
@@ -25,7 +26,8 @@ export default {
   data() {
     return {
       title: 'BPO运营数据分析工具',
-      logo: 'https://www.easyicon.net/api/resizeApi.php?id=1212945&size=128'
+      logo: logo
+
     }
   }
 }

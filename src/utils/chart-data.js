@@ -5,7 +5,7 @@ export function standardize(data) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
-  // console.log('data:', data)
+  console.log('data:', data)
 
   let index = 1
   let _titles = []
@@ -143,6 +143,8 @@ export function format(...arg) {
       类目: item.title,
       实际: item.value,
       type: item.type,
+      formula: item.formula === 'Null' ? undefined : item.formula,
+      highlight: item.highlight,
       drillName: item.name,
       drillNameNode: currentView.items[item.name],
       isDrill: !!currentView.items[item.name]
@@ -288,7 +290,7 @@ export async function getData(...arg) {
     'compare:', currentView.compare,
     'ratio:', currentView.ratio,
     'completion:', currentView.completion)*/
-  console.log({ data0, data1, data2, data3 })
+  // console.log({ data0, data1, data2, data3 })
 
   res_s = await fetchData(data0)
 
@@ -308,7 +310,7 @@ export async function getData(...arg) {
   }
 
   // console.log('chart-data....................................')
-  // console.log(currentView)
+  // console.log('currentView:', currentView)
   // console.log({ res_s, res_y, res_s_zb, res_y_zb })
   return { res_s, res_y, res_s_zb, res_y_zb }
 }

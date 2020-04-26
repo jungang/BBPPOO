@@ -7,8 +7,11 @@ export { parseTime, formatTime } from '@/utils'
  * @param value
  * @param type
  */
-export function dataType(value, type) {
-  value = value && +value
+export function dataType(value, type, item) {
+  console.log('item:', item)
+  // value = value && +value
+  value = parseFloat(value) || value
+
   switch (type) {
     case 'Duration':
       value = value && (value * 1440).toFixed(2)
@@ -23,6 +26,7 @@ export function dataType(value, type) {
       value = value && Math.round(value)
       break
     case 'Percentage':
+      console.log('Percentage..', item)
       value = value && value + '%'
       break
     case 'String':
@@ -32,9 +36,7 @@ export function dataType(value, type) {
     default:
   }
 
-  value = parseFloat(value) || value
-
-  console.log(value, typeof value, type)
+  // console.log(value, typeof value, type)
   return value
 }
 
