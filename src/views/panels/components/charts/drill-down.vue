@@ -57,7 +57,9 @@
           >
             <template slot-scope="{row}">
               <span v-if="row._drillName" class="table-row-is-drill-class" @click="handelDrill(row)"> {{ row.res_s_title }} </span>
-              <span v-else> {{ row.res_s_title }} </span>
+              <span v-else>
+                {{ row.res_s_title }}
+              </span>
             </template>
           </el-table-column>
 
@@ -67,7 +69,7 @@
             </template>
           </el-table-column>
           <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
-          <el-table-column v-if="list[0].res_s_value" :sortable="sort" prop="res_s_value" label="实际">
+          <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
               <span> {{ row.res_s_value }}</span>
 
