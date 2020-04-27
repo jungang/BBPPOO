@@ -375,7 +375,7 @@ export default {
 
       this.options = (format(deepClone(this.options), this.currentView, await getData(this.currentView, params)))
 
-      const mixed = standardize(await getData(this.currentView, params))
+      const mixed = standardize(await getData(this.currentView, params), this.currentView)
       mixed.res_y.forEach(item => {
         // console.log(item.type)
         if (item.type === 'Percentage') { // Currency 金额、 Integer 整数、 Percentage 百分比
@@ -414,8 +414,13 @@ export default {
           // res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
           // res_y_zb_title: mixed.res_y_zb[index].title,
           // res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%',
-          res_finish_rate_value: mixed.res_y[index] && mixed.res_y[index].value > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
+          // res_finish_rate_value: (mixed.res_y[index] || mixed.res_y[index].value) > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
+          res_finish_rate_value: parseFloat(item.完成率)
         })
+
+        // console.log('item.title:', item.title)
+        // console.log(item.value, typeof item.value)
+        // console.log(mixed.res_y[index].value, typeof mixed.res_y[index].value)
       })
 
       // console.log('init this.list-------------')
@@ -452,18 +457,21 @@ export default {
 
       // 完成率
       _list.forEach(item => {
-        item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100)
+        // item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100)
 
-        if (isNaN(item.res_finish_rate_value)) {
-          item.res_finish_rate_value = ''
-        } else {
-          item.res_finish_rate_value = item.res_finish_rate_value.toFixed(2)
-        }
+        // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
+        // console.log('typeof item.res_finish_rate_value:', typeof item.res_finish_rate_value)
+        // if (isNaN(item.res_finish_rate_value)) {
+        //   item.res_finish_rate_value = ''
+        // } else {
+        //   item.res_finish_rate_value = item.res_finish_rate_value.toFixed(2)
+        // }
 
         item.res_finish_rate_value = parseFloat(item.res_finish_rate_value) || ''
         item.res_finish_rate_value = item.res_finish_rate_value === Infinity ? '' : item.res_finish_rate_value
 
         // console.log('item.res_s_title:', item.res_s_title)
+        // console.log(item.res_s_value, typeof item.res_s_value)
         // console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
       })
 

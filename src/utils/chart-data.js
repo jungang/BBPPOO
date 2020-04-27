@@ -1,11 +1,12 @@
 import { fetchData } from '@/api/panel'
 import { unique, sort, deepClone } from '@/utils/index'
 import { formatter_s, formatter_y } from '@/utils/chartType'
-export function standardize(data) {
+export function standardize(data, currentView) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
   console.log('data:', data)
+  console.log('currentView:', currentView)
 
   let index = 1
   let _titles = []
@@ -80,6 +81,15 @@ export function standardize(data) {
       }
     })
   })
+
+  // 计算完成率
+  // console.log('currentView:', currentView)
+  if (currentView && currentView.compare === 'true') {
+    data.res_s.forEach((item, index) => {
+      item.完成率 = (item.value / data.res_y[index].value * 100).toFixed(2)
+    })
+    // 完成率
+  }
 
   return data
 }
