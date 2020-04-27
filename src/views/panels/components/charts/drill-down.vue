@@ -101,7 +101,7 @@ import uuidv1 from 'uuid/v1'
 import { format, getData, standardize } from '@/utils/chart-data'
 import { deepClone } from '@/utils/index'
 import { planeToHierarchy } from '@/utils/chartType'
-import { getFullData } from '@/utils/dataProce'
+// import { getFullData } from '@/utils/dataProce'
 // import { format } from '@/utils/chart-data'
 
 export default {
@@ -372,7 +372,7 @@ export default {
       // this.currentView.completion = params.completion
       // this.currentView.ratio = params.ratio
 
-      this.fullData = await getFullData(this.currentView)
+      // this.fullData = await getFullData(this.currentView)
 
       // console.log('fullData:', this.fullData)
 
@@ -571,7 +571,8 @@ export default {
       console.log(this.panel.list)
     },
     handleAdd() {
-      console.log('this.temp:', this.temp)
+      console.log('this.temp.indexId:', this.temp.indexId)
+
       const newPanel = {
         id: uuidv1(),
         chartId: uuidv1(),
@@ -584,9 +585,14 @@ export default {
         width: this.data.width,
         height: this.data.height
       }
+
+      this.panel.list.forEach(item => {
+        console.log('item', item)
+      })
+
       console.log(newPanel)
-      this.panel.list.unshift(newPanel)
-      this.$emit('close')
+      // this.panel.list.unshift(newPanel)
+      // this.$emit('close')
     }
   }
 }

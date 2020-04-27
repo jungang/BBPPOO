@@ -196,8 +196,13 @@ export function format(...arg) {
         }
       }
     )
+
     _data.res_y.forEach((item, index) => {
-      options.dataset.source[index].预计 = item.value
+      if (options.dataset.source[index]) {
+        options.dataset.source[index].预计 = item.value
+      }
+      // console.log(index, options.dataset.source[index])
+      // options.dataset.source[index].预计 = item.value
     })
   }
 
@@ -309,7 +314,7 @@ export async function getData(...arg) {
     res_y = await fetchData(data1)
   }
 
-  // currentView.ratio = false // todo 暂时取消占比数据读取
+  currentView.ratio = false // todo 暂时取消占比数据读取
   if (currentView.ratio === 'true') {
     // 实际  占比
     res_s_zb = await fetchData(data2)
