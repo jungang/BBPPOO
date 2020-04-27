@@ -192,8 +192,8 @@ export default {
           item.value = item.value + '%'
         }
       })
-      console.log('mixed:', mixed)
-      console.log('this.currentView:', this.currentView)
+      // console.log('mixed:', mixed)
+      // console.log('this.currentView:', this.currentView)
 
       this.list = []
       mixed.res_s.forEach((item, index) => {

@@ -5,8 +5,8 @@ export function standardize(data, currentView) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
-  console.log('data:', data)
-  console.log('currentView:', currentView)
+  // console.log('data:', data)
+  // console.log('currentView:', currentView)
 
   let index = 1
   let _titles = []

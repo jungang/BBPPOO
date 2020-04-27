@@ -315,7 +315,7 @@ export default {
       params = params || deepClone(this.data)
 
       // console.log('params:', params)
-      console.log('this.breadcrumb:', this.breadcrumb)
+      // console.log('this.breadcrumb:', this.breadcrumb)
 
       isBread || this.breadcrumb.push({
         id: params.id,
@@ -367,6 +367,11 @@ export default {
       this.currentView.drill__drillName = params._drillName
       this.currentView.drill_parameters = this.data.parameters
 
+      // fix boolen
+      // this.currentView.compare = params.compare
+      // this.currentView.completion = params.completion
+      // this.currentView.ratio = params.ratio
+
       this.fullData = await getFullData(this.currentView)
 
       // console.log('fullData:', this.fullData)
@@ -388,7 +393,7 @@ export default {
           item.value = item.value + '%'
         }
       })
-      console.log('mixed:', mixed)
+      // console.log('mixed:', mixed)
 
       const _list = []
 

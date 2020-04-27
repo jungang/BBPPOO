@@ -15,37 +15,50 @@ export async function getFullData(params) {
    * drill_drillName
    * drill_parameters
    */
-  const { drill__drillName, drill_drillName, drill_parameters } = params
+
   const data = { // 请求参数
     vf_id: undefined,
-    dir: store.state.user.api_dir + drill__drillName,
-    name: drill_drillName,
-    year: +drill_parameters.year,
-    month: +drill_parameters.month,
+    dir: store.state.user.api_dir + params.drill__drillName,
+    name: params.drill_drillName,
+    year: +params.drill_parameters.year,
+    month: +params.drill_parameters.month,
     ...store.state.user.apiTemplate
   }
   let res = {} // 返回数据
 
   // 实际
   data.vf_id = 0
+  // console.log('data:', data)
   res = await getData(data, res)
 
   // 预计
   if (params.compare === 'true') {
     data.vf_id = 1
+    // console.log('data:', data)
     res = await getData(data, res)
   }
 
-  params.ratio = false // todo 暂时取消占比数据读取
+  // 占比
   if (params.ratio === 'true') {
     // 实际  占比
-    res = await getData(data)
+    data.vf_id = 2
+    // console.log('data:', data)
+    res = await getData(data, res)
     // 预计  占比
     if (params.compare === 'true') {
-      res = await getData(data)
+      data.vf_id = 3
+      // console.log('data:', data)
+      res = await getData(data, res)
     }
   }
 
+  console.log(
+    'params.compare:', params.ratio,
+    'params.completion:', params.completion,
+    'params.ratio:', params.ratio
+  )
+  console.log('res:', res)
+  console.count()
   return {
     chartDate: res
     // tableDate: standardize(res)
