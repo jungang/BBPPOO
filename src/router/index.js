@@ -174,6 +174,8 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/panels/list',
     name: 'Panels',
+    alwaysShow: true,
+    breadcrumb: false,
     meta: {
       title: '项目面板',
       icon: 'example'
@@ -183,14 +185,14 @@ export const asyncRoutes = [
         path: 'view/:id(\\S+)',
         component: () => import('@/views/panels/view'),
         name: 'panelView',
-        meta: { title: '面板', noCache: true, activeMenu: '/panels/list' },
+        meta: { title: '月度经营分析', noCache: true, activeMenu: '/panels/list' },
         hidden: true
       },
       {
         path: 'list',
         component: () => import('@/views/panels/list'),
         name: 'panelsLst',
-        meta: { title: '项目面板', icon: 'list' }
+        meta: { title: '月报列表', icon: 'list' }
       }
     ]
   },
