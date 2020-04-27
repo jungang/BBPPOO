@@ -69,6 +69,7 @@ export function planeToHierarchy(arr) {
 
   // 初始化准备
   arr = arr.map(item => {
+    // console.log('item:', item)
     // console.log(item.breadName,item.children)
     item.children = JSON.parse(item.children) // fixJson 字符串 =>>变数组
     item.childrenRow = [] // 默认无子元素

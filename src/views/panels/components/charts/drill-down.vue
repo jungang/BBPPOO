@@ -10,7 +10,7 @@
               style="padding:0"
               @click="handleBread(item, index)"
             >
-              {{ item.breadName }}
+              {{ item.title || item.breadName }}
             </el-button>
           </el-breadcrumb-item>
         </el-breadcrumb>
@@ -74,7 +74,7 @@
           <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
           <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
-              <span :class="row.highlightStyle"> {{ row.res_s_value }}</span>
+              <span :class="row.highlightStyle" @click="cellHandelDrill(row)"> {{ row.res_s_value }}</span>
             </template>
           </el-table-column>
           <!--          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />-->
@@ -281,6 +281,20 @@ export default {
         .catch(err => { console.error(err) })
       // this.panel.list.unshift(newPanel)
     },
+
+    cellHandelDrill(row) {
+      console.log('cellHandelDrill...')
+      console.log(row)
+      console.log(this.$store.state.options.views)
+      const _currentView = this.$store.state.options.views.find(item => {
+        console.log(item.name === row.name)
+        return item.name === row.name
+      })
+      console.log(_currentView)
+
+      // this.init(row)
+    },
+
     handelDrill(row) {
       console.log('handelDrill...')
       console.log(row)
@@ -301,6 +315,7 @@ export default {
       params = params || deepClone(this.data)
 
       // console.log('params:', params)
+      console.log('this.breadcrumb:', this.breadcrumb)
 
       isBread || this.breadcrumb.push({
         id: params.id,
@@ -378,7 +393,7 @@ export default {
       const _list = []
 
       mixed.res_s.forEach((item, index) => {
-        // console.log(item.name)
+        // console.log('item:', item)
         // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
         _list.push({
           id: uuidv1(),
@@ -448,8 +463,8 @@ export default {
         item.res_finish_rate_value = parseFloat(item.res_finish_rate_value) || ''
         item.res_finish_rate_value = item.res_finish_rate_value === Infinity ? '' : item.res_finish_rate_value
 
-        console.log('item.res_s_title:', item.res_s_title)
-        console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
+        // console.log('item.res_s_title:', item.res_s_title)
+        // console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
       })
 
       // todo 未解决的数据源 图表 、表格
@@ -467,7 +482,7 @@ export default {
         item.res_finish_rate_value = isNaN(item.res_finish_rate_value) ? '' : item.res_finish_rate_value
         // 修复 完成率
 
-        console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
+        // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
       })
 
       // todo 重复业务
@@ -487,7 +502,7 @@ export default {
       this.list = this.fold ? planeToHierarchy([..._list]) : this.list
 
       // console.log('this.fold:', this.fold)
-      console.log('this.list:', this.list)
+      // console.log('this.list:', this.list)
 
       if (this.list.length <= 0) {
         this.list.push({})
@@ -548,7 +563,7 @@ export default {
         id: uuidv1(),
         chartId: uuidv1(),
         type: 'cus',
-        title: this.temp.breadName,
+        title: this.temp.breadName || this.temp.panelTitle,
         viewName: this.temp._drillName, // -this.view
         drillName: this.temp.drillName || this.temp.name,
         // component: 'chart',
