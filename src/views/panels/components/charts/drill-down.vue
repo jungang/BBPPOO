@@ -132,6 +132,7 @@ export default {
   },
   data() {
     return {
+      indexId: '',
       fullData: {},
       fold: true,
       sort: true,
@@ -253,6 +254,7 @@ export default {
     }
   },
   created() {
+    this.indexId = this.data.indexId
     this.init()
     window.onresize = () => {
       // console.log('window.onresize...')
@@ -585,7 +587,7 @@ export default {
         height: this.data.height
       }
 
-      const _index = this.panel.list.findIndex(item => item.indexId === this.temp.indexId)
+      const _index = this.panel.list.findIndex(item => item.indexId === this.indexId)
       console.log(_index)
       this.panel.list.splice(_index + 1, 0, newPanel)
 

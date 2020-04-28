@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const bump = require('bump-version')
 const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
@@ -140,5 +141,8 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
+
+    console.log('todo 更新版本号...')
+    bump('./', 'patch', ['package.json'])
   }
 }
