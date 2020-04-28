@@ -5,8 +5,8 @@ export function standardize(data, currentView) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
-  // console.log('data:', data)
-  // console.log('currentView:', currentView)
+  //  console.log('data:', data)
+  //  console.log('currentView:', currentView)
 
   let index = 1
   let _titles = []
@@ -196,18 +196,8 @@ export function format(...arg) {
         }
       }
     )
-
     _data.res_y.forEach((item, index) => {
-      // if (options.dataset.source[index]) { // 容错
-      try {
-        options.dataset.source[index].预计 = item.value
-      } catch (e) {
-        console.log(e)
-        console.log(item)
-      }
-      // }
-      // console.log(index, options.dataset.source[index])
-      // options.dataset.source[index].预计 = item.value
+      options.dataset.source[index]['预计'] = item.value
     })
   }
 
@@ -319,7 +309,7 @@ export async function getData(...arg) {
     res_y = await fetchData(data1)
   }
 
-  currentView.ratio = false // todo 暂时取消占比数据读取
+  // currentView.ratio = false // todo 暂时取消占比数据读取
   if (currentView.ratio === 'true') {
     // 实际  占比
     res_s_zb = await fetchData(data2)

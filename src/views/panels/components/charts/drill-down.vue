@@ -48,6 +48,7 @@
           row-key="id"
           :tree-props="{children: 'childrenRow',hasChildren: 'hasChildren'}"
           :max-height="data.height-138"
+          :header-cell-style="{background:'#eef1f6'}"
         >
           <!--          <el-table-column type="index" label="序号" width="50" />-->
           <el-table-column
@@ -154,7 +155,9 @@ export default {
         maskColor: 'rgba(255, 255, 255, 0.7)'
       },
       options: {
-        legend: {},
+        legend: {
+
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -559,6 +562,29 @@ export default {
       this.initChart()
       this.chart.hideLoading()
       this.chart.setOption(options)
+      /* 切换图例选中状态后*/
+      this.chart.on('legendselectchanged', (params) => {
+        let isVis = true
+        if (!params.selected[params.name]) {
+          for (const key of Object.keys(params.selected)) {
+            /* if(Object.prototype.hasOwnProperty.call(params.selected, key)) {
+              if(params.selected[key]){
+                isVis = false;
+              }
+            }*/
+            if (params.selected[key]) {
+              isVis = false
+            }
+          }
+        }
+
+        if (isVis) {
+          this.chart.dispatchAction({
+            type: 'legendSelect',
+            name: params.name
+          })
+        }
+      })
     },
     handleCopy() {
       console.log('this.temp:', this.temp)
@@ -573,6 +599,7 @@ export default {
       console.log(this.panel.list)
     },
     handleAdd() {
+      console.log('this.temp:', this.temp)
       const newPanel = {
         id: uuidv1(),
         chartId: uuidv1(),
