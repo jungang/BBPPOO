@@ -54,7 +54,9 @@ export async function getFullData(params) {
   console.log(
     'params.compare:', params.compare,
     'params.completion:', params.completion,
-    'params.ratio:', params.ratio
+    'params.ratio:', params.ratio,
+    'params.fold:', params.fold,
+    'params.sort:', params.sort
   )
 
   // 数组长度统一
@@ -99,7 +101,7 @@ export function calcCompletion(data) {
       title: item.title,
       value: _rate
     })
-    console.log(item)
+    // console.log(item)
     // data.finish_rate.push()
   })
 
