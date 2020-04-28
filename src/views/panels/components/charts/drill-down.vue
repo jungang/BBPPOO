@@ -1,7 +1,7 @@
 <template>
   <div class="drill-container">
     <el-row type="flex" justify="end">
-      <el-col :span="18">
+      <el-col :span="17">
         <el-breadcrumb v-if="breadcrumb.length>1" separator="/" style="margin-left: 10px">
           <!--        <el-breadcrumb separator="/" style="margin-left: 10px">-->
           <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="item.id">
@@ -15,7 +15,7 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
-      <el-col :span="6" style="text-align: right; padding-right: 10px">
+      <el-col :span="7" style="text-align: right; padding-right: 10px">
         <!--        <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>-->
         <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>
         <el-button
@@ -571,11 +571,10 @@ export default {
       console.log(this.panel.list)
     },
     handleAdd() {
-      console.log('this.temp.indexId:', this.temp.indexId)
-
       const newPanel = {
         id: uuidv1(),
         chartId: uuidv1(),
+        indexId: uuidv1(),
         type: 'cus',
         title: this.temp.breadName || this.temp.panelTitle,
         viewName: this.temp._drillName, // -this.view
@@ -586,13 +585,21 @@ export default {
         height: this.data.height
       }
 
-      this.panel.list.forEach(item => {
-        console.log('item', item)
-      })
+      const _index = this.panel.list.findIndex(item => item.indexId === this.temp.indexId)
+      console.log(_index)
+      this.panel.list.splice(_index, 0, newPanel)
 
-      console.log(newPanel)
+      /*      this.panel.list.forEach((item, index) => {
+        if (item.indexId === this.temp.indexId) {
+          console.log(index, item)
+          console.log('newPanel:', newPanel)
+          console.log('this.panel.list', this.panel.list)
+          this.panel.list.splice(index, 0, newPanel)
+        }
+      })*/
+
       // this.panel.list.unshift(newPanel)
-      // this.$emit('close')
+      this.$emit('close')
     }
   }
 }
