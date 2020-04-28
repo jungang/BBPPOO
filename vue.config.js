@@ -141,8 +141,11 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
-
-    console.log('todo 更新版本号...')
-    bump('./', 'patch', ['package.json'])
+    config
+      .when(process.env.NODE_ENV === 'development', function() {
+        console.log('bump...')
+        bump('./', 'patch', ['package.json'])
+      }
+      )
   }
 }

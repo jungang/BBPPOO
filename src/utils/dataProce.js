@@ -84,15 +84,15 @@ async function getData(data, res) {
 }
 
 export function calcCompletion(data) {
-  console.log('data:', data)
-  console.log('计算完成率')
+  // console.log('data:', data)
+  // console.log('计算完成率')
 
   data.finish_rate = []
 
   data.vf_id0.forEach((item, index) => {
     let _rate = (item.value / data.vf_id1[index].value * 100).toFixed(2)
     _rate = washValue(_rate)
-    console.log('_rate:', _rate)
+    // console.log('_rate:', _rate)
     item.finish_rate = _rate
     data.finish_rate.push({
       name: item.name,
