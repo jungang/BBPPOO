@@ -72,6 +72,9 @@ export async function getFullData(params) {
     res = calcCompletion(res)
   }
 
+  // 计算高亮
+  res = calcHighlight(res)
+
   return {
     chartDate: res,
     tableDate: res,
@@ -85,12 +88,23 @@ async function getData(data, res) {
   return res
 }
 
+// 计算高亮
+export function calcHighlight(data) {
+  data.vf_id0.forEach((item, index) => {
+    if (item.highlight === 'true') {
+      // todo 转数字
+      item.value = washValue(item.value)
+      data.vf_id1[index].value = washValue(data.vf_id1[index].value)
+      console.log('item.value:', typeof item.value, 'data.vf_id1[index].value:', typeof data.vf_id1[index].value)
+      console.log('highlight:', item.value, '>', data.vf_id1[index].value, ':', item.value > data.vf_id1[index].value)
+    }
+  })
+  return data
+}
+
+// 计算完成率
 export function calcCompletion(data) {
-  // console.log('data:', data)
-  // console.log('计算完成率')
-
   data.finish_rate = []
-
   data.vf_id0.forEach((item, index) => {
     let _rate = (item.value / data.vf_id1[index].value * 100).toFixed(2)
     _rate = washValue(_rate)
@@ -101,10 +115,7 @@ export function calcCompletion(data) {
       title: item.title,
       value: _rate
     })
-    // console.log(item)
-    // data.finish_rate.push()
   })
-
   return data
 }
 
