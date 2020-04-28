@@ -240,8 +240,10 @@ export default {
   .handle-tr,
   .handle-tl,
   .handle-ml,
+  .handle-mr,
   .handle-tm,
   .handle-bl,
+  .handle-bm,
   {
     display: none !important;
   }

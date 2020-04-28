@@ -130,6 +130,16 @@ export function byteLength(str) {
 }
 
 /**
+ * @returns {Array}
+ * @param value
+ */
+export function washValue(value) {
+  value = parseFloat(value)
+  value = isNaN(value) || value === Infinity || value === -Infinity ? undefined : value
+  return value
+}
+
+/**
  * @param {Array} actual
  * @returns {Array}
  */

@@ -101,7 +101,7 @@ import uuidv1 from 'uuid/v1'
 import { format, getData, standardize } from '@/utils/chart-data'
 import { deepClone } from '@/utils/index'
 import { planeToHierarchy } from '@/utils/chartType'
-// import { getFullData } from '@/utils/dataProce'
+import { getFullData } from '@/utils/dataProce'
 // import { format } from '@/utils/chart-data'
 
 export default {
@@ -372,9 +372,9 @@ export default {
       // this.currentView.completion = params.completion
       // this.currentView.ratio = params.ratio
 
-      // this.fullData = await getFullData(this.currentView)
+      this.fullData = await getFullData(this.currentView)
 
-      // console.log('fullData:', this.fullData)
+      console.log('fullData:', this.fullData)
 
       // todo 重构数据API E
 

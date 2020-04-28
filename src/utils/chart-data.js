@@ -198,9 +198,14 @@ export function format(...arg) {
     )
 
     _data.res_y.forEach((item, index) => {
-      if (options.dataset.source[index]) {
+      // if (options.dataset.source[index]) { // 容错
+      try {
         options.dataset.source[index].预计 = item.value
+      } catch (e) {
+        console.log(e)
+        console.log(item)
       }
+      // }
       // console.log(index, options.dataset.source[index])
       // options.dataset.source[index].预计 = item.value
     })
