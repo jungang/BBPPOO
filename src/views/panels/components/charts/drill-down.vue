@@ -1,7 +1,7 @@
 <template>
   <div class="drill-container">
     <el-row type="flex" justify="end">
-      <el-col :span="17">
+      <el-col :span="18">
         <el-breadcrumb v-if="breadcrumb.length>1" separator="/" style="margin-left: 10px">
           <!--        <el-breadcrumb separator="/" style="margin-left: 10px">-->
           <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="item.id">
@@ -15,7 +15,7 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
-      <el-col :span="7" style="text-align: right; padding-right: 10px">
+      <el-col :span="6" style="text-align: right; padding-right: 10px">
         <!--        <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>-->
         <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>
         <el-button
@@ -48,6 +48,7 @@
           row-key="id"
           :tree-props="{children: 'childrenRow',hasChildren: 'hasChildren'}"
           :max-height="data.height-138"
+          :header-cell-style="{background:'#eef1f6'}"
         >
           <!--          <el-table-column type="index" label="序号" width="50" />-->
           <el-table-column
@@ -153,7 +154,9 @@ export default {
         maskColor: 'rgba(255, 255, 255, 0.7)'
       },
       options: {
-        legend: {},
+        legend: {
+
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -315,7 +318,7 @@ export default {
       params = params || deepClone(this.data)
 
       // console.log('params:', params)
-      // console.log('this.breadcrumb:', this.breadcrumb)
+      console.log('this.breadcrumb:', this.breadcrumb)
 
       isBread || this.breadcrumb.push({
         id: params.id,
@@ -367,14 +370,9 @@ export default {
       this.currentView.drill__drillName = params._drillName
       this.currentView.drill_parameters = this.data.parameters
 
-      // fix boolen
-      // this.currentView.compare = params.compare
-      // this.currentView.completion = params.completion
-      // this.currentView.ratio = params.ratio
-
       this.fullData = await getFullData(this.currentView)
 
-      console.log('fullData:', this.fullData)
+      // console.log('fullData:', this.fullData)
 
       // todo 重构数据API E
 
@@ -557,6 +555,29 @@ export default {
       this.initChart()
       this.chart.hideLoading()
       this.chart.setOption(options)
+      /* 切换图例选中状态后*/
+      this.chart.on('legendselectchanged', (params) => {
+        let isVis = true
+        if (!params.selected[params.name]) {
+          for (const key of Object.keys(params.selected)) {
+            /* if(Object.prototype.hasOwnProperty.call(params.selected, key)) {
+              if(params.selected[key]){
+                isVis = false;
+              }
+            }*/
+            if (params.selected[key]) {
+              isVis = false
+            }
+          }
+        }
+
+        if (isVis) {
+          this.chart.dispatchAction({
+            type: 'legendSelect',
+            name: params.name
+          })
+        }
+      })
     },
     handleCopy() {
       console.log('this.temp:', this.temp)
@@ -571,10 +592,10 @@ export default {
       console.log(this.panel.list)
     },
     handleAdd() {
+      console.log('this.temp:', this.temp)
       const newPanel = {
         id: uuidv1(),
         chartId: uuidv1(),
-        indexId: uuidv1(),
         type: 'cus',
         title: this.temp.breadName || this.temp.panelTitle,
         viewName: this.temp._drillName, // -this.view
@@ -584,21 +605,8 @@ export default {
         width: this.data.width,
         height: this.data.height
       }
-
-      const _index = this.panel.list.findIndex(item => item.indexId === this.temp.indexId)
-      console.log(_index)
-      this.panel.list.splice(_index, 0, newPanel)
-
-      /*      this.panel.list.forEach((item, index) => {
-        if (item.indexId === this.temp.indexId) {
-          console.log(index, item)
-          console.log('newPanel:', newPanel)
-          console.log('this.panel.list', this.panel.list)
-          this.panel.list.splice(index, 0, newPanel)
-        }
-      })*/
-
-      // this.panel.list.unshift(newPanel)
+      console.log(newPanel)
+      this.panel.list.unshift(newPanel)
       this.$emit('close')
     }
   }

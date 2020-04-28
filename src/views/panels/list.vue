@@ -8,6 +8,7 @@
         </h3>
       </el-col>
       <el-col :span="12" style="text-align: end">
+        <!--<el-button type="primary" @click="sortRest">手动排序</el-button>-->
         <el-button type="primary" @click="handleCreate">生成报表</el-button>
       </el-col></el-row>
 
@@ -95,6 +96,7 @@
 <script>
 // import { fetchList } from '@/api/article'
 import { panelsFetchList, createPanel, deletePanel, saveQueue } from '@/api/panels'
+import { sortUtil } from '@/utils/SortUtil'
 import uuidv1 from 'uuid/v1'
 import draggable from 'vuedraggable'
 
@@ -242,7 +244,6 @@ export default {
               width: 500,
               height: 500,
               chartId: uuidv1(),
-              indexId: uuidv1(),
               viewName: 'profit_income_expanse',
               component: 'chart',
               panelTitle: '当月利润分析',
@@ -257,7 +258,6 @@ export default {
               width: 500,
               height: 500,
               chartId: uuidv1(),
-              indexId: uuidv1(),
               viewName: 'profit_income_expanse_ytd',
               component: 'chart',
               panelTitle: '本年累计利润分析',
@@ -272,7 +272,6 @@ export default {
               width: 1020,
               height: 500,
               chartId: uuidv1(),
-              indexId: uuidv1(),
               viewName: 'monthly_items_list',
               component: 'tabular',
               panelTitle: '月度预实一览表',
@@ -332,7 +331,23 @@ export default {
         'projectId': '00000000-0000-0000-0000-000000000000',
         list: this.list.map(item => { return item.id })
       }
+
       saveQueue(data).then((res) => {
+        this.$message({
+          message: '报表顺序已更新。',
+          type: 'success'
+        })
+      })
+    },
+    // 正叙倒叙排列
+    sortRest() {
+      // DESC
+      this.drag = true
+      const datarest = {
+        'projectId': '00000000-0000-0000-0000-000000000000',
+        list: sortUtil(this.list, 'dateValue', 'ASC').map(item => { return item.id })
+      }
+      saveQueue(datarest).then((res) => {
         this.$message({
           message: '报表顺序已更新。',
           type: 'success'
@@ -342,7 +357,6 @@ export default {
     getList() {
       this.listLoading = true
       panelsFetchList(this.listQuery).then(response => {
-        // this.list = response.data.items
         this.list = response.data
         this.total = response.data.total
         this.listLoading = false
