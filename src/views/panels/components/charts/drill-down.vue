@@ -615,9 +615,9 @@ export default {
       }
 
       const _index = this.panel.list.findIndex(item => item.indexId === this.indexId)
-      console.log(_index)
-      console.log(newPanel)
-      // this.panel.list.splice(_index + 1, 0, newPanel)
+      // console.log(_index)
+      // console.log(newPanel)
+      this.panel.list.splice(_index + 1, 0, newPanel)
 
       /*      this.panel.list.forEach((item, index) => {
         if (item.indexId === this.temp.indexId) {
