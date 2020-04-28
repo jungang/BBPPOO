@@ -91,12 +91,15 @@ async function getData(data, res) {
 // 计算高亮
 export function calcHighlight(data) {
   data.vf_id0.forEach((item, index) => {
+    item.highlightStyle = ''
+    item.value = washValue(item.value)
+    data.vf_id1[index].value = washValue(data.vf_id1[index].value)
+
     if (item.highlight === 'true') {
-      // todo 转数字
-      item.value = washValue(item.value)
-      data.vf_id1[index].value = washValue(data.vf_id1[index].value)
-      console.log('item.value:', typeof item.value, 'data.vf_id1[index].value:', typeof data.vf_id1[index].value)
-      console.log('highlight:', item.value, '>', data.vf_id1[index].value, ':', item.value > data.vf_id1[index].value)
+      item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
+    }
+    if (item.highlight === 'false') {
+      item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
     }
   })
   return data
