@@ -177,7 +177,7 @@ export default {
           borderColor: '#aaa',
           borderWidth: 1,
           borderRadius: 4,
-          position: ['70%', '10%'],
+          position: [10, 10],
           alwaysShowContentL: true,
           transitionDuration: 0,
           showDelay: 0,
