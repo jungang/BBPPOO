@@ -58,15 +58,15 @@ export async function getFullData(params) {
   // console.count()
   // 根据view视图配置，发出请求
   console.log(
-    'params.name:', params.name,
-    'params.title:', params.title,
-    'params.compare:', params.compare,
-    'params.completion:', params.completion,
-    'params.ratio:', params.ratio,
-    'params.fold:', params.fold,
-    'params.sort:', params.sort
+    'title:', params.title,
+    'name:', params.name,
+    'compare:', params.compare,
+    'completion:', params.completion,
+    'ratio:', params.ratio,
+    'fold:', params.fold,
+    'sort:', params.sort
   )
-  console.log(params)
+  // console.log(params)
 
   // 数组长度统一,格式
   res = standardize(res)
@@ -154,10 +154,10 @@ export function calcHighlight(data) {
     // data.vf_id1[index].value = washValue(data.vf_id1[index].value)
 
     if (item.highlight) {
-      item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
+      item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
     }
     if (item.highlight) {
-      item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
+      item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
     }
   })
   return data

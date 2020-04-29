@@ -79,7 +79,8 @@
           </el-table-column>
           <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
-              <span :class="row.highlightStyle" @click="cellHandelDrill(row)"> {{ row.res_s_value }}</span>
+              <span :class="row.highlightStyle"> {{ row.res_s_value }}</span>
+
             </template>
           </el-table-column>
           <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_s_zb_value" label="实际占比%">
@@ -447,9 +448,9 @@ export default {
       // this.options.dataset.source = this.fullData.chartDate
       // this.options.dataset.source = this.fullData.chartDate  //todo 切换
 
-      console.log('this.options.dataset:', this.options.dataset)
-      console.log('this.options.dataset.source:', this.options.dataset.source[0])
-      console.log('this.fullData.chartDate:', this.fullData.chartDate[0])
+      // console.log('this.options.dataset:', this.options.dataset)
+      // console.log('this.options.dataset.source:', this.options.dataset.source[0])
+      // console.log('this.fullData.chartDate:', this.fullData.chartDate[0])
 
       // todo 未解决的数据源 图表 、表格
 

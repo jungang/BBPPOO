@@ -1,7 +1,7 @@
 // import { deepClone } from '@/utils'
 export function formatter_s(params) {
-  console.log('params...')
-  console.log(params)
+  // console.log('params...')
+  // console.log(params)
   let res = ''
   res += `${params.value.实际}\n`
   // if (!isNaN(params.value.完成率)) {
