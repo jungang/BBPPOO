@@ -1,3 +1,5 @@
+新git地址 https://github.com/Xiaomei-Zhang/operation_analytics_frontend
+
 release 1.1
 
 1.  Dashboard/Components/Drag Dialog 拖拽弹窗

@@ -1,4 +1,5 @@
 import { fetchData } from '@/api/panel'
+const pkg = require('../../../package.json')
 
 const state = {
   dateType: [
@@ -132,6 +133,7 @@ const actions = {
       fetchData(data).then(response => {
         // console.log('view:', response)
         commit('SET_VIEWS', response)
+        console.info('v', pkg.version)
         resolve(response)
       }).catch(error => {
         reject(error)

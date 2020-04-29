@@ -51,11 +51,13 @@ export async function getFullData(params) {
   // console.log('res:', res)
   // console.count()
   // 根据view视图配置，发出请求
-  /* console.log(
+  console.log(
     'params.compare:', params.compare,
     'params.completion:', params.completion,
-    'params.ratio:', params.ratio
-  )*/
+    'params.ratio:', params.ratio,
+    'params.fold:', params.fold,
+    'params.sort:', params.sort
+  )
 
   // 数组长度统一
   res = standardize(res)
@@ -70,6 +72,9 @@ export async function getFullData(params) {
     res = calcCompletion(res)
   }
 
+  // 计算高亮
+  res = calcHighlight(res)
+
   return {
     chartDate: res,
     tableDate: res,
@@ -83,12 +88,26 @@ async function getData(data, res) {
   return res
 }
 
+// 计算高亮
+export function calcHighlight(data) {
+  data.vf_id0.forEach((item, index) => {
+    item.highlightStyle = ''
+    item.value = washValue(item.value)
+    data.vf_id1[index].value = washValue(data.vf_id1[index].value)
+
+    if (item.highlight === 'true') {
+      item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
+    }
+    if (item.highlight === 'false') {
+      item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
+    }
+  })
+  return data
+}
+
+// 计算完成率
 export function calcCompletion(data) {
-  // console.log('data:', data)
-  // console.log('计算完成率')
-
   data.finish_rate = []
-
   data.vf_id0.forEach((item, index) => {
     let _rate = (item.value / data.vf_id1[index].value * 100).toFixed(2)
     _rate = washValue(_rate)
@@ -99,10 +118,7 @@ export function calcCompletion(data) {
       title: item.title,
       value: _rate
     })
-    // console.log(item)
-    // data.finish_rate.push()
   })
-
   return data
 }
 

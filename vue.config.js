@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const bump = require('bump-version')
 const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
@@ -139,6 +140,12 @@ module.exports = {
             })
           config.optimization.runtimeChunk('single')
         }
+      )
+    config
+      .when(process.env.NODE_ENV === 'development', function() {
+        console.log('bump...')
+        bump('./', 'patch', ['package.json'])
+      }
       )
   }
 }

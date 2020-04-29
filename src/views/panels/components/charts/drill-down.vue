@@ -1,7 +1,7 @@
 <template>
   <div class="drill-container">
     <el-row type="flex" justify="end">
-      <el-col :span="18">
+      <el-col :span="17">
         <el-breadcrumb v-if="breadcrumb.length>1" separator="/" style="margin-left: 10px">
           <!--        <el-breadcrumb separator="/" style="margin-left: 10px">-->
           <el-breadcrumb-item v-for="(item, index) in breadcrumb" :key="item.id">
@@ -15,7 +15,7 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-col>
-      <el-col :span="6" style="text-align: right; padding-right: 10px">
+      <el-col :span="7" style="text-align: right; padding-right: 10px">
         <!--        <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>-->
         <el-button type="primary" size="mini" @click="handleAdd">复制</el-button>
         <el-button
@@ -72,13 +72,13 @@
               <span> {{ row.res_y_value }}</span>
             </template>
           </el-table-column>
-          <!--          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />-->
+          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
           <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle" @click="cellHandelDrill(row)"> {{ row.res_s_value }}</span>
             </template>
           </el-table-column>
-          <!--          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />-->
+          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
           <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
               {{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}
@@ -133,6 +133,7 @@ export default {
   },
   data() {
     return {
+      indexId: '',
       fullData: {},
       fold: true,
       sort: true,
@@ -257,6 +258,7 @@ export default {
     }
   },
   created() {
+    this.indexId = this.data.indexId
     this.init()
     window.onresize = () => {
       // console.log('window.onresize...')
@@ -371,9 +373,14 @@ export default {
       this.currentView.drill__drillName = params._drillName
       this.currentView.drill_parameters = this.data.parameters
 
+      // fix boolen
+      // this.currentView.compare = params.compare
+      // this.currentView.completion = params.completion
+      // this.currentView.ratio = params.ratio
+
       this.fullData = await getFullData(this.currentView)
 
-      // console.log('fullData:', this.fullData)
+      console.log('fullData:', this.fullData)
 
       // todo 重构数据API E
 
@@ -597,6 +604,7 @@ export default {
       const newPanel = {
         id: uuidv1(),
         chartId: uuidv1(),
+        indexId: uuidv1(),
         type: 'cus',
         title: this.temp.breadName || this.temp.panelTitle,
         viewName: this.temp._drillName, // -this.view
@@ -606,8 +614,22 @@ export default {
         width: this.data.width,
         height: this.data.height
       }
-      console.log(newPanel)
-      this.panel.list.unshift(newPanel)
+
+      const _index = this.panel.list.findIndex(item => item.indexId === this.indexId)
+      // console.log(_index)
+      // console.log(newPanel)
+      this.panel.list.splice(_index + 1, 0, newPanel)
+
+      /*      this.panel.list.forEach((item, index) => {
+        if (item.indexId === this.temp.indexId) {
+          console.log(index, item)
+          console.log('newPanel:', newPanel)
+          console.log('this.panel.list', this.panel.list)
+          this.panel.list.splice(index, 0, newPanel)
+        }
+      })*/
+
+      // this.panel.list.unshift(newPanel)
       this.$emit('close')
     }
   }
