@@ -72,13 +72,21 @@
               <span> {{ row.res_y_value }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
+          <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_y_zb_value" label="预计占比%">
+            <template slot-scope="{row}">
+              {{ row.res_y_zb_value && row.res_y_zb_value + '%' }}
+            </template>
+          </el-table-column>
           <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle" @click="cellHandelDrill(row)"> {{ row.res_s_value }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
+          <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_s_zb_value" label="实际占比%">
+            <template slot-scope="{row}">
+              {{ row.res_s_zb_value && row.res_s_zb_value + '%' }}
+            </template>
+          </el-table-column>
           <el-table-column v-if="currentView.completion" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
               {{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}
@@ -169,15 +177,21 @@ export default {
           borderColor: '#aaa',
           borderWidth: 1,
           borderRadius: 4,
-          position: ['80%', '10%'],
+          position: ['70%', '10%'],
           alwaysShowContentL: true,
           transitionDuration: 0,
           showDelay: 0,
           formatter: (params, ticket, callback) => {
             // console.log(params)
             let str = ''
-            str += `${params[0].name}<br>`
+            // str += `${params[0].name}<br>`
             str += `完成率: ${params[0].data.完成率}%`
+            if (params[0].data.实际占比) {
+              str += `<br>实际占比: ${params[0].data.实际占比}%`
+            }
+            if (params[0].data.预计占比) {
+              str += `<br>预计占比: ${params[0].data.预计占比}%`
+            }
             return str
           }
           /*          position: function(pos, params, dom, rect, size) {
@@ -430,6 +444,13 @@ export default {
         })
       })
 
+      // this.options.dataset.source = this.fullData.chartDate
+      // this.options.dataset.source = this.fullData.chartDate  //todo 切换
+
+      console.log('this.options.dataset:', this.options.dataset)
+      console.log('this.options.dataset.source:', this.options.dataset.source[0])
+      console.log('this.fullData.chartDate:', this.fullData.chartDate[0])
+
       // todo 未解决的数据源 图表 、表格
 
       this.list.forEach(item => {
@@ -448,11 +469,13 @@ export default {
         // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
       })
 
+      this.list = this.fullData.tableDate // 切换
+
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
       this.list = this.fold ? this.fullData.foldTableDate : this.list
 
       // console.log('this.fold:', this.fold)
-      console.log('this.list:', this.list)
+      // console.log('this.list:', this.list)
 
       if (this.list.length <= 0) {
         this.list.push({})

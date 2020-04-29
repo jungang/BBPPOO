@@ -37,18 +37,18 @@ export async function getFullData(params) {
   res = await getData(data, res) // return res.vf_id0
 
   // 预计
-  if (params.compare === 'true') {
+  if (params.compare) {
     data.vf_id = 1
     res = await getData(data, res) // return res.vf_id1
   }
 
   // 占比
-  if (params.ratio === 'true') {
+  if (params.ratio) {
     // 实际  占比
     data.vf_id = 2
     res = await getData(data, res) // return res.vf_id2
     // 预计  占比
-    if (params.compare === 'true') {
+    if (params.compare) {
       data.vf_id = 3
       res = await getData(data, res) // return res.vf_id3
     }
@@ -57,13 +57,16 @@ export async function getFullData(params) {
   // console.log('res:', res)
   // console.count()
   // 根据view视图配置，发出请求
-  /*  console.log(
+  console.log(
+    'params.name:', params.name,
+    'params.title:', params.title,
     'params.compare:', params.compare,
     'params.completion:', params.completion,
     'params.ratio:', params.ratio,
     'params.fold:', params.fold,
     'params.sort:', params.sort
-  )*/
+  )
+  console.log(params)
 
   // 数组长度统一,格式
   res = standardize(res)
@@ -72,7 +75,7 @@ export async function getFullData(params) {
   // res = valueToNumber(res)
 
   // 计算完成率
-  if (params.completion === 'true') {
+  if (params.completion) {
     res = calcCompletion(res)
   }
 
@@ -150,10 +153,10 @@ export function calcHighlight(data) {
     // item.value = washValue(item.value)
     // data.vf_id1[index].value = washValue(data.vf_id1[index].value)
 
-    if (item.highlight === 'true') {
+    if (item.highlight) {
       item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
     }
-    if (item.highlight === 'false') {
+    if (item.highlight) {
       item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
     }
   })

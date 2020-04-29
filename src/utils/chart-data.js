@@ -84,7 +84,7 @@ export function standardize(data, currentView) {
 
   // 计算完成率
   // console.log('currentView:', currentView)
-  if (currentView && currentView.compare === 'true') {
+  if (currentView && currentView.compare) {
     data.res_s.forEach((item, index) => {
       item.完成率 = (item.value / data.res_y[index].value * 100).toFixed(2)
     })
@@ -163,7 +163,7 @@ export function format(...arg) {
 
   // currentView.compare = false // todo
   // 预实对比，即预计和实际两项数据 ///////////////////////////////////////////////////////////////////////////////
-  if (currentView.compare === 'true') {
+  if (currentView.compare) {
     options.dataset.dimensions = ['类目', '预计', '实际']
     options.series.unshift(
       {
@@ -229,7 +229,7 @@ export function format(...arg) {
 
   // currentView.completion = false // todo
   // 计算完成率 ///////////////////////////////////////////////////////////////////////////////
-  if (currentView.completion === 'true') {
+  if (currentView.completion) {
     options.dataset.dimensions = ['类目', '预计', '实际', '完成率', '实际占比', '预计占比', 'isDrill']
     options.dataset.source.forEach((item, index) => {
       item.完成率 = (item.实际 / item.预计 * 100).toFixed(0)
@@ -316,16 +316,16 @@ export async function getData(...arg) {
   res_s = await fetchData(data0)
 
   // 预计
-  if (currentView.compare === 'true') {
+  if (currentView.compare) {
     res_y = await fetchData(data1)
   }
 
   // currentView.ratio = false // todo 暂时取消占比数据读取
-  if (currentView.ratio === 'true') {
+  if (currentView.ratio) {
     // 实际  占比
     res_s_zb = await fetchData(data2)
     // 预计  占比
-    if (currentView.compare === 'true') {
+    if (currentView.compare) {
       res_y_zb = await fetchData(data3)
     }
   }

@@ -220,7 +220,7 @@ export default {
         console.log(this.$store.state.options.views)
         this.temp.list = []
         this.$store.state.options.views.forEach(item => {
-          if (item.show === 'true') { // todo 判读缺省 item.default_show
+          if (item.show) { // todo 判读缺省 item.default_show
             // console.log(item)
             /*        this.temp.list.push({
               id: uuidv1(),

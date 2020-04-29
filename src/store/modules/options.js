@@ -104,6 +104,11 @@ const mutations = {
           // console.log(item.style)
       }
 
+      // 转换boolean
+      item.show = item.show === 'true'
+      item.ratio = item.ratio === 'true'
+      item.compare = item.compare === 'true'
+      item.completion = item.completion === 'true'
       item.items = (item.items !== 'Null') ? JSON.parse(item.items) : {}
     })
     // console.log('state.views:', state.views)
