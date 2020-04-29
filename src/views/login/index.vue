@@ -45,9 +45,13 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-row type="flex" justify="end" class="btbox">
+        <el-col :span="5"><el-button type="text" @click.native.prevent="forgetpass">忘记密码?</el-button></el-col>
+        <el-col :span="7" :offset="4"><el-button :loading="loading" @click.native.prevent="restformdata">重置</el-button></el-col>
+        <el-col :span="7" :offset="1"><el-button :loading="loading" type="primary" @click.native.prevent="handleLogin">登录</el-button></el-col>
+      </el-row>
 
-      <div style="position:relative">
+      <!--      <div style="position:relative">
         <div class="tips">
           <span>Username : hiuser</span>
           <span>Password : hiuser</span>
@@ -56,11 +60,7 @@
           <span style="margin-right:18px;">Username : hiadmin</span>
           <span>Password : hiadmin</span>
         </div>
-
-        <!--        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
-          Or connect with
-        </el-button>-->
-      </div>
+      </div>-->
     </el-form>
 
     <!--    <el-dialog title="Or connect with" :visible.sync="showDialog">
@@ -157,6 +157,15 @@ export default {
       this.$nextTick(() => {
         this.$refs.password.focus()
       })
+    },
+    forgetpass() {
+      this.$alert('请联系管理员：xxxx@gocom.ai', '忘记密码', {
+        confirmButtonText: '确定'
+      })
+    },
+    restformdata() {
+      this.loginForm.username = ''
+      this.loginForm.password = ''
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
@@ -273,6 +282,25 @@ $light_gray:#eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
+  }
+
+  .btbox{
+    div{
+      &:first-child{
+
+        >button{
+          font-size: 12px;
+          color: #fff;
+          &:hover{
+            text-decoration: underline;
+          }
+        }
+
+      }
+    }
+    button{
+      width: 100%;
+    }
   }
 
   .tips {
