@@ -54,6 +54,7 @@
           <el-table-column
             prop="res_s_title"
             label="名称"
+            :min-width="31"
             :sortable="sort"
           >
             <template slot-scope="{row}">
@@ -67,19 +68,19 @@
             </template>
           </el-table-column>
 
-          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计">
+          <el-table-column v-if="list[0].res_y_value" :sortable="sort" :min-width="23" prop="res_y_value" label="预计">
             <template slot-scope="{row}">
               <span> {{ row.res_y_value }}</span>
             </template>
           </el-table-column>
           <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
-          <el-table-column :sortable="sort" prop="res_s_value" label="实际">
+          <el-table-column :sortable="sort" prop="res_s_value" label="实际" :min-width="23">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle" @click="cellHandelDrill(row)"> {{ row.res_s_value }}</span>
             </template>
           </el-table-column>
           <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
-          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
+          <el-table-column v-if="list[0].res_y_value" :sortable="sort" :min-width="23" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
               {{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}
 
