@@ -256,6 +256,7 @@ export function format(...arg) {
     }
   }
 
+  // console.log('options', options)
   return options
 }
 

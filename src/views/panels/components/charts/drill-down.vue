@@ -67,19 +67,19 @@
             </template>
           </el-table-column>
 
-          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_y_value" label="预计">
+          <el-table-column v-if="currentView.compare" :sortable="sort" prop="res_y_value" label="预计">
             <template slot-scope="{row}">
               <span> {{ row.res_y_value }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="list[0].res_y_zb_value" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
+          <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_y_zb_value" label="预计占比%" />
           <el-table-column :sortable="sort" prop="res_s_value" label="实际">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle" @click="cellHandelDrill(row)"> {{ row.res_s_value }}</span>
             </template>
           </el-table-column>
-          <el-table-column v-if="list[0].res_s_zb_value" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
-          <el-table-column v-if="list[0].res_y_value" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
+          <el-table-column v-if="currentView.ratio" :sortable="sort" prop="res_s_zb_value" label="实际占比%" />
+          <el-table-column v-if="currentView.completion" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
               {{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}
 
@@ -101,7 +101,7 @@ var echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
 import { format, getData, standardize } from '@/utils/chart-data'
 import { deepClone } from '@/utils/index'
-import { planeToHierarchy } from '@/utils/chartType'
+// import { planeToHierarchy } from '@/utils/chartType'
 import { getFullData } from '@/utils/dataProce'
 // import { format } from '@/utils/chart-data'
 
@@ -400,39 +400,6 @@ export default {
       })
       // console.log('mixed:', mixed)
 
-      const _list = []
-
-      mixed.res_s.forEach((item, index) => {
-        // console.log('item:', item)
-        // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
-        _list.push({
-          id: uuidv1(),
-          chartId: uuidv1(),
-          name: item.name,
-          type: item.type,
-          formula: item.formula === 'Null' ? undefined : item.formula,
-          highlight: item.highlight,
-          children: item.children,
-          drillName: item.name,
-          _drillName: this.currentView.items[item.name] || this.currentView.items['*'],
-          breadName: item.title,
-          res_s_title: item.title,
-          res_s_value: item.value,
-          res_y_title: mixed.res_y[index] && mixed.res_y[index].title,
-          res_y_value: mixed.res_y[index] && mixed.res_y[index].value,
-          // res_s_zb_title: mixed.res_s_zb[index] && mixed.res_s_zb[index].title,
-          // res_s_zb_value: mixed.res_s_zb[index].value && mixed.res_s_zb[index].value + '%',
-          // res_y_zb_title: mixed.res_y_zb[index].title,
-          // res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%',
-          // res_finish_rate_value: (mixed.res_y[index] || mixed.res_y[index].value) > 0 && (item.value / mixed.res_y[index].value * 100).toFixed(0) + '%'
-          res_finish_rate_value: parseFloat(item.完成率)
-        })
-
-        // console.log('item.title:', item.title)
-        // console.log(item.value, typeof item.value)
-        // console.log(mixed.res_y[index].value, typeof mixed.res_y[index].value)
-      })
-
       // console.log('init this.list-------------')
       this.list = []
       // console.log('this.options.dataset.source:', this.options.dataset.source)
@@ -463,28 +430,6 @@ export default {
         })
       })
 
-      // console.log('_list:', _list)
-
-      // 完成率
-      _list.forEach(item => {
-        // item.res_finish_rate_value = (item.res_s_value / item.res_y_value * 100)
-
-        // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
-        // console.log('typeof item.res_finish_rate_value:', typeof item.res_finish_rate_value)
-        // if (isNaN(item.res_finish_rate_value)) {
-        //   item.res_finish_rate_value = ''
-        // } else {
-        //   item.res_finish_rate_value = item.res_finish_rate_value.toFixed(2)
-        // }
-
-        item.res_finish_rate_value = parseFloat(item.res_finish_rate_value) || ''
-        item.res_finish_rate_value = item.res_finish_rate_value === Infinity ? '' : item.res_finish_rate_value
-
-        // console.log('item.res_s_title:', item.res_s_title)
-        // console.log(item.res_s_value, typeof item.res_s_value)
-        // console.log(item.res_finish_rate_value, typeof item.res_finish_rate_value)
-      })
-
       // todo 未解决的数据源 图表 、表格
 
       this.list.forEach(item => {
@@ -503,24 +448,11 @@ export default {
         // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
       })
 
-      // todo 重复业务
-      _list.forEach(item => {
-        item.highlightStyle = ''
-        if (item.highlight === 'true') {
-          item.highlightStyle = item.res_finish_rate_value < 100 ? 'danger' : ''
-        } else if (item.highlight === 'false') {
-          item.highlightStyle = item.res_finish_rate_value > 100 ? 'danger' : ''
-        }
-        // console.log('item:', item)
-        // console.log('item.res_finish_rate_value:', item.res_finish_rate_value)
-      })
-
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
-      // this.list = this.fold ? planeToHierarchy([..._list]) : _list
-      this.list = this.fold ? planeToHierarchy([..._list]) : this.list
+      this.list = this.fold ? this.fullData.foldTableDate : this.list
 
       // console.log('this.fold:', this.fold)
-      // console.log('this.list:', this.list)
+      console.log('this.list:', this.list)
 
       if (this.list.length <= 0) {
         this.list.push({})

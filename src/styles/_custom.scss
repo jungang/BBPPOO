@@ -9,5 +9,9 @@ h3{
 
 .success{color: #67C23A;}
 .warning{color: #E6A23C;}
-.danger{color: #F56C6C;}
+.danger{
+  //font-size: 1.5em;
+  font-weight: bold;
+  color: #F56C6C;
+}
 .info{color: #909399;}
