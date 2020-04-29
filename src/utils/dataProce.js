@@ -21,7 +21,6 @@ export async function getFullData(params) {
    * drill_drillName
    * drill_parameters
    */
-  // console.log('params:', params)
 
   const data = { // 请求参数
     vf_id: undefined,
@@ -54,8 +53,6 @@ export async function getFullData(params) {
     }
   }
 
-  // console.log('res:', res)
-  // console.count()
   // 根据view视图配置，发出请求
   console.log(
     'title:', params.title,
@@ -66,7 +63,6 @@ export async function getFullData(params) {
     'fold:', params.fold,
     'sort:', params.sort
   )
-  // console.log(params)
 
   // 数组长度统一,格式
   res = standardize(res)
@@ -132,8 +128,6 @@ function integration(data) {
       res_y_zb_value: data.vf_id3 && data.vf_id3[index].value,
       res_finish_rate_value: item.finish_rate
     })
-    // console.log(item.value, typeof item.value, item.type)
-    // console.log(item)
   })
 
   return tableDate
@@ -149,15 +143,11 @@ export function calcHighlight(data) {
   data.vf_id0.forEach((item, index) => {
     item.highlightStyle = ''
 
-    // console.log(item.value, typeof item.value)
-    // item.value = washValue(item.value)
-    // data.vf_id1[index].value = washValue(data.vf_id1[index].value)
-
-    if (item.highlight) {
-      item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
-    }
     if (item.highlight) {
       item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
+    }
+    if (item.highlight) {
+      item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
     }
   })
   return data
@@ -167,10 +157,8 @@ export function calcHighlight(data) {
 export function calcCompletion(data) {
   data.finish_rate = []
   data.vf_id0.forEach((item, index) => {
-    // console.log(item.value, typeof item.value)
     let _rate = (item.value / data.vf_id1[index].value * 100).toFixed(2)
     _rate = washValue(_rate)
-    // console.log('_rate:', _rate)
     item.finish_rate = _rate
     data.finish_rate.push({
       name: item.name,
@@ -182,14 +170,6 @@ export function calcCompletion(data) {
 }
 // 转换成数字
 export function valueToNumber(data) {
-  Object.keys(data).forEach((key) => {
-    data[key].forEach(item => {
-      // console.log(item)
-      // console.log(item.value, typeof item.value, item.type)
-      // console.log(item)
-    })
-  })
-
   return data
 }
 
@@ -198,13 +178,9 @@ export function standardize(data) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
-  // console.log('data:', data)
-
   let index = 1
   let _titles = []
   let _temp = data.vf_id0 // 参考标准（实际）
-  // console.log('data:', data)
-  // console.log('_temp:', _temp)
 
   if (data.vf_id0.length <= 0) { // 如果没有实际数据，以目标数据为准排序
     _temp = data.vf_id1
@@ -221,14 +197,12 @@ export function standardize(data) {
   })]
 
   _titles = unique(_titles) // 去重
-  // console.log('_titles:', _titles)
 
   Object.keys(data).forEach((key) => { // 统一
     _titles.forEach(item => {
       // item.name类目名称
       // data[key] => data.vf_id0 data.vf_id1 data.vf_id2 data.vf_id3  ...
       const v = data[key].find(item2 => item2.name === item.name)
-      // console.log(v)
       if (!v) {
         data[key].push(item) // 填补空缺
       } else {
@@ -242,22 +216,18 @@ export function standardize(data) {
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
       item.original = item.value
-      // console.log(item.type)
       switch (item.type) {
         case 'Duration':
           item.value = item.value && (item.value * 1440).toFixed(2)
-          // console.log(item)
           break
         case 'Currency':
           item.value = item.value && item.value.toFixed(2)
-          // console.log(item)
           break
         case 'Double':
           item.value = item.value && item.value.toFixed(2)
           break
         case 'Integer':
           item.value = item.value && Math.round(item.value)
-          // console.log(item)
           break
         case 'Percentage':
           item.value = item.value && (item.value * 100).toFixed(2)
@@ -341,8 +311,6 @@ export function planeToHierarchy(arr) {
 // 递归子元素
 // const n = 1
 function findChildren(parent, arr) {
-  // console.log('findChildren....', n++)
-  // console.log('parent:', parent)
   parent.children.forEach(childrenName => {
     const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
     if (childrenItem) {

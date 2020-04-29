@@ -159,7 +159,6 @@ export default {
     getStatus() {
       fetchStatus().then((res) => {
         this.calstatusPending = res.data
-        // console.log('this.calstatusPending:', this.calstatusPending)
         if (!this.calstatusPending) {
           clearInterval(this.timer)
         } else {
@@ -168,7 +167,7 @@ export default {
         }
 
         if (res.data) {
-          // console.log('正在计算中。。')
+          console.log('')
         } else {
           clearInterval(this.timer)
           if (this.pageClick) {

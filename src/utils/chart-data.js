@@ -2,12 +2,6 @@ import { fetchData } from '@/api/panel'
 import { unique, sort, deepClone } from '@/utils/index'
 import { formatter_s, formatter_y } from '@/utils/chartType'
 export function standardize(data, currentView) {
-  // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
-  // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
-
-  // console.log('data:', data)
-  // console.log('currentView:', currentView)
-
   let index = 1
   let _titles = []
   let _temp = []
@@ -29,8 +23,6 @@ export function standardize(data, currentView) {
 
   _titles = unique(_titles) // 去重
 
-  // console.log('_titles:', _titles)
-
   Object.keys(data).forEach((key) => { // 统一
     _titles.forEach(item => {
       const v = data[key].find(item2 => item2.name === item.name)
@@ -48,34 +40,32 @@ export function standardize(data, currentView) {
     data[key].forEach(item => {
       if (item.value === 'Null') {
         // item.value = '-'
-        // console.log(!!item)
       }
 
       item.original = item.value
-      // console.log(item.type)
       switch (item.type) {
         case 'Duration':
           item.value = item.value && (item.value * 1440).toFixed(2)
-          // console.log(item)
+
           break
         case 'Currency':
           item.value = item.value && item.value.toFixed(2)
-          // console.log(item)
+
           break
         case 'Double':
           item.value = item.value && item.value.toFixed(2)
           break
         case 'Integer':
           item.value = item.value && Math.round(item.value)
-          // console.log(item)
+
           break
         case 'Percentage':
           item.value = item.value && (item.value * 100).toFixed(2)
-          // console.log(item)
+
           break
         case 'String':
           item.value = (item.value === 'Null') ? ' ' : item.value
-          // console.log(item)
+
           break
         default:
       }
@@ -83,7 +73,6 @@ export function standardize(data, currentView) {
   })
 
   // 计算完成率
-  // console.log('currentView:', currentView)
   if (currentView && currentView.compare) {
     data.res_s.forEach((item, index) => {
       item.完成率 = (item.value / data.res_y[index].value * 100).toFixed(2)
@@ -95,19 +84,13 @@ export function standardize(data, currentView) {
 }
 
 export function format(...arg) {
-  // console.log(arg)
   const [options, currentView, data] = [...arg]
   options.series = []
   options.dataset = []
 
   const _data = standardize(deepClone(data))
-  // console.log('__data:', _data)
   // const _data = data
   // 实际数据 基础数据 ///////////////////////////////////////////////////////////////////////////////
-
-  // console.log('format.....')
-  // console.log(options.dataset)
-  // console.log(options.series)
 
   options.series.push(
     {

@@ -80,10 +80,8 @@ const mutations = {
       switch (item.style) {
         case 'chart':
           item.switch = true
-          // console.log(item.style)
           break
         case 'multicols':
-          // console.log(item.style)
           break
         case 'tabular':
           item.style = 'tabular'

@@ -51,7 +51,6 @@ export default {
       return name.trim().toLocaleLowerCase() === 'Dashboard'.toLocaleLowerCase()
     },
     pathCompile(path) {
-      // console.log('path:', path)
       // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
       const { params } = this.$route
       var toPath = compile(path)
@@ -59,7 +58,6 @@ export default {
     },
     handleLink(item) {
       const { redirect, path } = item
-      // console.log('item:', item)
       if (redirect) {
         this.$router.push(redirect)
         return

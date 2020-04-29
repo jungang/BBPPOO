@@ -8,8 +8,6 @@ export { parseTime, formatTime } from '@/utils'
  * @param type
  */
 export function dataType(value, type, item) {
-  // console.log('item:', item)
-  // value = value && +value
   value = parseFloat(value) || value
 
   switch (type) {
@@ -36,7 +34,6 @@ export function dataType(value, type, item) {
     default:
   }
 
-  // console.log(value, typeof value, type)
   return value
 }
 

@@ -1,7 +1,5 @@
 // import { deepClone } from '@/utils'
 export function formatter_s(params) {
-  // console.log('params...')
-  // console.log(params)
   let res = ''
   res += `${params.value.实际}\n`
   // if (!isNaN(params.value.完成率)) {
@@ -19,8 +17,6 @@ export function formatter_s(params) {
   return res
 }
 export function formatter_y(params) {
-  // console.log('params...')
-  // console.log(params)
   let res = ''
   res += `${params.value.预计}\n`
   // if (params.value.预计占比) {
