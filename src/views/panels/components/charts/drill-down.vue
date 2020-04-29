@@ -54,6 +54,7 @@
           <el-table-column
             prop="res_s_title"
             label="名称"
+            :min-width="31"
             :sortable="sort"
           >
             <template slot-scope="{row}">
@@ -67,7 +68,7 @@
             </template>
           </el-table-column>
 
-          <el-table-column v-if="currentView.compare" :sortable="sort" prop="res_y_value" label="预计">
+          <el-table-column v-if="currentView.compare" :sortable="sort" :min-width="23" prop="res_y_value" label="预计">
             <template slot-scope="{row}">
               <span> {{ row.res_y_value }}</span>
             </template>
@@ -77,7 +78,7 @@
               {{ row.res_y_zb_value && row.res_y_zb_value + '%' }}
             </template>
           </el-table-column>
-          <el-table-column :sortable="sort" prop="res_s_value" label="实际">
+          <el-table-column :sortable="sort" prop="res_s_value" label="实际" :min-width="23">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle"> {{ row.res_s_value }}</span>
 
@@ -88,7 +89,7 @@
               {{ row.res_s_zb_value && row.res_s_zb_value + '%' }}
             </template>
           </el-table-column>
-          <el-table-column v-if="currentView.completion" :sortable="sort" prop="res_finish_rate_value" label="完成率%">
+          <el-table-column v-if="currentView.completion" :sortable="sort" :min-width="23" prop="res_finish_rate_value" label="完成率%">
             <template slot-scope="{row}">
               {{ row.res_finish_rate_value && row.res_finish_rate_value+'%' }}
 
@@ -101,7 +102,7 @@
 
   </div>
 </template>
-1
+
 <script>
 // import { fetchData } from '@/api/panel'
 // eslint-disable-next-line no-unused-vars
