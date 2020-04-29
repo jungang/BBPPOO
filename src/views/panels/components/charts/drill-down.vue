@@ -92,7 +92,7 @@
 
   </div>
 </template>
-1
+
 <script>
 // import { fetchData } from '@/api/panel'
 // eslint-disable-next-line no-unused-vars
@@ -168,15 +168,16 @@ export default {
           borderColor: '#aaa',
           borderWidth: 1,
           borderRadius: 4,
-          position: ['80%', '10%'],
+          position: ['76%', '10%'],
           alwaysShowContentL: true,
           transitionDuration: 0,
           showDelay: 0,
           formatter: (params, ticket, callback) => {
-            // console.log(params)
             let str = ''
-            str += `${params[0].name}<br>`
-            str += `完成率: ${params[0].data.完成率}%`
+            // str += `${params[0].name}<br>`
+            str += `实际占比: ${parseFloat(params[0].data.实际占比)}%<br>`
+            str += `预计占比: ${parseFloat(params[0].data.预计占比)}%<br>`
+            str += `完成率: ${parseFloat(params[0].data.完成率)}%`
             return str
           }
           /*          position: function(pos, params, dom, rect, size) {
@@ -318,7 +319,7 @@ export default {
       params = params || deepClone(this.data)
 
       // console.log('params:', params)
-      console.log('this.breadcrumb:', this.breadcrumb)
+      // console.log('this.breadcrumb:', this.breadcrumb)
 
       isBread || this.breadcrumb.push({
         id: params.id,

@@ -51,11 +51,11 @@ export async function getFullData(params) {
   // console.log('res:', res)
   // console.count()
   // 根据view视图配置，发出请求
-  console.log(
+  /* console.log(
     'params.compare:', params.compare,
     'params.completion:', params.completion,
     'params.ratio:', params.ratio
-  )
+  )*/
 
   // 数组长度统一
   res = standardize(res)
@@ -84,22 +84,22 @@ async function getData(data, res) {
 }
 
 export function calcCompletion(data) {
-  console.log('data:', data)
-  console.log('计算完成率')
+  // console.log('data:', data)
+  // console.log('计算完成率')
 
   data.finish_rate = []
 
   data.vf_id0.forEach((item, index) => {
     let _rate = (item.value / data.vf_id1[index].value * 100).toFixed(2)
     _rate = washValue(_rate)
-    console.log('_rate:', _rate)
+    // console.log('_rate:', _rate)
     item.finish_rate = _rate
     data.finish_rate.push({
       name: item.name,
       title: item.title,
       value: _rate
     })
-    console.log(item)
+    // console.log(item)
     // data.finish_rate.push()
   })
 
@@ -116,7 +116,7 @@ export function standardize(data) {
   let index = 1
   let _titles = []
   let _temp = data.vf_id0 // 参考标准（实际）
-  console.log('data:', data)
+  // console.log('data:', data)
   // console.log('_temp:', _temp)
 
   if (data.vf_id0.length <= 0) { // 如果没有实际数据，以目标数据为准排序
