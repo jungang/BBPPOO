@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'BPO运营数据分析工具',
+  title: 'BPO运营数据分析工具系统',
 
   /**
    * @type {boolean} true | false

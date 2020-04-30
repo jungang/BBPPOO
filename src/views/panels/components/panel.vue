@@ -229,8 +229,8 @@ export default {
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'BPO运营数据分析工具'
-      document.title = `月度经营分-${title}`
+      const title = 'BPO运营数据分析工具系统'
+      document.title = `月度经营分析-${title}`
     }
   }
 }

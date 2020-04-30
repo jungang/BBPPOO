@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      title: 'BPO运营数据分析工具',
+      title: 'BPO运营数据分析工具系统',
       logo: logo
 
     }
@@ -69,7 +69,7 @@ export default {
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 12px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }
@@ -77,7 +77,7 @@ export default {
 
   &.collapse {
     .sidebar-logo {
-      margin-right: 0px;
+      margin-right: 0;
     }
   }
 }
