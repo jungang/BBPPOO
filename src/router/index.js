@@ -60,6 +60,11 @@ export const constantRoutes = [
     component: () => import('@/views/login/auth-redirect'),
     hidden: true
   },
+  // {
+  //   path: '/project',
+  //   component: () => import('@/views/login/auth-redirect'),
+  //   hidden: true
+  // },
   {
     path: '/404',
     component: () => import('@/views/error-page/404'),
@@ -144,6 +149,14 @@ export const asyncRoutes = [
     ]
   },*/
 
+  {
+    path: '/project',
+    component: () => import('@/views/project/auth-redirect'),
+    meta: {
+      title: '项目管理',
+      icon: 'example'
+    }
+  },
   {
     path: '/management',
     component: Layout,
@@ -238,7 +251,6 @@ export const asyncRoutes = [
       }*/
     ]
   },
-
   // {
   //   path: '/permission',
   //   component: Layout,
@@ -446,17 +458,6 @@ export const asyncRoutes = [
   //       component: () => import('@/views/clipboard/index'),
   //       name: 'ClipboardDemo',
   //       meta: { title: 'Clipboard', icon: 'clipboard' }
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: 'external-link',
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: 'https://github.com/PanJiaChen/vue-element-admin',
-  //       meta: { title: 'External Link', icon: 'link' }
   //     }
   //   ]
   // },

@@ -174,7 +174,7 @@ export default {
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               console.log('1')
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.$router.push({ path: this.redirect || '/project', query: this.otherQuery })
               this.loading = false
             })
             .catch(() => {

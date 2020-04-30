@@ -184,9 +184,9 @@ export function standardize(data) {
   // data.res_s_zb.unshift({ name: '123', title: 'zbzb', value: 100 })
   // data.res_y_zb.unshift({ name: '456', title: '撒旦发', value: 200 })
 
-  console.log('data.vf_id2', data.vf_id2)
+  // console.log('data.vf_id2', data.vf_id2)
   data.vf_id2.forEach(item => {
-    console.log(item.title, item.value)
+    // console.log(item.title, item.value)
   })
 
   let index = 1
