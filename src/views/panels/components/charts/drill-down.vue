@@ -81,6 +81,7 @@
           <el-table-column :sortable="sort" prop="res_s_value" label="实际" :min-width="23">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle"> {{ row.res_s_value }}</span>
+              <!--              {{row.highlight}}-->
 
             </template>
           </el-table-column>

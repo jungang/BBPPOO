@@ -141,14 +141,19 @@ async function getData(data, res) {
 // 计算高亮
 export function calcHighlight(data) {
   data.vf_id0.forEach((item, index) => {
+    // console.log('item.highlight:', item.highlight)
+
     item.highlightStyle = ''
 
-    if (item.highlight) {
+    if (item.highlight === 'true') {
       item.highlightStyle = item.value < data.vf_id1[index].value ? 'danger' : ''
     }
-    if (item.highlight) {
+    if (item.highlight === 'false') {
       item.highlightStyle = item.value > data.vf_id1[index].value ? 'danger' : ''
     }
+
+    console.log(item.value, typeof item.value, data.vf_id1[index].value, typeof data.vf_id1[index].value)
+    console.log(item.title, item.highlightStyle)
   })
   return data
 }
@@ -243,7 +248,11 @@ export function standardize(data) {
       // console.log(item.value, typeof item.value, item.type)
       item.formula = item.formula === 'Null' ? undefined : item.formula
 
-      // console.log('item.formula:', item.formula)
+      // item.highlight = item.highlight === 'true' ? true : item.highlight
+      // item.highlight = item.highlight === 'false' ? false : item.highlight
+      // item.highlight = item.highlight === 'Null' ? undefined : item.highlight
+
+      // console.log('item.highlight:', item.highlight, typeof item.highlight)
     })
   })
 
