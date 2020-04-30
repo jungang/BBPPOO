@@ -81,7 +81,7 @@
           <el-table-column :sortable="sort" prop="res_s_value" label="实际" :min-width="14">
             <template slot-scope="{row}">
               <span :class="row.highlightStyle"> {{ row.res_s_value }}</span>
-              <!--              {{row.highlight}}-->
+              <!--              {{ row.highlight }}-->
 
             </template>
           </el-table-column>
@@ -306,9 +306,9 @@ export default {
     },
 
     cellHandelDrill(row) {
-      console.log('cellHandelDrill...')
-      console.log(row)
-      console.log(this.$store.state.options.views)
+      // console.log('cellHandelDrill...')
+      // console.log(row)
+      // console.log(this.$store.state.options.views)
       const _currentView = this.$store.state.options.views.find(item => {
         console.log(item.name === row.name)
         return item.name === row.name
@@ -367,6 +367,7 @@ export default {
 
       // console.log('params._drillName:', params._drillName)
       this.currentView = this.$store.state.options.views.find(item => item.name === params._drillName)
+      // console.log(this.$store.state.options.views)
       this.fold = this.currentView.fold
       this.sort = this.currentView.sort
 
@@ -572,9 +573,9 @@ export default {
         width: this.data.width,
         height: this.data.height
       }
-
+      console.log(this.indexId)
       const _index = this.panel.list.findIndex(item => item.indexId === this.indexId)
-      // console.log(_index)
+      console.log(_index)
       // console.log(newPanel)
       this.panel.list.splice(_index + 1, 0, newPanel)
 
