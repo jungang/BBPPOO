@@ -1,13 +1,18 @@
 <template>
-  <Panel :is-edit="true" />
+  <div>
+    <Panel />
+    <!--    <Panel2 />-->
+  </div>
 </template>
 
 <script>
 import Panel from './components/panel'
+// import Panel2 from './components/panel2'
 
 export default {
-  name: 'EditForm',
+  name: 'Views',
   components: { Panel }
+  // components: { Panel2 }
 }
 </script>
 

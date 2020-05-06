@@ -195,17 +195,23 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'view/:id(\\S+)',
-        component: () => import('@/views/panels/view'),
-        name: 'panelView',
-        meta: { title: '月度经营分析', noCache: true, activeMenu: '/panels/list' },
-        hidden: true
+        path: 'report',
+        component: () => import('@/views/panels/report'),
+        name: 'panelsLst',
+        meta: { title: '经营月报', icon: 'list' }
       },
       {
         path: 'list',
         component: () => import('@/views/panels/list'),
         name: 'panelsLst',
-        meta: { title: '月报列表', icon: 'list' }
+        meta: { title: '经营月报', icon: 'list' }
+      },
+      {
+        path: 'view/:id(\\S+)',
+        component: () => import('@/views/panels/view'),
+        name: 'panelView',
+        meta: { title: '月度经营分析', noCache: true, activeMenu: '/panels/list' },
+        hidden: true
       }
     ]
   },
