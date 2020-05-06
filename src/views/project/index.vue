@@ -1,5 +1,8 @@
 <template>
   <div class="project-container">
+    <el-row type="flex" justify="center" style="margin-top: 50px">
+      <el-col :span="24" style="color: white; text-align: center "><h2>请选择项目，点击进入……</h2></el-col>
+    </el-row>
     <el-row class="row">
       <el-card
         v-for="(item) in projectList"
@@ -24,52 +27,26 @@
   </div>
 </template>
 <script>
+import { projectFetchList } from '@/api/project'
+
 export default {
   name: 'Project',
   data() {
     return {
-      projectList: [
-        {
-          title: '项目队列AAAAAA',
-          projectId: '00000000-0000-0000-0000-000000000000'
-        },
-        {
-          title: '项目队列BBBBBB',
-          projectId: '00000000-0000-0000-0000-000000000001'
-        },
-        {
-          title: '项目队列CCCC',
-          projectId: '00000000-0000-0000-0000-000000000002'
-        },
-        {
-          title: '项目队列D',
-          projectId: '00000000-0000-0000-0000-000000000003'
-        },
-        {
-          title: '项目队列D',
-          projectId: '00000000-0000-0000-0000-000000000004'
-        },
-        {
-          title: '项目队列D',
-          projectId: '00000000-0000-0000-0000-000000000005'
-        },
-        {
-          title: '项目队列D',
-          projectId: '00000000-0000-0000-0000-000000000006'
-        },
-        {
-          title: '项目队列D',
-          projectId: '00000000-0000-0000-0000-000000000007'
-        },
-        {
-          title: '项目队列D',
-          projectId: '00000000-0000-0000-0000-000000000008'
-        }
-      ]
+      projectList: []
     }
   },
   created() {
-    console.log('Project')
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.listLoading = true
+      projectFetchList(this.listQuery).then(response => {
+        this.projectList = response.data
+        this.listLoading = false
+      })
+    }
   },
   render: function(h) {
     return h() // avoid warning message
@@ -88,7 +65,7 @@ export default {
     background-color: $bg;
     overflow: hidden;
     .row{
-      margin-top: 200px;
+      margin-top: 50px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;

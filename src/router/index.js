@@ -151,7 +151,7 @@ export const asyncRoutes = [
 
   {
     path: '/project',
-    component: () => import('@/views/project/auth-redirect'),
+    component: () => import('@/views/project/index'),
     meta: {
       title: '项目管理',
       icon: 'example'
