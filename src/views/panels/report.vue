@@ -1,37 +1,18 @@
 <template>
   <div id="panel2" class="app-container">
     <el-row class="warp">
-      <el-card
-        v-for="item in cardData"
+      <Panel2
+        v-for="item in list"
         :key="item.title"
-        class="card"
-        shadow="hover"
-      >
-        <div
-          slot="header"
-          class="clearfix title"
-        >
-          {{ item.title }}
-        </div>
-
-        <el-row
-          v-for="row in item.list"
-          :key="row.categoryName"
-          class="row"
-        >
-          <el-col :span="7">{{ row.categoryName }} <br> <span class="gray">目标{{ row.targetValue }}</span> </el-col>
-          <el-col :span="8"><span class="emphasize">{{ row.actualValue }}</span> {{ row.unit }}</el-col>
-          <el-col :span="7">{{ row.finishingRate }}%</el-col>
-        </el-row>
-
-      </el-card>
+        :data="item"
+      />
     </el-row>
   </div>
 </template>
 
 <script>
-import { fetchPanel } from '@/api/panel'
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+// import { fetchPanel } from '@/api/panel'
+import Panel2 from './components/panel2'
 // eslint-disable-next-line no-unused-vars
 // import chart from './charts/charts'
 // import tabular from './tables/table'
@@ -39,11 +20,61 @@ import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // import { deepClone } from '@/utils'
 
 export default {
-  name: 'Panel2',
-  components: { },
+  name: 'Report',
+  components: { Panel2 },
   props: { },
   data() {
     return {
+      list: [
+        {
+          'id': '0dda4872-8f7b-11ea-b838-4df6ec1a2906',
+          'type': 'def',
+          'title': '当月利润分析',
+          'width': 500,
+          'height': 500,
+          'chartId': '0dda4873-8f7b-11ea-b838-4df6ec1a2906',
+          'indexId': '0dda4874-8f7b-11ea-b838-4df6ec1a2906',
+          'viewName': 'profit_income_expanse',
+          'component': 'chart',
+          'panelTitle': '当月利润分析',
+          'parameters': {
+            'year': 2020,
+            'month': '01'
+          }
+        },
+        {
+          'id': '0dda4875-8f7b-11ea-b838-4df6ec1a2906',
+          'type': 'def',
+          'title': '本年累计利润分析',
+          'width': 500,
+          'height': 500,
+          'chartId': '0dda4876-8f7b-11ea-b838-4df6ec1a2906',
+          'indexId': '0dda4877-8f7b-11ea-b838-4df6ec1a2906',
+          'viewName': 'profit_income_expanse_ytd',
+          'component': 'chart',
+          'panelTitle': '本年累计利润分析',
+          'parameters': {
+            'year': 2020,
+            'month': '01'
+          }
+        },
+        {
+          'id': '0dda4878-8f7b-11ea-b838-4df6ec1a2906',
+          'type': 'def',
+          'title': '月度预实一览表',
+          'width': 1020,
+          'height': 500,
+          'chartId': '0dda4879-8f7b-11ea-b838-4df6ec1a2906',
+          'indexId': '0dda487a-8f7b-11ea-b838-4df6ec1a2906',
+          'viewName': 'monthly_items_list',
+          'component': 'tabular',
+          'panelTitle': '月度预实一览表',
+          'parameters': {
+            'year': 2020,
+            'month': '01'
+          }
+        }
+      ],
       cardData: [
         {
           title: 'P&L',
@@ -174,32 +205,8 @@ export default {
   computed: { },
   watch: { },
   created() {
-    this.id = this.$route.params && this.$route.params.id
-    this.tempRoute = Object.assign({}, this.$route)
-    this.getPanel(this.id)
   },
   methods: {
-    getPanel(id) {
-      fetchPanel(id).then(response => {
-        this.panel = response.data
-
-        console.log('this.panel:', this.panel)
-        this.setTagsViewTitle()
-        this.setPageTitle()
-      }).catch(err => {
-        console.log(err)
-      })
-    },
-    setTagsViewTitle() {
-      const title = '报表-' + this.panel.title
-      // const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.id}` })
-      const route = Object.assign({}, this.tempRoute, { title: `${title}` })
-      this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
-    setPageTitle() {
-      const title = 'BPO运营数据分析工具系统'
-      document.title = `月度经营分析-${title}`
-    }
   }
 }
 </script>

@@ -1,204 +1,86 @@
 <template>
-  <div id="panel2" class="app-container">
-    <el-row class="warp">
-      <el-card
-        v-for="item in cardData"
-        :key="item.title"
-        class="card"
-        shadow="hover"
-      >
-        <div
-          slot="header"
-          class="clearfix title"
-        >
-          {{ item.title }}
-        </div>
+  <el-card
+    class="card"
+    shadow="hover"
+  >
+    <div
+      slot="header"
+      class="clearfix title"
+    >
+      {{ data.title }}
+    </div>
 
-        <el-row
-          v-for="row in item.list"
-          :key="row.categoryName"
-          class="row"
-        >
-          <el-col :span="7">{{ row.categoryName }} <br> <span class="gray">目标{{ row.targetValue }}</span> </el-col>
-          <el-col :span="8"><span class="emphasize">{{ row.actualValue }}</span> {{ row.unit }}</el-col>
-          <el-col :span="7">{{ row.finishingRate }}%</el-col>
-        </el-row>
-
-      </el-card>
+    <el-row
+      v-for="row in cardData.list"
+      :key="row.categoryName"
+      class="row"
+    >
+      <el-col :span="7">{{ row.slot1 }} <br> <span class="gray">目标{{ row.slot2 }}</span> </el-col>
+      <el-col :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
+      <el-col :span="7">{{ row.slot5 }}%</el-col>
     </el-row>
-  </div>
+
+  </el-card>
 </template>
 
 <script>
-import { fetchPanel } from '@/api/panel'
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+// import { fetchPanel } from '@/api/panel'
+// import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 // eslint-disable-next-line no-unused-vars
 // import chart from './charts/charts'
 // import tabular from './tables/table'
 // import uuidv1 from 'uuid/v1'
 // import { deepClone } from '@/utils'
+import { getFullData } from '@/utils/dataProce'
 
 export default {
   name: 'Panel2',
   components: { },
-  props: { },
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }},
   data() {
     return {
-      cardData: [
-        {
-          title: 'P&L',
-          list: [
-            {
-              categoryName: '收入',
-              targetValue: 19.08,
-              actualValue: 23.47,
-              unit: '万元',
-              finishingRate: 123.00
-            },
-            {
-              categoryName: '成本',
-              targetValue: 9.67,
-              actualValue: 12.76,
-              unit: '万元',
-              finishingRate: 131.95
-            },
-            {
-              categoryName: '毛利',
-              targetValue: 4.27,
-              actualValue: 10.71,
-              unit: '万元',
-              finishingRate: 250.81
-            }
-          ]
-        },
-        {
-          title: '产能',
-          list: [
-            {
-              categoryName: '业务量',
-              targetValue: 36882,
-              actualValue: 50835,
-              unit: '笔',
-              finishingRate: 137.83
-            },
-            {
-              categoryName: '签入时长',
-              targetValue: 600.10,
-              actualValue: 601.31,
-              unit: '',
-              finishingRate: 101
-            },
-            {
-              categoryName: '利用率',
-              targetValue: 4.27,
-              actualValue: 10.71,
-              unit: '',
-              finishingRate: 250.81
-            },
-            {
-              categoryName: 'AHT',
-              targetValue: 4.27,
-              actualValue: 10.71,
-              unit: '',
-              finishingRate: 250.81
-            }
-          ]
-        },
-        {
-          title: '质量',
-          list: [
-            {
-              categoryName: '投诉数',
-              targetValue: 36882,
-              actualValue: 50835,
-              unit: '笔',
-              finishingRate: 137.83
-            },
-            {
-              categoryName: '接起率',
-              targetValue: 600.10,
-              actualValue: 601.31,
-              unit: '',
-              finishingRate: 101
-            },
-            {
-              categoryName: '满意度',
-              targetValue: 4.27,
-              actualValue: 10.71,
-              unit: '',
-              finishingRate: 250.81
-            },
-            {
-              categoryName: '解决率',
-              targetValue: 4.27,
-              actualValue: 10.71,
-              unit: '',
-              finishingRate: 250.81
-            }
-          ]
-        },
-        {
-          title: '人员',
-          list: [
-            {
-              categoryName: '自然人数',
-              targetValue: 19.08,
-              actualValue: 23.47,
-              unit: '万元',
-              finishingRate: 123.00
-            },
-            {
-              categoryName: '标准人数',
-              targetValue: 9.67,
-              actualValue: 12.76,
-              unit: '万元',
-              finishingRate: 131.95
-            },
-            {
-              categoryName: '一线人数',
-              targetValue: 4.27,
-              actualValue: 10.71,
-              unit: '万元',
-              finishingRate: 250.81
-            }
-          ]
-        }
-      ],
-      title: '',
-      id: 0,
-      timer: {},
-      loading: false,
-      tempRoute: {}
+      currentView: {},
+      fullData: {},
+      cardData: {
+        title: 'P&L',
+        list: []
+      }
     }
   },
   computed: { },
   watch: { },
   created() {
-    this.id = this.$route.params && this.$route.params.id
-    this.tempRoute = Object.assign({}, this.$route)
-    this.getPanel(this.id)
+    this.currentView = this.$store.state.options.views.find(item => item.name === this.data.viewName)
+
+    this.getPanel()
   },
   methods: {
-    getPanel(id) {
-      fetchPanel(id).then(response => {
-        this.panel = response.data
-
-        console.log('this.panel:', this.panel)
-        this.setTagsViewTitle()
-        this.setPageTitle()
-      }).catch(err => {
-        console.log(err)
+    async getPanel() {
+      console.log('currentView:', this.currentView)
+      this.currentView.drill_name = this.data.title
+      this.currentView.drill_drillName = this.data.title
+      this.currentView.drill__drillName = this.data.viewName
+      this.currentView.drill_parameters = this.data.parameters
+      this.fullData = await getFullData(this.currentView)
+      console.log('this.fullData:::', this.fullData)
+      this.fullData.tableDate.forEach(item => {
+        console.log(item)
+        this.cardData.list.push({
+          slot1: item.res_s_title, // 类目
+          slot2: item.res_y_value, // 目标
+          slot3: item.res_s_value, // 实际
+          slot4: '万元',
+          slot5: item.res_finish_rate_value,
+          slot6: '',
+          slot7: ''
+        })
       })
-    },
-    setTagsViewTitle() {
-      const title = '报表-' + this.panel.title
-      // const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.id}` })
-      const route = Object.assign({}, this.tempRoute, { title: `${title}` })
-      this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
-    setPageTitle() {
-      const title = 'BPO运营数据分析工具系统'
-      document.title = `月度经营分析-${title}`
     }
   }
 }
