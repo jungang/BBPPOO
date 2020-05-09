@@ -3,12 +3,18 @@
     class="card"
     shadow="hover"
   >
+
     <div
       slot="header"
       class="clearfix title"
     >
       {{ data.title }}
     </div>
+
+    <Filters
+      total=""
+      @filtration="getPanel"
+    />
 
     <el-row
       v-for="row in cardData.list"
@@ -31,11 +37,12 @@
 // import tabular from './tables/table'
 // import uuidv1 from 'uuid/v1'
 // import { deepClone } from '@/utils'
+import Filters from '@/components/Filters' // Secondary package based on el-pagination
 import { getFullData } from '@/utils/dataProce'
 
 export default {
   name: 'Panel2',
-  components: { },
+  components: { Filters },
   props: {
     data: {
       type: Object,
