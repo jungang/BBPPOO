@@ -1,46 +1,16 @@
 <template>
   <div class="filters-container">
     <el-date-picker
-      v-if="params.dateType==='day'"
-      v-model="params.date"
+      v-model="query.date"
       type="date"
-      size="mini"
       placeholder="选择日期"
-      style="width: 150px"
-      @change="handleCurrentChange"
-    />
-    <el-date-picker
-      v-if="params.dateType==='week'"
-      v-model="params.week"
-      type="week"
-      size="mini"
-      format="yyyy 第 WW 周"
-      placeholder="选择周"
-      style="width: 150px"
-      @change="handleCurrentChange"
-    />
-    <el-date-picker
-      v-if="params.dateType==='month'"
-      v-model="params.month"
-      type="month"
-      size="mini"
-      placeholder="选择月"
-      style="width: 150px"
-      @change="handleCurrentChange"
-    />
-    <el-date-picker
-      v-if="params.dateType==='year'"
-      v-model="params.year"
-      type="year"
-      size="mini"
-      placeholder="选择年"
-      style="width: 150px"
-      @change="handleCurrentChange"
+      format="yyyy 年 MM 月 dd 日"
+      value-format="yyyyMMdd"
+      style="width: 200px"
     />
     <el-select
-      v-model="params.dateType"
+      v-model="query.dateType"
       placeholder="请选择"
-      size="mini"
       style="width: 60px"
     >
       <el-option
@@ -51,22 +21,40 @@
       />
     </el-select>
 
-    选择组织：
+    <span style="margin-left: 20px">选择组织：</span>
 
     <el-cascader
-      :options="options2"
+      v-model="query.group"
+      :options="employeeList"
+      show-all-levels
       :props="{ checkStrictly: true }"
       clearable
     />
 
+    <span style="margin-left: 20px">业务线条：</span>
+    <el-select v-model="query.type" placeholder="请选择">
+      <el-option
+        v-for="item in options3"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      />
+    </el-select>
+    <el-button icon="el-icon-search" style="margin-left: 20px" @click="handleCurrentChange">查询</el-button>
   </div>
 </template>
 
 <script>
 
+import { fetchData } from '@/api/panel'
+
 export default {
   name: 'Filters',
   props: {
+    query: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
@@ -85,53 +73,71 @@ export default {
           label: '年'
         }
       ],
-      options2: [
+      employeeList: [],
+      options3: [
         {
-          value: 'zhinan',
-          label: '网服',
-          children: [{
-            value: 'shejiyuanze',
-            label: '刘组',
-            children: [{
-              value: 'yizhi',
-              label: '刘1'
-            }, {
-              value: 'fankui',
-              label: '刘3'
-            }, {
-              value: 'xiaolv',
-              label: '刘4'
-            }, {
-              value: 'kekong',
-              label: '刘5'
-            }]
-          }, {
-            value: 'daohang',
-            label: '李组',
-            children: [{
-              value: 'cexiangdaohang',
-              label: '李1'
-            }, {
-              value: 'dingbudaohang',
-              label: '李2'
-            }]
-          }]
-        }
-      ],
-      params: {
-        dateType: 'day',
-        date: '',
-        week: '',
-        month: '',
-        year: ''
-      }
+          value: 'all',
+          label: '合计'
+        }, {
+          value: 'group',
+          label: '集团'
+        }, {
+          value: 'local',
+          label: '本地'
+        }],
+      value3: ''
     }
   },
   computed: {
   },
+  created() {
+    console.log('----query:', this.query)
+    this.getEmployee()
+  },
   methods: {
-    handleSizeChange(val) {
-      this.$emit('filtration', { })
+    getEmployee() {
+      const data = {
+        'dir': 'Sample Reports/employee',
+        'projectId': '00000000-0000-0000-0000-000000000000',
+        'vf_id': 1,
+        'vf_file': 'dashboard.efwvf'
+      }
+      fetchData(data).then(response => {
+        const _list = {
+          value: 'wf',
+          label: '网服',
+          children: []
+        }
+
+        // 构建组结构
+        response.forEach(item => {
+          const _v = _list.children.find(group => group.label === item.v_group_name)
+          if (!_v) {
+            _list.children.push({
+              type: 'group',
+              v_project_work_id: item.v_project_work_id,
+              value: item.v_group_name,
+              label: item.v_group_name,
+              children: []
+            })
+          }
+        })
+
+        // 构建人员
+        response.forEach(item => {
+          console.log(item)
+          const group = _list.children.find(group => group.label === item.v_group_name)
+          group.children.push({
+            v_project_work_id: item.v_project_work_id,
+            value: item.v_name,
+            label: item.v_name
+          }
+          )
+        })
+
+        this.employeeList.push(_list)
+        console.log('employeeList:', this.employeeList)
+      })
     },
     handleCurrentChange(val) {
       this.$emit('filtration', { })

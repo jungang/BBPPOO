@@ -2,7 +2,7 @@
 <template>
   <div class="panel-container">
     <Filters
-      total=""
+      :query.sync="query"
       @filtration="getPanel"
     />
 
@@ -56,6 +56,12 @@ export default {
     }},
   data() {
     return {
+      query: {
+        dateType: 'day',
+        date: '',
+        group: '',
+        type: 'all'
+      },
       currentView: {},
       fullData: {}
     }
@@ -68,7 +74,10 @@ export default {
   },
   methods: {
     async getPanel() {
-      console.log('currentView:', this.currentView)
+      // console.log('currentView:', this.currentView)
+
+      console.log('query:', this.query)
+
       this.currentView.drill_name = this.data[0].title
       this.currentView.drill_drillName = this.data[0].title
       this.currentView.drill__drillName = this.data[0].viewName

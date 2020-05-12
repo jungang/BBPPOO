@@ -86,3 +86,43 @@ vf_id:0（按天查）vf_id:1（按周查）vf_id:2（按月查）注意vf_id与
 "time":"202001",
 "value":2000
 }
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+人员查询接口
+{
+"dir":"Sample Reports/employee",
+"projectId":"00000000-0000-0000-0000-000000000000",
+"vf_id":0,
+"vf_file":"dashboard.efwvf",
+"month":"1",
+"year":"2020"
+}
+查询某个月的，注意填写year month projectId
+
+{
+"dir":"Sample Reports/employee",
+"projectId":"00000000-0000-0000-0000-000000000000",
+"vf_id":1,
+"vf_file":"dashboard.efwvf"
+}
+查询所有历史人员，不需要month year 但还是要projectId   vf_id:1
+
+输出结构如下
+{
+	"v_project_work_id": 31,
+	"v_name": "崔秀博",
+	"v_group_name": "gocom",
+	"v_phase": "正式"
+}, {
+	"v_project_work_id": 32,
+	"v_name": "刘宏颖",
+	"v_group_name": "刘宏颖",
+	"v_phase": "正式"
+}, {
+	"v_project_work_id": 33,
+	"v_name": "李昊",
+	"v_group_name": "李昊",
+	"v_phase": "正式"
+}
+
