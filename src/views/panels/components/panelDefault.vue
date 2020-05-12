@@ -3,6 +3,7 @@
   <div class="panel-container">
     <Filters
       :query.sync="query"
+      :multiple="true"
       @filtration="getPanel"
     />
 
@@ -59,7 +60,8 @@ export default {
       query: {
         dateType: 'day',
         date: '',
-        group: 'wf',
+        group: 'null',
+        employee: 'null',
         type: 'all'
       },
       currentView: {},

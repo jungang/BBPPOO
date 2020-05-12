@@ -25,11 +25,36 @@
 
     <el-cascader
       v-if="query.group"
+      v-model="q"
+      :options="qlist"
+      style="width: 100px"
+    />
+
+    <!--
+    <el-cascader
+      v-if="query.group && props.multiple"
+      v-model="query.group"
+      :options="groupList"
+      :props="props"
+      collapse-tags
+      style="width: 170px"
+    />-->
+
+    <el-cascader
+      v-if="query.group && props.multiple"
+      v-model="query.employee"
+      :options="employeeList"
+      :props="props"
+      collapse-tags
+      style="width: 250px"
+    />
+
+    <el-cascader
+      v-if="query.group && !props.multiple"
       v-model="query.group"
       :options="employeeList"
       show-all-levels
       :props="{ checkStrictly: true }"
-      clearable
     />
 
     <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
@@ -37,6 +62,7 @@
       v-if="query.type"
       v-model="query.type"
       placeholder="请选择"
+      style="width: 100px"
     >
       <el-option
         v-for="item in options3"
@@ -52,6 +78,7 @@
 <script>
 
 import { fetchData } from '@/api/panel'
+import { deepClone } from '@/utils'
 
 export default {
   name: 'Filters',
@@ -59,10 +86,19 @@ export default {
     query: {
       type: Object,
       required: true
+    },
+    multiple: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
     return {
+      props: {
+        multiple: this.multiple,
+        checkStrictly: true
+        // emitPath: false
+      },
       options: [
         {
           value: 'day',
@@ -78,6 +114,12 @@ export default {
           label: '年'
         }
       ],
+      q: 'wf',
+      qlist: [{
+        value: 'wf',
+        label: '网服'
+      }],
+      groupList: [],
       employeeList: [],
       options3: [
         {
@@ -108,30 +150,27 @@ export default {
         'vf_file': 'dashboard.efwvf'
       }
       fetchData(data).then(response => {
-        const _list = {
-          value: 'wf',
-          label: '网服',
-          children: []
-        }
-
         // 构建组结构
         response.forEach(item => {
-          const _v = _list.children.find(group => group.label === item.v_group_name)
+          const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
+          console.log('_v:', _v)
           if (!_v) {
-            _list.children.push({
+            this.groupList.push({
               type: 'group',
               v_project_work_id: item.v_project_work_id,
               value: item.v_group_name,
-              label: item.v_group_name,
-              children: []
+              label: item.v_group_name + '组'
             })
           }
         })
 
+        this.employeeList = deepClone(this.groupList)
+
         // 构建人员
         response.forEach(item => {
           console.log(item)
-          const group = _list.children.find(group => group.label === item.v_group_name)
+          const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
+          group.children = group.children || []
           group.children.push({
             v_project_work_id: item.v_project_work_id,
             value: item.v_name,
@@ -140,7 +179,6 @@ export default {
           )
         })
 
-        this.employeeList.push(_list)
         console.log('employeeList:', this.employeeList)
       })
     },
