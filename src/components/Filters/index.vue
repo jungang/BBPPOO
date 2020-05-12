@@ -21,9 +21,10 @@
       />
     </el-select>
 
-    <span style="margin-left: 20px">选择组织：</span>
+    <span v-if="query.group" style="margin-left: 20px">选择组织：</span>
 
     <el-cascader
+      v-if="query.group"
       v-model="query.group"
       :options="employeeList"
       show-all-levels
@@ -31,8 +32,12 @@
       clearable
     />
 
-    <span style="margin-left: 20px">业务线条：</span>
-    <el-select v-model="query.type" placeholder="请选择">
+    <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
+    <el-select
+      v-if="query.type"
+      v-model="query.type"
+      placeholder="请选择"
+    >
       <el-option
         v-for="item in options3"
         :key="item.value"

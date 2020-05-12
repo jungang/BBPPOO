@@ -59,7 +59,7 @@ export default {
       query: {
         dateType: 'day',
         date: '',
-        group: '',
+        group: 'wf',
         type: 'all'
       },
       currentView: {},
