@@ -152,6 +152,7 @@ export default {
     }
   },
   created() {
+    // console.log(this.$route.params)
     this.id = this.$route.params && this.$route.params.id
     this.tempRoute = Object.assign({}, this.$route)
     this.getPanel(this.id)

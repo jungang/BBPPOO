@@ -1,18 +1,16 @@
+<!--page_index-->
 <template>
   <div id="panel2" class="app-container">
-    <el-row class="warp">
-      <Panel2
-        v-for="item in list"
-        :key="item.title"
-        :data="item"
-      />
-    </el-row>
+    <panelDefault
+      :data="list"
+    />
   </div>
 </template>
 
 <script>
 // import { fetchPanel } from '@/api/panel'
-import Panel2 from './components/panel2'
+// import Panel2 from './components/panel2'
+import panelDefault from './components/panelDefault'
 // eslint-disable-next-line no-unused-vars
 // import chart from './charts/charts'
 // import tabular from './tables/table'
@@ -21,7 +19,7 @@ import Panel2 from './components/panel2'
 
 export default {
   name: 'Report',
-  components: { Panel2 },
+  components: { panelDefault },
   props: { },
   data() {
     return {

@@ -1,0 +1,88 @@
+请求接口格式：
+start:起始日期（如果是日粒度，就是时间选框日期减去30天，如果是周，就是前推6周的周一的日期（注意，还是日期，不过日期是前推6周的周一，需要计算一下），如果是月，就是6个月前的YYYYmm，如201909）
+end:结束日期（如果是日粒度，就是时间选框日期，如果是周，就是所选日期的礼拜天的日期，如果是月，就是所选日期的当前月）
+dimension：查询的切片，json数组，里面每项就是一个查询条件。如:[{"v_id":"1561"},{"v_group_name":"李红英"},{"v_phase":"实习期","v_group_name":"李红英"}]，分别查询人员id为1561的员工，小组名称为"李红英"的小组，以及小组名称为"李红英"的小组里面阶段为"实习期"的信息，并且把这三种不同维度信息一并给查询出来。
+subject:查询的科目，json数组，里面每项就是一个科目。如:["income","AHT"]
+table：查询的是目标还是实际，默认不填写，就是实际，查询目标需要填写成 target
+projectId:项目id，默认"00000000-0000-0000-0000-000000000000" 0
+
+vf_id:0（按天查）vf_id:1（按周查）vf_id:2（按月查）注意vf_id与start,end字段的对应关系
+解释：
+1）简单说，我这边提供万能查询接口，不会去理解什么是人员，什么是班组（以后还有可能阶段、一二三级部门，薪资水平等等，不能换个条件就改一次接口）。以后subject按什么聚合，前端提供对应的聚合维度（dimension），后端按提供的条件查询。就是我昨天跟俊刚说的，把查询的条件组成json给我。
+2）同样的，我也不会去理解all|local|group是什么，这意味着我们这个接口就只能给使用这概念的那几个表用了。我这边需要的是明确的subject的名称，比如"income","AHT"。
+3）但是，俊刚怎么知道all，local,group对应什么subject？其实问题在于俊刚怎么知道存在all，local,group这几个选项的？如果不是在前端代码里写死，那就是从view中得到的。所以，跟俊刚知道all，local,group一样的道理，如果all，local,group是在前端写死的，那对应subject一样也可以。但我之前一直建议是这东西配置在view里。我目前view有config字段，也有item字段，都是写json的，drill以前做下钻，现在没用了，也可以再使用。我前天建议就是，view里找一个地方，配置如下
+{
+"local":["income_local","AHT_local"],
+"group":["income_group","AHT_group"],
+"all":["income","AHT"]
+}
+这种方式，用来提供一个可配置的科目分组列表，在渲染界面时读取view取到这些信息。用户使用时选择哪个分组，就把对应subject发送过来。这样无论是前端还是后端，都不必去为理解什么叫local，group，all。而以后系统的各种科目分组，也绝不仅仅是all，local,group这几种。
+4）为啥日期需要用start，end这种方式提供？首先，以后查询多长周期的原本是说改就改的事情，并不一定就是6周30天。或许下周客户就会想要两个时间框自由选择起止时间。所以最好不要固化在接口逻辑里，不然接口肯定不稳定。至于周为啥需要前端计算成日期，主要还是涉及周本身概念不确定以及用sql计算周的日期不太方便。月的概念稳定，所以直接传202005之类的就够了
+5）为啥年月日要用vf_id？俊刚知道，这一定是使用不同的sql了。所以，原因很简单，年月日是分别用不同的sql做的聚合。其实这跟用另一个参数，比如文档里的dateType来约定没有区别。
+
+示例如下：
+{
+"dir":"Sample Reports/{view_收入}",
+"vf_file":"dashboard.efwvf",
+"projectId":"00000000-0000-0000-0000-000000000000",
+"vf_id":0,
+"start":"20190901",
+"end":"20200101",
+"dimension":[
+{"v_id":"1561"}, //人
+{"v_id":"1561"}, //人
+{"v_id":"1561"}, //人
+{"v_id":"1561"}, //人
+{"v_group_name":"李红英"}, //组
+{"v_group_name":"李红英"},
+{"v_group_name":"李红英"},
+{"v_group_name":"李红英"},
+{"v_phase":"实习期","v_group_name":"李红英"}
+],
+"subject":["income_local","AHT_local"],
+"table":"target" | ''
+}
+
+返回数据如下：
+{
+"dimension"：{"v_id":"1561"},
+"subject":"income_local",
+"title":"本地收入",
+"time":"202001",
+"value":2000.11
+},
+{
+"dimension"：{"v_id":"1561"},
+"subject":"AHT_local",
+"title":"本地AHT",
+"time":"202001",
+"value":2000
+},
+{
+"dimension"：{"v_group_name":"李红英"},
+"subject":"income_local",
+"title":"本地收入",
+"time":"202001",
+"value":2000.11
+},
+{
+"dimension"：{"v_group_name":"李红英"},
+"subject":"AHT_local",
+"title":"本地AHT",
+"time":"202001",
+"value":2000
+},
+{
+"dimension"：{"v_phase":"实习期","v_group_name":"李红英"},
+"subject":"income_local",
+"title":"本地收入",
+"time":"202001",
+"value":2000.11
+},
+{
+"dimension"：{"v_phase":"实习期","v_group_name":"李红英"},
+"subject":"AHT_local",
+"title":"本地AHT",
+"time":"202001",
+"value":2000
+}

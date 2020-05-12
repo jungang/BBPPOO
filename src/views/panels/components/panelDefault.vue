@@ -1,31 +1,36 @@
+<!--panel_default-->
 <template>
-  <el-card
-    class="card"
-    shadow="hover"
-  >
-    <div
-      slot="header"
-      class="clearfix title"
-    >
-      {{ data.title }}
-    </div>
-
+  <div class="panel-container">
     <Filters
       total=""
       @filtration="getPanel"
     />
 
-    <el-row
-      v-for="row in cardData.list"
-      :key="row.categoryName"
-      class="row"
+    <el-card
+      v-for="cardData in data"
+      :key="cardData.id"
+      class="card"
+      shadow="hover"
     >
-      <el-col :span="7">{{ row.slot1 }} <br> <span class="gray">目标{{ row.slot2 }}</span> </el-col>
-      <el-col :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
-      <el-col :span="7">{{ row.slot5 }}%</el-col>
-    </el-row>
+      <div
+        slot="header"
+        class="clearfix title"
+      >
+        {{ cardData.title }}
+      </div>
 
-  </el-card>
+      <el-row
+        v-for="row in cardData.list"
+        :key="row.categoryName"
+        class="row"
+      >
+        <el-col :span="7">{{ row.slot1 }} <br> <span class="gray">目标{{ row.slot2 }}</span> </el-col>
+        <el-col :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
+        <el-col :span="7">{{ row.slot5 }}%</el-col>
+      </el-row>
+
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -40,43 +45,38 @@ import Filters from '@/components/Filters' // Secondary package based on el-pagi
 import { getFullData } from '@/utils/dataProce'
 
 export default {
-  name: 'Panel2',
+  name: 'PanelDefault',
   components: { Filters },
   props: {
     data: {
-      type: Object,
+      type: Array,
       default() {
-        return {}
+        return []
       }
     }},
   data() {
     return {
       currentView: {},
-      fullData: {},
-      cardData: {
-        title: 'P&L',
-        list: []
-      }
+      fullData: {}
     }
   },
   computed: { },
   watch: { },
   created() {
-    this.currentView = this.$store.state.options.views.find(item => item.name === this.data.viewName)
-
+    this.currentView = this.$store.state.options.views.find(item => item.name === this.data[0].viewName)
     this.getPanel()
   },
   methods: {
     async getPanel() {
       console.log('currentView:', this.currentView)
-      this.currentView.drill_name = this.data.title
-      this.currentView.drill_drillName = this.data.title
-      this.currentView.drill__drillName = this.data.viewName
-      this.currentView.drill_parameters = this.data.parameters
+      this.currentView.drill_name = this.data[0].title
+      this.currentView.drill_drillName = this.data[0].title
+      this.currentView.drill__drillName = this.data[0].viewName
+      this.currentView.drill_parameters = this.data[0].parameters
       this.fullData = await getFullData(this.currentView)
       console.log('this.fullData:::', this.fullData)
       this.fullData.tableDate.forEach(item => {
-        console.log(item)
+        // console.log(item)
         this.cardData.list.push({
           slot1: item.res_s_title, // 类目
           slot2: item.res_y_value, // 目标

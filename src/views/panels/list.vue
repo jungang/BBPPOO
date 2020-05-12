@@ -307,8 +307,8 @@ export default {
     },
     toDetail(item) {
       // console.log('xxx')
-      // console.log(item.id)
-      this.$router.push('/panels/view/' + item.id)
+      console.log(item)
+      this.$router.push({ path: '/panels/view/' + item.id, query: { month: item.dateValue }})
     },
     handleDelete(item, index) {
       this.$confirm('删除' + item.title, '提示', {

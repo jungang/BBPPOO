@@ -50,20 +50,15 @@
         :value="item.value"
       />
     </el-select>
-    <el-select
-      v-model="params.dateType"
-      placeholder="请选择"
-      size="mini"
-      style="width: 60px"
-    >
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
-      />
-    </el-select>
-    <!--    <el-button size="mini" @click="handleCurrentChange">按钮</el-button>-->
+
+    选择组织：
+
+    <el-cascader
+      :options="options2"
+      :props="{ checkStrictly: true }"
+      clearable
+    />
+
   </div>
 </template>
 
@@ -88,6 +83,39 @@ export default {
         }, {
           value: 'year',
           label: '年'
+        }
+      ],
+      options2: [
+        {
+          value: 'zhinan',
+          label: '网服',
+          children: [{
+            value: 'shejiyuanze',
+            label: '刘组',
+            children: [{
+              value: 'yizhi',
+              label: '刘1'
+            }, {
+              value: 'fankui',
+              label: '刘3'
+            }, {
+              value: 'xiaolv',
+              label: '刘4'
+            }, {
+              value: 'kekong',
+              label: '刘5'
+            }]
+          }, {
+            value: 'daohang',
+            label: '李组',
+            children: [{
+              value: 'cexiangdaohang',
+              label: '李1'
+            }, {
+              value: 'dingbudaohang',
+              label: '李2'
+            }]
+          }]
         }
       ],
       params: {

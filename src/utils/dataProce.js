@@ -31,10 +31,12 @@ export async function getFullData(params) {
     ...store.state.user.apiTemplate
   }
 
+  // console.log('data:', data)
   // 实际
   data.vf_id = 0
   res = await getData(data, res) // return res.vf_id0
 
+  // console.log('res.vf_id0:', res)
   // 预计
   if (params.compare) {
     data.vf_id = 1
@@ -61,8 +63,10 @@ export async function getFullData(params) {
     'completion:', params.completion,
     'ratio:', params.ratio,
     'fold:', params.fold,
-    'sort:', params.sort
+    'sort:', params.sort,
+    'params:', params
   )
+  // console.log('res:', res)
 
   // 数组长度统一,格式
   res = standardize(res)
@@ -71,12 +75,14 @@ export async function getFullData(params) {
   // res = valueToNumber(res)
 
   // 计算完成率
-  if (params.completion) {
+  if (params.compare && params.completion) {
     res = calcCompletion(res)
   }
 
   // 计算高亮
-  res = calcHighlight(res)
+  if (params.compare && params.completion) {
+    res = calcHighlight(res)
+  }
 
   res.currentView = params
   // 集成整合
@@ -161,8 +167,10 @@ export function calcHighlight(data) {
 
 // 计算完成率
 export function calcCompletion(data) {
+  // console.log(data)
   data.finish_rate = []
   data.vf_id0.forEach((item, index) => {
+    // console.log(item)
     let _rate = (item.value / data.vf_id1[index].value * 100).toFixed(2)
     _rate = washValue(_rate)
     item.finish_rate = _rate
@@ -197,6 +205,10 @@ export function standardize(data) {
     _temp = data.vf_id1
   }
 
+  // console.log('data:', data)
+  // console.log('data.vf_id0:', data.vf_id0)
+  // console.log('data.vf_id1:', data.vf_id1)
+  // console.log('_temp:', _temp)
   // 取得所有类目
   _titles = [..._temp.map(item => {
     return {

@@ -19,7 +19,7 @@ const dashboard = {
         zone: [
           {
             id: 1010101,
-            name:"cards"
+            name: 'cards',
             views: [] // view数量及类型数据取自 view.config,  多个view组合为tabs组
           }, {
             id: 1010102,
@@ -48,27 +48,27 @@ const dashboard = {
           zone: [
             {
               id: 1010101,
-              name:'trend'
+              name: 'trend',
               tabs: [
                 {
-                  index:1
+                  index: 1,
                   views: []// view数量及类型数据取自 view.config,  多个view组合为tabs组
                 },
                 {
-                  index:2
+                  index: 2,
                   views: []
                 }
               ]
             }, {
               id: 1010102,
-              name:'comparison'
+              name: 'comparison',
               tabs: [
                 {
-                  index:1
+                  index: 1,
                   views: []// view数量及类型数据取自 view.config,  多个view组合为tabs组
                 },
                 {
-                  index:2
+                  index: 2,
                   views: []
                 }
               ]
@@ -76,122 +76,14 @@ const dashboard = {
               id: 1010103,
               tabs: [
                 {
-                  index:1
+                  index: 1,
                   views: []// view数量及类型数据取自 view.config,  多个view组合为tabs组
                 },
                 {
-                  index:2
+                  index: 2,
                   views: []
                 }
               ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 103,
-      name: '明细页 产能',
-      path: '/detail',
-      component: 'page_detail',
-      panel: [
-        {
-          id: 10103, // panel ID
-          name: '',
-          component: 'panel_detail',
-          filter: { // 分片器配置
-            options: ['day', 'week', 'month', 'year', 'group', 'param']
-          // ['天', '周', '月', '年', '选择组织', '业务线条']
-          },
-          zone: [
-            {
-              id: 1010101,
-              views: [] // view数量及类型数据取自 view.config,  多个view组合为tabs组
-            }, {
-              id: 1010102,
-              views: []
-            }, {
-              id: 1010103,
-              views: []
-            }
-          ]
-        },
-        {
-          id: 10104,
-          name: '',
-          component: 'panel_detail_comparison',
-          filter: { // 分片器配置
-            options: ['day', 'week', 'month', 'year', 'group', 'param']
-            // ['天', '周', '月', '年', '选择组织', '业务线条']
-          },
-          zone: [
-            {
-              id: 1010101,
-              views: [] // view数量及类型数据取自 view.config,  多个view组合为tabs组
-            }, {
-              id: 1010102,
-              views: []
-            }, {
-              id: 1010103,
-              views: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 104,
-      name: '明细页 质量',
-      path: '/detail',
-      component: 'page_detail',
-      panel: [
-        {
-          id: 10105, // panel ID
-          name: '',
-          component: 'panel_detail',
-          filter: { // 分片器配置
-            options: ['day', 'week', 'month', 'year', 'group', 'param']
-          // ['天', '周', '月', '年', '选择组织', '业务线条']
-          },
-          zone: [
-            {
-              id: 1010101,
-              views: [] // view数量及类型数据取自 view.config,  多个view组合为tabs组
-            }, {
-              id: 1010102,
-              views: []
-            }, {
-              id: 1010103,
-              views: []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 105,
-      name: '明细页 质量',
-      path: '/detail',
-      component: 'page_detail',
-      panel: [
-        {
-          id: 10106, // panel ID
-          name: '',
-          component: 'panel_detail',
-          filter: { // 分片器配置
-            options: ['day', 'week', 'month', 'year', 'group', 'param']
-          // ['天', '周', '月', '年', '选择组织', '业务线条']
-          },
-          zone: [
-            {
-              id: 1010101,
-              views: [] // view数量及类型数据取自 view.config,  多个view组合为tabs组
-            }, {
-              id: 1010102,
-              views: []
-            }, {
-              id: 1010103,
-              views: []
             }
           ]
         }

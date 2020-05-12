@@ -276,6 +276,7 @@ export default {
   },
   created() {
     this.indexId = this.data.indexId
+    // console.log('this.$route.query:', this.$route.query.month)
     this.init()
     window.onresize = () => {
       // console.log('window.onresize...')
@@ -352,7 +353,10 @@ export default {
         component: params.component,
         drillName: params.drillName,
         _drillName: params.viewName || params._drillName,
-        parameters: this.data.parameters
+        parameters: {
+          year: 2020,
+          month: this.$route.query.month
+        }
       })
 
       // console.log('this.breadcrumb:', this.breadcrumb)
@@ -371,7 +375,11 @@ export default {
       this.fold = this.currentView.fold
       this.sort = this.currentView.sort
 
-      params.parameters = this.data.parameters
+      params.parameters = {
+        year: 2020,
+        month: this.$route.query.month
+      }
+
       // console.log(this.$store.state.options.views)
       // console.log('this.currentView:', this.currentView)
       // console.log('this.fold:', this.fold)
@@ -389,7 +397,7 @@ export default {
       // this.currentView.drill_name = params.name
       this.currentView.drill_drillName = params.drillName
       this.currentView.drill__drillName = params._drillName
-      this.currentView.drill_parameters = this.data.parameters
+      this.currentView.drill_parameters = params.parameters
 
       // fix boolen
       // this.currentView.compare = params.compare
