@@ -65,7 +65,7 @@
       style="width: 100px"
     >
       <el-option
-        v-for="item in options3"
+        v-for="item in type"
         :key="item.value"
         :label="item.label"
         :value="item.value"
@@ -89,6 +89,10 @@ export default {
     },
     multiple: {
       type: Boolean,
+      required: true
+    },
+    type: {
+      type: Array,
       required: true
     }
   },
@@ -121,17 +125,6 @@ export default {
       }],
       groupList: [],
       employeeList: [],
-      options3: [
-        {
-          value: 'all',
-          label: '合计'
-        }, {
-          value: 'group',
-          label: '集团'
-        }, {
-          value: 'local',
-          label: '本地'
-        }],
       value3: ''
     }
   },

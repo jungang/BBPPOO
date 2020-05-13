@@ -6,6 +6,7 @@
     <Filters
       :query.sync="query"
       :multiple="false"
+      :type="filterType"
       @filtration="handleFilter"
     />
 
@@ -15,7 +16,7 @@
         :key="cardData.id"
         ref="card"
         :data="cardData"
-        @give-advice="showAdvice"
+        :query="query"
       />
 
     </div>
@@ -31,7 +32,7 @@ import Card from './cards/card'
 // import uuidv1 from 'uuid/v1'
 import { parseTime } from '@/utils'
 import Filters from '@/components/Filters'
-import { getFullData } from '@/utils/dataProce'
+// import { getFullData } from '@/utils/dataProce'
 
 export default {
   name: 'PanelDefault',
@@ -89,6 +90,21 @@ export default {
           }
         }
       ],
+      filterType: [
+        {
+          value: 'all',
+          label: '合计'
+        }, {
+          value: 'group',
+          label: '集团'
+        }, {
+          value: 'local',
+          label: '本地'
+        }, {
+          value: 'other',
+          label: '其他'
+        }
+      ],
       query: {
         dateType: 'day', // 天day | 周week | 月 month | 年 year
         date: parseTime(new Date(), '{y}{m}{d}'), // 日期20200501
@@ -110,33 +126,7 @@ export default {
       console.log('showAdvice...')
     },
     handleFilter() {
-      this.$refs.card.forEach((item, index) => {
-        item.getData(this.query)
-      })
-    },
-    async getPanel() {
-      // console.log('currentView:', this.currentView)
-
-      console.log('query:', this.query)
-
-      this.currentView.drill_name = this.data[0].title
-      this.currentView.drill_drillName = this.data[0].title
-      this.currentView.drill__drillName = this.data[0].viewName
-      this.currentView.drill_parameters = this.data[0].parameters
-      this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:::', this.fullData)
-      this.fullData.tableDate.forEach(item => {
-        // console.log(item)
-        this.cardData.list.push({
-          slot1: item.res_s_title, // 类目
-          slot2: item.res_y_value, // 目标
-          slot3: item.res_s_value, // 实际
-          slot4: '万元',
-          slot5: item.res_finish_rate_value,
-          slot6: '',
-          slot7: ''
-        })
-      })
+      this.$refs.card.forEach((item) => item.getData())
     }
   }
 }

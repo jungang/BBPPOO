@@ -10,17 +10,8 @@
     >
       {{ data.title }}
     </div>
-
-    <el-row
-      v-for="row in data.list"
-      :key="row.categoryName"
-      class="row"
-    >
-      <el-col :span="7">{{ row.slot1 }} <br> <span class="gray">目标{{ row.slot2 }}</span> </el-col>
-      <el-col :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
-      <el-col :span="7">{{ row.slot5 }}%</el-col>
-    </el-row>
-
+    <List :data="cardData.list" />
+    <chartLine />
   </el-card>
 <!--  </div>-->
 </template>
@@ -28,10 +19,12 @@
 <script>
 
 import { getFullData } from '@/utils/dataProce'
+import List from './list'
+import chartLine from '../charts/chartLine_v1'
 
 export default {
   name: 'Card',
-  components: { },
+  components: { List, chartLine },
   directives: { },
   props: {
     data: {
@@ -41,26 +34,37 @@ export default {
           name: 'default'
         }
       }
+    },
+    query: {
+      type: Object,
+      default: function() {
+        return { }
+      }
     }
   },
   data() {
-    return { }
+    return {
+      currentView: {},
+      cardData: {
+        list: []
+      }
+    }
   },
   watch: { },
   created() {
+    this.currentView = this.$store.state.options.views.find(item => item.name === this.data.viewName)
+    this.getData()
   },
   mounted() {
   },
   methods: {
-    async getData(query) {
-      // console.log('currentView:', this.currentView)
-
+    async getData() {
+      console.log('currentView:', this.currentView)
       console.log('query:', this.query)
-
-      this.currentView.drill_name = this.data[0].title
-      this.currentView.drill_drillName = this.data[0].title
-      this.currentView.drill__drillName = this.data[0].viewName
-      this.currentView.drill_parameters = this.data[0].parameters
+      this.currentView.drill_name = this.data.title
+      this.currentView.drill_drillName = this.data.title
+      this.currentView.drill__drillName = this.data.viewName
+      this.currentView.drill_parameters = this.data.parameters
       this.fullData = await getFullData(this.currentView)
       console.log('this.fullData:::', this.fullData)
       this.fullData.tableDate.forEach(item => {
