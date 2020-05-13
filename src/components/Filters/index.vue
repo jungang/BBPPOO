@@ -153,7 +153,7 @@ export default {
         // 构建组结构
         response.forEach(item => {
           const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
-          console.log('_v:', _v)
+          // console.log('_v:', _v)
           if (!_v) {
             this.groupList.push({
               type: 'group',
@@ -168,7 +168,7 @@ export default {
 
         // 构建人员
         response.forEach(item => {
-          console.log(item)
+          // console.log(item)
           const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
           group.children = group.children || []
           group.children.push({

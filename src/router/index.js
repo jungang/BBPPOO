@@ -196,9 +196,9 @@ export const asyncRoutes = [
     children: [
       {
         path: 'report',
-        component: () => import('@/views/panels/report'),
+        component: () => import('@/views/panels/index'),
         name: 'panelsLst',
-        meta: { title: '经营月报', icon: 'list' }
+        meta: { title: '经营月报(新版)', icon: 'list' }
       },
       {
         path: 'list',

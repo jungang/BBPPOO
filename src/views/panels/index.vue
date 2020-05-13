@@ -1,9 +1,7 @@
 <!--page_index-->
 <template>
   <div id="panel2" class="app-container">
-    <panelDefault
-      :data="list"
-    />
+    <panelDefault />
   </div>
 </template>
 
