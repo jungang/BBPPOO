@@ -11,14 +11,14 @@
       {{ data.title }}
     </div>
     <List :data="cardData.list" />
-    <chartLine />
+    <chartLine :data="cardData.dataSet" />
   </el-card>
 <!--  </div>-->
 </template>
 
 <script>
 
-import { getFullData } from '@/utils/dataProce'
+import { getFullData } from '@/utils/dataProce_v1'
 import List from './list'
 import chartLine from '../charts/chartLine_v1'
 
@@ -46,7 +46,8 @@ export default {
     return {
       currentView: {},
       cardData: {
-        list: []
+        list: [],
+        dataSet: {}
       }
     }
   },
@@ -65,6 +66,7 @@ export default {
       this.currentView.drill_drillName = this.data.title
       this.currentView.drill__drillName = this.data.viewName
       this.currentView.drill_parameters = this.data.parameters
+      this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
       console.log('this.fullData:::', this.fullData)
       this.fullData.tableDate.forEach(item => {

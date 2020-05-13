@@ -199,9 +199,16 @@ export function format(...arg) {
   _data.res_s_zb.forEach((item, index) => {
     options.dataset.source[index].实际占比 = item.value
   })
+  // console.log('_data.res_y_zb:', _data.res_y_zb)
+  // console.log('options.dataset.source:', options.dataset.source)
   // 预计占比 ///////////////////////////////////////////////////////////////////////////////
   _data.res_y_zb.forEach((item, index) => {
-    options.dataset.source[index].预计占比 = item.value
+    // console.log('options.dataset.source[index]:', options.dataset.source[index])
+    // console.log(index, item)
+
+    if (options.dataset.source[index]) {
+      options.dataset.source[index].预计占比 = item.value
+    }
   })
 
   // 实际占比 ///////////////////////////////////////////////////////////////////////////////

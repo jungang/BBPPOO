@@ -32,7 +32,8 @@ export async function getFullData(params) {
   }
 
   // console.log('data:', data)
-  // 实际
+  // vf_id:0（按天查）vf_id:1（按周查）vf_id:2（按月查）
+  console.log('params:', params)
   data.vf_id = 0
   res = await getData(data, res) // return res.vf_id0
 
@@ -66,7 +67,7 @@ export async function getFullData(params) {
     'sort:', params.sort,
     'params:', params
   )
-  console.log('res:', res)
+  // console.log('res:', res)
 
   // 数组长度统一,格式
   res = standardize(res)
