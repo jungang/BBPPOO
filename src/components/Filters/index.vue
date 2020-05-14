@@ -5,7 +5,6 @@
       type="date"
       placeholder="选择日期"
       format="yyyy 年 MM 月 dd 日"
-      value-format="yyyyMMdd"
       style="width: 200px"
     />
     <el-select
@@ -41,8 +40,8 @@
     />-->
 
     <el-cascader
-      v-if="query.group && props.multiple"
-      v-model="query.employee"
+      v-if="query.group && query.multiple"
+      v-model="query.group"
       :options="employeeList"
       :props="props"
       collapse-tags
@@ -50,7 +49,7 @@
     />
 
     <el-cascader
-      v-if="query.group && !props.multiple"
+      v-if="query.group && !query.multiple"
       v-model="query.group"
       :options="employeeList"
       show-all-levels
@@ -87,10 +86,6 @@ export default {
       type: Object,
       required: true
     },
-    multiple: {
-      type: Boolean,
-      required: true
-    },
     type: {
       type: Array,
       required: true
@@ -99,7 +94,7 @@ export default {
   data() {
     return {
       props: {
-        multiple: this.multiple,
+        multiple: this.query.multiple,
         checkStrictly: true
         // emitPath: false
       },
@@ -113,7 +108,8 @@ export default {
         }, {
           value: 'month',
           label: '月'
-        }, {
+        },
+        {
           value: 'year',
           label: '年'
         }
@@ -166,13 +162,13 @@ export default {
           group.children = group.children || []
           group.children.push({
             v_project_work_id: item.v_project_work_id,
-            value: item.v_name,
+            value: item.v_project_work_id,
             label: item.v_name
           }
           )
         })
 
-        console.log('employeeList:', this.employeeList)
+        // console.log('employeeList:', this.employeeList)
       })
     },
     handleCurrentChange(val) {

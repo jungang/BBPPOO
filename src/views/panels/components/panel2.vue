@@ -74,7 +74,7 @@ export default {
       this.currentView.drill__drillName = this.data.viewName
       this.currentView.drill_parameters = this.data.parameters
       this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:::', this.fullData)
+      // console.log('this.fullData:::', this.fullData)
       this.fullData.tableDate.forEach(item => {
         console.log(item)
         this.cardData.list.push({

@@ -5,7 +5,7 @@
     <!--    query 参数-->
     <Filters
       :query.sync="query"
-      :multiple="false"
+      :multiple="true"
       :type="filterType"
       @filtration="handleFilter"
     />
@@ -30,7 +30,6 @@
 import Card from './cards/card'
 // import tabular from './tables/table'
 // import uuidv1 from 'uuid/v1'
-import { parseTime } from '@/utils'
 import Filters from '@/components/Filters'
 // import { getFullData } from '@/utils/dataProce'
 
@@ -106,10 +105,10 @@ export default {
         }
       ],
       query: {
-        dateType: 'day', // 天day | 周week | 月 month | 年 year
-        date: parseTime(new Date(), '{y}{m}{d}'), // 日期20200501
+        dateType: 'day', // 天 day | 周 week | 月 month | 年 year
+        date: new Date(), // 日期20200501
+        multiple: false,
         group: 'null', // 选择组信息
-        employee: 'null', // 选择人员信息
         type: 'all' // 合集 all | 集团 group | 本地 local
       },
       currentView: {},

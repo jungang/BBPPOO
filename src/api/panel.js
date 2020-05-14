@@ -3,8 +3,16 @@ import { request2 } from '@/utils/request'
 import { Base64 } from 'js-base64'
 
 export function fetchData(data) {
+  // console.log(data)
   return request2({
-    url: '/visualizeData',
+    url: `/visualizeData?vf_id=${data.vf_id}
+    &dir=${data.dir}
+    &start=${data.start}
+    &end=${data.end}
+    &table=${data.table}
+    &dimension=${JSON.stringify(data.dimension)}
+    &subject=${JSON.stringify(data.subject)}
+    `,
     method: 'post',
     headers: { 'Content-type': 'application/x-www-form-urlencoded' },
     // data: 'data=' + code

@@ -60,8 +60,8 @@ export default {
   },
   methods: {
     async getData() {
-      console.log('currentView:', this.currentView)
-      console.log('query:', this.query)
+      // console.log('currentView:', this.currentView)
+      // console.log('query:', this.query)
       this.currentView.drill_name = this.data.title
       this.currentView.drill_drillName = this.data.title
       this.currentView.drill__drillName = this.data.viewName
