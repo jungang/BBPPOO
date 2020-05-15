@@ -127,7 +127,7 @@ export default {
   computed: {
   },
   created() {
-    console.log('----query:', this.query)
+    // console.log('----query:', this.query)
     this.getEmployee()
   },
   methods: {

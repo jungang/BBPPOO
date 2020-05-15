@@ -111,6 +111,9 @@ const mutations = {
       item.compare = item.compare === 'true'
       item.completion = item.completion === 'true'
       item.items = (item.items !== 'Null') ? JSON.parse(item.items) : {}
+      item.config = JSON.parse(item.config)
+
+      item.location = `${item.config.dashboardName}_${item.config.pagesName}_${item.config.panelName}_${item.config.zoneName}`
     })
     // console.log('state.views:', state.views)
   },

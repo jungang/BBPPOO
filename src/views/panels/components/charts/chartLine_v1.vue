@@ -27,12 +27,12 @@ export default {
         dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
           // 提供一份数据。
           // dimensions: ['score', 'count', 'score'],
-          dimensions: ['product', '2015', '2016', '2017'],
+          dimensions: ['time'],
           source: [
-            { product: 'Matcha Latte', '2015': 43.3, '2016': 85.8, '2017': 93.7 },
-            { product: 'Milk Tea', '2015': 83.1, '2016': 73.4, '2017': 55.1 },
-            { product: 'Cheese Cocoa', '2015': 86.4, '2016': 65.2, '2017': 82.5 },
-            { product: 'Walnut Brownie', '2015': 72.4, '2016': 53.9, '2017': 39.1 }
+            // { '利用': 43.3, time: '20200505' },
+            // { '利用': 83.1, time: '20200117' },
+            // { '利用': 86.4, time: '20200507' },
+            // { '利用': 72.4, time: '20200508' }
           ]
           // source: {
           //   'product': ['Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie'],
@@ -58,20 +58,57 @@ export default {
     data: {
       deep: true,
       handler() {
-        clearTimeout(this.timer)
-        this.timer = setTimeout(() => {
-          // console.log('resize...')
-          this.chart.resize()
-        }, 100)
+        this.formatDataSet(this.data)
+        // this.options.dataset = this.data
       }
     }
   },
   created() {
+    // console.log('this.data:', this.data)
+    // console.log('dataset:', this.options.dataset)
+    // this.options.dataset = this.data
+    // this.formatDataSet(this.data)
   },
   mounted() {
     this.renderChart()
   },
   methods: {
+    formatDataSet(data) {
+      // console.log('formatDataSet...')
+      // console.log(data)
+
+      const dimensions = ['time']
+      const source = []
+
+      data.data.forEach(subject => { // subject
+        dimensions.push(subject.title)
+        console.log('subject.title:', subject.title)
+        console.log(subject.dimension[0].data)
+        subject.dimension[0].data.forEach(item => {
+          // console.log(item.time)
+          // console.log(item.actualValue)
+
+          const _v = source.find(date => date.time === item.time)
+          // console.log('_v:', _v)
+          if (!_v) {
+            source.push({ // 创建维度并添加数据
+              time: item.time,
+              [subject.title]: item.actualValue
+            })
+          } else { // 添加数据
+            _v[subject.title] = item.actualValue
+          }
+          // console.log('_v:', _v)
+        })
+      })
+
+      this.options.dataset.source = source
+      this.options.dataset.dimensions = dimensions
+      console.log(this.options.dataset)
+      this.$nextTick(() => {
+        this.chart.setOption(this.options)
+      })
+    },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
     },

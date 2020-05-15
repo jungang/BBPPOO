@@ -1,10 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import { deepClone, objectMerge, sort, unique, washValue } from '@/utils'
+import { deepClone, parseTime, sort, unique, washValue } from '@/utils'
 import store from '@/store'
 import { fetchData } from '@/api/panel'
 // import { dataType } from '@/filters'
-import uuidv1 from 'uuid/v1'
-import { parseTime } from '@/utils'
+// import uuidv1 from 'uuid/v1'
 
 /**
  * 主要数据处理过程
@@ -23,18 +22,27 @@ export async function getFullData(params) {
    * drill_parameters
    */
 
-  let data = { // 请求参数
+  // console.log('params:', params)
+  // console.log('params.query.type:', params.query.type)
+
+  let subject = params.items[params.query.type]
+  console.log('subject:', subject)
+  if (!subject) { // todo 降级参数
+    subject = params.items['*'] || ['']
+  }
+  // console.log('subject:', subject)
+
+  const data = { // 请求参数
     vf_id: undefined,
-    dir: store.state.user.api_dir + params.drill__drillName,
-    name: params.drill_drillName,
-    dateType: params.query.dateType, // vf_id:0（按天查）vf_id:1（按周查）vf_id:2（按月查）注意vf_id与start,end字段的对应关系
-    start: '20190901', // 起始日期（如果是日粒度，就是时间选框日期减去30天，如果是周，就是前推6周的周一的日期（注意，还是日期，不过日期是前推6周的周一，需要计算一下），如果是月，就是6个月前的YYYYmm，如201909）
-    end: '20200101', // 结束日期（如果是日粒度，就是时间选框日期，如果是周，就是所选日期的礼拜天的日期，如果是月，就是所选日期的当前月）
+    dir: 'Sample Reports/query',
+    dateType: params.query.dateType,
+    start: '', // 起始日期（如果是日粒度，就是时间选框日期减去30天，如果是周，就是前推6周的周一的日期（注意，还是日期，不过日期是前推6周的周一，需要计算一下），如果是月，就是6个月前的YYYYmm，如201909）
+    end: '', // 结束日期（如果是日粒度，就是时间选框日期，如果是周，就是所选日期的礼拜天的日期，如果是月，就是所选日期的当前月）
     dimension: [], // 查询的切片，json数组，里面每项就是一个查询条件。如:[{"v_id":"1561"},{"v_group_name":"李红英"},{"v_phase":"实习期","v_group_name":"李红英"}]，分别查询人员id为1561的员工，小组名称为"李红英"的小组，以及小组名称为"李红英"的小组里面阶段为"实习期"的信息，并且把这三种不同维度信息一并给查询出来。
-    subject: [], // 查询的科目，json数组，里面每项就是一个科目。如:["income","AHT"]
-    table: 'target', // 查询的是目标还是实际，默认不填写，就是实际，查询目标需要填写成 target
-    year: +params.drill_parameters.year,
-    month: +params.drill_parameters.month,
+    subject: subject, // 查询的科目，json数组，里面每项就是一个科目。如:["income","AHT"]
+    table: 'statistics', // 查询的是目标还是实际，默认不填写，就是实际，查询目标需要填写成 target
+    // year: +params.drill_parameters.year,
+    // month: +params.drill_parameters.month,
     ...store.state.user.apiTemplate
   }
 
@@ -96,26 +104,21 @@ export async function getFullData(params) {
   }
 
   // todo mock数据
-  data = { // 请求参数
-    vf_id: undefined,
-    dir: 'Sample Reports/query',
-    start: '20200119', // 起始日期（如果是日粒度，就是时间选框日期减去30天，如果是周，就是前推6周的周一的日期（注意，还是日期，不过日期是前推6周的周一，需要计算一下），如果是月，就是6个月前的YYYYmm，如201909）
-    end: '20200120',
-    // dimension: [{ 'v_id': '21' }, { 'v_group_name': '李昊' }, { 'v_phase': '正式', 'v_group_name': '李昊' }],
-    dimension: [{ 'v_group_name': '李昊' }],
-    subject: ['use_ratio'],
-    table: '', // 查询的是目标还是实际，默认不填写，就是实际，查询目标需要填写成 target
-    ...store.state.user.apiTemplate
-  }
+  // data = { // 请求参数
+  //   vf_id: undefined,
+  //   dir: 'Sample Reports/query',
+  //   start: '20200114', // 起始日期（如果是日粒度，就是时间选框日期减去30天，如果是周，就是前推6周的周一的日期（注意，还是日期，不过日期是前推6周的周一，需要计算一下），如果是月，就是6个月前的YYYYmm，如201909）
+  //   end: '20200120',
+  //   // dimension: [{ 'v_id': '21' }, { 'v_group_name': '李昊' }, { 'v_phase': '正式', 'v_group_name': '李昊' }],
+  //   dimension: [{ 'v_group_name': '李昊' }],
+  //   subject: ['use_ratio'],
+  //   table: '', // 查询的是目标还是实际，默认不填写，就是实际，查询目标需要填写成 target
+  //   ...store.state.user.apiTemplate
+  // }
 
   switch (params.query.dateType) {
     case 'day':
       data.vf_id = 0
-      // console.log('data:', data)
-      res = await getData(data, res, 'actual') // return res.vf_id0
-      // data.table = 'target'
-      res = await getData(data, res, 'target') // return res.vf_id0
-
       // console.log('res:', res)
       break
     case 'week':
@@ -125,18 +128,28 @@ export async function getFullData(params) {
     case 'year':
       break
   }
+  console.log('data:', data)
+
+  // 实际数据
+  res = await getData(data, res, 'actual') // return res.vf_id0
+
+  // 目标数据
+  if (params.config.compare) {
+    data.table = 'target'
+    res = await getData(data, res, 'target') // return res.vf_id0
+  }
 
   // 根据view视图配置，发出请求
-  console.log(
-    'title:', params.title,
-    'name:', params.name,
-    'compare:', params.compare,
-    'completion:', params.completion,
-    'ratio:', params.ratio,
-    'fold:', params.fold,
-    'sort:', params.sort,
-    'params:', params
-  )
+  // console.log(
+  //   'title:', params.title,
+  //   'name:', params.name,
+  //   'compare:', params.compare,
+  //   'completion:', params.completion,
+  //   'ratio:', params.ratio,
+  //   'fold:', params.fold,
+  //   'sort:', params.sort,
+  //   'params:', params
+  // )
   // console.log('res:', res)
 
   // 数组长度统一,格式
@@ -145,19 +158,21 @@ export async function getFullData(params) {
   // 转换成数字
   // res = valueToNumber(res)
 
+  params.compare = true // todo debug
+  params.completion = true // todo debug
   // 计算完成率
-  if (params.compare && params.completion) {
+
+  if (params.config.completion) {
     res = calcCompletion(res)
   }
 
   // 计算高亮
-  if (params.compare && params.completion) {
-    res = calcHighlight(res)
-  }
+  // if (params.compare && params.completion) {
+  //   res = calcHighlight(res)
+  // }
 
-  res.currentView = params
   // 集成整合
-  const chartDate = integration(res)
+  const chartDate = formatDataSet(res)
   const tableDate = integration(res)
 
   // 处理表格折叠行
@@ -178,35 +193,12 @@ export async function getFullData(params) {
 // toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
 // 集成整合
 function integration(data) {
-  // const views = store.state.options.views
-  const tableDate = []
-  // console.log('data.currentView:', data.currentView)
-  data.actual.forEach((item, index) => {
-    tableDate.push({
-      id: uuidv1(),
-      name: item.name,
-      type: item.type,
-      title: item.title,
-      index: item.index,
-      chartId: uuidv1(),
-      formula: item.formula,
-      original: item.original,
-      children: item.children,
-      breadName: item.title,
-      highlight: item.highlight,
-      highlightStyle: item.highlightStyle,
-      isDrill: !!data.currentView.items[item.name],
-      drillName: item.name,
-      _drillName: data.currentView.items[item.name] || data.currentView.items['*'],
-      res_s_title: item.title,
-      res_s_value: data.actual && data.actual[index].value,
-      res_y_value: data.target && data.target[index].value,
-      res_finish_rate_value: item.finish_rate
-    })
-    // console.log('data.vf_id2[index].value:', data.vf_id2[index].value)
-  })
+  // console.log(data)
+  return data
+}
 
-  return tableDate
+function formatDataSet(data) {
+  return { data }
 }
 
 async function getData(data, res, key) {
@@ -237,19 +229,31 @@ export function calcHighlight(data) {
 
 // 计算完成率
 export function calcCompletion(data) {
-  // console.log(data)
-  data.finish_rate = []
-  data.actual.forEach((item, index) => {
-    // console.log(item)
-    let _rate = (item.value / data.target[index].value * 100).toFixed(2)
-    _rate = washValue(_rate)
-    item.finish_rate = _rate
-    data.finish_rate.push({
-      name: item.name,
-      title: item.title,
-      value: _rate
+  data.forEach(subject => {
+    subject.dimension.forEach(group => {
+      // console.log(data)
+      group.data.forEach(item => {
+        // console.log('item:', item)
+        let _rate = (item.actualValue / item.targetValue * 100).toFixed(2)
+        _rate = washValue(_rate)
+        item.finish_rate = _rate
+      })
     })
   })
+
+  // console.log(data)
+  // data.finish_rate = []
+  // data.actual.forEach((item, index) => {
+  //   // console.log(item)
+  //   let _rate = (item.value / data.target[index].value * 100).toFixed(2)
+  //   _rate = washValue(_rate)
+  //   item.finish_rate = _rate
+  //   data.finish_rate.push({
+  //     name: item.name,
+  //     title: item.title,
+  //     value: _rate
+  //   })
+  // })
   return data
 }
 // 转换成数字
@@ -264,22 +268,7 @@ export function standardize(data) {
   })
 
   let index = 1
-  let _titles = []
-
-  // console.log('data:', data)
-  // console.log('data.vf_id0:', data.vf_id0)
-  // console.log('data.vf_id1:', data.vf_id1)
-  // console.log('_temp:', _temp)
-  // 取得所有类目
-
-  /*  _titles = [..._temp.map(item => {
-    return {
-      name: item.name,
-      title: item.title,
-      value: undefined, // 空值填充 默认值
-      index: index++ //
-    }
-  })]*/
+  let resDate = []
 
   // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间
   Object.keys(data).forEach((key) => { // 统一
@@ -311,22 +300,15 @@ export function standardize(data) {
       item.value = parseFloat(item.value) || item.value
       // console.log(item.value, typeof item.value, item.type)
       item.formula = item.formula === 'Null' ? undefined : item.formula
-
       item.dimension = JSON.parse(item.dimension)
-
-      // item.highlight = item.highlight === 'true' ? true : item.highlight
-      // item.highlight = item.highlight === 'false' ? false : item.highlight
-      // item.highlight = item.highlight === 'Null' ? undefined : item.highlight
-
-      // console.log('item.highlight:', item.highlight, typeof item.highlight)
     })
   })
 
   data.actual.forEach(item => {
     // console.log(item)
-    const _v = _titles.find(subject => subject.name === item.name)
+    const _v = resDate.find(subject => subject.name === item.name)
     if (!_v) {
-      _titles.push({
+      resDate.push({
         name: item.name,
         title: item.title,
         index: index++,
@@ -335,41 +317,69 @@ export function standardize(data) {
     }
   })
 
-  _titles = unique(_titles) // 去重
+  resDate = unique(resDate) // 去重
 
-  Object.keys(data).forEach((key) => { // 统一
-    _titles.forEach(item => {
-      // item.name 类目名称
-      // data.actual.forEach =>...
-      data[key].forEach(a => {
-        // const _dimension = JSON.parse(a.dimension)
-        // console.log('_dimension:', _dimension)
-        // console.log('a:', a)
+  // console.log('resDate:', resDate)
+
+  resDate.forEach(item => {
+    // item.name 类目名称
+    // data.actual.forEach =>...
+    // 添加实际数据
+
+    data.actual.forEach(a => {
+      if (item.title === a.title) {
         const _data = {
-          value: a.value,
+          actualValue: a.value,
           time: a.time,
           type: a.type,
           formula: a.formula,
           original: a.original,
           unit: a.unit
         }
+
+        // console.log(a.dimension.v_group_name)
         const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
+        // console.log('_v', _v)
         if (!_v) {
-          item.dimension.push({
+          item.dimension.push({ // 创建维度并添加数据
             v_group_name: a.dimension.v_group_name,
             data: [_data]
           })
-        } else {
+        } else { // 添加数据
           _v.data.push(_data)
         }
-      })
+      }
     })
-    data[key] = sort(data[key]) // 重新排序 确保各维度位置正确必须步骤
+
+    // 添加目标数据
+    if (data.target) {
+      data.target.forEach(a => {
+        if (item.title === a.title) {
+          const _data = {
+            targetValue: a.value,
+            time: a.time,
+            type: a.type,
+            formula: a.formula,
+            original: a.original,
+            unit: a.unit
+          }
+          const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
+          // console.log('_v:', _v)
+          const _v2 = _v.data.find(data => data.time === a.time)
+          // console.log('_v2:', _v2)
+          if (!_v2) {
+            _v.data.push(_data)
+          } else {
+            _v2.targetValue = a.value
+          }
+        }
+      })
+    }
   })
 
-  console.log('_titles:', _titles)
+  // console.log('resDate:', resDate)
 
-  return data
+  return resDate
 }
 
 // 数据层级折叠

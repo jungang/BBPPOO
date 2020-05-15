@@ -17,7 +17,7 @@
 </template>
 
 <script>
-
+import { deepClone } from '@/utils'
 import { getFullData } from '@/utils/dataProce_v1'
 import List from './list'
 import chartLine from '../charts/chartLine_v1'
@@ -47,13 +47,14 @@ export default {
       currentView: {},
       cardData: {
         list: [],
-        dataSet: {}
+        dataSet: {
+          data: []
+        }
       }
     }
   },
   watch: { },
   created() {
-    this.currentView = this.$store.state.options.views.find(item => item.name === this.data.viewName)
     this.getData()
   },
   mounted() {
@@ -62,25 +63,37 @@ export default {
     async getData() {
       // console.log('currentView:', this.currentView)
       // console.log('query:', this.query)
-      this.currentView.drill_name = this.data.title
-      this.currentView.drill_drillName = this.data.title
-      this.currentView.drill__drillName = this.data.viewName
-      this.currentView.drill_parameters = this.data.parameters
+      this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
       console.log('this.fullData:::', this.fullData)
-      this.fullData.tableDate.forEach(item => {
-        // console.log(item)
-        this.cardData.list.push({
-          slot1: item.res_s_title, // 类目
-          slot2: item.res_y_value, // 目标
-          slot3: item.res_s_value, // 实际
-          slot4: '万元',
-          slot5: item.res_finish_rate_value,
-          slot6: '',
-          slot7: ''
-        })
+
+      // data.forEach(subject => {
+      //   subject.dimension.forEach(group => {
+      //     // console.log(data)
+      //     group.data.forEach(item => {
+      //       // console.log('item:', item)
+      //       let _rate = (item.actualValue / item.targetValue * 100).toFixed(2)
+      //       _rate = washValue(_rate)
+      //       item.finish_rate = _rate
+      //     })
+      //   })
+      // })
+
+      // 摘要数据
+      this.cardData.list = []
+      this.fullData.res.forEach(subject => {
+        const _item = {}
+        _item.slot1 = subject.title
+        _item.slot2 = subject.dimension[0].data[0].targetValue
+        _item.slot3 = subject.dimension[0].data[0].actualValue
+        _item.slot4 = subject.dimension[0].data[0].unit
+        _item.slot5 = subject.dimension[0].data[0].finish_rate
+        this.cardData.list.push(_item)
       })
+
+      // 图表数据
+      this.cardData.dataSet = this.fullData.chartDate
     }
   }
 }

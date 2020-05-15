@@ -39,56 +39,7 @@ export default {
   props: { },
   data() {
     return {
-      list: [
-        {
-          'id': '0dda4872-8f7b-11ea-b838-4df6ec1a2906',
-          'type': 'def',
-          'title': '当月利润分析',
-          'width': 500,
-          'height': 500,
-          'chartId': '0dda4873-8f7b-11ea-b838-4df6ec1a2906',
-          'indexId': '0dda4874-8f7b-11ea-b838-4df6ec1a2906',
-          'viewName': 'profit_income_expanse',
-          'component': 'chart',
-          'panelTitle': '当月利润分析',
-          'parameters': {
-            'year': 2020,
-            'month': '01'
-          }
-        },
-        {
-          'id': '0dda4875-8f7b-11ea-b838-4df6ec1a2906',
-          'type': 'def',
-          'title': '本年累计利润分析',
-          'width': 500,
-          'height': 500,
-          'chartId': '0dda4876-8f7b-11ea-b838-4df6ec1a2906',
-          'indexId': '0dda4877-8f7b-11ea-b838-4df6ec1a2906',
-          'viewName': 'profit_income_expanse_ytd',
-          'component': 'chart',
-          'panelTitle': '本年累计利润分析',
-          'parameters': {
-            'year': 2020,
-            'month': '01'
-          }
-        },
-        {
-          'id': '0dda4878-8f7b-11ea-b838-4df6ec1a2906',
-          'type': 'def',
-          'title': '月度预实一览表',
-          'width': 1020,
-          'height': 500,
-          'chartId': '0dda4879-8f7b-11ea-b838-4df6ec1a2906',
-          'indexId': '0dda487a-8f7b-11ea-b838-4df6ec1a2906',
-          'viewName': 'monthly_items_list',
-          'component': 'tabular',
-          'panelTitle': '月度预实一览表',
-          'parameters': {
-            'year': 2020,
-            'month': '01'
-          }
-        }
-      ],
+      list: [],
       filterType: [
         {
           value: 'all',
@@ -105,25 +56,29 @@ export default {
         }
       ],
       query: {
-        dateType: 'day', // 天 day | 周 week | 月 month | 年 year
+        dateType: 'month', // 天 day | 周 week | 月 month | 年 year
         date: new Date(), // 日期20200501
         multiple: false,
         group: 'null', // 选择组信息
         type: 'all' // 合集 all | 集团 group | 本地 local
       },
-      currentView: {},
       fullData: {}
     }
   },
   computed: { },
   watch: { },
   created() {
-    this.currentView = this.$store.state.options.views.find(item => item.name === this.list[0].viewName)
+    // console.log('this.$store.state.options.views:', this.$store.state.options.views)
+    this.$store.state.options.views.forEach(item => {
+      if (item.location === 'wf_index_default_cards') {
+        if (item.name === 'view_pl') {
+          this.list.push(item)
+        }
+      }
+    })
+    console.log(this.list)
   },
   methods: {
-    showAdvice() {
-      console.log('showAdvice...')
-    },
     handleFilter() {
       this.$refs.card.forEach((item) => item.getData())
     }
