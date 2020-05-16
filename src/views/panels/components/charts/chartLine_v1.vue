@@ -45,11 +45,7 @@ export default {
         // 声明一个 Y 轴，数值轴。
         yAxis: {},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
-        series: [
-          { type: 'line' },
-          // { type: 'line' },
-          { type: 'line' }
-        ]
+        series: []
       },
       chartData: []
     }
@@ -74,17 +70,19 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      // console.log('formatDataSet...')
-      // console.log(data)
+      console.log('formatDataSet...')
+      // console.log(data.data)
 
       const dimensions = ['time']
       const source = []
+      const series = []
 
       data.data.forEach(subject => { // subject
         dimensions.push(subject.title)
-        console.log('subject.title:', subject.title)
-        console.log(subject.dimension[0].data)
-        subject.dimension[0].data.forEach(item => {
+        // console.log('subject.title:', subject.title)
+        series.push({ type: 'line' })
+        // console.log(subject.dimension[0].data)
+        subject.dimension[0].data.forEach(item => { // 组织
           // console.log(item.time)
           // console.log(item.actualValue)
 
@@ -95,8 +93,11 @@ export default {
               time: item.time,
               [subject.title]: item.actualValue
             })
+
+            console.log('item.actualValue:', item.actualValue)
           } else { // 添加数据
             _v[subject.title] = item.actualValue
+            // console.log('item.actualValue:', item.actualValue)
           }
           // console.log('_v:', _v)
         })
@@ -104,7 +105,8 @@ export default {
 
       this.options.dataset.source = source
       this.options.dataset.dimensions = dimensions
-      console.log(this.options.dataset)
+      this.options.series = series
+      // console.log(this.options.dataset)
       this.$nextTick(() => {
         this.chart.setOption(this.options)
       })

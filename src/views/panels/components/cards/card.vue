@@ -7,6 +7,8 @@
     <div
       slot="header"
       class="clearfix title"
+      style="cursor: pointer"
+      @click="linkTo"
     >
       {{ data.title }}
     </div>
@@ -60,6 +62,9 @@ export default {
   mounted() {
   },
   methods: {
+    linkTo() {
+      console.log('linkTo...')
+    },
     async getData() {
       // console.log('currentView:', this.currentView)
       // console.log('query:', this.query)
@@ -82,13 +87,15 @@ export default {
 
       // 摘要数据
       this.cardData.list = []
+      console.log('this.fullData.res:', this.fullData.res)
       this.fullData.res.forEach(subject => {
+        const _len = subject.dimension[0].data.length - 1
         const _item = {}
         _item.slot1 = subject.title
-        _item.slot2 = subject.dimension[0].data[0].targetValue
-        _item.slot3 = subject.dimension[0].data[0].actualValue
-        _item.slot4 = subject.dimension[0].data[0].unit
-        _item.slot5 = subject.dimension[0].data[0].finish_rate
+        _item.slot2 = subject.dimension[0].data[_len].targetValue
+        _item.slot3 = subject.dimension[0].data[_len].actualValue
+        _item.slot4 = subject.dimension[0].data[_len].unit
+        _item.slot5 = subject.dimension[0].data[_len].finish_rate
         this.cardData.list.push(_item)
       })
 

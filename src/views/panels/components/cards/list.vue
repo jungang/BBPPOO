@@ -6,8 +6,8 @@
       class="row"
     >
       <el-col :span="7">{{ row.slot1 }} <br> <span class="gray">目标{{ row.slot2 }}</span> </el-col>
-      <el-col :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
-      <el-col :span="7">{{ row.slot5 }}%</el-col>
+      <el-col v-if="row.slot3" :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
+      <el-col v-if="row.slot3 && row.slot2" :span="7">{{ row.slot5 }}%</el-col>
     </el-row>
 
   </div>
