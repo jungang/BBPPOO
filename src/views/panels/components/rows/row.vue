@@ -1,32 +1,18 @@
 <template>
-  <!--  <div class="card-container">-->
-  <el-card
-    class="card"
-    shadow="hover"
-  >
-    <div
-      slot="header"
-      class="clearfix title"
-      style="cursor: pointer"
-      @click="linkTo"
-    >
-      {{ data.title }}
-    </div>
-    <List :data="cardData.list" />
-    <chartLine :data="cardData.dataSet" />
-  </el-card>
-<!--  </div>-->
+  <div class="row-container">
+    <h4>{{ data.title }}</h4>
+    <chartBar :data="cardData.dataSet" />
+  </div>
 </template>
 
 <script>
 import { deepClone } from '@/utils'
 import { getFullData } from '@/utils/dataProce_v1'
-import List from './list'
-import chartLine from '../charts/chartLine_v1'
+import chartBar from '../charts/chartBar_v1'
 
 export default {
-  name: 'Card',
-  components: { List, chartLine },
+  name: 'Row',
+  components: { chartBar },
   directives: { },
   props: {
     data: {
@@ -109,31 +95,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-  .card{
-    width: 500px;
-    padding: 0 !important;
+.row-container{
+  display: inline-block;
+  h4{
     text-align: center;
-    display: inline-block;
-    margin: 10px;
-    .title{
-      background: #dbdbdb;
-      padding: 10px;
-    }
-    .emphasize{
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .gray{
-      color: #bababa;
-    }
-
-    .el-divider{
-      margin: 10px 0 ;
-    }
-    .row{
-      border-bottom: 1px #d3d3d3 solid;
-      padding: 10px 0;
-    }
+    margin: 0;
   }
+}
+
 </style>

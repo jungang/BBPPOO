@@ -1,32 +1,21 @@
 <template>
-  <!--  <div class="card-container">-->
-  <el-card
-    class="card"
-    shadow="hover"
-  >
-    <div
-      slot="header"
-      class="clearfix title"
-      style="cursor: pointer"
-      @click="linkTo"
-    >
-      {{ data.title }}
-    </div>
-    <List :data="cardData.list" />
-    <chartLine :data="cardData.dataSet" />
-  </el-card>
-<!--  </div>-->
+  <div class="tab-container">
+    {{ data.config.component.type }}
+    <Table v-if="data.config.component.type === 'table'" :data="cardData.dataSet" />
+    <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
+  </div>
 </template>
 
 <script>
+
 import { deepClone } from '@/utils'
 import { getFullData } from '@/utils/dataProce_v1'
-import List from './list'
 import chartLine from '../charts/chartLine_v1'
+import Table from '../tables/table_v1'
 
 export default {
-  name: 'Card',
-  components: { List, chartLine },
+  name: 'Tab',
+  components: { chartLine, Table },
   directives: { },
   props: {
     data: {
@@ -109,31 +98,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.tab-container{
+  /*display: inline-block;*/
+}
 
-  .card{
-    width: 500px;
-    padding: 0 !important;
-    text-align: center;
-    display: inline-block;
-    margin: 10px;
-    .title{
-      background: #dbdbdb;
-      padding: 10px;
-    }
-    .emphasize{
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .gray{
-      color: #bababa;
-    }
-
-    .el-divider{
-      margin: 10px 0 ;
-    }
-    .row{
-      border-bottom: 1px #d3d3d3 solid;
-      padding: 10px 0;
-    }
-  }
 </style>

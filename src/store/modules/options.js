@@ -114,6 +114,10 @@ const mutations = {
       item.config = JSON.parse(item.config)
 
       item.location = `${item.config.dashboardName}_${item.config.pagesName}_${item.config.panelName}_${item.config.zoneName}`
+
+      if (item.config.indexType) {
+        item.location += `_${item.config.indexType}`
+      }
     })
     // console.log('state.views:', state.views)
   },

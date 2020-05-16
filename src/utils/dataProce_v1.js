@@ -26,7 +26,7 @@ export async function getFullData(params) {
   // console.log('params.query.type:', params.query.type)
 
   let subject = params.items[params.query.type]
-  console.log('subject:', subject)
+  // console.log('subject:', subject)
   if (!subject) { // todo 降级参数
     subject = params.items['*'] || ['']
   }
@@ -46,6 +46,9 @@ export async function getFullData(params) {
     ...store.state.user.apiTemplate
   }
 
+  // console.log('params.query.group:', params)
+  // console.log('params.query.group:', params.query)
+  // console.log('params.query.group:', params.query.group)
   // 处理组、人员参数
   if (params.query.group === 'null') {
     // 空选项
@@ -116,6 +119,9 @@ export async function getFullData(params) {
   //   ...store.state.user.apiTemplate
   // }
 
+  // data.start = 202002
+  // data.end = 202002
+
   switch (params.query.dateType) {
     case 'day':
       data.vf_id = 0
@@ -128,7 +134,7 @@ export async function getFullData(params) {
     case 'year':
       break
   }
-  console.log('data:', data)
+  // console.log('data:', data)
 
   // 实际数据
   res = await getData(data, res, 'actual') // return res.vf_id0

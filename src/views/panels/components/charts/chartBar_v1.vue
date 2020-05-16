@@ -9,7 +9,7 @@ const echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
 
 export default {
-  name: 'Charts',
+  name: 'ChartsBar',
   components: { },
   props: {
     data: {
@@ -22,17 +22,16 @@ export default {
       id: uuidv1(),
       chart: {},
       options: {
-        legend: {},
+        // title: { text: this.data.view.title },
+        // legend: {},
         tooltip: {},
         dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
           // 提供一份数据。
           // dimensions: ['score', 'count', 'score'],
-          dimensions: ['time'],
+          dimensions: ['product', '收入'],
           source: [
-            // { '利用': 43.3, time: '20200505' },
-            // { '利用': 83.1, time: '20200117' },
-            // { '利用': 86.4, time: '20200507' },
-            // { '利用': 72.4, time: '20200508' }
+            { product: '一月', '收入': 50 },
+            { product: '二月', '收入': 100 }
           ]
           // source: {
           //   'product': ['Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie'],
@@ -45,7 +44,9 @@ export default {
         // 声明一个 Y 轴，数值轴。
         yAxis: {},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
-        series: []
+        series: [
+          { type: 'bar' }
+        ]
       },
       chartData: []
     }
@@ -60,7 +61,7 @@ export default {
     }
   },
   created() {
-    // console.log('this.data:', this.data)
+    console.log('this.data:', this.data)
     // console.log('dataset:', this.options.dataset)
     // this.options.dataset = this.data
     // this.formatDataSet(this.data)
@@ -80,7 +81,7 @@ export default {
       data.data.forEach(subject => { // subject
         dimensions.push(subject.title)
         // console.log('subject.title:', subject.title)
-        series.push({ type: 'line' })
+        series.push({ type: 'bar' })
         // console.log(subject.dimension[0].data)
         subject.dimension[0].data.forEach(item => { // 组织
           // console.log(item.time)
@@ -103,9 +104,10 @@ export default {
         })
       })
 
-      this.options.dataset.source = source
-      this.options.dataset.dimensions = dimensions
-      this.options.series = series
+      // todo 测试数据
+      // this.options.dataset.source = source
+      // this.options.dataset.dimensions = dimensions
+      // this.options.series = series
       // console.log(this.options.dataset)
       this.$nextTick(() => {
         this.chart.setOption(this.options)
@@ -127,6 +129,7 @@ export default {
 
 <style lang="scss">
   .charts-container{
+    width: 300px;
     height: 30vh;
   }
 </style>

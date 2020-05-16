@@ -197,15 +197,15 @@ export const asyncRoutes = [
       {
         path: 'report',
         component: () => import('@/views/panels/index'),
-        name: 'panelsLst',
+        name: 'index',
         meta: { title: '经营月报(新版)', icon: 'list' }
       },
-      // {
-      //   path: 'pl',
-      //   component: () => import('@/views/panels/page-pl'),
-      //   name: 'panelsLst',
-      //   meta: { title: 'p&l', icon: 'list' }
-      // },
+      {
+        path: 'view_pl',
+        component: () => import('@/views/panels/page-pl'),
+        name: 'P&L',
+        meta: { title: 'p&l', icon: 'list' }
+      },
       {
         path: 'list',
         component: () => import('@/views/panels/list'),
