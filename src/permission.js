@@ -47,15 +47,17 @@ router.beforeEach(async(to, from, next) => {
           }
 
           // 获取视图列表
-          if (to.path !== '/project') {
-            console.log('------->')
-            console.log(to.path)
-            await store.dispatch('options/getView')
-          }
 
-          // hack method to ensure that addRoutes is complete
-          // set the replace: true, so the navigation will not leave a history record
-          next({ ...to, replace: true })
+          if (!store.state.user.apiTemplate.projectId) {
+            console.log('未选择队列...')
+            next(`/project`)
+          } else {
+            console.log('项目id:', store.state.user.apiTemplate.projectId)
+            await store.dispatch('options/getView')
+            // hack method to ensure that addRoutes is complete
+            // set the replace: true, so the navigation will not leave a history record
+            next({ ...to, replace: true })
+          }
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
