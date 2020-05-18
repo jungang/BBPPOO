@@ -1,7 +1,7 @@
 <template>
   <div class="project-container">
     <el-row type="flex" justify="center" style="margin-top: 50px">
-      <el-col :span="24" style="color: white; text-align: center "><h2>请选择项目，点击进入……</h2></el-col>
+      <el-col :span="24" style="color: white; text-align: center "><h2>BPO运营数据分析工具系统</h2></el-col>
     </el-row>
     <el-row class="row">
       <el-card
@@ -10,7 +10,7 @@
         class="card"
         shadow="hover"
       >
-        <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+        <img :src="bg" class="image">
         <el-row style="margin: 10px">{{ item.description }}</el-row>
         <el-row style="margin: 20px">
           <router-link to="/">
@@ -20,7 +20,7 @@
           </router-link>
         </el-row>
 
-        <span style="font-size: 5px">{{ item.createDate || "2020-00" }}</span>
+        <span style="font-size: 5px">{{ item.create_time || "2020-00" }}</span>
       </el-card>
     </el-row>
 
@@ -28,12 +28,13 @@
 </template>
 <script>
 import { fetchData } from '@/api/panel'
-
+import bg from '@/assets/bg.jpg'
 export default {
   name: 'Project',
   data() {
     return {
-      projectList: []
+      projectList: [],
+      bg: bg
     }
   },
   created() {

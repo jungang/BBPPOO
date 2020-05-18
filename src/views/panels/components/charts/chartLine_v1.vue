@@ -113,6 +113,21 @@ export default {
     },
     initChart() {
       this.chart = echarts.init(document.getElementById(this.id))
+
+      // legendselectchanged
+      // legendselected 无触发？
+      const _this = this
+      this.chart.on('legendselectchanged', function(params) {
+        const select_value = Object.values(params.selected)
+        select_value.n = 0
+        select_value.forEach(res => !res && select_value.n++)
+        if (select_value.n === select_value.length) {
+          _this.chart.dispatchAction({
+            type: 'legendSelect',
+            batch: [{ name: params.name }]
+          })
+        }
+      })
     },
     renderChart() {
       !this.chart.id && this.initChart()
