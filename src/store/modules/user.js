@@ -10,7 +10,7 @@ const state = {
   roles: [],
   api_dir: 'Sample Reports/',
   apiTemplate: {
-    projectId: '00000000-0000-0000-0000-000000000000',
+    projectId: '',
     vf_file: 'dashboard.efwvf'
   }
 }
@@ -82,8 +82,8 @@ const actions = {
     })
   },
 
-  setProjectId({ commit, state, dispatch }) {
-    console.log('setProjectId...')
+  setProjectId({ commit, state, dispatch }, project) {
+    commit('SET_PROJECT_ID', project.id)
   },
 
   // user logout

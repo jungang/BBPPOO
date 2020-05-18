@@ -113,7 +113,7 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        id: '00000000-0000-0000-0000-000000000000'
+        id: this.$store.state.user.apiTemplate.projectId
       },
       statusOptions: ['day', 'month', 'year'],
       temp: {
@@ -170,7 +170,7 @@ export default {
         year: 2020,
         dateType: 'month',
         dateValue: '',
-        projectId: '00000000-0000-0000-0000-000000000000',
+        projectId: this.$store.state.user.apiTemplate.projectId,
         'list': [
           {
             id: uuidv1(),
@@ -331,7 +331,7 @@ export default {
     onEnd() {
       this.drag = false
       const data = {
-        'projectId': '00000000-0000-0000-0000-000000000000',
+        'projectId': this.$store.state.user.apiTemplate.projectId,
         list: this.list.map(item => { return item.id })
       }
 
@@ -347,7 +347,7 @@ export default {
       // DESC
       this.drag = true
       const datarest = {
-        'projectId': '00000000-0000-0000-0000-000000000000',
+        'projectId': this.$store.state.user.apiTemplate.projectId,
         list: sortUtil(this.list, 'dateValue', 'ASC').map(item => { return item.id })
       }
       saveQueue(datarest).then((res) => {

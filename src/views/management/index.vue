@@ -124,7 +124,8 @@ export default {
       calstatusPending: false, // false 未在计算中 ，true 正在计算中
       pageClick: false, // 手动开始计算
       uploadUrl: '',
-      projectId: '00000000-0000-0000-0000-000000000000',
+
+      projectId: this.$store.state.user.apiTemplate.projectId,
       curRowIndex: null,
       temp: {
         year: 2020,
@@ -135,7 +136,7 @@ export default {
         items: [],
         total: 0,
         listQuery: {
-          projectId: '00000000-0000-0000-0000-000000000000',
+          projectId: this.$store.state.user.apiTemplate.projectId,
           batch: ''
         }
       }

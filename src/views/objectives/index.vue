@@ -120,7 +120,7 @@ export default {
         year: 2020,
         month: '01'
       },
-      projectId: '00000000-0000-0000-0000-000000000000',
+      projectId: this.$store.state.user.apiTemplate.projectId,
       listLoading: true,
       generateDialogVisible: false,
       detailDialogVisible: false,
@@ -192,7 +192,7 @@ export default {
       this.listLoading = true
       const data = {
         'dir': 'Sample Reports/target',
-        'projectId': '00000000-0000-0000-0000-000000000000',
+        'projectId': this.$store.state.user.apiTemplate.projectId,
         'vf_id': 0,
         'vf_file': 'dashboard.efwvf'
       }

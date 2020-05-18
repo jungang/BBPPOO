@@ -11,23 +11,23 @@
         shadow="hover"
       >
         <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-        <el-row style="margin: 10px">{{ item.title }}</el-row>
+        <el-row style="margin: 10px">{{ item.description }}</el-row>
         <el-row style="margin: 20px">
           <router-link to="/">
-            <el-button type="primary" @click="linkTo">
+            <el-button type="primary" @click="linkTo(item)">
               进入
             </el-button>
           </router-link>
         </el-row>
 
-        <span style="font-size: 5px">{{ item.projectId }}</span>
+        <span style="font-size: 5px">{{ item.createDate || "2020-00" }}</span>
       </el-card>
     </el-row>
 
   </div>
 </template>
 <script>
-import { projectFetchList } from '@/api/project'
+import { fetchData } from '@/api/panel'
 
 export default {
   name: 'Project',
@@ -40,17 +40,23 @@ export default {
     this.getList()
   },
   methods: {
-    linkTo() {
-      console.log('linkTo..')
-      console.log(this.$store.user.apiTemplate)
-      this.$store.dispatch('user/getInfo')
+    linkTo(item) {
+      this.$store.dispatch('user/setProjectId', item)
+      localStorage.projectId = item.id
     },
 
     getList() {
       this.listLoading = true
-      projectFetchList(this.listQuery).then(response => {
-        this.projectList = response.data
-        this.listLoading = false
+
+      const data = {
+        'vf_id': 0,
+        'dir': 'Sample Reports/project',
+        'vf_file': 'dashboard.efwvf'
+      }
+      // console.log('data:', data)
+      fetchData(data).then(response => {
+        console.log(response)
+        this.projectList = response
       })
     }
   },

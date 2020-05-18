@@ -134,7 +134,7 @@ export default {
     getEmployee() {
       const data = {
         'dir': 'Sample Reports/employee',
-        'projectId': '00000000-0000-0000-0000-000000000000',
+        'projectId': this.$store.state.user.apiTemplate.projectId,
         'vf_id': 1,
         'vf_file': 'dashboard.efwvf'
       }

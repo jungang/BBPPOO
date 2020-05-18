@@ -1,4 +1,5 @@
 import { fetchData } from '@/api/panel'
+import store from '@/store'
 const pkg = require('../../../package.json')
 
 const state = {
@@ -136,7 +137,7 @@ const actions = {
 
     const data = {
       'dir': 'Sample Reports/view',
-      'projectId': '00000000-0000-0000-0000-000000000000',
+      'projectId': store.state.user.apiTemplate.projectId,
       'vf_id': 1,
       'vf_file': 'dashboard.efwvf'
     }

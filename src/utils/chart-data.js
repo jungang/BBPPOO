@@ -1,6 +1,7 @@
 import { fetchData } from '@/api/panel'
 import { unique, sort, deepClone } from '@/utils/index'
 import { formatter_s, formatter_y } from '@/utils/chartType'
+import store from '@/store'
 export function standardize(data, currentView) {
   let index = 1
   let _titles = []
@@ -269,36 +270,32 @@ export async function getData(...arg) {
     'name': data.drillName,
     'year': data.parameters.year,
     'month': +data.parameters.month,
-    'projectId': '00000000-0000-0000-0000-000000000000',
     'vf_id': 0,
-    'vf_file': 'dashboard.efwvf'
+    ...store.state.user.apiTemplate
   }
   const data1 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
     'year': data.parameters.year,
     'month': +data.parameters.month,
-    'projectId': '00000000-0000-0000-0000-000000000000',
     'vf_id': 1,
-    'vf_file': 'dashboard.efwvf'
+    ...store.state.user.apiTemplate
   }
   const data2 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
     'year': data.parameters.year,
     'month': +data.parameters.month,
-    'projectId': '00000000-0000-0000-0000-000000000000',
     'vf_id': 2,
-    'vf_file': 'dashboard.efwvf'
+    ...store.state.user.apiTemplate
   }
   const data3 = {
     'dir': 'Sample Reports/' + data._drillName,
     'name': data.drillName,
     'year': data.parameters.year,
     'month': +data.parameters.month,
-    'projectId': '00000000-0000-0000-0000-000000000000',
     'vf_id': 3,
-    'vf_file': 'dashboard.efwvf'
+    ...store.state.user.apiTemplate
   }
 
   // console.log(currentView)

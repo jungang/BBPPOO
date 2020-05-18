@@ -240,6 +240,9 @@ export function standardize(data) {
     data[key].forEach(item => {
       item.original = item.value
 
+      if (item.value === 'Null') {
+        console.log('error_item', item)
+      }
       item.value = item.value === 'Null' ? undefined : item.value
 
       switch (item.type) {
