@@ -30,6 +30,9 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_PROJECT_ID: (state, projectId) => {
+    state.apiTemplate.projectId = projectId
   }
 }
 
@@ -77,6 +80,10 @@ const actions = {
         reject(error)
       })
     })
+  },
+
+  setProjectId({ commit, state, dispatch }) {
+    console.log('setProjectId...')
   },
 
   // user logout

@@ -15,7 +15,12 @@ export function dataType(value, type, item) {
       value = value && (value * 1440).toFixed(2)
       break
     case 'Currency':
-      value = value && value.toFixed(2)
+      try {
+        value = value && value.toFixed(2)
+      } catch (e) {
+        console.log(e)
+        console.log(value)
+      }
       break
     case 'Double':
       // value = value && value.toFixed(2)

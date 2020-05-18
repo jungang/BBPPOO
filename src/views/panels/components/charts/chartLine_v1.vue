@@ -127,6 +127,7 @@ export default {
 
 <style lang="scss">
   .charts-container{
+    width: 100%;
     height: 30vh;
   }
 </style>

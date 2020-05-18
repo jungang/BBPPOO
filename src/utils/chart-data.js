@@ -39,7 +39,7 @@ export function standardize(data, currentView) {
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
       if (item.value === 'Null') {
-        // item.value = '-'
+        item.value = undefined
       }
 
       item.original = item.value
@@ -49,7 +49,12 @@ export function standardize(data, currentView) {
 
           break
         case 'Currency':
-          item.value = item.value && item.value.toFixed(2)
+          try {
+            item.value = item.value && item.value.toFixed(2)
+          } catch (e) {
+            console.log(e)
+            console.log(item)
+          }
 
           break
         case 'Double':

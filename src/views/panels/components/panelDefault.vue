@@ -171,5 +171,9 @@ export default {
     flex-wrap: wrap;
     justify-content: flex-start;
   }
+  .zone_cards{
+    display: flex;
+    flex-wrap: wrap;
+  }
 </style>
 

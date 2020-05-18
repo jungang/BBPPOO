@@ -239,12 +239,20 @@ export function standardize(data) {
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
       item.original = item.value
+
+      item.value = item.value === 'Null' ? undefined : item.value
+
       switch (item.type) {
         case 'Duration':
           item.value = item.value && (item.value * 1440).toFixed(2)
           break
         case 'Currency':
-          item.value = item.value && item.value.toFixed(2)
+          try {
+            item.value = item.value && item.value.toFixed(2)
+          } catch (e) {
+            console.log(e)
+            console.log(item)
+          }
           break
         case 'Double':
           item.value = item.value && item.value.toFixed(2)

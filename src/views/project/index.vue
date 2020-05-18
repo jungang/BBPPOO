@@ -14,7 +14,7 @@
         <el-row style="margin: 10px">{{ item.title }}</el-row>
         <el-row style="margin: 20px">
           <router-link to="/">
-            <el-button type="primary">
+            <el-button type="primary" @click="linkTo">
               进入
             </el-button>
           </router-link>
@@ -40,6 +40,12 @@ export default {
     this.getList()
   },
   methods: {
+    linkTo() {
+      console.log('linkTo..')
+      console.log(this.$store.user.apiTemplate)
+      this.$store.dispatch('user/getInfo')
+    },
+
     getList() {
       this.listLoading = true
       projectFetchList(this.listQuery).then(response => {

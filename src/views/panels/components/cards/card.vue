@@ -111,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 
   .card{
-    width: 500px;
+    width: 45%;
     padding: 0 !important;
     text-align: center;
     display: inline-block;

@@ -276,10 +276,15 @@ export function standardize(data) {
   let index = 1
   let resDate = []
 
-  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间
+  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间   Minute 分钟 7'11''
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
+      // console.log(item)
+      item.unit = item.unit === 'Null' ? undefined : item.unit
+
       item.original = item.value
+      item.value = item.value === 'Null' ? undefined : item.value
+
       switch (item.type) {
         case 'Duration':
           item.value = item.value && (item.value * 1440).toFixed(2)
