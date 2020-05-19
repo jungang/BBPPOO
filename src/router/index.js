@@ -202,16 +202,34 @@ export const asyncRoutes = [
         meta: { title: '经营月报(新版)', icon: 'list' }
       },
       {
-        path: 'view_pl',
-        component: () => import('@/views/panels/page-pl'),
-        name: 'P&L',
-        meta: { title: 'p&l', icon: 'list' }
-      },
-      {
         path: 'list',
         component: () => import('@/views/panels/list'),
         name: 'panelsLst',
         meta: { title: '经营月报', icon: 'list' }
+      },
+      {
+        path: 'p&l',
+        component: () => import('@/views/subpage/page_pl'),
+        name: 'P&L',
+        meta: { title: 'P&L', icon: 'list' },
+      },
+      {
+        path: 'cn',
+        component: () => import('@/views/subpage/page_cn'),
+        name: '产能',
+        meta: { title: '产能', icon: 'list' },
+      },
+      {
+        path: 'zl',
+        component: () => import('@/views/subpage/page_zl'),
+        name: '质量',
+        meta: { title: '质量', icon: 'list' },
+      },
+      {
+        path: 'ry',
+        component: () => import('@/views/subpage/page_ry'),
+        name: '人员',
+        meta: { title: '人员', icon: 'list' },
       },
       {
         path: 'view/:id(\\S+)',
