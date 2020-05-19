@@ -1,3 +1,7 @@
+
+todo
+ Debug UHD 显示调试信息的监视器。
+
 新git地址 https://github.com/Xiaomei-Zhang/operation_analytics_frontend
 
 release 1.1
