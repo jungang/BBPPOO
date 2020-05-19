@@ -10,7 +10,7 @@ import uuidv1 from 'uuid/v1'
 
 export default {
   name: 'ChartsBar',
-  components: { },
+  components: {},
   props: {
     data: {
       type: Object,
@@ -30,8 +30,8 @@ export default {
           // dimensions: ['score', 'count', 'score'],
           dimensions: ['product', '收入'],
           source: [
-           /* { product: '一月', '收入': 50 },
-            { product: '二月', '收入': 100 }*/
+            /* { product: '一月', '收入': 50 },
+               { product: '二月', '收入': 100 }*/
           ]
         },
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
@@ -90,7 +90,7 @@ export default {
               [subject.title]: item.actualValue
             })
 
-            //console.log('item.actualValue:', item.actualValue)
+            // console.log('item.actualValue:', item.actualValue)
           } else { // 添加数据
             _v[subject.title] = item.actualValue
             // console.log('item.actualValue:', item.actualValue)
@@ -100,10 +100,10 @@ export default {
       })
 
       // todo 测试数据
-       this.options.dataset.source = source
-       this.options.dataset.dimensions = dimensions
-       this.options.series = series
-       console.log(this.options.dataset)
+      this.options.dataset.source = source
+      this.options.dataset.dimensions = dimensions
+      this.options.series = series
+      console.log(this.options.dataset)
       this.$nextTick(() => {
         this.chart.setOption(this.options)
       })
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .charts-container{
+  .charts-container {
     width: 100%;
     height: 30vh;
   }
