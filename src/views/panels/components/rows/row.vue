@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24/chartBarlen.len">
+  <el-col :span="24/chartBarlen.len -1">
     <h4>{{ data.title }}</h4>
     <chartBar :data="cardData.dataSet" />
   </el-col>
@@ -103,12 +103,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.row-container{
-  display: inline-block;
   h4{
     text-align: center;
     margin: 0;
   }
-}
 
 </style>
