@@ -59,7 +59,7 @@ export async function getFullData(params) {
     )
   } else {
     // 单选
-    data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1] })
+    data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1].toString() })
   }
 
   if (params.query.dateType === 'day') {
