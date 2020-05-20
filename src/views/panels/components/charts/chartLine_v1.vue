@@ -136,8 +136,7 @@ export default {
       this.chart.setOption(this.options)
 
       let resize = {
-        width: this.initWidth,
-        height: 270
+        width: this.initWidth
       };
 
       this.chart.resize(resize);
