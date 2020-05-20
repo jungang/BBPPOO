@@ -1,5 +1,5 @@
 <template>
-  <div class="charts-container">
+  <div id="chartBox" class="charts-container">
     <div :id="id" class="chart" style="width:100%; height:30vh" />
   </div>
 </template>
