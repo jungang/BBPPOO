@@ -166,7 +166,12 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/management/index'),
         name: 'management',
-        meta: { title: '数据管理', icon: 'component', noCache: true }
+        meta: {
+          title: '数据管理',
+          icon: 'component',
+          noCache: true,
+          roles: ['project_manager', 'group_captain']
+        }
       }
     ]
   },
@@ -182,6 +187,7 @@ export const asyncRoutes = [
           title: '项目目标',
           icon: 'star',
           noCache: true
+          // roles: ['project_manager', 'group_captain']
         }
 
       }
@@ -210,7 +216,11 @@ export const asyncRoutes = [
         path: 'view_pl',
         component: () => import('@/views/subpage/page_pl'),
         name: 'P&L',
-        meta: { title: 'P&L', icon: 'list' }
+        meta: {
+          title: 'P&L',
+          icon: 'list',
+          roles: ['admin', 'manage_manager', 'project_manager']
+        }
       },
       {
         path: 'view_capacity',

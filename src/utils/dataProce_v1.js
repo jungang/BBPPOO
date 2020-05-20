@@ -22,7 +22,7 @@ export async function getFullData(params) {
    * drill_parameters
    */
 
-  // console.log('params:', params)
+  console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
   let subject = params.items[`${params.query.dateType}_${params.query.type}`]
@@ -62,7 +62,7 @@ export async function getFullData(params) {
     data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1].toString() })
   }
 
-  if (params.query.dateType === 'day') {
+  if (params.query.dateType === 'daily') {
     // console.log('按天查。。。', params.query)
     const _data = parseTime(params.query.date, '{y}{m}{d}')
     data.vf_id = 0
@@ -123,7 +123,7 @@ export async function getFullData(params) {
   // data.end = 202002
 
   switch (params.query.dateType) {
-    case 'day':
+    case 'daily':
       data.vf_id = 0
       // console.log('res:', res)
       break
@@ -269,6 +269,7 @@ export function valueToNumber(data) {
 
 // 拉齐长度，填平空位
 export function standardize(data) {
+  console.log(data)
   data.actual.forEach(item => {
     // console.log(item.title, item.value)
   })
@@ -285,6 +286,8 @@ export function standardize(data) {
       item.original = item.value
       item.value = item.value === 'Null' ? undefined : item.value
 
+      console.log('item.type:', item.type)
+
       switch (item.type) {
         case 'Duration':
           item.value = item.value && (item.value * 1440).toFixed(2)
@@ -293,7 +296,7 @@ export function standardize(data) {
           item.value = item.value && item.value.toFixed(2)
           break
         case 'Double':
-          item.value = item.value && item.value.toFixed(2)
+          // item.value = item.value && item.value.toFixed(2)
           break
         case 'Integer':
           item.value = item.value && Math.round(item.value)
