@@ -1,8 +1,8 @@
 <template>
-  <div class="row-container">
+  <el-col :span="8">
     <h4>{{ data.title }}</h4>
     <chartBar :data="cardData.dataSet" />
-  </div>
+  </el-col>
 </template>
 
 <script>
@@ -49,8 +49,8 @@ export default {
   },
   methods: {
     linkTo() {
-      console.log('linkTo...')
-      console.log(this.data.name)
+      // console.log('linkTo...')
+      // console.log(this.data.name)
       this.$router.push({ path: this.data.name })
     },
     async getData() {
@@ -59,7 +59,7 @@ export default {
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:::', this.fullData)
+      // console.log('this.fullData:::', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
@@ -75,7 +75,7 @@ export default {
 
       // 摘要数据
       this.cardData.list = []
-      console.log('this.fullData.res:', this.fullData.res)
+      // console.log('this.fullData.res:', this.fullData.res)
       this.fullData.res.forEach(subject => {
         const _len = subject.dimension[0].data.length - 1
         const _item = {}

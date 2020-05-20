@@ -1,6 +1,5 @@
 <template>
   <div class="tab-container">
-    {{ data.config.component.type }}
     <Table v-if="data.config.component.type === 'table'" :data="cardData.dataSet" />
     <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
   </div>
@@ -52,8 +51,8 @@ export default {
   },
   methods: {
     linkTo() {
-      console.log('linkTo...')
-      console.log(this.data.name)
+      // console.log('linkTo...')
+      // console.log(this.data.name)
       this.$router.push({ path: this.data.name })
     },
     async getData() {
@@ -61,24 +60,13 @@ export default {
       // console.log('query:', this.query)
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
+      // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:::', this.fullData)
-
-      // data.forEach(subject => {
-      //   subject.dimension.forEach(group => {
-      //     // console.log(data)
-      //     group.data.forEach(item => {
-      //       // console.log('item:', item)
-      //       let _rate = (item.actualValue / item.targetValue * 100).toFixed(2)
-      //       _rate = washValue(_rate)
-      //       item.finish_rate = _rate
-      //     })
-      //   })
-      // })
+      // console.log('this.fullData:::', this.fullData)
 
       // 摘要数据
       this.cardData.list = []
-      console.log('this.fullData.res:', this.fullData.res)
+      // console.log('this.fullData:', this.fullData)
       this.fullData.res.forEach(subject => {
         const _len = subject.dimension[0].data.length - 1
         const _item = {}
