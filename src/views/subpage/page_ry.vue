@@ -34,8 +34,8 @@
 
 <script>
   import Filters from '@/components/Filters';
-  import Row from './components/row';
-  import Tab from './components/tab';
+  import Row from '../panels/components/rows/row';
+  import Tab from '../panels/components/tabs/tab';
   import _ from "underscore";
   export default {
     name: 'page_ry',
@@ -99,7 +99,7 @@
 
         //console.log('currentView=>',JSON.stringify(this.currentView))
         //console.log('rowView=>',this.rowView)
-        console.log('pange_ry_tabView=>',this.tabView)
+        //console.log('pange_ry_tabView=>',this.tabView)
       },
       defaultTab(){
         this.tab1_activeName = this.tabView[0].name;

@@ -1,55 +1,120 @@
 <template>
   <div class="table-container">
-    table-container...
+    <el-table
+      :data="tableData"
+      style="width: 100%;margin-bottom: 20px;"
+      row-key="id"
+      border
+      default-expand-all
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column
+        prop="res_s_title"
+        label="名称"
+        :min-width="50"
+      />
+      <el-table-column
+        prop="res_y_value"
+        label="目标（万元）"
+        :min-width="25"
+      />
+      <el-table-column
+        prop="res_s_zb_value"
+        label="实际（万元）"
+        :min-width="25"
+      />
+    </el-table>
   </div>
 </template>
 
 <script>
-import uuidv1 from 'uuid/v1'
+  import uuidv1 from 'uuid/v1'
 
-export default {
-  name: 'Table',
-  components: { },
-  props: {
-    data: {
-      type: Object,
-      required: true
-    }
-  },
-  data() {
-    return {
-      id: uuidv1(),
-      chartData: []
-    }
-  },
-  watch: {
-    data: {
-      deep: true,
-      handler() {
-        this.formatDataSet(this.data)
-        // this.options.dataset = this.data
+  export default {
+    name: 'Table',
+    components: {},
+    props: {
+      data: {
+        type: Object,
+        required: true
       }
-    }
-  },
-  created() {
-    console.log('this.data:', this.data)
-  },
-  mounted() {
-    // this.renderChart()
-  },
-  methods: {
-    formatDataSet(data) {
-      console.log('formatDataSet...')
-      // console.log(data.data)
-    }
+    },
+    data() {
+      return {
+        id: uuidv1(),
+        tableData: [
+        {
+          id: 1,
+          res_s_title: '业务结算',
+          res_y_value: '19.08',
+          res_s_zb_value: '25.95',
+          children: [{
+              id: 11,
+              res_s_title: '营业净额',
+              res_y_value: '17.87',
+              res_s_zb_value: '24.31'
+            },
+            {
+              id: 12,
+              res_s_title: '税额',
+              res_y_value: '1.21',
+              res_s_zb_value: '1.65'
+            },
+            {
+              id: 13,
+              res_s_title: '业务收入',
+              res_y_value: '14.29',
+              res_s_zb_value: '23.47'
+            }]
+        },
+          {
+            id: 2,
+            res_s_title: '管理结算',
+            res_y_value: '1.9',
+            res_s_zb_value: '1.9',
+            children: [{
+              id: 14,
+              res_s_title: '疑难支撑席',
+              res_y_value: '1.4',
+              res_s_zb_value: '1.4'
+            },
+            {
+              id: 15,
+              res_s_title: '项目经理席',
+              res_y_value: '0.5',
+              res_s_zb_value: '0.5'
+            }]
+          }]
+      }
+    },
+    watch: {
+      data: {
+        deep: true,
+        handler() {
+          this.formatDataSet(this.data)
+          // this.options.dataset = this.data
+        }
+      }
+    },
+    created() {
+      // console.log('this.data:', this.data)
+    },
+    mounted() {
+      // this.renderChart()
+    },
+    methods: {
+      formatDataSet(data) {
+        // console.log('formatDataSet...')
+        // console.log(data.data)
+      }
 
+    }
   }
-}
 
 </script>
 
 <style lang="scss">
-  .charts-container{
+  .charts-container {
     width: 100%;
     height: 30vh;
   }

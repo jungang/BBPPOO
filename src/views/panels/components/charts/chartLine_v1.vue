@@ -1,6 +1,6 @@
 <template>
   <div class="charts-container">
-    <div :id="id" class="chart" style="width:100%; height:90%;" />
+    <div :id="id" class="chart" style="width:100vw; height:30vh" />
   </div>
 </template>
 
@@ -94,7 +94,7 @@ export default {
               [subject.title]: item.actualValue
             })
 
-            console.log('item.actualValue:', item.actualValue)
+            //console.log('item.actualValue:', item.actualValue)
           } else { // 添加数据
             _v[subject.title] = item.actualValue
             // console.log('item.actualValue:', item.actualValue)

@@ -50,8 +50,8 @@
 
 <script>
   import Filters from '@/components/Filters';
-  import Row from './components/row';
-  import Tab from './components/tab';
+  import Row from '../panels/components/rows/row';
+  import Tab from '../panels/components/tabs/tab';
   import _ from "underscore";
 
   export default {

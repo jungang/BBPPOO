@@ -1,16 +1,16 @@
 <template>
   <div class="charts-container">
-    <div :id="id" class="chart" style="width:100%; height:90%;" />
+    <div :id="id" class="chart" style="width:100%; height:30vh;" />
   </div>
 </template>
 
 <script>
-const echarts = require('echarts')
+const echarts = require('echarts');
 import uuidv1 from 'uuid/v1'
 
 export default {
   name: 'ChartsBar',
-  components: { },
+  components: {},
   props: {
     data: {
       type: Object,
@@ -30,14 +30,9 @@ export default {
           // dimensions: ['score', 'count', 'score'],
           dimensions: ['product', '收入'],
           source: [
-            { product: '一月', '收入': 50 },
-            { product: '二月', '收入': 100 }
+            /* { product: '一月', '收入': 50 },
+               { product: '二月', '收入': 100 }*/
           ]
-          // source: {
-          //   'product': ['Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie'],
-          //   'count': [823, 235, 1042, 988],
-          //   'score': [95.8, 81.4, 91.2, 76.9]
-          // }
         },
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
         xAxis: { type: 'category' },
@@ -61,7 +56,7 @@ export default {
     }
   },
   created() {
-    console.log('this.data:', this.data)
+    //console.log('this.data:', this.data)
     // console.log('dataset:', this.options.dataset)
     // this.options.dataset = this.data
     // this.formatDataSet(this.data)
@@ -95,7 +90,7 @@ export default {
               [subject.title]: item.actualValue
             })
 
-            console.log('item.actualValue:', item.actualValue)
+            // console.log('item.actualValue:', item.actualValue)
           } else { // 添加数据
             _v[subject.title] = item.actualValue
             // console.log('item.actualValue:', item.actualValue)
@@ -105,10 +100,10 @@ export default {
       })
 
       // todo 测试数据
-      // this.options.dataset.source = source
-      // this.options.dataset.dimensions = dimensions
-      // this.options.series = series
-      // console.log(this.options.dataset)
+      this.options.dataset.source = source
+      this.options.dataset.dimensions = dimensions
+      this.options.series = series
+      //console.log(this.options.dataset)
       this.$nextTick(() => {
         this.chart.setOption(this.options)
       })
@@ -128,8 +123,8 @@ export default {
 </script>
 
 <style lang="scss">
-  .charts-container{
-    width: 300px;
+  .charts-container {
+    width: 100%;
     height: 30vh;
   }
 </style>

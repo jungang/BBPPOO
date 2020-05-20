@@ -55,8 +55,8 @@
 
 <script>
   import Filters from '@/components/Filters';
-  import Row from './components/row';
-  import Tab from './components/tab';
+  import Row from '../panels/components/rows/row';
+  import Tab from '../panels/components/tabs/tab';
   import _ from "underscore";
   export default {
     name: 'page_cn',
@@ -123,10 +123,10 @@
           return this.currentView;
         });
 
-        console.log('currentView=>',JSON.stringify(this.currentView))
-        console.log('rowView=>',this.rowView)
-        console.log('trendChartLineView=>',this.trendChartLineView)
-        console.log('comparisonChartLineView=>',this.comparisonChartLineView)
+        //console.log('currentView=>',JSON.stringify(this.currentView))
+        //console.log('rowView=>',this.rowView)
+        //console.log('trendChartLineView=>',this.trendChartLineView)
+        //console.log('comparisonChartLineView=>',this.comparisonChartLineView)
       },
       defaultTab(){
         this.tab1_activeName = this.trendChartLineView[0].name;
