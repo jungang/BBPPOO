@@ -93,9 +93,11 @@ export default {
       this.fullData.res.forEach(subject => {
         const _len = subject.dimension[0].data.length - 1
         const _item = {}
+        const _type = subject.dimension[0].data[_len].type
+        const _suffix = _type === 'Percentage' ? '%' : ''
         _item.slot1 = subject.title
         _item.slot2 = subject.dimension[0].data[_len].targetValue
-        _item.slot3 = subject.dimension[0].data[_len].actualValue
+        _item.slot3 = subject.dimension[0].data[_len].actualValue + _suffix
         _item.slot4 = subject.dimension[0].data[_len].unit
         _item.slot5 = subject.dimension[0].data[_len].finish_rate
         this.cardData.list.push(_item)

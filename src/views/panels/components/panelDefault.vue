@@ -70,6 +70,7 @@ import Card from './cards/card'
 import Row from './rows/row'
 import Tab from './tabs/tab'
 import Filters from '@/components/Filters'
+import { ViewAuth } from '@/utils/auth'
 
 export default {
   name: 'PanelDefault',
@@ -124,7 +125,8 @@ export default {
       // console.log(item.config.pagesName)
       // console.log(this.$route.name)
       // 处理当前页
-      if (item.config.pagesName === this.$route.name) {
+
+      if (item.config.pagesName === this.$route.name && ViewAuth(item)) {
         // wf_P&L_default_trend_tabIndex
         // wf_P&L_default_trend_rowIndex
         switch (item.location) {
@@ -143,10 +145,6 @@ export default {
         }
       }
     })
-
-    console.log('this.cardList:', this.cardList)
-    console.log('this.zoneTrend.rowList:', this.zoneTrend.rowList)
-    console.log('this.zoneTrend.tabList_1:', this.zoneTrend.tabList_1)
   },
   methods: {
     handleFilter() {

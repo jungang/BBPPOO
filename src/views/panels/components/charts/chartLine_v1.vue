@@ -1,5 +1,5 @@
 <template>
-  <div class="charts-container" id="chartBox">
+  <div id="chartBox" class="charts-container">
     <div :id="id" class="chart" style="width:100%; height:30vh" />
   </div>
 </template>
@@ -66,7 +66,6 @@ export default {
     // this.formatDataSet(this.data)
   },
   mounted() {
-    this.calculateEcharts();
     this.renderChart()
   },
   methods: {
@@ -134,17 +133,7 @@ export default {
       !this.chart.id && this.initChart()
       this.chart.hideLoading()
       this.chart.setOption(this.options)
-
-      let resize = {
-        width: this.initWidth
-      };
-
-      this.chart.resize(resize);
-    },
-    calculateEcharts() {
-      //获取这个组件的窗口宽度
-      this.initWidth = document.getElementById('chartBox').offsetWidth;
-    },
+    }
 
   }
 }

@@ -24,7 +24,7 @@
           style="width: 60px;display: inline-block;"
         >
 
-          <el-button v-waves type="primary">上传文件</el-button>
+          <el-button v-waves v-permission="['project_manager', 'group_captain']" type="primary">上传文件</el-button>
         </el-upload>
 
       </el-col>
@@ -107,11 +107,12 @@ import waves from '@/directive/waves' // waves directive
 import { fetchData } from '@/api/panel'
 import Pagination from '@/components/Pagination'
 import { getData, standardize } from '@/utils/chart-data' // Secondary package based on el-pagination
+import permission from '@/directive/permission/index.js'
 
 export default {
   name: 'BaseConfig',
   components: { Pagination },
-  directives: { waves },
+  directives: { waves, permission },
   filters: {},
   data() {
     return {

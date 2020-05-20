@@ -70,7 +70,7 @@
         :value="item.value"
       />
     </el-select>
-    <el-button v-permission="['editor']" icon="el-icon-search" style="margin-left: 20px" @click="handleCurrentChange">查询</el-button>
+    <el-button icon="el-icon-search" style="margin-left: 20px" @click="handleCurrentChange">查询</el-button>
   </div>
 </template>
 
@@ -102,7 +102,7 @@ export default {
       },
       options: [
         {
-          value: 'day',
+          value: 'daily',
           label: '日'
         }, {
           value: 'week',
