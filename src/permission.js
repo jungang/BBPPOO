@@ -54,6 +54,7 @@ router.beforeEach(async(to, from, next) => {
           } else {
             console.log('项目id:', store.state.user.apiTemplate.projectId)
             await store.dispatch('options/getView')
+            await store.dispatch('options/getSubject')
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record
             next({ ...to, replace: true })

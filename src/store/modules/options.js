@@ -153,6 +153,24 @@ const actions = {
         reject(error)
       })
     })
+  },
+  getSubject({ commit, state }) {
+    const data = {
+      'dir': 'Sample Reports/subject',
+      'projectId': store.state.user.apiTemplate.projectId,
+      'vf_id': 0,
+      'vf_file': 'dashboard.efwvf'
+    }
+
+    // console.log('data:', data)
+    return new Promise((resolve, reject) => {
+      fetchData(data).then(response => {
+        console.log('getSubject:', response)
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   }
 
 }
