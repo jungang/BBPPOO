@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="8">
+  <el-col :span="24/chartBarlen.len">
     <h4>{{ data.title }}</h4>
     <chartBar :data="cardData.dataSet" />
   </el-col>
@@ -25,6 +25,12 @@ export default {
     },
     query: {
       type: Object,
+      default: function() {
+        return { }
+      }
+    },
+    chartBarlen:{
+      type:Object,
       default: function() {
         return { }
       }
@@ -59,7 +65,7 @@ export default {
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
-      // console.log('this.fullData:::', this.fullData)
+       //console.log('this.fullData:::', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
@@ -89,6 +95,8 @@ export default {
 
       // 图表数据
       this.cardData.dataSet = this.fullData.chartDate
+      //console.log(this.cardData.dataSet)
+      //console.log(typeof this.cardData.dataSet)
     }
   }
 }

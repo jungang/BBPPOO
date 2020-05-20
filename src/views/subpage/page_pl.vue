@@ -12,6 +12,7 @@
         :key="item.id"
         ref="component"
         :data="item"
+        :chartBarlen="chartBar"
         :query="query"
       />
     </el-row>
@@ -62,6 +63,9 @@
       return {
         rowView:[],
         chartLineView:[],
+        chartBar:{
+          len:0
+        },
         tableView:[],
         currentView:[],
         tab1_activeName:'',
@@ -119,9 +123,10 @@
           return this.currentView;
         });
 
+        this.chartBar.len = this.rowView.length;
         //console.log('rowView=>',this.rowView)
         //console.log('chartLineView=>',this.chartLineView)
-        console.log('tableView=>',this.tableView)
+        //console.log('tableView=>',this.tableView)
       },
       defaultTab(){
         this.tab1_activeName = this.chartLineView[0].name;

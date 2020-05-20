@@ -11,6 +11,7 @@
         v-for="item in rowView"
         :key="item.id"
         ref="component"
+        :chartBarlen="chartBar"
         :data="item"
         :query="query"
       />
@@ -45,6 +46,9 @@
       return {
         rowView:[],
         tabView:[],
+        chartBar:{
+          len:0
+        },
         currentView:[],
         tab1_activeName:'',
         tab2_activeName:'',
@@ -97,8 +101,9 @@
           return this.currentView;
         });
 
+        this.chartBar.len = this.rowView.length;
         //console.log('currentView=>',JSON.stringify(this.currentView))
-        console.log('rowView=>',this.rowView)
+        //console.log('rowView=>',this.rowView)
         //console.log('pange_ry_tabView=>',this.tabView)
       },
       defaultTab(){

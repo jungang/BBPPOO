@@ -11,6 +11,7 @@
         v-for="item in rowView"
         :key="item.id"
         ref="component"
+        :chartBarlen="chartBar"
         :data="item"
         :query="query"
       />
@@ -65,6 +66,9 @@
     data() {
       return {
         rowView:[],
+        chartBar:{
+          len:0
+        },
         trendChartLineView:[],
         comparisonChartLineView:[],
         currentView:[],
@@ -123,10 +127,12 @@
           return this.currentView;
         });
 
-        console.log('currentView=>',this.currentView)
+       // console.log('currentView=>',this.currentView)
         //console.log('rowView=>',this.rowView)
         //console.log('trendChartLineView=>',this.trendChartLineView)
         //console.log('comparisonChartLineView=>',this.comparisonChartLineView)
+
+        this.chartBar.len = this.rowView.length;
       },
       defaultTab(){
         this.tab1_activeName = this.trendChartLineView[0].name;
