@@ -56,13 +56,13 @@ export default {
       this.$router.push({ path: this.data.name })
     },
     async getData() {
-      // console.log('currentView:', this.currentView)
+       //console.log('currentView:', this.currentView)
       // console.log('query:', this.query)
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
-      // console.log('this.fullData:::', this.fullData)
+       //console.log('this.fullData:::', this.fullData)
 
       // 摘要数据
       this.cardData.list = []
@@ -78,8 +78,17 @@ export default {
         this.cardData.list.push(_item)
       })
 
-      // 图表数据
-      this.cardData.dataSet = this.fullData.chartDate
+      // 数据
+
+      if(this.currentView.config.component.type == 'table'){
+        this.cardData.dataSet.data = this.fullData.tableDate;
+      }else{
+        this.cardData.dataSet = this.fullData.chartDate;
+      }
+
+      //this.cardData.dataSet = this.currentView.config.component.type == 'table' ? this.fullData.tableDate : this.fullData.chartDate;
+      //console.log(typeof this.cardData.dataSet)
+      console.log(this.cardData.dataSet)
     }
   }
 }

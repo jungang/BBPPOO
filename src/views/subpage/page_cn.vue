@@ -19,12 +19,12 @@
       <el-tab-pane
         v-for="item in trendChartLineView"
         :key="item.id"
-        ref="component"
         :label="item.title"
         :name="item.name"
       >
         <Tab
           :data="item"
+          ref="component"
           :query="query"
         />
       </el-tab-pane>
@@ -33,19 +33,19 @@
       :query.sync="query"
       :multiple="true"
       :type="filterType"
-      class="filter-box"
       @filtration="handleFilter"
+      class="filter-box"
     />
     <el-tabs v-model="tab2_activeName" type="border-card" class="table-box">
       <el-tab-pane
         v-for="item in comparisonChartLineView"
         :key="item.id"
-        ref="component"
         :label="item.title"
         :name="item.name"
       >
         <Tab
           :data="item"
+          ref="component"
           :query="query"
         />
       </el-tab-pane>
@@ -54,86 +54,86 @@
 </template>
 
 <script>
-import Filters from '@/components/Filters'
-import Row from '../panels/components/rows/row'
-import Tab from '../panels/components/tabs/tab'
-import _ from 'underscore'
-export default {
-  name: 'PageCn',
-  components: { Filters, Row, Tab },
-  props: { },
-  data() {
-    return {
-      rowView: [],
-      trendChartLineView: [],
-      comparisonChartLineView: [],
-      currentView: [],
-      tab1_activeName: '',
-      tab2_activeName: '',
-      filterType: [
-        {
-          value: 'all',
-          label: '合计'
-        }, {
-          value: 'group',
-          label: '集团'
-        }, {
-          value: 'local',
-          label: '本地'
-        }, {
-          value: 'other',
-          label: '其他'
+  import Filters from '@/components/Filters';
+  import Row from '../panels/components/rows/row';
+  import Tab from '../panels/components/tabs/tab';
+  import _ from "underscore";
+  export default {
+    name: 'page_cn',
+    components: { Filters, Row, Tab},
+    props: { },
+    data() {
+      return {
+        rowView:[],
+        trendChartLineView:[],
+        comparisonChartLineView:[],
+        currentView:[],
+        tab1_activeName:'',
+        tab2_activeName:'',
+        filterType: [
+          {
+            value: 'all',
+            label: '合计'
+          }, {
+            value: 'group',
+            label: '集团'
+          }, {
+            value: 'local',
+            label: '本地'
+          }, {
+            value: 'other',
+            label: '其他'
+          }
+        ],
+        query: {
+          dateType: 'month', // 天 day | 周 week | 月 month | 年 year
+          date: new Date(), // 日期20200501
+          multiple: false,
+          group: 'null', // 选择组信息
+          type: 'all' // 合集 all | 集团 group | 本地 local
         }
-      ],
-      query: {
-        dateType: 'month', // 天 day | 周 week | 月 month | 年 year
-        date: new Date(), // 日期20200501
-        multiple: false,
-        group: 'null', // 选择组信息
-        type: 'all' // 合集 all | 集团 group | 本地 local
+      }
+    },
+    computed: { },
+    watch: { },
+    created() {
+      this.getCurrentView();
+      this.defaultTab();
+    },
+    methods: {
+      handleFilter() {
+        this.$refs.component.forEach((item) => item.getData())
+      },
+      getCurrentView(){
+        _.map(this.$store.state.options.views,(_val, _index,_list) => {
+          if(_val.config.pagesName == this.$route.name){
+            this.currentView.push(_val);
+            if((_val.config.indexType == 'rowIndex') && (_val.config.component.type == 'chart_bar' && (_val.config.zoneName == 'trend'))){
+              this.rowView.push(_val)
+            }
+
+            if((_val.config.indexType == 'tabIndex') && (_val.config.component.type == 'chart_line' && (_val.config.zoneName == 'trend'))){
+              this.trendChartLineView.push(_val)
+            }
+
+            if((_val.config.indexType == 'tabIndex') && (_val.config.component.type == 'chart_line') && (_val.config.zoneName == 'comparison')){
+              this.comparisonChartLineView.push(_val)
+            }
+          }
+          return this.currentView;
+        });
+
+        console.log('currentView=>',this.currentView)
+        //console.log('rowView=>',this.rowView)
+        //console.log('trendChartLineView=>',this.trendChartLineView)
+        //console.log('comparisonChartLineView=>',this.comparisonChartLineView)
+      },
+      defaultTab(){
+        this.tab1_activeName = this.trendChartLineView[0].name;
+        this.tab2_activeName = this.comparisonChartLineView[0].name;
       }
     }
-  },
-  computed: { },
-  watch: { },
-  created() {
-    this.getCurrentView()
-    this.defaultTab()
-  },
-  methods: {
-    handleFilter() {
-      this.$refs.component.forEach((item) => item.getData())
-    },
-    getCurrentView() {
-      _.map(this.$store.state.options.views, (_val, _index, _list) => {
-        if (_val.config.pagesName === this.$route.name) {
-          this.currentView.push(_val)
-          if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar' && (_val.config.zoneName === 'trend'))) {
-            this.rowView.push(_val)
-          }
-
-          if ((_val.config.indexType === 'tabIndex') && (_val.config.component.type === 'chart_line' && (_val.config.zoneName === 'trend'))) {
-            this.trendChartLineView.push(_val)
-          }
-
-          if ((_val.config.indexType === 'tabIndex') && (_val.config.component.type === 'chart_line') && (_val.config.zoneName === 'comparison')) {
-            this.comparisonChartLineView.push(_val)
-          }
-        }
-        return this.currentView
-      })
-
-      // console.log('currentView=>',JSON.stringify(this.currentView))
-      // console.log('rowView=>',this.rowView)
-      // console.log('trendChartLineView=>',this.trendChartLineView)
-      // console.log('comparisonChartLineView=>',this.comparisonChartLineView)
-    },
-    defaultTab() {
-      this.tab1_activeName = this.trendChartLineView[0].name
-      this.tab2_activeName = this.comparisonChartLineView[0].name
-    }
   }
-}
 </script>
 
 <style lang="scss" scoped>
