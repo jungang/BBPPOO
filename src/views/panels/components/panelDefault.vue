@@ -114,7 +114,7 @@ export default {
   computed: { },
   watch: { },
   created() {
-    console.log('this.$store.state.options.views:', this.$store.state.options.views)
+    // console.log('this.$store.state.options.views:', this.$store.state.options.views)
 
     this.$store.state.options.views.forEach(item => {
       // console.log('item.location:', item.location)

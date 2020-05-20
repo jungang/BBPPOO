@@ -25,7 +25,7 @@ export async function getFullData(params) {
   // console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
-  let subject = params.items[params.query.type]
+  let subject = params.items[`${params.query.dateType}_${params.query.type}`]
   // console.log('subject:', subject)
   if (!subject) { // todo 降级参数
     subject = params.items['*'] || ['']
