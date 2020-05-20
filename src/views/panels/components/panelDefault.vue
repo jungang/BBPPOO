@@ -145,10 +145,6 @@ export default {
         }
       }
     })
-
-    console.log('this.cardList:', this.cardList)
-    console.log('this.zoneTrend.rowList:', this.zoneTrend.rowList)
-    console.log('this.zoneTrend.tabList_1:', this.zoneTrend.tabList_1)
   },
   methods: {
     handleFilter() {

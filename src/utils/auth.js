@@ -26,3 +26,4 @@ export function ViewAuth(view) {
   }
   return res
 }
+

@@ -8,12 +8,21 @@ export function login(data) {
   })
 }
 
+// export function getInfo(token) {
+//   return request({
+//     url: '/user/info',
+//     method: 'get',
+//     params: { token },
+//     baseURL: 'http://rap2api.taobao.org/app/mock/249653/dev-api'
+//   })
+// }
+
 export function getInfo(token) {
   return request({
-    url: '/user/info',
+    url: '/auth/role',
     method: 'get',
-    params: { token },
-    baseURL: 'http://rap2api.taobao.org/app/mock/249653/dev-api'
+    params: { token }
+    // baseURL: 'http://rap2api.taobao.org/app/mock/249653/dev-api'
   })
 }
 

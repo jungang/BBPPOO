@@ -25,7 +25,7 @@ export async function getFullData(params) {
   console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
-  let subject = params.items[`${params.query.dateType}_${params.query.type}`]
+  let subject = params.items[`${params.query.type}`]
   // console.log('subject:', subject)
   if (!subject) { // todo 降级参数
     subject = params.items['*'] || ['']
@@ -128,10 +128,13 @@ export async function getFullData(params) {
       // console.log('res:', res)
       break
     case 'week':
+      data.vf_id = 1
       break
     case 'month':
+      data.vf_id = 2
       break
     case 'year':
+      data.vf_id = 3
       break
   }
   // console.log('data:', data)
@@ -303,7 +306,10 @@ export function standardize(data) {
           break
         case 'Percentage':
           item.value = item.value && (item.value * 100).toFixed(2)
+          break
 
+        case 'Time':
+          item.value = item.value && (item.value * 100).toFixed(2)
           break
         case 'String':
           item.value = (item.value === 'Null') ? ' ' : item.value

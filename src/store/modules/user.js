@@ -60,11 +60,22 @@ const actions = {
       getInfo(state.token).then(response => {
         const { data } = response
 
+        console.log('data:', data)
+
         if (!data) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const _data = {
+          roles: data,
+          name: 'name',
+          avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+          introduction: ''
+        }
+
+        const { roles, name, avatar, introduction } = _data
+
+        console.log('roles:', roles)
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
@@ -75,7 +86,7 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
-        resolve(data)
+        resolve(_data)
       }).catch(error => {
         reject(error)
       })
