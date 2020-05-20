@@ -9,8 +9,9 @@ export function getRoutes() {
 
 export function getRoles() {
   return request({
-    url: '/roles',
-    method: 'get'
+    url: '/user/role/list',
+    method: 'get',
+    baseURL: 'http://rap2api.taobao.org/app/mock/249653/dev-api'
   })
 }
 

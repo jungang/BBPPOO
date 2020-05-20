@@ -178,7 +178,12 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/objectives/index'),
         name: 'objectives',
-        meta: { title: '项目目标', icon: 'star', noCache: true }
+        meta: {
+          title: '项目目标',
+          icon: 'star',
+          noCache: true
+        }
+
       }
     ]
   },
@@ -199,37 +204,31 @@ export const asyncRoutes = [
         path: 'report',
         component: () => import('@/views/panels/index'),
         name: 'index',
-        meta: { title: '经营月报(新版)', icon: 'list' }
-      },
-      {
-        path: 'list',
-        component: () => import('@/views/panels/list'),
-        name: 'panelsLst',
         meta: { title: '经营月报', icon: 'list' }
       },
       {
-        path: 'p&l',
+        path: 'view_pl',
         component: () => import('@/views/subpage/page_pl'),
         name: 'P&L',
-        meta: { title: 'P&L', icon: 'list' },
+        meta: { title: 'P&L', icon: 'list' }
       },
       {
-        path: 'cn',
+        path: 'view_capacity',
         component: () => import('@/views/subpage/page_cn'),
         name: '产能',
-        meta: { title: '产能', icon: 'list' },
+        meta: { title: '产能', icon: 'list' }
       },
       {
-        path: 'zl',
+        path: 'view_quality',
         component: () => import('@/views/subpage/page_zl'),
         name: '质量',
-        meta: { title: '质量', icon: 'list' },
+        meta: { title: '质量', icon: 'list' }
       },
       {
-        path: 'ry',
+        path: 'view_personnel',
         component: () => import('@/views/subpage/page_ry'),
         name: '人员',
-        meta: { title: '人员', icon: 'list' },
+        meta: { title: '人员', icon: 'list' }
       },
       {
         path: 'view/:id(\\S+)',
@@ -237,10 +236,27 @@ export const asyncRoutes = [
         name: 'panelView',
         meta: { title: '月度经营分析', noCache: true, activeMenu: '/panels/list' },
         hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/panels/list'),
+        name: 'panelsLst',
+        meta: { title: '经营月报(旧)', icon: 'list' }
       }
     ]
   },
-
+  /*  {
+    path: '/permission',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/permission/role'),
+        name: 'management2',
+        meta: { title: '权限管理', icon: 'component', noCache: true }
+      }
+    ]
+  },*/
   {
     path: '/example',
     // hidden: true,
@@ -282,47 +298,46 @@ export const asyncRoutes = [
       }*/
     ]
   },
-  // {
-  //   path: '/permission',
-  //   component: Layout,
-  //   redirect: '/permission/page',
-  //   alwaysShow: true, // will always show the root menu
-  //   name: 'Permission',
-  //   meta: {
-  //     title: '权限管理',
-  //     icon: 'lock',
-  //     roles: ['admin', 'editor'] // you can set roles in root nav
-  //   },
-  //   children: [
-  //     {
-  //       path: 'page',
-  //       component: () => import('@/views/permission/page'),
-  //       name: 'PagePermission',
-  //       meta: {
-  //         title: 'Page Permission',
-  //         roles: ['admin'] // or you can only set roles in sub nav
-  //       }
-  //     },
-  //     {
-  //       path: 'directive',
-  //       component: () => import('@/views/permission/directive'),
-  //       name: 'DirectivePermission',
-  //       meta: {
-  //         title: 'Directive Permission'
-  //         // if do not set roles, means: this page does not require permission
-  //       }
-  //     },
-  //     {
-  //       path: 'role',
-  //       component: () => import('@/views/permission/role'),
-  //       name: 'RolePermission',
-  //       meta: {
-  //         title: '角色&权限',
-  //         roles: ['admin']
-  //       }
-  //     }
-  //   ]
-  // },
+  /*  {
+    path: '/permission',
+    component: Layout,
+    redirect: '/permission/page',
+    alwaysShow: true, // will always show the root menu
+    name: 'Permission',
+    meta: {
+      title: '权限管理',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: 'page',
+        component: () => import('@/views/permission/page'),
+        name: 'PagePermission',
+        meta: {
+          title: 'Page Permission',
+          roles: ['admin'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'directive',
+        component: () => import('@/views/permission/directive'),
+        name: 'DirectivePermission',
+        meta: {
+          title: 'Directive Permission'
+          // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/permission/role'),
+        name: 'RolePermission',
+        meta: {
+          title: '角色&权限'
+        }
+      }
+    ]
+  },*/
 
   // {
   //   path: '/icon',

@@ -70,7 +70,7 @@
         :value="item.value"
       />
     </el-select>
-    <el-button icon="el-icon-search" style="margin-left: 20px" @click="handleCurrentChange">查询</el-button>
+    <el-button v-permission="['editor']" icon="el-icon-search" style="margin-left: 20px" @click="handleCurrentChange">查询</el-button>
   </div>
 </template>
 
@@ -78,9 +78,11 @@
 
 import { fetchData } from '@/api/panel'
 import { deepClone } from '@/utils'
+import permission from '@/directive/permission/index.js'
 
 export default {
   name: 'Filters',
+  directives: { permission },
   props: {
     query: {
       type: Object,
