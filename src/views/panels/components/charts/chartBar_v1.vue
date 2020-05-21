@@ -6,7 +6,8 @@
 
 <script>
 const echarts = require('echarts')
-import uuidv1 from 'uuid/v1'
+import uuidv1 from 'uuid/v1';
+const chartBarData = require('../../../subpage/mock/chartBar');
 
 export default {
   name: 'ChartsBar',
@@ -25,6 +26,7 @@ export default {
         // title: { text: this.data.view.title },
         // legend: {},
         tooltip: {},
+        //color:['#60acfc','#32d3eb', '#5bc49f', '#feb64d', '#ff7b7b','#9287e7'],
         dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
           // 提供一份数据。
           // dimensions: ['score', 'count', 'score'],
@@ -40,7 +42,17 @@ export default {
         yAxis: {},
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
         series: [
-          { type: 'bar' }
+          {
+            type: 'bar' ,
+            itemStyle: {
+              normal:{
+                color: function (params){
+                  var colorList = ['#feb64d','#6ad9d5', '#48b885', '#60acfc', '#fd4b4f','#9287e7'];
+                  return colorList[params.dataIndex];
+                }
+              }
+            }
+          }
         ]
       },
       chartData: []
@@ -67,7 +79,9 @@ export default {
   methods: {
     formatDataSet(data) {
       // console.log('formatDataSet...')
-      // console.log(data.data)
+       //console.log('柱状图=》',JSON.stringify(data.data))
+
+      data.data = chartBarData;
 
       const dimensions = ['time']
       const source = []

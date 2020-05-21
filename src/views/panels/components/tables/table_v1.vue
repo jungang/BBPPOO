@@ -3,23 +3,23 @@
     <el-table
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;"
-      row-key="id"
+      row-key="index"
       border
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column
-        prop="res_s_title"
+        prop="title"
         label="名称"
         :min-width="50"
       />
-      <el-table-column
-        prop="res_y_value"
+<!--      <el-table-column
+        prop="dimension[0].actualValue"
         label="目标（万元）"
         :min-width="25"
-      />
+      />-->
       <el-table-column
-        prop="res_s_zb_value"
+        prop="dimension[0].actualValue"
         label="实际（万元）"
         :min-width="25"
       />
@@ -92,20 +92,19 @@ export default {
       deep: true,
       handler() {
         this.formatDataSet(this.data)
-        // this.options.dataset = this.data
       }
     }
   },
   created() {
-    // console.log('this.data:', this.data)
+
   },
   mounted() {
-    // this.renderChart()
+
   },
   methods: {
     formatDataSet(data) {
-      // console.log('formatDataSet...')
-      // console.log(data.data)
+      console.log(data)
+      this.tableData = data.list;
     }
 
   }
