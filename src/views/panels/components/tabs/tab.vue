@@ -1,6 +1,6 @@
 <template>
   <div class="tab-container">
-    <Table v-if="data.config.component.type === 'table'" :data="cardData.dataSet" />
+    <Table v-if="data.config.component.type === 'table'" :data="cardData" />
     <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
   </div>
 </template>
@@ -85,6 +85,7 @@ export default {
 
       if(this.currentView.config.component.type == 'table'){
 
+        //console.log(this.fullData.tableDate)
         _.each(this.fullData.tableDate,(_ele, _index) => {
           let isData = false;
           let _obj={};
@@ -98,8 +99,10 @@ export default {
           _ele.dimension.push(_obj);
 
         });
+        this.cardData.list = [];
+        this.cardData.list = this.fullData.tableDate;
 
-        this.cardData.dataSet.data = this.fullData.tableDate;
+        //console.log(this.cardData.dataSet.data)
 
       }else{
         this.cardData.dataSet = this.fullData.chartDate;

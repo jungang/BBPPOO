@@ -103,8 +103,8 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-       console.log(data)
-      this.tableData = data.data;
+      console.log(data)
+      this.tableData = data.list;
     }
 
   }
