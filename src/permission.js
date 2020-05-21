@@ -4,6 +4,7 @@ import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
+import { checkSubject } from '@/utils' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -53,8 +54,11 @@ router.beforeEach(async(to, from, next) => {
             next(`/project`)
           } else {
             console.log('项目id:', store.state.user.apiTemplate.projectId)
-            await store.dispatch('options/getView')
-            await store.dispatch('options/getSubject')
+            const views = await store.dispatch('options/getView')
+            const subjects = await store.dispatch('options/getSubject')
+
+            checkSubject(subjects, views)
+
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record
             next({ ...to, replace: true })
