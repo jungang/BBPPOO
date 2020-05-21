@@ -7,10 +7,12 @@
 
 <script>
 
-import { deepClone } from '@/utils'
-import { getFullData } from '@/utils/dataProce_v1'
-import chartLine from '../charts/chartLine_v1'
-import Table from '../tables/table_v1'
+import { deepClone } from '@/utils';
+import { getFullData } from '@/utils/dataProce_v1';
+import chartLine from '../charts/chartLine_v1';
+import Table from '../tables/table_v1';
+import { parseTime } from '@/utils'
+import _ from "underscore";
 
 export default {
   name: 'Tab',
@@ -57,7 +59,8 @@ export default {
     },
     async getData() {
        //console.log('currentView:', this.currentView)
-      // console.log('query:', this.query)
+       //console.log('query:', this.query)
+      //console.log('this.data=>',this.data)
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       // console.log('currentView=>',this.currentView)
@@ -81,15 +84,34 @@ export default {
       // 数据
 
       if(this.currentView.config.component.type == 'table'){
+
+        _.each(this.fullData.tableDate,(_ele, _index) => {
+          let isData = false;
+          let _obj={};
+          _.each(_ele.dimension[0].data,(ele,index1) => {
+            if(ele.time == parseInt(this.getTableQueryTime())){
+              isData = true;
+              _obj = ele;
+            }
+          });
+          _ele.dimension = [];
+          _ele.dimension.push(_obj);
+
+        });
+
         this.cardData.dataSet.data = this.fullData.tableDate;
+
       }else{
         this.cardData.dataSet = this.fullData.chartDate;
       }
 
-      //this.cardData.dataSet = this.currentView.config.component.type == 'table' ? this.fullData.tableDate : this.fullData.chartDate;
-      //console.log(typeof this.cardData.dataSet)
-      console.log(this.cardData.dataSet)
+
+    },
+    getTableQueryTime(){
+      let nowTime = parseTime(this.query.date,'{y}{m}');
+      return nowTime;
     }
+
   }
 }
 </script>

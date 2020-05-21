@@ -22,7 +22,7 @@ export async function getFullData(params) {
    * drill_parameters
    */
 
-  console.log('params:', params)
+  //console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
   let subject = params.items[`${params.query.type}`]
@@ -272,7 +272,7 @@ export function valueToNumber(data) {
 
 // 拉齐长度，填平空位
 export function standardize(data) {
-  console.log(data)
+//  console.log(data)
   data.actual.forEach(item => {
     // console.log(item.title, item.value)
   })
@@ -289,7 +289,7 @@ export function standardize(data) {
       item.original = item.value
       item.value = item.value === 'Null' ? undefined : item.value
 
-      console.log('item.type:', item.type)
+      //console.log('item.type:', item.type)
 
       switch (item.type) {
         case 'Duration':
