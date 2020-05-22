@@ -121,14 +121,13 @@ export default {
           }
         }
         return this.currentView
-      });
+      })
 
-      this.chartBar.len = this.rowView.length;
+      this.chartBar.len = this.rowView.length
 
-      this.tableView = _.sortBy(this.tableView,(item) => {
-        return item.config.tabIndex;
-      });
-
+      this.tableView = _.sortBy(this.tableView, (item) => {
+        return item.config.tabIndex
+      })
     },
     defaultTab() {
       this.tab1_activeName = this.chartLineView[0].name
