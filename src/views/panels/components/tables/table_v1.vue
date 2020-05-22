@@ -19,7 +19,7 @@
         :min-width="25"
       />-->
       <el-table-column
-        prop="dimension[0].actualValue"
+        prop="dimension[0].data[0].actualValue"
         label="实际（万元）"
         :min-width="25"
       />

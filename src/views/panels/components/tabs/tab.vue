@@ -90,18 +90,32 @@ export default {
 
       if (this.currentView.config.component.type === 'table') {
         // console.log(this.fullData.tableDate)
-        _.each(this.fullData.tableDate, (_ele, _index) => {
-          // let isData = false
-          let _obj = {}
-          _.each(_ele.dimension[0].data, (ele, index1) => {
-            if (ele.time === parseInt(this.getTableQueryTime())) {
-              // isData = true
-              _obj = ele
-            }
-          })
-          _ele.dimension = []
-          _ele.dimension.push(_obj)
-        })
+        /* _.each(this.fullData.tableDate,(_ele, _index) => {
+                let _obj={};
+                let __obj = {};
+                _.each(_ele.dimension[0].data,(ele,index1) => {
+                  if(ele.time == parseInt(this.getTableQueryTime())){
+                    _obj = ele;
+                  }
+                });
+                _ele.dimension = [];
+                _ele.dimension.push(_obj);
+
+                if(_ele.childrenRow.length > 0){
+                  _.each(_ele.childrenRow,(__ele) => {
+                    _.each(__ele.dimension[0].data,(___ele,index1) => {
+                      if(___ele.time == parseInt(this.getTableQueryTime())){
+                        __obj = ___ele;
+                      }
+                    });
+                    __ele.dimension = [];
+                    __ele.dimension.push(__obj);
+
+                  })
+                }
+
+
+              });*/
         this.cardData.list = []
         this.cardData.list = this.fullData.tableDate
 
