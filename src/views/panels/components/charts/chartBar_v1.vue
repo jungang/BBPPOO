@@ -7,7 +7,7 @@
 <script>
 const echarts = require('echarts')
 import uuidv1 from 'uuid/v1';
-const chartBarData = require('../../../subpage/mock/chartBar');
+//const chartBarData = require('../../../subpage/mock/chartBar');
 
 export default {
   name: 'ChartsBar',
