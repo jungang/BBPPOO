@@ -312,7 +312,12 @@ export function standardize(data) {
           break
 
         case 'Time':
-          item.value = item.value && (item.value * 100).toFixed(2)
+          // eslint-disable-next-line no-case-declarations
+          const _minute = parseInt(item.value / 60)
+          // eslint-disable-next-line no-case-declarations
+          const _second = parseInt(item.value % 60)
+          item.value = `${_minute}'${_second}"`
+          // console.log('Time:', item)
           break
         case 'String':
           item.value = (item.value === 'Null') ? ' ' : item.value
@@ -320,8 +325,9 @@ export function standardize(data) {
           break
         default:
       }
+
       item.value = parseFloat(item.value) || item.value
-      // console.log(item.value, typeof item.value, item.type)
+      console.log(item.type, item.value, typeof item.value, item)
       item.formula = item.formula === 'Null' ? undefined : item.formula
       item.dimension = JSON.parse(item.dimension)
     })

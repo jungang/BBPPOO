@@ -6,6 +6,7 @@
       placeholder="选择日期"
       format="yyyy 年 MM 月 dd 日"
       style="width: 200px"
+      @change="handleChange"
     />
     <el-select
       v-model="query.dateType"
@@ -77,7 +78,7 @@
 <script>
 
 import { fetchData } from '@/api/panel'
-import { deepClone } from '@/utils'
+import { deepClone, parseTime } from '@/utils'
 import permission from '@/directive/permission/index.js'
 
 export default {
@@ -123,7 +124,9 @@ export default {
       }],
       groupList: [],
       employeeList: [],
-      value3: ''
+      day: '',
+      month: '',
+      year: ''
     }
   },
   computed: {
@@ -133,13 +136,22 @@ export default {
     this.getEmployee()
   },
   methods: {
+    handleChange() {
+      console.log('handleChange...', this.query.date)
+      this.month = +parseTime(this.query.date.getTime(), '{m}')
+      this.year = parseTime(this.query.date.getTime(), '{y}')
+      this.getEmployee()
+    },
     getEmployee() {
       const data = {
         'dir': 'Sample Reports/employee',
         'projectId': this.$store.state.user.apiTemplate.projectId,
-        'vf_id': 1,
+        'vf_id': 0,
+        'month': this.month,
+        'year': this.year,
         'vf_file': 'dashboard.efwvf'
       }
+      console.log('data:', data)
       fetchData(data).then(response => {
         console.log('response:', response)
         // 构建组结构

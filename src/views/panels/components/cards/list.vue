@@ -28,6 +28,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .list-container{
+    min-height: 220px;
+  }
     .title{
       background: #dbdbdb;
       padding: 10px;

@@ -12,7 +12,9 @@
     >
       {{ data.title }}
     </div>
+
     <List :data="cardData.list" />
+
     <chartLine :data="cardData.dataSet" />
   </el-card>
 <!--  </div>-->
@@ -96,6 +98,10 @@ export default {
 
         const _type = subject.dimension[0].data[_len].type
         const _suffix = _type === 'Percentage' ? '%' : ''
+
+        if (_type === 'Time') {
+          // console.log('subject:', subject)
+        }
 
         _item.slot1 = subject.title
         _item.slot2 = subject.dimension[0].data[_len].targetValue
