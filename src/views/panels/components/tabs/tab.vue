@@ -7,12 +7,12 @@
 
 <script>
 
-import { deepClone } from '@/utils';
-import { getFullData } from '@/utils/dataProce_v1';
-import chartLine from '../charts/chartLine_v1';
-import Table from '../tables/table_v1';
+import { deepClone } from '@/utils'
+import { getFullData } from '@/utils/dataProce_v1'
+import chartLine from '../charts/chartLine_v1'
+import Table from '../tables/table_v1'
 import { parseTime } from '@/utils'
-import _ from "underscore";
+import _ from 'underscore'
 
 export default {
   name: 'Tab',
@@ -40,7 +40,7 @@ export default {
       cardData: {
         list: [],
         dataSet: {
-          legendSelectMode:'',
+          legendSelectMode: '',
           data: []
         }
       }
@@ -59,18 +59,18 @@ export default {
       this.$router.push({ path: this.data.name })
     },
     async getData() {
-       //console.log('currentView:', this.currentView)
-       //console.log('query:', this.query)
-      //console.log('this.data=>',this.data)
-      //判断图例是否为单选
-      if(this.data.config.component.legendSelectMode){
-        this.cardData.dataSet.legendSelectMode = this.data.config.component.legendSelectMode;
+      // console.log('currentView:', this.currentView)
+      // console.log('query:', this.query)
+      // console.log('this.data=>',this.data)
+      // 判断图例是否为单选
+      if (this.data.config.component.legendSelectMode) {
+        this.cardData.dataSet.legendSelectMode = this.data.config.component.legendSelectMode
       }
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
-       //console.log('this.fullData:::', this.fullData)
+      // console.log('this.fullData:::', this.fullData)
 
       // 摘要数据
       this.cardData.list = []
@@ -88,36 +88,31 @@ export default {
 
       // 数据
 
-      if(this.currentView.config.component.type == 'table'){
-
-        //console.log(this.fullData.tableDate)
-        _.each(this.fullData.tableDate,(_ele, _index) => {
-          let isData = false;
-          let _obj={};
-          _.each(_ele.dimension[0].data,(ele,index1) => {
-            if(ele.time == parseInt(this.getTableQueryTime())){
-              isData = true;
-              _obj = ele;
+      if (this.currentView.config.component.type === 'table') {
+        // console.log(this.fullData.tableDate)
+        _.each(this.fullData.tableDate, (_ele, _index) => {
+          // let isData = false
+          let _obj = {}
+          _.each(_ele.dimension[0].data, (ele, index1) => {
+            if (ele.time === parseInt(this.getTableQueryTime())) {
+              // isData = true
+              _obj = ele
             }
-          });
-          _ele.dimension = [];
-          _ele.dimension.push(_obj);
+          })
+          _ele.dimension = []
+          _ele.dimension.push(_obj)
+        })
+        this.cardData.list = []
+        this.cardData.list = this.fullData.tableDate
 
-        });
-        this.cardData.list = [];
-        this.cardData.list = this.fullData.tableDate;
-
-        //console.log('list=>',this.cardData.list)
-
-      }else{
-        this.cardData.dataSet.data = this.fullData.chartDate.data;
+        // console.log('list=>',this.cardData.list)
+      } else {
+        this.cardData.dataSet.data = this.fullData.chartDate.data
       }
-
-
     },
-    getTableQueryTime(){
-      let nowTime = parseTime(this.query.date,'{y}{m}');
-      return nowTime;
+    getTableQueryTime() {
+      const nowTime = parseTime(this.query.date, '{y}{m}')
+      return nowTime
     }
 
   }

@@ -13,7 +13,7 @@
         label="名称"
         :min-width="50"
       />
-<!--      <el-table-column
+      <!--      <el-table-column
         prop="dimension[0].actualValue"
         label="目标（万元）"
         :min-width="25"
@@ -104,7 +104,7 @@ export default {
   methods: {
     formatDataSet(data) {
       console.log(data)
-      this.tableData = data.list;
+      this.tableData = data.list
     }
 
   }
@@ -112,7 +112,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .charts-container {
     width: 100%;
     height: 30vh;

@@ -2,7 +2,7 @@
   <!--  <div class="card-container">-->
   <el-card
     class="card"
-    shadow="hover"
+    shadow="always"
   >
     <div
       slot="header"
@@ -147,7 +147,7 @@ export default {
 <style lang="scss" scoped>
 
   .card{
-    width: 45%;
+    width: 48%;
     padding: 0 !important;
     text-align: center;
     display: inline-block;

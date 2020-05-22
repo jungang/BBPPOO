@@ -24,28 +24,18 @@ export default {
       options: {
         legend: {
         },
-        tooltip: {},
-        dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
-          // 提供一份数据。
-          // dimensions: ['score', 'count', 'score'],
-          dimensions: ['time'],
-          source: [
-            // { '利用': 43.3, time: '20200505' },
-            // { '利用': 83.1, time: '20200117' },
-            // { '利用': 86.4, time: '20200507' },
-            // { '利用': 72.4, time: '20200508' }
-          ]
-          // source: {
-          //   'product': ['Matcha Latte', 'Milk Tea', 'Cheese Cocoa', 'Walnut Brownie'],
-          //   'count': [823, 235, 1042, 988],
-          //   'score': [95.8, 81.4, 91.2, 76.9]
-          // }
+        grid: {
+          left: 70,
+          top: 30,
+          bottom: 20
         },
-        // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
+        tooltip: {},
+        dataset: {
+          dimensions: ['time'],
+          source: []
+        },
         xAxis: { type: 'category' },
-        // 声明一个 Y 轴，数值轴。
         yAxis: {},
-        // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
         series: []
       },
       chartData: []
@@ -163,6 +153,6 @@ export default {
 <style lang="scss">
   .charts-container{
     width: 100%;
-    height: 20vh;
+    height: 15vh;
   }
 </style>

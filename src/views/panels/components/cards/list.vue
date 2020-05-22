@@ -10,7 +10,7 @@
         <span v-if="row.slot2" class="gray">目标{{ row.slot2 }}</span>
       </el-col>
       <el-col v-if="row.slot3" :span="10" style="text-align: right"><span class="emphasize">{{ row.slot3 }}</span>
-        <span class="gray">
+        <span class="gray" style="width: 40px; display: inline-block;text-align:left; text-indent: 5px">
           {{ row.slot4 }}
         </span>
 
@@ -43,7 +43,7 @@ export default {
       padding: 10px;
     }
     .emphasize{
-      font-size: 20px;
+      font-size: 16px;
       font-weight: bold;
     }
     .gray{
@@ -55,6 +55,8 @@ export default {
       margin: 10px 0 ;
     }
     .row{
+      display: flex;
+      align-items:center;
       border-bottom: 1px #d3d3d3 solid;
       padding: 2px 0;
     }

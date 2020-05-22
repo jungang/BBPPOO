@@ -29,8 +29,8 @@ export default {
         return { }
       }
     },
-    chartBarlen:{
-      type:Object,
+    chartBarlen: {
+      type: Object,
       default: function() {
         return { }
       }
@@ -65,7 +65,7 @@ export default {
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
-       //console.log('this.fullData:::', this.fullData)
+      // console.log('this.fullData:::', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
