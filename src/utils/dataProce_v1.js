@@ -15,9 +15,9 @@ export async function getFullData(params) {
   const keyColumn = 'vf_id0'
   let res = {} // 返回数据
 
-  let day_s = 604800000
-  let week_s = 3628800000
-  let month_s = 15552000000
+  let day_s = 604800000;
+  let week_s = 3628800000;
+  let month_s = 15552000000;
 
   if (params.config.component.type === 'chart_bar') {
     day_s = 86400000
@@ -209,7 +209,7 @@ export async function getFullData(params) {
   // }
 
   // 集成整合
-  const chartDate = formatDataSet(res)
+  const chartDate = formatDataSet(params.query.dateType,res)
   const tableDate = integration(res)
 
   // 处理表格折叠行
@@ -217,6 +217,8 @@ export async function getFullData(params) {
   // const foldTableDate = []
 
   // const foldTableDate = planeToHierarchy(res)
+
+  //console.log('res=>',res)
 
   return {
     chartDate: chartDate,
@@ -234,8 +236,13 @@ function integration(data) {
   return data
 }
 
-function formatDataSet(data) {
-  return { data }
+function formatDataSet(dateType,data) {
+    if (dateType === 'week'){
+      if(data[0]['dimension'][0]['data']){
+
+      }
+    }
+    return { data }
 }
 
 async function getData(data, res, key) {
@@ -398,7 +405,8 @@ export function standardize(data) {
           type: a.type,
           formula: a.formula,
           original: a.original,
-          unit: a.unit
+          unit: a.unit,
+          children:a.children
         }
 
         // console.log(a.dimension.v_group_name)
@@ -425,7 +433,8 @@ export function standardize(data) {
             type: a.type,
             formula: a.formula,
             original: a.original,
-            unit: a.unit
+            unit: a.unit,
+            children:a.children
           }
           const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
           // console.log('_v:', _v)
