@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
-import { checkSubject } from '@/utils' // get token from cookie
+// import { checkSubject } from '@/utils' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -57,7 +57,7 @@ router.beforeEach(async(to, from, next) => {
             await store.dispatch('options/getView')
             await store.dispatch('options/getSubject')
 
-            checkSubject()
+            // checkSubject()
 
             // hack method to ensure that addRoutes is complete
             // set the replace: true, so the navigation will not leave a history record

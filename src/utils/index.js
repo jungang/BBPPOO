@@ -156,7 +156,7 @@ export function checkSubject() {
   // console.log('notFind:', notFind)
 
   if (notFind.length > 0) {
-    console.log('subject未找到', notFind)
+    // console.log('subject未找到', notFind)
     Message({
       message: `view subject -${notFind.length}`,
       type: 'info',
