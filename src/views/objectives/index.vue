@@ -24,7 +24,7 @@
           style="width: 60px;display: inline-block;"
         >
 
-          <el-button v-waves v-permission="['project_manager', 'group_captain']" type="primary">上传文件</el-button>
+          <el-button v-waves v-permission="['admin', 'project_manager', 'group_captain']" type="primary">上传文件</el-button>
         </el-upload>
 
       </el-col>
