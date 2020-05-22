@@ -15,9 +15,9 @@ export async function getFullData(params) {
   const keyColumn = 'vf_id0'
   let res = {} // 返回数据
 
-  let day_s = 604800000;
-  let week_s = 3628800000;
-  let month_s = 15552000000;
+  let day_s = 604800000
+  let week_s = 3628800000
+  let month_s = 15552000000
 
   if (params.config.component.type === 'chart_bar') {
     day_s = 86400000
@@ -209,7 +209,7 @@ export async function getFullData(params) {
   // }
 
   // 集成整合
-  const chartDate = formatDataSet(params.query.dateType,res)
+  const chartDate = formatDataSet(params.query.dateType, res)
   const tableDate = integration(res)
 
   // 处理表格折叠行
@@ -218,7 +218,7 @@ export async function getFullData(params) {
 
   // const foldTableDate = planeToHierarchy(res)
 
-  //console.log('res=>',res)
+  // console.log('res=>',res)
 
   return {
     chartDate: chartDate,
@@ -236,13 +236,13 @@ function integration(data) {
   return data
 }
 
-function formatDataSet(dateType,data) {
-    if (dateType === 'week'){
-      if(data[0]['dimension'][0]['data']){
-
-      }
-    }
-    return { data }
+function formatDataSet(dateType, data) {
+  // if (dateType === 'week') {
+  // if (data[0]['dimension'][0]['data']) {
+  //
+  // }
+  // }
+  return { data }
 }
 
 async function getData(data, res, key) {
@@ -331,7 +331,7 @@ export function standardize(data) {
   let index = 1
   let resDate = []
 
-  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间   Minute 分钟 7'11''
+  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间   Time 分钟 7‘11”
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
       // console.log(item)
@@ -339,7 +339,6 @@ export function standardize(data) {
 
       item.original = item.value
       item.value = item.value === 'Null' ? undefined : item.value
-
       // console.log('item.type:', item.type)
 
       switch (item.type) {
@@ -360,7 +359,12 @@ export function standardize(data) {
           break
 
         case 'Time':
-          item.value = item.value && (item.value * 100).toFixed(2)
+          // eslint-disable-next-line no-case-declarations
+          const _minute = parseInt(item.value / 60)
+          // eslint-disable-next-line no-case-declarations
+          const _second = parseInt(item.value % 60)
+          item.value = `${_minute}'${_second}"`
+          // console.log('Time:', item)
           break
         case 'String':
           item.value = (item.value === 'Null') ? ' ' : item.value
@@ -406,7 +410,7 @@ export function standardize(data) {
           formula: a.formula,
           original: a.original,
           unit: a.unit,
-          children:a.children
+          children: a.children
         }
 
         // console.log(a.dimension.v_group_name)
@@ -434,7 +438,7 @@ export function standardize(data) {
             formula: a.formula,
             original: a.original,
             unit: a.unit,
-            children:a.children
+            children: a.children
           }
           const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
           // console.log('_v:', _v)

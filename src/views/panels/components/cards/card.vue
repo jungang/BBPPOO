@@ -147,7 +147,14 @@ export default {
           // console.log('_v:', _v)
           if (_v) {
             const _type = _v.type
+            console.log('_type:', _type)
             const _suffix = _type === 'Percentage' ? '%' : ''
+
+            if (_v.type === 'Double') {
+              console.log('_v', _v)
+              _v.targetValue = _v.targetValue && _v.targetValue.toFixed(2)
+              _v.actualValue = _v.actualValue && _v.actualValue.toFixed(2)
+            }
 
             _item.slot2 = _v.targetValue
             _item.slot3 = _v.actualValue + _suffix
