@@ -165,7 +165,6 @@ const actions = {
     // console.log('data:', data)
     return new Promise((resolve, reject) => {
       fetchData(data).then(response => {
-        console.log('getSubject:', response)
         resolve(response)
       }).catch(error => {
         reject(error)

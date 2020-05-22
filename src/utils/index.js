@@ -1,3 +1,4 @@
+import { Message } from 'element-ui'
 /**
  * Created by PanJiaChen on 16/11/18.
  */
@@ -111,6 +112,27 @@ export function getQueryObject(url) {
     return rs
   })
   return obj
+}
+
+/**
+ * @returns {number} output value
+ * @param subjects
+ * @param views
+ */
+export function checkSubject(subjects, views) {
+  // console.log('subjects:', subjects)
+  // console.log('views:', views)
+
+  console.log()
+  views.forEach(item => {
+    console.log(item.items)
+  })
+
+  Message({
+    message: 'error.message',
+    type: 'info',
+    duration: 5 * 1000
+  })
 }
 
 /**
