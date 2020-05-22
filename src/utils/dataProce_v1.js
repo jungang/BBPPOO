@@ -19,15 +19,14 @@ export async function getFullData(params) {
   let week_s = 3628800000
   let month_s = 15552000000
 
-  if(params.config.component.type === 'chart_bar'){
-    day_s = 86400000;
-    week_s = 604800000;
-    if(parseTime(params.query.date, '{m}') === '03'){
-      month_s = 2505600000;
-    }else{
-      month_s = 2592000000;
+  if (params.config.component.type === 'chart_bar') {
+    day_s = 86400000
+    week_s = 604800000
+    if (parseTime(params.query.date, '{m}') === '03') {
+      month_s = 2505600000
+    } else {
+      month_s = 2592000000
     }
-
   }
 
   /**
@@ -45,6 +44,15 @@ export async function getFullData(params) {
   if (!subject) { // todo 降级参数
     subject = params.items['*'] || ['']
   }
+
+  const viewSubject = subject.map(item => {
+    return {
+      name: item,
+      title: store.state.options.subject.find(s => s.name === item).title
+    }
+  })
+
+  // console.log('viewSubject:', viewSubject)
   // console.log('subject:', subject)
 
   const data = { // 请求参数
@@ -81,7 +89,7 @@ export async function getFullData(params) {
     // console.log('按天查。。。', params.query)
     const _data = parseTime(params.query.date, '{y}{m}{d}')
     // 天毫秒数  604800000 =  1000   ×   60   ×   60   ×   24   ×   7
-    //const day_s = 604800000
+    // const day_s = 604800000
     const _data_start = parseTime(params.query.date.getTime() - day_s, '{y}{m}{d}')
     data.vf_id = 0
     data.start = _data_start
@@ -93,7 +101,7 @@ export async function getFullData(params) {
     console.log('按周查。。。', params.query)
 
     // 周毫秒数  3628800000 =  1000   ×   60   ×   60   ×   24   ×   42
-    //const week_s = 3628800000
+    // const week_s = 3628800000
     const _data_start = parseTime(params.query.date.getTime() - week_s, '{y}{m}{d}')
     const _data_end = parseTime(params.query.date, '{y}{m}{d}')
     data.vf_id = 1
@@ -106,7 +114,7 @@ export async function getFullData(params) {
     // console.log('按月查。。。', data)
 
     // 月毫秒数  15552000000 =  1000   ×   60   ×   60   ×   24   ×   180
-    //const month_s = 15552000000
+    // const month_s = 15552000000
     const _data_start = parseTime(params.query.date.getTime() - month_s, '{y}{m}')
     const _data_end = parseTime(params.query.date, '{y}{m}')
     data.vf_id = 2
@@ -143,7 +151,6 @@ export async function getFullData(params) {
   switch (params.query.dateType) {
     case 'daily':
       data.vf_id = 0
-      // console.log('res:', res)
       break
     case 'week':
       data.vf_id = 1
@@ -155,7 +162,7 @@ export async function getFullData(params) {
       data.vf_id = 3
       break
   }
-   console.log('data:', data)
+  // console.log('data:', data)
 
   // 实际数据
   res = await getData(data, res, 'actual') // return res.vf_id0
@@ -181,6 +188,9 @@ export async function getFullData(params) {
 
   // 数组长度统一,格式
   res = standardize(res)
+
+  // 排序
+  res = resSort(res, viewSubject)
 
   // 转换成数字
   // res = valueToNumber(res)
@@ -286,6 +296,22 @@ export function calcCompletion(data) {
 // 转换成数字
 export function valueToNumber(data) {
   return data
+}
+
+// 科目排序
+export function resSort(data, viewSubject) {
+  viewSubject.map(item => {
+    item.dimension = []
+    const _v = data.find(s => s.name === item.name)
+    // console.log('_v:', _v)
+    if (_v) {
+      item.index = _v.index
+      item.dimension = _v.dimension
+    }
+  })
+  // console.log('viewSubject:', viewSubject)
+  // console.log('data:', data)
+  return viewSubject
 }
 
 // 拉齐长度，填平空位

@@ -144,7 +144,7 @@ export default {
     handleChange() {
       this.employeeList = []
       this.query.group = 'null'
-      console.log('handleChange...', this.query.date)
+      // console.log('handleChange...', this.query.date)
       this.month = +parseTime(this.query.date.getTime(), '{m}')
       this.year = parseTime(this.query.date.getTime(), '{y}')
       this.getEmployee()
@@ -159,7 +159,7 @@ export default {
         'vf_file': 'dashboard.efwvf'
       }
       fetchData(data).then(response => {
-        console.log('response:', response)
+        // console.log('response:', response)
 
         // 构建组结构
         response.forEach(item => {
@@ -174,7 +174,7 @@ export default {
             })
           }
         })
-        console.log('this.employeeList:', this.employeeList)
+        // console.log('this.employeeList:', this.employeeList)
 
         this.employeeList = deepClone(this.groupList)
 

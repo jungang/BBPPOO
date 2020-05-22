@@ -1,4 +1,6 @@
 import { Message } from 'element-ui'
+import store from '@/store'
+
 /**
  * Created by PanJiaChen on 16/11/18.
  */
@@ -120,12 +122,53 @@ export function getQueryObject(url) {
  * @param views
  */
 export function checkSubject() {
-  console.log()
-  Message({
-    message: 'error.message',
-    type: 'info',
-    duration: 5 * 1000
+  // console.log(store.state.options.views)
+  let _subject = []
+  const notFind = []
+
+  store.state.options.views.forEach(item => {
+    Object.keys(item.items).forEach((key) => { // 统一
+      if (typeof item.items[key] === 'string') {
+        _subject.push(item.items[key])
+      } else {
+        item.items[key].forEach(s => _subject.push(s))
+      }
+    })
   })
+  _subject = [...new Set(_subject)]
+  _subject = _subject.sort((a, b) => a.name - b.name)
+  store.state.options.subject = store.state.options.subject.sort()
+  // console.log('_subject:', _subject)
+
+  _subject.forEach(item => {
+    const _v = store.state.options.subject.find(s => s.name === item)
+
+    // console.log('_v:', _v)
+    if (!_v) {
+      // console.log('_v:', _v, item)
+      notFind.push(item)
+    }
+  })
+  // all group local *
+  //
+
+  // console.log(store.state.options.subject)
+  // console.log('notFind:', notFind)
+
+  if (notFind.length > 0) {
+    console.log('subject未找到', notFind)
+    Message({
+      message: `自检：view引用的subject有${notFind.length}项未找到，详情见console...`,
+      type: 'info',
+      duration: 5 * 1000
+    })
+  } else {
+    Message({
+      message: 'success',
+      type: 'success',
+      duration: 5 * 1000
+    })
+  }
 }
 
 /**

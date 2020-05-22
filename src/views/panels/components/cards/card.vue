@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { deepClone } from '@/utils'
+import { deepClone, parseTime } from '@/utils'
 import { getFullData } from '@/utils/dataProce_v1'
 import List from './list'
 import chartLine from '../charts/chartLine_v1'
@@ -109,29 +109,51 @@ export default {
       // console.log('this.fullData:', this.fullData)
 
       // fix 空数据科目
-      viewSubject.forEach(subject => {
+      /*      this.fullData.tableDate.forEach(subject => {
         // console.log(subject)
         const _v = this.fullData.tableDate.find(v => v.name === subject.name)
         if (!_v) {
           this.fullData.tableDate.push(subject)
         }
-      })
+      })*/
       // console.log('this.fullData:', this.fullData)
+
+      let _current = ''
+
+      switch (this.query.dateType) {
+        case 'daily':
+          _current = parseTime(this.query.date.getTime(), '{y}{m}{d}')
+          break
+        case 'week':
+          _current = 7
+          break
+        case 'month':
+          _current = +parseTime(this.query.date.getTime(), '{y}{m}')
+          break
+        case 'year':
+          _current = +parseTime(this.query.date.getTime(), '{y}')
+          break
+      }
+
+      // console.log('_current:', _current)
 
       this.fullData.tableDate.forEach(subject => {
         const _item = {}
         _item.slot1 = subject.title
 
-        if (subject.dimension) {
-          const _len = subject.dimension[0].data.length - 1
+        if (subject.dimension.length > 0) {
+          // console.log('subject.dimension:', subject.dimension)
+          const _v = subject.dimension[0].data.find(item => item.time === _current)
+          // console.log('_v:', _v)
+          if (_v) {
+            const _type = _v.type
+            const _suffix = _type === 'Percentage' ? '%' : ''
 
-          const _type = subject.dimension[0].data[_len].type
-          const _suffix = _type === 'Percentage' ? '%' : ''
-
-          _item.slot2 = subject.dimension[0].data[_len].targetValue
-          _item.slot3 = subject.dimension[0].data[_len].actualValue + _suffix
-          _item.slot4 = subject.dimension[0].data[_len].unit
-          _item.slot5 = subject.dimension[0].data[_len].finish_rate
+            _item.slot2 = _v.targetValue
+            _item.slot3 = _v.actualValue + _suffix
+            _item.slot4 = _v.unit
+            _item.slot5 = _v.finish_rate
+          }
         }
 
         this.cardData.list.push(_item)

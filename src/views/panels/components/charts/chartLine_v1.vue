@@ -74,7 +74,7 @@ export default {
         // console.log('subject.title:', subject.title)
         series.push({ type: 'line' })
         // console.log(subject.dimension[0].data)
-        if (subject.dimension) {
+        if (subject.dimension.length > 0) {
           subject.dimension[0].data.forEach(item => { // 组织
             // console.log(item.time)
             // console.log(item.actualValue)

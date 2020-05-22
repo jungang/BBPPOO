@@ -20,8 +20,8 @@ export function ViewAuth(view) {
   if (view.config.rule[0] === 'all') {
     res = true
   } else {
-    console.log(view.config.rule)
-    console.log(store.state.user.roles)
+    // console.log(view.config.rule)
+    // console.log(store.state.user.roles)
     res = view.config.rule.find(item => item === store.state.user.roles[0])
   }
   return res
