@@ -6,9 +6,16 @@
       :key="row.categoryName"
       class="row"
     >
-      <el-col :span="7">{{ row.slot1 }} <br> <span v-if="row.slot2" class="gray">目标{{ row.slot2 }}</span> </el-col>
-      <el-col v-if="row.slot3" :span="8"><span class="emphasize">{{ row.slot3 }}</span> {{ row.slot4 }}</el-col>
-      <el-col v-if="row.slot3 && row.slot2" :span="7">{{ row.slot5 }}%</el-col>
+      <el-col :span="7" style="text-align: right; font-size: 14px">{{ row.slot1 }} <br>
+        <span v-if="row.slot2" class="gray">目标{{ row.slot2 }}</span>
+      </el-col>
+      <el-col v-if="row.slot3" :span="10" style="text-align: right"><span class="emphasize">{{ row.slot3 }}</span>
+        <span class="gray">
+          {{ row.slot4 }}
+        </span>
+
+      </el-col>
+      <el-col v-if="row.slot3 && row.slot2" :span="5" style="text-align: right">{{ row.slot5 }}%</el-col>
     </el-row>
 
   </div>
@@ -29,17 +36,18 @@ export default {
 
 <style lang="scss" scoped>
   .list-container{
-    min-height: 220px;
+    min-height: 120px;
   }
     .title{
       background: #dbdbdb;
       padding: 10px;
     }
     .emphasize{
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
     }
     .gray{
+      font-size: 12px;
       color: #bababa;
     }
 
@@ -48,6 +56,6 @@ export default {
     }
     .row{
       border-bottom: 1px #d3d3d3 solid;
-      padding: 10px 0;
+      padding: 2px 0;
     }
 </style>

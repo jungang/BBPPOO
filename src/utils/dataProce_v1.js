@@ -179,9 +179,9 @@ export async function getFullData(params) {
   }
 
   // 计算高亮
-  // if (params.compare && params.completion) {
-  //   res = calcHighlight(res)
-  // }
+  if (params.config.completion) {
+    // res = calcHighlight(res)
+  }
 
   // 集成整合
   const chartDate = formatDataSet(res)
@@ -221,6 +221,8 @@ async function getData(data, res, key) {
 
 // 计算高亮
 export function calcHighlight(data) {
+  console.log('calcHighlight...')
+  console.log('data:', data)
   data.actual.forEach((item, index) => {
     // console.log('item.highlight:', item.highlight)
 
@@ -327,7 +329,7 @@ export function standardize(data) {
       }
 
       item.value = parseFloat(item.value) || item.value
-      console.log(item.type, item.value, typeof item.value, item)
+      // console.log(item.type, item.value, typeof item.value, item)
       item.formula = item.formula === 'Null' ? undefined : item.formula
       item.dimension = JSON.parse(item.dimension)
     })

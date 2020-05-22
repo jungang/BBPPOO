@@ -73,9 +73,24 @@ export default {
       // console.log('currentView:', this.currentView)
       // console.log('query:', this.query)
       this.currentView = deepClone(this.data)
+
+      let viewSubject = this.currentView.items[`${this.query.type}`]
+      // console.log('subject:', subject)
+      if (!viewSubject) { // todo 降级参数
+        viewSubject = this.currentView.items['*'] || ['']
+      }
+      viewSubject = viewSubject.map(item => {
+        return {
+          name: item,
+          title: this.$store.state.options.subject.find(s => s.name === item).title
+        }
+      })
+
+      // console.log('viewSubject:', viewSubject)
+
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:::', this.fullData)
+      // console.log('this.fullData:::', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
@@ -91,23 +106,34 @@ export default {
 
       // 摘要数据
       this.cardData.list = []
-      console.log('this.fullData:', this.fullData)
+      // console.log('this.fullData:', this.fullData)
+
+      // fix 空数据科目
+      viewSubject.forEach(subject => {
+        // console.log(subject)
+        const _v = this.fullData.tableDate.find(v => v.name === subject.name)
+        if (!_v) {
+          this.fullData.tableDate.push(subject)
+        }
+      })
+      // console.log('this.fullData:', this.fullData)
+
       this.fullData.tableDate.forEach(subject => {
-        const _len = subject.dimension[0].data.length - 1
         const _item = {}
+        _item.slot1 = subject.title
 
-        const _type = subject.dimension[0].data[_len].type
-        const _suffix = _type === 'Percentage' ? '%' : ''
+        if (subject.dimension) {
+          const _len = subject.dimension[0].data.length - 1
 
-        if (_type === 'Time') {
-          // console.log('subject:', subject)
+          const _type = subject.dimension[0].data[_len].type
+          const _suffix = _type === 'Percentage' ? '%' : ''
+
+          _item.slot2 = subject.dimension[0].data[_len].targetValue
+          _item.slot3 = subject.dimension[0].data[_len].actualValue + _suffix
+          _item.slot4 = subject.dimension[0].data[_len].unit
+          _item.slot5 = subject.dimension[0].data[_len].finish_rate
         }
 
-        _item.slot1 = subject.title
-        _item.slot2 = subject.dimension[0].data[_len].targetValue
-        _item.slot3 = subject.dimension[0].data[_len].actualValue + _suffix
-        _item.slot4 = subject.dimension[0].data[_len].unit
-        _item.slot5 = subject.dimension[0].data[_len].finish_rate
         this.cardData.list.push(_item)
       })
 

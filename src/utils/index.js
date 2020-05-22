@@ -119,15 +119,8 @@ export function getQueryObject(url) {
  * @param subjects
  * @param views
  */
-export function checkSubject(subjects, views) {
-  // console.log('subjects:', subjects)
-  // console.log('views:', views)
-
+export function checkSubject() {
   console.log()
-  views.forEach(item => {
-    // console.log(item.items)
-  })
-
   Message({
     message: 'error.message',
     type: 'info',

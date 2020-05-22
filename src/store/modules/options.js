@@ -62,6 +62,7 @@ const state = {
     { label: '31日', key: 31 }
   ],
   views: [],
+  subject: [],
   API: ''
 }
 
@@ -125,6 +126,10 @@ const mutations = {
   SET_API: (state) => {
     state.API = process.env.VUE_APP_BASE_API
     // console.log('state.views:', state.views)
+  },
+  SET_SUBJECT: (state, response) => {
+    state.subject = response
+    // console.log('state.views:', state.views)
   }
 }
 
@@ -165,6 +170,7 @@ const actions = {
     // console.log('data:', data)
     return new Promise((resolve, reject) => {
       fetchData(data).then(response => {
+        commit('SET_SUBJECT', response)
         resolve(response)
       }).catch(error => {
         reject(error)

@@ -131,12 +131,19 @@ export default {
   },
   computed: {
   },
+  mounted: function() {
+    this.$nextTick(() => {
+      this.handleChange()
+    })
+  },
   created() {
     // console.log('----query:', this.query)
-    this.getEmployee()
+    // this.getEmployee()
   },
   methods: {
     handleChange() {
+      this.employeeList = []
+      this.query.group = 'null'
       console.log('handleChange...', this.query.date)
       this.month = +parseTime(this.query.date.getTime(), '{m}')
       this.year = parseTime(this.query.date.getTime(), '{y}')
@@ -151,9 +158,9 @@ export default {
         'year': this.year,
         'vf_file': 'dashboard.efwvf'
       }
-      console.log('data:', data)
       fetchData(data).then(response => {
         console.log('response:', response)
+
         // 构建组结构
         response.forEach(item => {
           const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
@@ -167,6 +174,7 @@ export default {
             })
           }
         })
+        console.log('this.employeeList:', this.employeeList)
 
         this.employeeList = deepClone(this.groupList)
 
