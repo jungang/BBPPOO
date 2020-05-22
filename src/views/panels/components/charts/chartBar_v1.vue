@@ -81,7 +81,7 @@ export default {
       // console.log('formatDataSet...')
        //console.log('柱状图=》',JSON.stringify(data.data))
 
-      data.data = chartBarData;
+      //data.data = chartBarData;
 
       const dimensions = ['time']
       const source = []
