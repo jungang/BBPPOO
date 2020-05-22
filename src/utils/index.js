@@ -125,7 +125,7 @@ export function checkSubject(subjects, views) {
 
   console.log()
   views.forEach(item => {
-    console.log(item.items)
+    // console.log(item.items)
   })
 
   Message({
@@ -362,6 +362,18 @@ export function sort(arr1) {
   // return arr1.sort((a, b) => { return a.name.charCodeAt(0) - b.name.charCodeAt(0) })
   // return arr1.sort((a, b) => { return a.title.localeCompare(b.title) })
   return arr1.sort((a, b) => { return a.index - b.index })
+}
+
+/**
+ * @returns {Array}
+ * @param arr
+ */
+export function cardSort(arr) {
+  // return arr1.sort((a, b) => { return a.name.charCodeAt(0) - b.name.charCodeAt(0) })
+  // return arr1.sort((a, b) => { return a.title.localeCompare(b.title) })
+  return arr.sort((a, b) => {
+    return a.config.component.cardIndex - b.config.component.cardIndex
+  })
 }
 
 /**

@@ -22,7 +22,7 @@ export async function getFullData(params) {
    * drill_parameters
    */
 
-  //console.log('params:', params)
+  // console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
   let subject = params.items[`${params.query.type}`]
@@ -65,8 +65,11 @@ export async function getFullData(params) {
   if (params.query.dateType === 'daily') {
     // console.log('按天查。。。', params.query)
     const _data = parseTime(params.query.date, '{y}{m}{d}')
+    // 天毫秒数  604800000 =  1000   ×   60   ×   60   ×   24   ×   7
+    const day_s = 604800000
+    const _data_start = parseTime(params.query.date.getTime() - day_s, '{y}{m}{d}')
     data.vf_id = 0
-    data.start = _data
+    data.start = _data_start
     data.end = _data
   }
 
@@ -289,7 +292,7 @@ export function standardize(data) {
       item.original = item.value
       item.value = item.value === 'Null' ? undefined : item.value
 
-      //console.log('item.type:', item.type)
+      // console.log('item.type:', item.type)
 
       switch (item.type) {
         case 'Duration':

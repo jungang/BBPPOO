@@ -71,6 +71,7 @@ import Row from './rows/row'
 import Tab from './tabs/tab'
 import Filters from '@/components/Filters'
 import { ViewAuth } from '@/utils/auth'
+import { cardSort } from '@/utils'
 
 export default {
   name: 'PanelDefault',
@@ -145,6 +146,9 @@ export default {
         }
       }
     })
+    if (this.cardList.length > 0) {
+      this.cardList = cardSort(this.cardList)
+    }
   },
   methods: {
     handleFilter() {

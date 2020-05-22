@@ -6,6 +6,7 @@ export function fetchData(data) {
   // console.log(data)
   return request2({
     url: `/visualizeData?vf_id=${data.vf_id}
+    &pid=${data.projectId}
     &dir=${data.dir}
     &start=${data.start}
     &end=${data.end}

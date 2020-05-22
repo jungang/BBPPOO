@@ -1,5 +1,6 @@
 <template>
   <div class="list-container">
+
     <el-row
       v-for="row in data"
       :key="row.categoryName"

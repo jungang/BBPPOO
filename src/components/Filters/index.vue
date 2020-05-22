@@ -141,6 +141,7 @@ export default {
         'vf_file': 'dashboard.efwvf'
       }
       fetchData(data).then(response => {
+        console.log('response:', response)
         // 构建组结构
         response.forEach(item => {
           const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
