@@ -339,7 +339,6 @@ export function standardize(data) {
 
       item.original = item.value
       item.value = item.value === 'Null' ? undefined : item.value
-
       // console.log('item.type:', item.type)
 
       switch (item.type) {
