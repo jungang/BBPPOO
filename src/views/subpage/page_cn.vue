@@ -31,10 +31,10 @@
       </el-tab-pane>
     </el-tabs>
     <Filters
-      :query.sync="query"
+      :query.sync="querycn"
       :multiple="true"
       :type="filterType"
-      @filtration="handleFilter"
+      @filtration="handleCNFilter"
       class="filter-box"
     />
     <el-tabs v-model="tab2_activeName" type="border-card" class="table-box">
@@ -46,8 +46,8 @@
       >
         <Tab
           :data="item"
-          ref="component"
-          :query="query"
+          ref="componentcn"
+          :query="querycn"
         />
       </el-tab-pane>
     </el-tabs>
@@ -95,6 +95,13 @@
           multiple: false,
           group: 'null', // 选择组信息
           type: 'all' // 合集 all | 集团 group | 本地 local
+        },
+        querycn: {
+          dateType: 'month', // 天 day | 周 week | 月 month | 年 year
+          date: new Date(), // 日期20200501
+          multiple: false,
+          group: 'null', // 选择组信息
+          type: 'all' // 合集 all | 集团 group | 本地 local
         }
       }
     },
@@ -107,6 +114,9 @@
     methods: {
       handleFilter() {
         this.$refs.component.forEach((item) => item.getData())
+      },
+      handleCNFilter(){
+        this.$refs.componentcn.forEach((item) => item.getData())
       },
       getCurrentView(){
         _.map(this.$store.state.options.views,(_val, _index,_list) => {
