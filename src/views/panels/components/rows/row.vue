@@ -1,6 +1,6 @@
 <template>
-  <el-col :span="24/chartBarlen.len -1">
-    <h4>{{ data.title }}</h4>
+  <el-col :span="24/chartBarlen.len -1" style="position: relative">
+    <div class="title">{{ data.title }}</div>
     <chartBar :data="cardData.dataSet" />
   </el-col>
 </template>
@@ -95,17 +95,22 @@ export default {
 
       // 图表数据
       this.cardData.dataSet = this.fullData.chartDate
-      //console.log(this.cardData.dataSet)
-      //console.log(typeof this.cardData.dataSet)
+      console.log(this.cardData.dataSet)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  h4{
+  .title{
     text-align: center;
+    width: 100%;
     margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    position: absolute;
+    display: block;
+    top: 30px;
   }
 
 </style>

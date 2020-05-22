@@ -40,6 +40,7 @@ export default {
       cardData: {
         list: [],
         dataSet: {
+          legendSelectMode:'',
           data: []
         }
       }
@@ -61,6 +62,10 @@ export default {
        //console.log('currentView:', this.currentView)
        //console.log('query:', this.query)
       //console.log('this.data=>',this.data)
+      //判断图例是否为单选
+      if(this.data.config.component.legendSelectMode){
+        this.cardData.dataSet.legendSelectMode = this.data.config.component.legendSelectMode;
+      }
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       // console.log('currentView=>',this.currentView)
@@ -102,10 +107,10 @@ export default {
         this.cardData.list = [];
         this.cardData.list = this.fullData.tableDate;
 
-        //console.log(this.cardData.dataSet.data)
+        //console.log('list=>',this.cardData.list)
 
       }else{
-        this.cardData.dataSet = this.fullData.chartDate;
+        this.cardData.dataSet.data = this.fullData.chartDate.data;
       }
 
 

@@ -23,7 +23,8 @@ export default {
       id: uuidv1(),
       chart: {},
       options: {
-        legend: {},
+        legend: {
+        },
         tooltip: {},
         dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
           // 提供一份数据。
@@ -73,7 +74,7 @@ export default {
   methods: {
     formatDataSet(data) {
       // console.log('formatDataSet...')
-      // console.log(data.data)
+       //console.log('data=>',data)
 
       const dimensions = ['time']
       const source = []
@@ -105,9 +106,15 @@ export default {
         })
       })
 
-      this.options.dataset.source = source
-      this.options.dataset.dimensions = dimensions
-      this.options.series = series
+      this.options.dataset.source = source;
+      this.options.dataset.dimensions = dimensions;
+      this.options.series = series;
+
+      //console.log('legendSelectMode=>',data.legendSelectMode)
+
+      if(data.legendSelectMode != '' && data.legendSelectMode === 'single'){
+        this.options.legend.selectedMode = 'single';
+      }
       // console.log(this.options.dataset)
       this.$nextTick(() => {
         this.chart.setOption(this.options)
