@@ -158,7 +158,7 @@ export function checkSubject() {
   if (notFind.length > 0) {
     console.log('subject未找到', notFind)
     Message({
-      message: `自检：view引用的subject有${notFind.length}项未找到，详情见console...`,
+      message: `view subject -${notFind.length}`,
       type: 'info',
       duration: 5 * 1000
     })
