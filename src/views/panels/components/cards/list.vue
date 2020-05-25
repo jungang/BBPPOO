@@ -10,7 +10,7 @@
         <span v-if="row.slot2" class="gray">目标{{ row.slot2 }}</span>
       </el-col>
       <el-col v-if="row.slot3" :span="10" style="text-align: right">
-        <span class="emphasize">
+        <span class="emphasize" :class="row.highlightStyle">
 
           {{ row.slot3 }}
 
@@ -48,6 +48,7 @@ export default {
       padding: 10px;
     }
     .emphasize{
+      color: #5b5bbe;
       font-size: 16px;
       font-weight: bold;
     }

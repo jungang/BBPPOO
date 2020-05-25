@@ -73,7 +73,9 @@ export async function getFullData(params) {
   // console.log('params.query.group:', params.query)
   // console.log('params.query.group:', params.query.group)
   // 处理组、人员参数
-  if (params.query.group === 'null') {
+
+  console.log('params.query.group:', params.query.group)
+  if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
   } else if (params.query.multiple) {
@@ -209,9 +211,9 @@ export async function getFullData(params) {
   }
 
   // 计算高亮
-  // if (params.compare && params.completion) {
-  //   res = calcHighlight(res)
-  // }
+  if (params.config.completion) {
+    res = calcHighlight(res)
+  }
 
   // 集成整合
   const chartDate = formatDataSet(params.query.dateType, res)
@@ -251,28 +253,31 @@ function formatDataSet(dateType, data) {
 }
 
 async function getData(data, res, key) {
-  // console.log(await fetchData(data))
   res[key] = await fetchData(data)
   return res
 }
 
 // 计算高亮
 export function calcHighlight(data) {
-  data.actual.forEach((item, index) => {
-    // console.log('item.highlight:', item.highlight)
+  // console.log('data:', data)
 
-    item.highlightStyle = ''
-
-    if (item.highlight === 'true') {
-      item.highlightStyle = item.value < data.target[index].value ? 'danger' : ''
-    }
-    if (item.highlight === 'false') {
-      item.highlightStyle = item.value > data.target[index].value ? 'danger' : ''
-    }
-
-    // console.log(item.value, typeof item.value, data.vf_id1[index].value, typeof data.vf_id1[index].value)
-    // console.log(item.title, item.highlightStyle)
+  data.forEach(subject => {
+    subject.dimension.forEach(dimension => {
+      dimension.data.forEach(item => {
+        console.log('item.highlight:', item.highlight)
+        item.highlightStyle = ''
+        if (item.highlight === 'true') {
+          item.highlightStyle = item.actualValue < item.targetValue ? 'danger' : ''
+        }
+        if (item.highlight === 'false') {
+          item.highlightStyle = item.actualValue > item.targetValue ? 'danger' : ''
+        }
+        // todo
+        item.highlightStyle = 'danger'
+      })
+    })
   })
+
   return data
 }
 
@@ -328,7 +333,6 @@ export function resSort(data, viewSubject) {
 
 // 拉齐长度，填平空位
 export function standardize(data) {
-//  console.log(data)
   data.actual.forEach(item => {
     // console.log(item.title, item.value)
   })
@@ -382,7 +386,7 @@ export function standardize(data) {
 
       if (item.type === 'Time') {
         // item.value = item.timeValue
-        console.log('Time:', item)
+        // console.log('Time:', item)
       }
 
       // console.log(item.value, typeof item.value, item.type)
@@ -421,6 +425,7 @@ export function standardize(data) {
         const _data = {
           actualValue: a.value,
           timeValue: a.timeValue,
+          highlight: a.highlight,
           time: a.time,
           type: a.type,
           formula: a.formula,

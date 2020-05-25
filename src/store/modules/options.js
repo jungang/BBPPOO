@@ -151,6 +151,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       fetchData(data).then(response => {
         // console.log('view:', response)
+
+        // response.forEach(item => {
+        //   console.log(item.name)
+        // })
+
         commit('SET_VIEWS', response)
         console.info('v', pkg.version)
         resolve(response)
