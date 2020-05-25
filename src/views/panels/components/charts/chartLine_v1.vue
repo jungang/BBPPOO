@@ -1,6 +1,6 @@
 <template>
   <div id="chartBox" class="charts-container">
-    <div :id="id" class="chart" style="width:100%; height:100%" />
+    <div :id="id" class="chart" style="width:100%; height:30vh" />
   </div>
 </template>
 
@@ -153,6 +153,6 @@ export default {
 <style lang="scss">
   .charts-container{
     width: 100%;
-    height: 20vh;
+    height: 30vh;
   }
 </style>
