@@ -251,6 +251,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/panels/list'),
         name: 'panelsLst',
+        hidden: true,
         meta: { title: '经营月报(旧)', icon: 'list' }
       }
     ]

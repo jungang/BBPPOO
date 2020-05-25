@@ -48,7 +48,7 @@ export async function getFullData(params) {
   const viewSubject = subject.map(item => {
     return {
       name: item,
-      title: store.state.options.subject.find(s => s.name === item).title
+      title: store.state.options.subject.find(s => s.name === item) && store.state.options.subject.find(s => s.name === item).title
     }
   })
 
