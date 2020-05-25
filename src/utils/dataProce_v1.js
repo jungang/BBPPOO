@@ -376,7 +376,7 @@ export function standardize(data) {
       item.value = parseFloat(item.value) || item.value
 
       if (item.type === 'Time') {
-        console.log('Time2:', item)
+        item.value = item.timeValue
       }
 
       // console.log(item.value, typeof item.value, item.type)
@@ -409,6 +409,9 @@ export function standardize(data) {
 
     data.actual.forEach(a => {
       if (item.title === a.title) {
+        // if (a.type === 'Time') {
+        //   a.value = a.timeValue
+        // }
         const _data = {
           actualValue: a.value,
           time: a.time,
