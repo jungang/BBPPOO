@@ -80,9 +80,6 @@ export default {
         }, {
           value: 'local',
           label: '本地'
-        }, {
-          value: 'other',
-          label: '其他'
         }
       ],
       query: {
