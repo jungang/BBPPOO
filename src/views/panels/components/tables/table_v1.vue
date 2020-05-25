@@ -13,11 +13,12 @@
         label="名称"
         :min-width="50"
       />
-      <!--      <el-table-column
-        prop="dimension[0].actualValue"
+      <el-table-column
+        prop="dimension[0].data[0].targetValue"
         label="目标（万元）"
         :min-width="25"
-      />-->
+        v-if="nowView.config.compare"
+      />
       <el-table-column
         prop="dimension[0].data[0].actualValue"
         label="实际（万元）"
@@ -37,11 +38,16 @@ export default {
     data: {
       type: Object,
       required: true
+    },
+    currentView:{
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       id: uuidv1(),
+      nowView:{},
       tableData: [
         {
           id: 1,
@@ -96,14 +102,14 @@ export default {
     }
   },
   created() {
-
+    this.nowView = this.currentView;
   },
   mounted() {
 
   },
   methods: {
     formatDataSet(data) {
-      console.log(data)
+      console.log(data.list)
       this.tableData = data.list
     }
 
