@@ -6,7 +6,7 @@
       row-key="index"
       border
       default-expand-all
-      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+      :tree-props="{children: 'childrenRow', hasChildren: 'hasChildren'}"
     >
       <el-table-column
         prop="title"
