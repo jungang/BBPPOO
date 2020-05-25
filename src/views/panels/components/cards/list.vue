@@ -12,8 +12,6 @@
       <el-col v-if="row.slot3" :span="10" style="text-align: right">
         <span class="emphasize">
 
-          {{ row.type }}
-
           {{ row.slot3 }}
 
         </span>

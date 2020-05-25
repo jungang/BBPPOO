@@ -46,6 +46,7 @@
       :options="employeeList"
       :props="props"
       collapse-tags
+      clearable
       style="width: 250px;margin-left: 20px;"
     />
 
@@ -55,6 +56,7 @@
       :options="employeeList"
       style="margin-left: 20px;"
       show-all-levels
+      clearable
       :props="{ checkStrictly: true }"
     />
 
@@ -192,7 +194,7 @@ export default {
           )
         })
 
-        // console.log('employeeList:', this.employeeList)
+        console.log('employeeList:', this.employeeList)
       })
     },
     handleCurrentChange(val) {

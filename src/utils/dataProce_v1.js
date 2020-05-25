@@ -420,6 +420,7 @@ export function standardize(data) {
         // }
         const _data = {
           actualValue: a.value,
+          timeValue: a.timeValue,
           time: a.time,
           type: a.type,
           formula: a.formula,

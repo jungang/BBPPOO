@@ -157,7 +157,7 @@ export default {
             }
 
             if (_v.type === 'Time') {
-              console.log('_v', _v)
+              _v.actualValue = _v.timeValue
             }
 
             _item.slot2 = _v.targetValue
