@@ -1,6 +1,6 @@
 <template>
   <el-col :span="24/chartBarlen.len -1" style="position: relative">
-    <div class="title">{{ data.title }}</div>
+    <div class="title">{{ data.config.rowTitle }}</div>
     <chartBar :data="cardData.dataSet" />
   </el-col>
 </template>
