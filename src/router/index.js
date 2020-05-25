@@ -79,16 +79,16 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     // redirect: '/dashboard',
-    redirect: '/panels/report',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        hidden: true,
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      }
-    ]
+    redirect: '/panels/report'
+    // children: [
+    //   {
+    //     path: 'dashboard',
+    //     component: () => import('@/views/dashboard/index'),
+    //     name: 'Dashboard',
+    //     hidden: true,
+    //     meta: { title: '首页', icon: 'dashboard', affix: true }
+    //   }
+    // ]
   }
   // {
   //   path: '/documentation',
@@ -197,7 +197,7 @@ export const asyncRoutes = [
   {
     path: '/panels',
     component: Layout,
-    redirect: '/panels/list',
+    redirect: '/panels/report',
     name: 'Panels',
     alwaysShow: true,
     breadcrumb: false,
