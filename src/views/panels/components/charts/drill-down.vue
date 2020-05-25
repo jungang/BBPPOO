@@ -485,6 +485,8 @@ export default {
       this.list = this.fullData.tableDate // 切换
 
       // this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
+      console.log('this.fold:', this.fold)
+      this.fold = true // todo
       this.list = this.fold ? this.fullData.foldTableDate : this.list
 
       // console.log('this.fold:', this.fold)
