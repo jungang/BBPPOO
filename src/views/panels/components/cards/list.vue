@@ -9,7 +9,14 @@
       <el-col :span="7" style="text-align: right; font-size: 14px">{{ row.slot1 }} <br>
         <span v-if="row.slot2" class="gray">目标{{ row.slot2 }}</span>
       </el-col>
-      <el-col v-if="row.slot3" :span="10" style="text-align: right"><span class="emphasize">{{ row.slot3 }}</span>
+      <el-col v-if="row.slot3" :span="10" style="text-align: right">
+        <span class="emphasize">
+
+          {{ row.type }}
+
+          {{ row.slot3 }}
+
+        </span>
         <span class="gray" style="width: 40px; display: inline-block;text-align:left; text-indent: 5px">
           {{ row.slot4 }}
         </span>

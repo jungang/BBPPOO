@@ -368,7 +368,7 @@ export function standardize(data) {
           const _minute = parseInt(item.value / 60)
           // eslint-disable-next-line no-case-declarations
           const _second = parseInt(item.value % 60)
-          item.value = `${_minute}'${_second}"`
+          // item.value = `${_minute}'${_second}"`
           item.timeValue = `${_minute}'${_second}"`
           // console.log('Time:', item)
           break
@@ -381,7 +381,7 @@ export function standardize(data) {
       item.value = parseFloat(item.value) || item.value
 
       if (item.type === 'Time') {
-        item.value = item.timeValue
+        // item.value = item.timeValue
         console.log('Time:', item)
       }
 
