@@ -153,6 +153,6 @@ export default {
 <style lang="scss">
   .charts-container{
     width: 100%;
-    height: 15vh;
+    height: 20vh;
   }
 </style>

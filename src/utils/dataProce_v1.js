@@ -213,7 +213,7 @@ export async function getFullData(params) {
   const tableDate = integration(res)
 
   // 处理表格折叠行
-   const foldTableDate = planeToHierarchy(tableDate)
+  const foldTableDate = planeToHierarchy(tableDate)
   // const foldTableDate = []
 
   // const foldTableDate = planeToHierarchy(res)
@@ -364,6 +364,7 @@ export function standardize(data) {
           // eslint-disable-next-line no-case-declarations
           const _second = parseInt(item.value % 60)
           item.value = `${_minute}'${_second}"`
+          item.timeValue = `${_minute}'${_second}"`
           // console.log('Time:', item)
           break
         case 'String':
@@ -373,6 +374,11 @@ export function standardize(data) {
         default:
       }
       item.value = parseFloat(item.value) || item.value
+
+      if (item.type === 'Time') {
+        console.log('Time2:', item)
+      }
+
       // console.log(item.value, typeof item.value, item.type)
       item.formula = item.formula === 'Null' ? undefined : item.formula
       item.dimension = JSON.parse(item.dimension)
@@ -463,22 +469,20 @@ export function standardize(data) {
 export function planeToHierarchy(arr) {
   // 1.标记父级，从而可以从高级向低级组织结构
   arr = deepClone(arr)
-  const resArr = [];
+  const resArr = []
 
   // console.log('planeToHierarchy...')
 
   // console.log(arr)
   // 初始化准备
   arr = arr.map(item => {
-
     if (item.children) {
       item.children = item.children === 'Null' ? '[]' : item.children
     } else {
       item.children = []
     }
 
-
-    if(item.dimension[0]){
+    if (item.dimension[0]) {
       item.dimension[0].data.forEach(items => {
         item.children = JSON.parse(items.children) // fixJson 字符串 =>>变数组
       })
@@ -487,8 +491,6 @@ export function planeToHierarchy(arr) {
     item.parent = undefined // 默认父级未定义
     return item
   })
-
-
 
   // 标记父级
   arr.forEach(item => {
@@ -509,7 +511,7 @@ export function planeToHierarchy(arr) {
     if (!item.parent) {
       resArr.push(item)
       if (item.children.length > 0) {
-        findChildren(item, arr);
+        findChildren(item, arr)
       }
     }
   })

@@ -12,7 +12,7 @@ import { getFullData } from '@/utils/dataProce_v1'
 import chartLine from '../charts/chartLine_v1'
 import Table from '../tables/table_v1'
 import { parseTime } from '@/utils'
-import _ from 'underscore'
+// import _ from 'underscore'
 
 export default {
   name: 'Tab',
@@ -113,7 +113,6 @@ export default {
 
                   })
                 }
-
 
               });*/
         this.cardData.list = []

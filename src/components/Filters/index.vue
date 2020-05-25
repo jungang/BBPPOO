@@ -11,7 +11,7 @@
     <el-select
       v-model="query.dateType"
       placeholder="请选择"
-      style="width: 60px"
+      style="width: 60px; margin-left: 20px;"
     >
       <el-option
         v-for="item in options"
@@ -27,7 +27,7 @@
       v-if="query.group"
       v-model="q"
       :options="qlist"
-      style="width: 100px"
+      style="width: 100px;"
     />
 
     <!--
@@ -46,13 +46,14 @@
       :options="employeeList"
       :props="props"
       collapse-tags
-      style="width: 250px"
+      style="width: 250px;margin-left: 20px;"
     />
 
     <el-cascader
       v-if="query.group && !query.multiple"
       v-model="query.group"
       :options="employeeList"
+      style="margin-left: 20px;"
       show-all-levels
       :props="{ checkStrictly: true }"
     />
