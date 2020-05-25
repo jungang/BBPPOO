@@ -90,7 +90,7 @@ export default {
 
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
-      // console.log('this.fullData:::', this.fullData)
+      console.log('this.fullData:::', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {

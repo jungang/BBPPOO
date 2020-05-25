@@ -377,6 +377,7 @@ export function standardize(data) {
 
       if (item.type === 'Time') {
         item.value = item.timeValue
+        console.log('Time:', item)
       }
 
       // console.log(item.value, typeof item.value, item.type)
