@@ -117,8 +117,13 @@ export async function getFullData(params) {
     // const month_s = 15552000000
     const _data_start = parseTime(params.query.date.getTime() - month_s, '{y}{m}')
     const _data_end = parseTime(params.query.date, '{y}{m}')
-    data.vf_id = 2
-    data.start = _data_start
+    data.vf_id = 2;
+    if(params.config.component.type === 'table'){
+      data.start = _data_end
+    }else{
+      data.start = _data_start
+    }
+
     data.end = _data_end
     // res = await getData(data, res) // return res.vf_id0
   }
@@ -213,7 +218,7 @@ export async function getFullData(params) {
   const tableDate = integration(res)
 
   // 处理表格折叠行
-  const foldTableDate = planeToHierarchy(tableDate)
+  const foldTableDate = planeToHierarchy(params.query,tableDate)
   // const foldTableDate = []
 
   // const foldTableDate = planeToHierarchy(res)
@@ -469,10 +474,11 @@ export function standardize(data) {
 }
 
 // 数据层级折叠
-export function planeToHierarchy(arr) {
+export function planeToHierarchy(_query,arr) {
   // 1.标记父级，从而可以从高级向低级组织结构
   arr = deepClone(arr)
-  const resArr = []
+  const resArr = [];
+  let _date;
 
   // console.log('planeToHierarchy...')
 
@@ -485,9 +491,26 @@ export function planeToHierarchy(arr) {
       item.children = []
     }
 
-    if (item.dimension[0]) {
+    switch (_query.dateType) {
+      case 'daily':
+        _date = parseTime(_query.date,'{y}{m}{d}')
+        break
+      case 'week':
+        //_date = parseTime(_query.date,'{y}{m}{d}')
+        break
+      case 'month':
+        _date = parseTime(_query.date,'{y}{m}')
+        break
+      case 'year':
+        _date = parseTime(_query.date,'{y}{m}{d}');
+        break
+    }
+
+    if(item.dimension[0]){
       item.dimension[0].data.forEach(items => {
-        item.children = JSON.parse(items.children) // fixJson 字符串 =>>变数组
+        if(items.time === parseInt(_date)){
+          item.children = JSON.parse(items.children) // fixJson 字符串 =>>变数组
+        }
       })
     }
     item.childrenRow = [] // 默认无子元素
