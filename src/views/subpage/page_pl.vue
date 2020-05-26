@@ -56,7 +56,7 @@ import Tab from '../panels/components/tabs/tab'
 import _ from 'underscore'
 
 export default {
-  name: 'PagePl',
+  name: 'PL',
   components: { Filters, Row, Tab },
   props: { },
   data() {
@@ -103,7 +103,7 @@ export default {
     },
     getCurrentView() {
       _.map(this.$store.state.options.views, (_val, _index, _list) => {
-        if (_val.config.pagesName === this.$route.name) {
+        if (_val.config.pagesName === this.$route.meta.title) {
           this.currentView.push(_val)
           if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar')) {
             this.rowView.push(_val)

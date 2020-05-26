@@ -113,20 +113,22 @@ export default {
   computed: { },
   watch: { },
   created() {
-    // console.log('this.$store.state.options.views:', this.$store.state.options.views)
+    console.log('this.$store.state.options.views:', this.$store.state.options.views)
 
     this.$store.state.options.views.forEach(item => {
       // console.log('item.location:', item.location)
 
       // console.log(item.config)
 
-      // console.log(item.config.pagesName)
-      // console.log(this.$route.name)
+      console.log('item.config.pagesName:', item.config.pagesName)
+      console.log('this.$route.name:', this.$route.name)
       // 处理当前页
 
-      if (item.config.pagesName === this.$route.name && ViewAuth(item)) {
+      if (item.config.pagesName === this.$route.meta.view && ViewAuth(item)) {
         // wf_P&L_default_trend_tabIndex
         // wf_P&L_default_trend_rowIndex
+
+        console.log('item.location:', item.location)
         switch (item.location) {
           case 'wf_index_default_cards':
             this.cardList.push(item)
@@ -143,6 +145,9 @@ export default {
         }
       }
     })
+
+    console.log('this.cardList:', this.cardList)
+
     if (this.cardList.length > 0) {
       this.cardList = cardSort(this.cardList)
     }

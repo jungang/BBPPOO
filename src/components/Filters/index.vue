@@ -145,6 +145,7 @@ export default {
   },
   methods: {
     handleChange() {
+      console.log('this.query.date:', this.query.date)
       this.employeeList = []
       this.query.group = 'null'
       // console.log('handleChange...', this.query.date)

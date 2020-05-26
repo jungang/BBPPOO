@@ -165,11 +165,11 @@ export const asyncRoutes = [
       {
         path: 'index',
         component: () => import('@/views/management/index'),
-        name: 'management',
+        name: 'Management',
         meta: {
           title: '数据管理',
           icon: 'component',
-          noCache: true,
+          // noCache: true,
           roles: ['project_manager', 'group_captain']
         }
       }
@@ -182,11 +182,11 @@ export const asyncRoutes = [
       {
         path: 'index',
         component: () => import('@/views/objectives/index'),
-        name: 'objectives',
+        name: 'Objectives',
         meta: {
           title: '项目目标',
-          icon: 'star',
-          noCache: true
+          icon: 'star'
+          // noCache: true
           // roles: ['project_manager', 'group_captain']
         }
 
@@ -207,15 +207,19 @@ export const asyncRoutes = [
     },
     children: [
       {
+        name: 'Report',
         path: 'report',
         component: () => import('@/views/panels/index'),
-        name: 'index',
-        meta: { title: '经营月报', icon: 'list' }
+        meta: {
+          title: '经营月报',
+          view: 'index',
+          icon: 'list'
+        }
       },
       {
         path: 'view_pl',
         component: () => import('@/views/subpage/page_pl'),
-        name: 'P&L',
+        name: 'PL',
         meta: {
           title: 'P&L',
           icon: 'list',
@@ -225,26 +229,29 @@ export const asyncRoutes = [
       {
         path: 'view_capacity',
         component: () => import('@/views/subpage/page_cn'),
-        name: '产能',
+        name: 'Capacity',
         meta: { title: '产能', icon: 'list' }
       },
       {
         path: 'view_quality',
         component: () => import('@/views/subpage/page_zl'),
-        name: '质量',
+        name: 'Quality',
         meta: { title: '质量', icon: 'list' }
       },
       {
         path: 'view_personnel',
         component: () => import('@/views/subpage/page_ry'),
-        name: '人员',
+        name: 'Personnel',
         meta: { title: '人员', icon: 'list' }
       },
       {
         path: 'view/:id(\\S+)',
         component: () => import('@/views/panels/view'),
         name: 'panelView',
-        meta: { title: '月度经营分析', noCache: true, activeMenu: '/panels/list' },
+        meta: {
+          title: '月度经营分析',
+          // noCache: true,
+          activeMenu: '/panels/list' },
         hidden: true
       },
       {

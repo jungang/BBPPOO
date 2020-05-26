@@ -110,7 +110,7 @@ import { getData, standardize } from '@/utils/chart-data' // Secondary package b
 import permission from '@/directive/permission/index.js'
 
 export default {
-  name: 'BaseConfig',
+  name: 'Objectives',
   components: { Pagination },
   directives: { waves, permission },
   filters: {},
