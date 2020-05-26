@@ -141,7 +141,7 @@ export async function getFullData(params) {
     const _data_start = parseTime(params.query.date.getTime() - month_s, '{y}{m}')
     const _data_end = parseTime(params.query.date, '{y}{m}')
     data.vf_id = 2
-    if (params.config.component.type === 'table') {
+    if (params.config.component.type === 'table' || params.config.component.type === 'table_lirun') {
       data.start = _data_end
     } else {
       data.start = _data_start
