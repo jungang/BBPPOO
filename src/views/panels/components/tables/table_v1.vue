@@ -9,10 +9,10 @@
       :tree-props="{children: 'childrenRow', hasChildren: 'hasChildren'}"
     >
       <el-table-column
-        v-if="nowView.config.rowTitle !=='单人利润'"
         prop="title"
         label="名称"
         :min-width="50"
+        v-if="nowView.config.rowTitle !=='单人利润'"
       />
       <el-table-column
         v-if="nowView.config.compare"
@@ -136,7 +136,39 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      this.tableData = data.list
+
+      this.tableData = data.list;
+
+
+      if(this.nowView.config.component.type === 'table_lirun'){
+        console.log(this.tableData);
+        let employeeList = this.$store.state.group.employeeList
+        console.log(employeeList)
+        let arrs=[];
+        this.tableData[0].dimension.forEach((item) => {
+          if(item.v_group_name){
+            item.data[0].v_group_name = item.v_group_name + '组';
+            item.data[0].v_name = item.v_group_name+ '组';
+            arrs.push(item.data[0]);
+          }else{
+            item.data.forEach((_item) => {
+              employeeList.forEach((__item) => {
+                __item.children.forEach((___item) => {
+                  if(_item.v_id === ___item.value){
+                    _item['v_name'] = ___item.label;
+                    _item['v_group_name'] = __item.label;
+                  }
+                })
+              });
+              arrs.push(_item);
+
+            })
+          }
+        });
+        //console.log('arrs=>',arrs)
+        this.tableData = arrs;
+      }
+
     }
 
   }
