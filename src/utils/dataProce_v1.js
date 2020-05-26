@@ -177,6 +177,7 @@ export async function getFullData(params) {
   // 目标数据
   if (params.config.compare) {
     data.table = 'target'
+    // console.log('target', await getData(data, res, 'target'))
     res = await getData(data, res, 'target') // return res.vf_id0
   }
 
@@ -368,6 +369,11 @@ export function standardize(data, params) {
           break
 
         case 'Time':
+
+          if (item.title === 'AHT') {
+            item.value = item.value * 604800
+          }
+
           // eslint-disable-next-line no-case-declarations
           const _minute = parseInt(item.value / 60)
           // eslint-disable-next-line no-case-declarations
@@ -452,7 +458,10 @@ export function standardize(data, params) {
     if (data.target) {
       data.target.forEach(a => {
         if (item.title === a.title) {
+          // console.log('a.title:', a.title)
+          // console.log('a:', a)
           const _data = {
+            // actualValue: a.value, // todo
             targetValue: a.value,
             time: a.time,
             type: a.type,
@@ -461,6 +470,7 @@ export function standardize(data, params) {
             unit: a.unit,
             children: a.children
           }
+          // console.log('_data:', _data)
           const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
           // console.log('_v:', _v)
           const _v2 = _v.data.find(data => data.time === a.time)

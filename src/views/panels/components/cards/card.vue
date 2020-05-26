@@ -160,7 +160,7 @@ export default {
               _v.actualValue = _v.timeValue
             }
 
-            _item.slot2 = _v.targetValue
+            _item.slot2 = _v.targetValue === 0 ? ' 0' : _v.targetValue
             _item.slot3 = _v.actualValue + _suffix
             _item.slot4 = _v.unit
             _item.slot5 = _v.finish_rate
@@ -168,10 +168,12 @@ export default {
           }
         }
 
+        // console.log('_item:', _item)
         this.cardData.list.push(_item)
       })
 
       // 图表数据
+      // console.log('this.fullData.chartDate:', this.fullData.chartDate)
       this.cardData.dataSet = this.fullData.chartDate
     }
   }
