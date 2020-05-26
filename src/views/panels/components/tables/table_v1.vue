@@ -12,6 +12,7 @@
         prop="title"
         label="名称"
         :min-width="50"
+        v-if="nowView.config.rowTitle !=='单人利润'"
       />
       <el-table-column
         v-if="nowView.config.compare"
@@ -33,7 +34,19 @@
       />
       <el-table-column
         v-if="nowView.config.rowTitle ==='单人利润'"
-        prop="dimension[0].data[0].actualValue"
+        prop="v_group_name"
+        label="组别"
+        :min-width="25"
+      />
+      <el-table-column
+        v-if="nowView.config.rowTitle ==='单人利润'"
+        prop="v_name"
+        label="姓名"
+        :min-width="25"
+      />
+      <el-table-column
+        v-if="nowView.config.rowTitle ==='单人利润'"
+        prop="actualValue"
         label="毛利（万元）"
         :min-width="25"
       />
@@ -123,8 +136,9 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      console.log(data.list)
-      this.tableData = data.list
+
+      this.tableData = data.list;
+
     }
 
   }
