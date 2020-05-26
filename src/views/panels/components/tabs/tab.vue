@@ -1,6 +1,6 @@
 <template>
   <div class="tab-container">
-    <Table v-if="data.config.component.type === 'table'" :data="cardData" />
+    <Table v-if="data.config.component.type === 'table'" :data="cardData" :currentView ="currentView"/>
     <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
   </div>
 </template>
@@ -70,12 +70,12 @@ export default {
       this.currentView.query = this.query
       // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
-      // console.log('this.fullData:::', this.fullData)
+      //console.log('this.fullData:::', this.fullData.res)
 
       // 摘要数据
       this.cardData.list = []
-      // console.log('this.fullData:', this.fullData)
-      /*     this.fullData.res.forEach(subject => {
+      //console.log('this.fullData:', this.fullData)
+ /*     this.fullData.res.forEach(subject => {
         const _len = subject.dimension[0].data.length - 1
         const _item = {}
         _item.slot1 = subject.title
@@ -118,7 +118,7 @@ export default {
         this.cardData.list = []
         this.cardData.list = this.fullData.tableDate
 
-        // console.log('list=>',this.cardData.list)
+         //console.log('list=>',this.cardData.list)
       } else {
         this.cardData.dataSet.data = this.fullData.chartDate.data
       }

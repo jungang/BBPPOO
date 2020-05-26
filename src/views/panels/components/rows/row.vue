@@ -80,7 +80,7 @@ export default {
       // })
 
       // 摘要数据
-      this.cardData.list = []
+/*      this.cardData.list = []
       // console.log('this.fullData.res:', this.fullData.res)
       this.fullData.res.forEach(subject => {
         const _len = subject.dimension[0].data.length - 1
@@ -91,7 +91,7 @@ export default {
         _item.slot4 = subject.dimension[0].data[_len].unit
         _item.slot5 = subject.dimension[0].data[_len].finish_rate
         this.cardData.list.push(_item)
-      })
+      })*/
 
       // 图表数据
       this.cardData.dataSet = this.fullData.chartDate
