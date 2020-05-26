@@ -26,21 +26,41 @@ export default {
         // title: { text: this.data.view.title },
         // legend: {},
         tooltip: {
+          formatter:(params)=>{
+            let str = params.data.type === 'Percentage' ? params.seriesName + ':' + params.data[params.seriesName] + '%':params.seriesName + ':' + params.data[params.seriesName];
+            return str;
+          }
+        },
+        grid:{
+          left:'20%'
         },
         // color:['#60acfc','#32d3eb', '#5bc49f', '#feb64d', '#ff7b7b','#9287e7'],
         dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
           // 提供一份数据。
           // dimensions: ['score', 'count', 'score'],
-          // dimensions: ['product', '收入'],
+          //dimensions: ['product', '收入'],
           source: [
             /* { product: '一月', '收入': 50 },
                { product: '二月', '收入': 100 }*/
           ]
         },
         // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-        xAxis: { type: 'category' },
+        xAxis: {
+          type: 'category',
+          axisLabel:{
+            interval:0,
+            rotate:5
+          }
+        },
         // 声明一个 Y 轴，数值轴。
-        yAxis: {},
+        yAxis: {
+          axisLabel:{
+            formatter:(value) => {
+              //console.log('value=>',value)
+              return value;
+            }
+          }
+        },
         // 声明多个 bar 系列，默认情况下，每个系列会自动对应到 dataset 的每一列。
         series: [
           {
@@ -80,7 +100,7 @@ export default {
   methods: {
     formatDataSet(data) {
       // console.log('formatDataSet...')
-      // console.log('柱状图=》',JSON.stringify(data.data))
+       console.log('柱状图=》',data.data)
 
       // data.data = chartBarData;
 
@@ -92,7 +112,7 @@ export default {
         dimensions.push(subject.title)
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
-        if (subject.dimension.length > 0) {
+        if(subject.dimension.length > 0){
           subject.dimension[0].data.forEach(item => { // 组织
             // console.log(item.time)
             // console.log(item.actualValue)
@@ -102,7 +122,8 @@ export default {
             if (!_v) {
               source.push({ // 创建维度并添加数据
                 time: item.time,
-                [subject.title]: item.actualValue
+                [subject.title]: item.actualValue,
+                type:item.type
               })
 
               // console.log('item.actualValue:', item.actualValue)
@@ -113,6 +134,7 @@ export default {
             // console.log('_v:', _v)
           })
         }
+
       })
 
       // todo 测试数据
