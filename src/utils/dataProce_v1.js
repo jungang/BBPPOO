@@ -90,7 +90,7 @@ export async function getFullData(params) {
   // console.log('params.query.group:', params.query.group)
 
   const __arr = store.state.group.employeeList
-  console.log('__arr=>', __arr)
+  // console.log('__arr=>', __arr)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
@@ -415,6 +415,7 @@ export function standardize(data, params) {
           break
 
         case 'Hour':
+          console.log('item:', item)
           item.value = item.value && Math.round(item.value)
           break
         case 'Second':

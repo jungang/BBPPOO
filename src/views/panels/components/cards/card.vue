@@ -168,7 +168,7 @@ export default {
             // }
 
             _item.slot2 = (_v.targetValue !== undefined) && _v.targetValue + _suffix
-            _item.slot3 = _v.actualValue + _suffix
+            _item.slot3 = (_v.actualValue !== undefined) && _v.actualValue + _suffix
             _item.slot4 = _v.unit
             _item.slot5 = _v.finish_rate
             _item.highlightStyle = _v.highlightStyle
