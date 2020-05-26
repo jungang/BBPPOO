@@ -14,28 +14,28 @@
         :min-width="50"
       />
       <el-table-column
+        v-if="nowView.config.compare"
         prop="dimension[0].data[0].targetValue"
         label="目标（万元）"
         :min-width="25"
-        v-if="nowView.config.compare"
       />
       <el-table-column
+        v-if="nowView.config.rowTitle ==='收入' || nowView.config.rowTitle ==='成本'"
         prop="dimension[0].data[0].actualValue"
         label="实际（万元）"
         :min-width="25"
-        v-if="nowView.config.rowTitle ==='收入' || nowView.config.rowTitle ==='成本'"
       />
       <el-table-column
+        v-if="nowView.config.rowTitle ==='单人平均'"
         prop="dimension[0].data[0].actualValue"
         label="达成值（万元）"
         :min-width="25"
-        v-if="nowView.config.rowTitle ==='单人平均'"
       />
       <el-table-column
+        v-if="nowView.config.rowTitle ==='单人利润'"
         prop="dimension[0].data[0].actualValue"
         label="毛利（万元）"
         :min-width="25"
-        v-if="nowView.config.rowTitle ==='单人利润'"
       />
     </el-table>
   </div>
@@ -52,7 +52,7 @@ export default {
       type: Object,
       required: true
     },
-    currentView:{
+    currentView: {
       type: Object,
       required: true
     }
@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       id: uuidv1(),
-      nowView:{},
+      nowView: {},
       tableData: [
         {
           id: 1,
@@ -115,8 +115,8 @@ export default {
     }
   },
   created() {
-    this.nowView = this.currentView;
-    //console.log('nowView=>',this.nowView)
+    this.nowView = this.currentView
+    // console.log('nowView=>',this.nowView)
   },
   mounted() {
 

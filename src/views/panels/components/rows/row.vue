@@ -80,7 +80,7 @@ export default {
       // })
 
       // 摘要数据
-/*      this.cardData.list = []
+      /*      this.cardData.list = []
       // console.log('this.fullData.res:', this.fullData.res)
       this.fullData.res.forEach(subject => {
         const _len = subject.dimension[0].data.length - 1

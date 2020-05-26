@@ -31,7 +31,7 @@ export default {
         dataset: { // https://echarts.apache.org/zh/tutorial.html#%E4%BD%BF%E7%94%A8%20dataset%20%E7%AE%A1%E7%90%86%E6%95%B0%E6%8D%AE
           // 提供一份数据。
           // dimensions: ['score', 'count', 'score'],
-          //dimensions: ['product', '收入'],
+          // dimensions: ['product', '收入'],
           source: [
             /* { product: '一月', '收入': 50 },
                { product: '二月', '收入': 100 }*/
@@ -92,7 +92,7 @@ export default {
         dimensions.push(subject.title)
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
-        if(subject.dimension.length > 0){
+        if (subject.dimension.length > 0) {
           subject.dimension[0].data.forEach(item => { // 组织
             // console.log(item.time)
             // console.log(item.actualValue)
@@ -113,7 +113,6 @@ export default {
             // console.log('_v:', _v)
           })
         }
-
       })
 
       // todo 测试数据
