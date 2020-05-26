@@ -113,7 +113,7 @@ export default {
             this.chartLineView.push(_val)
           }
 
-          if ((_val.config.indexType === 'tabIndex') && (_val.config.component.type === 'table')) {
+          if ((_val.config.indexType === 'tabIndex') && (_val.config.component.type === 'table' || _val.config.component.type === 'table_lirun')) {
             this.tableView.push(_val)
           }
         }

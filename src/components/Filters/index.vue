@@ -82,7 +82,8 @@
 
 import { fetchData } from '@/api/panel'
 import { deepClone, parseTime } from '@/utils'
-import permission from '@/directive/permission/index.js'
+import permission from '@/directive/permission/index.js';
+import store from '../../store'
 
 export default {
   name: 'Filters',
@@ -165,6 +166,8 @@ export default {
       fetchData(data).then(response => {
         // console.log('response:', response)
 
+        this.$store.dispatch('group/person',response);
+
         // 构建组结构
         response.forEach(item => {
           const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
@@ -195,7 +198,8 @@ export default {
           )
         })
 
-        console.log('employeeList:', this.employeeList)
+        // console.log('employeeList:', this.employeeList)
+         //console.log('person:', this.$store.state.group.persons)
       })
     },
     handleCurrentChange(val) {

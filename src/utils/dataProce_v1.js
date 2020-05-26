@@ -84,7 +84,28 @@ export async function getFullData(params) {
     )
   } else {
     // 单选
-    data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1].toString() })
+    if (params.config.component.type === 'table_lirun') {
+      data.dimension.push({v_group_name: params.query.group[0] });
+
+      if(params.query.group.length === 1){
+        let __arr = store.state.group.persons;
+        console.log('__arr',__arr)
+        __arr.forEach((item) => {
+          if(item.v_group_name === params.query.group[0]){
+            let __obj = {};
+            __obj.v_id = item.v_project_work_id;
+            data.dimension.push(__obj);
+          }
+        });
+
+      }else{
+        data.dimension.push({ v_id: params.query.group[1].toString() })
+      }
+
+    }else{
+      data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1].toString() })
+
+    }
   }
 
   if (params.query.dateType === 'daily') {
@@ -120,7 +141,7 @@ export async function getFullData(params) {
     const _data_start = parseTime(params.query.date.getTime() - month_s, '{y}{m}')
     const _data_end = parseTime(params.query.date, '{y}{m}')
     data.vf_id = 2
-    if (params.config.component.type === 'table') {
+    if (params.config.component.type === 'table' || params.config.component.type === 'table_lirun') {
       data.start = _data_end
     } else {
       data.start = _data_start
@@ -437,7 +458,8 @@ export function standardize(data, params) {
           formula: a.formula,
           original: a.original,
           unit: a.unit,
-          children: a.children
+          children: a.children,
+          v_id:a.dimension.v_id
         }
 
         // console.log(a.dimension.v_group_name)
