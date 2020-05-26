@@ -46,22 +46,9 @@ export async function getFullData(params) {
   }
 
   const viewSubject = subject.map(item => {
-    let _title = ''
-
-    const _v = store.state.options.subject.find(s => {
-      return s.name === item
-    })
-
-    // console.log('_v:', _v)
-    // console.log('_v:', JSON.parse(_v.config))
-
-    if (_v) {
-      _title = _v.config.show_name || _v.title
-    }
-
     return {
       name: item,
-      title: _title
+      title: store.state.options.subject.find(s => s.name === item) && store.state.options.subject.find(s => s.name === item).title
     }
   })
 
@@ -88,9 +75,25 @@ export async function getFullData(params) {
   // 处理组、人员参数
 
   // console.log('params.query.group:', params.query.group)
+
+  const __arr = store.state.group.employeeList;
+  console.log('__arr=>',__arr)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
-    data.dimension.push({})
+    data.dimension.push({});
+
+    if (params.config.component.type === 'table_lirun') {
+      __arr.forEach((item) => {
+        data.dimension.push({ v_group_name: item.value })
+        item.children.forEach((_item) => {
+          const __obj = {}
+          __obj.v_id = _item.v_project_work_id
+          data.dimension.push(__obj)
+        })
+      })
+    }
+
+
   } else if (params.query.multiple) {
     // 多选
     params.query.group.forEach(item => data.dimension.push(item.length === 1 ? { v_group_name: item[0] } : { v_id: item[1] })
@@ -101,13 +104,15 @@ export async function getFullData(params) {
       data.dimension.push({ v_group_name: params.query.group[0] })
 
       if (params.query.group.length === 1) {
-        const __arr = store.state.group.persons
-        console.log('__arr', __arr)
+
+        //console.log('__arr', __arr)
         __arr.forEach((item) => {
-          if (item.v_group_name === params.query.group[0]) {
-            const __obj = {}
-            __obj.v_id = item.v_project_work_id
-            data.dimension.push(__obj)
+          if (item.value === params.query.group[0]) {
+            item.children.forEach((_item) => {
+              const __obj = {}
+              __obj.v_id = _item.v_project_work_id
+              data.dimension.push(__obj)
+            })
           }
         })
       } else {
@@ -252,12 +257,9 @@ export async function getFullData(params) {
   const tableDate = integration(res)
 
   // 处理表格折叠行
-  let foldTableDate = planeToHierarchy(params.query, tableDate)
+  const foldTableDate = planeToHierarchy(params.query, tableDate)
   // const foldTableDate = []
 
-  if (params.config.component.type === 'table_lirun') {
-    foldTableDate = getTableLirun(foldTableDate)
-  }
 
   // console.log('res=>',res)
 
@@ -268,32 +270,6 @@ export async function getFullData(params) {
     res: res
     // tableDate: standardize(res)
   }
-}
-
-// 返回单人利润数据
-
-function getTableLirun(arr) {
-  let res = []
-
-  // const _obj = {}
-  if (arr[0].dimension.length > 1) {
-    arr[0].dimension[0].data[0]['v_group_name'] = arr[0].dimension[0].v_group_name
-  }
-
-  if (arr[0].dimension.length > 1) {
-    arr[0].dimension[1].data.forEach((item) => {
-      // item['v_group_name'] = arr[0].dimension[0].v_group_name;
-      item['v_group_name'] = store.state.group.persons.find(_item => { return _item.v_project_work_id === item.v_id }).v_group_name + '组'
-      item['v_name'] = store.state.group.persons.find(_item => { return _item.v_project_work_id === item.v_id }).v_name
-    })
-
-    arr[0].dimension[0].data[0]['v_name'] = arr[0].dimension[0].v_group_name + '组'
-    arr[0].dimension[1].data.unshift(arr[0].dimension[0].data[0])
-
-    res = arr[0].dimension[1].data
-  }
-
-  return res
 }
 
 // toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
@@ -429,14 +405,16 @@ export function standardize(data, params) {
 
         case 'Time':
 
-          item.value = item.value && item.value.toFixed(2)
+          if (item.title === 'AHT') {
+            item.value = item.value * 604800
+          }
 
           // eslint-disable-next-line no-case-declarations
-          // const _minute = parseInt(item.value / 60)
+          const _minute = parseInt(item.value / 60)
           // eslint-disable-next-line no-case-declarations
-          // const _second = parseInt(item.value % 60)
+          const _second = parseInt(item.value % 60)
           // item.value = `${_minute}'${_second}"`
-          // item.timeValue = `${_minute}'${_second}"`
+          item.timeValue = `${_minute}'${_second}"`
           // console.log('Time:', item)
           break
         case 'String':
