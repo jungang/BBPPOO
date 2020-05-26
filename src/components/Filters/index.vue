@@ -164,10 +164,7 @@ export default {
         'vf_file': 'dashboard.efwvf'
       }
       fetchData(data).then(response => {
-        // console.log('response:', response)
-
         this.$store.dispatch('group/person', response)
-
         // 构建组结构
         response.forEach(item => {
           const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
@@ -197,6 +194,8 @@ export default {
           }
           )
         })
+
+        this.$store.dispatch('group/employeelist', this.employeeList)
 
         // console.log('employeeList:', this.employeeList)
         // console.log('person:', this.$store.state.group.persons)
