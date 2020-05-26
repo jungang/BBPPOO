@@ -273,7 +273,7 @@ export function calcHighlight(data) {
           item.highlightStyle = item.actualValue > item.targetValue ? 'danger' : ''
         }
         // todo
-        item.highlightStyle = 'danger'
+        // item.highlightStyle = 'danger'
       })
     })
   })
