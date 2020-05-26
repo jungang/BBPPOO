@@ -255,10 +255,9 @@ export async function getFullData(params) {
   let foldTableDate = planeToHierarchy(params.query, tableDate)
   // const foldTableDate = []
 
-  if(params.config.component.type === 'table_lirun'){
-    foldTableDate = getTableLirun(foldTableDate);
+  if (params.config.component.type === 'table_lirun') {
+    foldTableDate = getTableLirun(foldTableDate)
   }
-
 
   // console.log('res=>',res)
 
@@ -271,31 +270,30 @@ export async function getFullData(params) {
   }
 }
 
-//返回单人利润数据
+// 返回单人利润数据
 
 function getTableLirun(arr) {
-  let res = [];
+  let res = []
 
-  let _obj ={};
-  if(arr[0].dimension.length > 1){
-    arr[0].dimension[0].data[0]['v_group_name'] = arr[0].dimension[0].v_group_name;
+  // const _obj = {}
+  if (arr[0].dimension.length > 1) {
+    arr[0].dimension[0].data[0]['v_group_name'] = arr[0].dimension[0].v_group_name
   }
 
-  if(arr[0].dimension.length > 1){
-
+  if (arr[0].dimension.length > 1) {
     arr[0].dimension[1].data.forEach((item) => {
-      //item['v_group_name'] = arr[0].dimension[0].v_group_name;
-      item['v_group_name'] = store.state.group.persons.find(_item => {return _item.v_project_work_id === item.v_id}).v_group_name + '组';
-      item['v_name'] = store.state.group.persons.find(_item => {return _item.v_project_work_id === item.v_id}).v_name
-    });
+      // item['v_group_name'] = arr[0].dimension[0].v_group_name;
+      item['v_group_name'] = store.state.group.persons.find(_item => { return _item.v_project_work_id === item.v_id }).v_group_name + '组'
+      item['v_name'] = store.state.group.persons.find(_item => { return _item.v_project_work_id === item.v_id }).v_name
+    })
 
-    arr[0].dimension[0].data[0]['v_name'] = arr[0].dimension[0].v_group_name + '组';
-    arr[0].dimension[1].data.unshift(arr[0].dimension[0].data[0]);
+    arr[0].dimension[0].data[0]['v_name'] = arr[0].dimension[0].v_group_name + '组'
+    arr[0].dimension[1].data.unshift(arr[0].dimension[0].data[0])
 
-    res = arr[0].dimension[1].data;
+    res = arr[0].dimension[1].data
   }
 
-  return res;
+  return res
 }
 
 // toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
