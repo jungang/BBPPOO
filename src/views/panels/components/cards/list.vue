@@ -49,7 +49,7 @@ export default {
     }
 
     .emphasize{
-      color: #131313;
+      /*color: #131313;*/
       font-size: 16px;
       /*font-weight: bold;*/
     }

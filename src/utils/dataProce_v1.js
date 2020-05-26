@@ -311,11 +311,14 @@ export function calcHighlight(data) {
       dimension.data.forEach(item => {
         // console.log('item.highlight:', item.highlight)
         item.highlightStyle = ''
-        if (item.highlight === 'true') {
-          item.highlightStyle = item.actualValue < item.targetValue ? 'danger' : 'blue'
-        }
-        if (item.highlight === 'false') {
-          item.highlightStyle = item.actualValue > item.targetValue ? 'danger' : 'blue'
+
+        if (item.targetValue) {
+          if (item.highlight === 'true') {
+            item.highlightStyle = item.actualValue < item.targetValue ? 'danger' : 'blue'
+          }
+          if (item.highlight === 'false') {
+            item.highlightStyle = item.actualValue > item.targetValue ? 'danger' : 'blue'
+          }
         }
         // todo
         // item.highlightStyle = 'danger'
@@ -423,12 +426,21 @@ export function standardize(data, params) {
           break
 
         case 'Time':
-          // eslint-disable-next-line no-case-declarations
-          const _minute = parseInt(item.value / 60)
-          // eslint-disable-next-line no-case-declarations
-          const _second = parseInt(item.value % 60)
-          item.value = `${_minute}'${_second}"`
-          item.timeValue = `${_minute}'${_second}"`
+
+          if (item.unit === '秒') {
+            item.value = item.value && Math.round(item.value * 3600)
+          }
+
+          if (item.unit === '小时') {
+            item.value = item.value && Math.round(item.value)
+          }
+
+          // // eslint-disable-next-line no-case-declarations
+          // const _minute = parseInt(item.value / 60)
+          // // eslint-disable-next-line no-case-declarations
+          // const _second = parseInt(item.value % 60)
+          // item.value = `${_minute}'${_second}"`
+          // item.timeValue = `${_minute}'${_second}"`
           // console.log('Time:', item)
           break
         case 'String':
