@@ -1,6 +1,6 @@
 import router from './router'
 import store from './store'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
@@ -40,6 +40,16 @@ router.beforeEach(async(to, from, next) => {
 
           if (roles[0] === 'ROLE_ANONYMOUS') {
             console.log('ROLE_ANONYMOUS。。。')
+
+            MessageBox.confirm('账号信息错误，请重新登录', '账号错误', {
+              confirmButtonText: '重新登录',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              store.dispatch('user/resetToken').then(() => {
+                location.reload()
+              })
+            })
           }
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)

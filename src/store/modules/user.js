@@ -60,7 +60,7 @@ const actions = {
       getInfo(state.token).then(response => {
         const { data } = response
 
-        console.log('data:', data)
+        // console.log('data:', data)
 
         if (!data) {
           reject('Verification failed, please Login again.')
@@ -75,7 +75,7 @@ const actions = {
 
         const { roles, name, avatar, introduction } = _data
 
-        console.log('roles:', roles)
+        // console.log('roles:', roles)
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {

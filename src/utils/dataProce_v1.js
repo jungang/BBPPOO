@@ -382,7 +382,9 @@ export function resSort(data, viewSubject) {
     const _v = data.find(s => s.name === item.name)
     // console.log('_v:', _v)
     if (_v) {
+      // console.log('_v:', _v.dimension[0].data[0].type)
       item.index = _v.index
+      item.type = _v.dimension[0].data[0].type
       item.dimension = _v.dimension
     }
   })
@@ -400,7 +402,7 @@ export function standardize(data, params) {
   let index = 1
   let resDate = []
 
-  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间   Time 分钟 7‘11”
+  // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间  Hour 小时 Second 秒  Time 分钟 7‘11”
   Object.keys(data).forEach((key) => { // 统一
     data[key].forEach(item => {
       // console.log(item)
@@ -427,16 +429,20 @@ export function standardize(data, params) {
           item.value = item.value && (item.value * 100).toFixed(2)
           break
 
+        case 'Hour':
+          item.value = item.value && Math.round(item.value)
+          break
+        case 'Second':
+          item.value = item.value && Math.round(item.value * 60)
+          break
+
         case 'Time':
-
-          item.value = item.value && item.value.toFixed(2)
-
           // eslint-disable-next-line no-case-declarations
-          // const _minute = parseInt(item.value / 60)
+          const _minute = parseInt(item.value / 60)
           // eslint-disable-next-line no-case-declarations
-          // const _second = parseInt(item.value % 60)
-          // item.value = `${_minute}'${_second}"`
-          // item.timeValue = `${_minute}'${_second}"`
+          const _second = parseInt(item.value % 60)
+          item.value = `${_minute}'${_second}"`
+          item.timeValue = `${_minute}'${_second}"`
           // console.log('Time:', item)
           break
         case 'String':
@@ -480,11 +486,16 @@ export function standardize(data, params) {
     // data.actual.forEach =>...
     // 添加实际数据
 
+    // console.log('item:', item)
+
     data.actual.forEach(a => {
       if (item.title === a.title) {
         // if (a.type === 'Time') {
         //   a.value = a.timeValue
         // }
+
+        // item.type = a.type
+
         const _data = {
           actualValue: a.value,
           timeValue: a.timeValue,
@@ -502,6 +513,7 @@ export function standardize(data, params) {
         const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
         // console.log('_v', _v)
         if (!_v) {
+          // item.type = a.type // todo
           item.dimension.push({ // 创建维度并添加数据
             v_group_name: a.dimension.v_group_name,
             data: [_data]
@@ -511,6 +523,8 @@ export function standardize(data, params) {
         }
       }
     })
+
+    // console.log('data:', data)
 
     // 添加目标数据
     if (data.target) {

@@ -7,7 +7,7 @@
       class="row"
     >
       <el-col :span="7" style="text-align: right; font-size: 14px">{{ row.slot1 }} <br>
-        <span v-if="row.slot2" class="gray">目标{{ row.slot2 }}</span>
+        <span v-if="row.slot2" class="gray">目标 {{ row.slot2 }}</span>
       </el-col>
       <el-col v-if="row.slot3" :span="10" style="text-align: right">
         <span class="emphasize" :class="row.highlightStyle">
@@ -47,11 +47,13 @@ export default {
       background: #dbdbdb;
       padding: 10px;
     }
+
     .emphasize{
-      color: #5b5bbe;
+      color: #131313;
       font-size: 16px;
-      font-weight: bold;
+      /*font-weight: bold;*/
     }
+
     .gray{
       font-size: 12px;
       color: #bababa;

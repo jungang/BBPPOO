@@ -29,7 +29,9 @@ export default {
           top: 30,
           bottom: 20
         },
-        tooltip: {},
+        tooltip: {
+          formatter: (params) => this.handleFormatter(params)
+        },
         dataset: {
           dimensions: ['time'],
           source: []
@@ -61,6 +63,25 @@ export default {
     this.renderChart()
   },
   methods: {
+    handleFormatter(params) {
+      let res = ''
+      res += `${params.seriesName} : ${params.value[params.seriesName]}`
+      const _v = this.data.data.find(item => item.title === params.seriesName)
+
+      switch (_v.type) {
+        case 'Percentage':
+          res += `%`
+          break
+        case 'Integer':
+          // res +=
+          break
+        case 'Duration':
+          // res +=
+          break
+      }
+
+      return res
+    },
     formatDataSet(data) {
       // console.log('formatDataSet...')
       // console.log('data=>',data)
@@ -78,7 +99,6 @@ export default {
           subject.dimension[0].data.forEach(item => { // 组织
             // console.log(item.time)
             // console.log(item.actualValue)
-
             const _v = source.find(date => date.time === item.time)
             // console.log('_v:', _v)
             if (!_v) {
@@ -94,9 +114,11 @@ export default {
             }
             // console.log('_v:', _v)
           })
+          // console.log('source:', source)
         }
       })
 
+      // console.log('source:', source)
       this.options.dataset.source = source
       this.options.dataset.dimensions = dimensions
       this.options.series = series
