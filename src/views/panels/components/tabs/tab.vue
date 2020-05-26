@@ -1,6 +1,6 @@
 <template>
   <div class="tab-container">
-    <Table v-if="data.config.component.type === 'table'" :data="cardData" :current-view="currentView" />
+    <Table v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'" :data="cardData" :currentView ="currentView"/>
     <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
   </div>
 </template>
@@ -88,33 +88,7 @@ export default {
 
       // 数据
 
-      if (this.currentView.config.component.type === 'table') {
-        // console.log(this.fullData.tableDate)
-        /* _.each(this.fullData.tableDate,(_ele, _index) => {
-                let _obj={};
-                let __obj = {};
-                _.each(_ele.dimension[0].data,(ele,index1) => {
-                  if(ele.time == parseInt(this.getTableQueryTime())){
-                    _obj = ele;
-                  }
-                });
-                _ele.dimension = [];
-                _ele.dimension.push(_obj);
-
-                if(_ele.childrenRow.length > 0){
-                  _.each(_ele.childrenRow,(__ele) => {
-                    _.each(__ele.dimension[0].data,(___ele,index1) => {
-                      if(___ele.time == parseInt(this.getTableQueryTime())){
-                        __obj = ___ele;
-                      }
-                    });
-                    __ele.dimension = [];
-                    __ele.dimension.push(__obj);
-
-                  })
-                }
-
-              });*/
+      if (this.currentView.config.component.type === 'table' || this.currentView.config.component.type === 'table_lirun') {
         this.cardData.list = []
         this.cardData.list = this.fullData.tableDate
 
