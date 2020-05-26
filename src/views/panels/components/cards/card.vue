@@ -125,7 +125,10 @@ export default {
           _current = parseTime(this.query.date.getTime(), '{y}{m}{d}')
           break
         case 'week':
-          _current = 7
+          _current = parseTime(this.query.date.getTime(), '{m}.{d}')
+
+          console.log('_current:', _current)
+
           break
         case 'month':
           _current = +parseTime(this.query.date.getTime(), '{y}{m}')
@@ -143,7 +146,11 @@ export default {
 
         if (subject.dimension.length > 0) {
           // console.log('subject.dimension:', subject.dimension)
-          const _v = subject.dimension[0].data.find(item => item.time === _current)
+          const _v = subject.dimension[0].data.find(item => {
+            item.time = item.time.toString()
+            _current = _current.toString()
+            return item.time.search(_current) !== -1
+          })
           // console.log('_v:', _v)
           if (_v) {
             const _type = _v.type
@@ -156,15 +163,18 @@ export default {
               _v.actualValue = _v.actualValue && _v.actualValue.toFixed(2)
             }
 
-            if (_v.type === 'Time') {
-              _v.actualValue = _v.timeValue
-            }
+            // if (_v.type === 'Time') {
+            //   _v.actualValue = _v.timeValue
+            // }
 
             _item.slot2 = _v.targetValue === 0 ? ' 0' : _v.targetValue
             _item.slot3 = _v.actualValue + _suffix
             _item.slot4 = _v.unit
             _item.slot5 = _v.finish_rate
             _item.highlightStyle = _v.highlightStyle
+
+            // console.log('subject.title:', subject.title)
+            // console.log('_item:', _item)
           }
         }
 

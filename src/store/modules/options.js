@@ -175,6 +175,11 @@ const actions = {
     // console.log('data:', data)
     return new Promise((resolve, reject) => {
       fetchData(data).then(response => {
+        response.forEach(item => {
+          item.config = JSON.parse(item.config)
+          // console.log('item.config.show_name:', item.config.show_name)
+        })
+
         commit('SET_SUBJECT', response)
         resolve(response)
       }).catch(error => {

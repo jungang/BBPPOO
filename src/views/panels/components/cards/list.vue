@@ -20,7 +20,7 @@
         </span>
 
       </el-col>
-      <el-col v-if="row.slot3 && row.slot2" :span="5" style="text-align: right">{{ row.slot5 }}%</el-col>
+      <el-col v-if="row.slot3 && row.slot2" :span="5" style="text-align: right">{{ row.slot5 && row.slot5+ '%' }}</el-col>
     </el-row>
 
   </div>

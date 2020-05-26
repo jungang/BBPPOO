@@ -20,7 +20,7 @@
           </router-link>
         </el-row>
 
-        <span style="font-size: 5px">{{ item.create_time || "2020-00" }}</span>
+        <!--        <span style="font-size: 5px">{{ item.create_time || "2020-00" }}</span>-->
       </el-card>
     </el-row>
 

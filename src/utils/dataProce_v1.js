@@ -46,9 +46,22 @@ export async function getFullData(params) {
   }
 
   const viewSubject = subject.map(item => {
+    let _title = ''
+
+    const _v = store.state.options.subject.find(s => {
+      return s.name === item
+    })
+
+    // console.log('_v:', _v)
+    // console.log('_v:', JSON.parse(_v.config))
+
+    if (_v) {
+      _title = _v.config.show_name || _v.title
+    }
+
     return {
       name: item,
-      title: store.state.options.subject.find(s => s.name === item) && store.state.options.subject.find(s => s.name === item).title
+      title: _title
     }
   })
 
@@ -388,16 +401,14 @@ export function standardize(data, params) {
 
         case 'Time':
 
-          if (item.title === 'AHT') {
-            item.value = item.value * 604800
-          }
+          item.value = item.value && item.value.toFixed(2)
 
           // eslint-disable-next-line no-case-declarations
-          const _minute = parseInt(item.value / 60)
+          // const _minute = parseInt(item.value / 60)
           // eslint-disable-next-line no-case-declarations
-          const _second = parseInt(item.value % 60)
+          // const _second = parseInt(item.value % 60)
           // item.value = `${_minute}'${_second}"`
-          item.timeValue = `${_minute}'${_second}"`
+          // item.timeValue = `${_minute}'${_second}"`
           // console.log('Time:', item)
           break
         case 'String':
