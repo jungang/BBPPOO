@@ -138,35 +138,48 @@ export default {
     formatDataSet(data) {
 
       this.tableData = data.list;
-
-
       if(this.nowView.config.component.type === 'table_lirun'){
-        console.log(this.tableData);
+        console.log('dasfd',this.tableData)
         let employeeList = this.$store.state.group.employeeList
-        console.log(employeeList)
         let arrs=[];
+        let lirunArray = [];
         this.tableData[0].dimension.forEach((item) => {
           if(item.v_group_name){
             item.data[0].v_group_name = item.v_group_name + '组';
             item.data[0].v_name = item.v_group_name+ '组';
+            item.data[0].jiacu = true;
             arrs.push(item.data[0]);
           }else{
             item.data.forEach((_item) => {
-              employeeList.forEach((__item) => {
-                __item.children.forEach((___item) => {
-                  if(_item.v_id === ___item.value){
-                    _item['v_name'] = ___item.label;
-                    _item['v_group_name'] = __item.label;
-                  }
-                })
-              });
-              arrs.push(_item);
-
+              if(_item.v_id){
+                employeeList.forEach((__item) => {
+                  __item.children.forEach((___item) => {
+                    if(_item.v_id === ___item.value){
+                      _item['v_name'] = ___item.label;
+                      _item['v_group_name'] = __item.label;
+                      _item['jiacu'] = false;
+                    }
+                  })
+                });
+                arrs.push(_item);
+              }
             })
           }
         });
-        //console.log('arrs=>',arrs)
-        this.tableData = arrs;
+
+        arrs.forEach((dt) => {
+          if(!dt.v_id){
+            lirunArray.push(dt);
+            arrs.forEach((_dt) => {
+              if(_dt.v_id && (_dt.v_group_name === dt.v_group_name)){
+                lirunArray.push(_dt);
+              }
+            })
+          }
+        });
+
+        console.log('arrs=>',lirunArray)
+        this.tableData = lirunArray;
       }
 
     }
@@ -180,5 +193,8 @@ export default {
   .charts-container {
     width: 100%;
     height: 30vh;
+  }
+  .jiacu{
+    font-weight: bolder;
   }
 </style>
