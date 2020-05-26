@@ -49,7 +49,9 @@ export function parseTime(time, cFormat) {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
     if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    // console.log('value:', value)
     return value.toString().padStart(2, '0')
+    // return value
   })
   return time_str
 }

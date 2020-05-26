@@ -16,7 +16,7 @@ export async function getFullData(params) {
   let res = {} // 返回数据
 
   let day_s = 604800000
-  let week_s = 3628800000
+  let week_s = 3628800000 - 86400000
   let month_s = 15552000000
 
   if (params.config.component.type === 'chart_bar') {
@@ -74,7 +74,7 @@ export async function getFullData(params) {
   // console.log('params.query.group:', params.query.group)
   // 处理组、人员参数
 
-  console.log('params.query.group:', params.query.group)
+  // console.log('params.query.group:', params.query.group)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
@@ -194,7 +194,7 @@ export async function getFullData(params) {
   // console.log('res:', res)
 
   // 数组长度统一,格式
-  res = standardize(res)
+  res = standardize(res, params)
 
   // 排序
   res = resSort(res, viewSubject)
@@ -264,7 +264,7 @@ export function calcHighlight(data) {
   data.forEach(subject => {
     subject.dimension.forEach(dimension => {
       dimension.data.forEach(item => {
-        console.log('item.highlight:', item.highlight)
+        // console.log('item.highlight:', item.highlight)
         item.highlightStyle = ''
         if (item.highlight === 'true') {
           item.highlightStyle = item.actualValue < item.targetValue ? 'danger' : ''
@@ -332,7 +332,7 @@ export function resSort(data, viewSubject) {
 }
 
 // 拉齐长度，填平空位
-export function standardize(data) {
+export function standardize(data, params) {
   data.actual.forEach(item => {
     // console.log(item.title, item.value)
   })
@@ -426,7 +426,7 @@ export function standardize(data) {
           actualValue: a.value,
           timeValue: a.timeValue,
           highlight: a.highlight,
-          time: a.time,
+          time: translateTime(a.time, params),
           type: a.type,
           formula: a.formula,
           original: a.original,
@@ -571,3 +571,23 @@ function findChildren(parent, arr) {
     }
   })
 }
+
+function translateTime(time, params) {
+  let res = time
+  const day_s = 86400000
+  const week_s = day_s * 7
+  const _time_start = params.query.date.getTime() - week_s * (7 - time) + day_s
+  const _time_end = params.query.date.getTime() - week_s * (6 - time)
+  switch (params.query.dateType) {
+    case 'week':
+      res = parseTime(_time_start, '{mm}.{d}') + '-' + parseTime(_time_end, '{m}.{d}')
+      break
+    case 'day':
+      break
+    case 'month':
+      break
+  }
+
+  return res
+}
+
