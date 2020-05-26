@@ -9,10 +9,10 @@
       :tree-props="{children: 'childrenRow', hasChildren: 'hasChildren'}"
     >
       <el-table-column
+        v-if="nowView.config.rowTitle !=='单人利润'"
         prop="title"
         label="名称"
         :min-width="50"
-        v-if="nowView.config.rowTitle !=='单人利润'"
       />
       <el-table-column
         v-if="nowView.config.compare"
@@ -136,9 +136,7 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-
-      this.tableData = data.list;
-
+      this.tableData = data.list
     }
 
   }
