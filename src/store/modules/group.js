@@ -1,15 +1,15 @@
 const state = {
-  persons:[]
+  persons: []
 }
 
 const mutations = {
-  SET_PERSON (state,response) {
-    state.persons = response;
+  SET_PERSON(state, response) {
+    state.persons = response
   }
 }
 
 const actions = {
-  person({ commit },response) {
+  person({ commit }, response) {
     commit('SET_PERSON', response)
   }
 }

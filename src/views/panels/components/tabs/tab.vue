@@ -1,6 +1,6 @@
 <template>
   <div class="tab-container">
-    <Table v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'" :data="cardData" :currentView ="currentView"/>
+    <Table v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'" :data="cardData" :current-view="currentView" />
     <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
   </div>
 </template>

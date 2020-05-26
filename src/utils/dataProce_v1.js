@@ -85,26 +85,23 @@ export async function getFullData(params) {
   } else {
     // 单选
     if (params.config.component.type === 'table_lirun') {
-      data.dimension.push({v_group_name: params.query.group[0] });
+      data.dimension.push({ v_group_name: params.query.group[0] })
 
-      if(params.query.group.length === 1){
-        let __arr = store.state.group.persons;
-        console.log('__arr',__arr)
+      if (params.query.group.length === 1) {
+        const __arr = store.state.group.persons
+        console.log('__arr', __arr)
         __arr.forEach((item) => {
-          if(item.v_group_name === params.query.group[0]){
-            let __obj = {};
-            __obj.v_id = item.v_project_work_id;
-            data.dimension.push(__obj);
+          if (item.v_group_name === params.query.group[0]) {
+            const __obj = {}
+            __obj.v_id = item.v_project_work_id
+            data.dimension.push(__obj)
           }
-        });
-
-      }else{
+        })
+      } else {
         data.dimension.push({ v_id: params.query.group[1].toString() })
       }
-
-    }else{
+    } else {
       data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1].toString() })
-
     }
   }
 
@@ -459,7 +456,7 @@ export function standardize(data, params) {
           original: a.original,
           unit: a.unit,
           children: a.children,
-          v_id:a.dimension.v_id
+          v_id: a.dimension.v_id
         }
 
         // console.log(a.dimension.v_group_name)
