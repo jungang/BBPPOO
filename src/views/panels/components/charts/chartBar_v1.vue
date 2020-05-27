@@ -108,30 +108,37 @@ export default {
       const source = []
       const series = []
 
+      console.log('data.data:', data.data)
+
+      // const _data = data.data.slice(2, 4)
+      // console.log('_data:', _data)
+
       data.data.forEach(subject => { // subject
         dimensions.push(subject.title)
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
         if (subject.dimension.length > 0) {
-          subject.dimension[0].data.forEach(item => { // 组织
-            // console.log(item.time)
+          subject.dimension[0].data.forEach((item, index) => { // 组织
+            console.log(item.time)
+            console.log('index:', index)
             // console.log(item.actualValue)
 
             const _v = source.find(date => date.time === item.time)
-            // console.log('_v:', _v)
-            if (!_v) {
-              source.push({ // 创建维度并添加数据
-                time: item.time,
-                [subject.title]: item.actualValue,
-                type: item.type
-              })
-
-              // console.log('item.actualValue:', item.actualValue)
-            } else { // 添加数据
-              _v[subject.title] = item.actualValue
-              // console.log('item.actualValue:', item.actualValue)
+            if (index >= 4) {
+              // console.log('_v:', _v)
+              if (!_v) {
+                source.push({ // 创建维度并添加数据
+                  time: item.time,
+                  [subject.title]: item.actualValue,
+                  type: item.type
+                })
+                // console.log('item.actualValue:', item.actualValue)
+              } else { // 添加数据
+                _v[subject.title] = item.actualValue
+                // console.log('item.actualValue:', item.actualValue)
+              }
+              // console.log('_v:', _v)
             }
-            // console.log('_v:', _v)
           })
         }
       })

@@ -16,12 +16,12 @@ export async function getFullData(params) {
   let res = {} // 返回数据
 
   let day_s = 604800000
-  let week_s = 3628800000 - 86400000
+  const week_s = 3628800000 - 86400000
   let month_s = 15552000000
 
   if (params.config.component.type === 'chart_bar') {
     day_s = 86400000
-    week_s = 604800000
+    // week_s = 604800000
     if (parseTime(params.query.date, '{m}') === '03') {
       month_s = 2505600000
     } else {
