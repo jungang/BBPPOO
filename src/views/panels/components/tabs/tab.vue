@@ -1,7 +1,8 @@
 <template>
   <div class="tab-container">
     <Table v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'" :data="cardData" :current-view="currentView" />
-    <chartLine v-if="data.config.component.type === 'chart_line'" :data="cardData.dataSet" />
+    <chartLine v-if="data.config.component.type === 'chart_line'  && data.config.zoneName !== 'comparison'" :data="cardData.dataSet" />
+    <chartLineComparison v-if="data.config.component.type === 'chart_line' && data.config.zoneName === 'comparison'" :data="comparison" :query="currentView.query"/>
   </div>
 </template>
 
@@ -10,13 +11,14 @@
 import { deepClone } from '@/utils'
 import { getFullData } from '@/utils/dataProce_v1'
 import chartLine from '../charts/chartLine_v1'
+import chartLineComparison from '../charts/chartLine2_v1'
 import Table from '../tables/table_v1'
 import { parseTime } from '@/utils'
 // import _ from 'underscore'
 
 export default {
   name: 'Tab',
-  components: { chartLine, Table },
+  components: { chartLine, Table, chartLineComparison},
   directives: { },
   props: {
     data: {
@@ -43,6 +45,9 @@ export default {
           legendSelectMode: '',
           data: []
         }
+      },
+      comparison:{
+        data:[]
       }
     }
   },
@@ -94,12 +99,16 @@ export default {
 
         // console.log('list=>',this.cardData.list)
       } else {
-        this.cardData.dataSet.data = this.fullData.chartDate.data
+
+        if(this.currentView.config.zoneName === 'comparison'){
+          this.comparison.data =  this.fullData.res;
+        }else{
+          this.cardData.dataSet.data = this.fullData.chartDate.data
+        }
       }
-    },
-    getTableQueryTime() {
-      const nowTime = parseTime(this.query.date, '{y}{m}')
-      return nowTime
+
+      //console.log(this.comparison)
+      //console.log(this.fullData.chartDate)
     }
 
   }
