@@ -52,6 +52,7 @@
         <template slot-scope="{row}">
 
           <el-upload
+            v-if="!loading"
             ref="upload"
             :data="{
               fileName:row.name,
@@ -64,12 +65,13 @@
             :on-success="handleSuccess"
             :on-error="handleError"
             :auto-upload="true"
-            :disabled="loading"
             style="width: 60px;display: inline-block;"
           >
             <el-button size="mini" :disabled="loading" type="primary" @click="curRowIndex=row.$index">上传</el-button>
             <!--            /*主要特别注意这里新增的@click方法将当前的index值赋值一个变量，否则无法获取到对应的行信息*/-->
           </el-upload>
+
+          <el-button v-if="loading" size="mini" disabled type="primary">上传</el-button>
 
           <a v-if="!row.id" href="javascript:void(0)">
             <el-button v-if="!row.id" size="mini" disabled>

@@ -42,6 +42,7 @@
 
     <el-cascader
       v-if="query.group && query.multiple"
+      ref="cascader"
       v-model="query.group"
       :options="employeeList"
       :props="props"
@@ -52,6 +53,7 @@
 
     <el-cascader
       v-if="query.group && !query.multiple"
+      ref="cascader"
       v-model="query.group"
       :options="employeeList"
       style="margin-left: 20px;"
@@ -152,6 +154,9 @@ export default {
       // console.log('handleChange...', this.query.date)
       this.month = +parseTime(this.query.date.getTime(), '{m}')
       this.year = parseTime(this.query.date.getTime(), '{y}')
+
+      this.query.group = []
+
       this.getEmployee()
     },
     getEmployee() {
@@ -165,6 +170,7 @@ export default {
       }
       fetchData(data).then(response => {
         this.$store.dispatch('group/person', response)
+        this.groupList = []
         // 构建组结构
         response.forEach(item => {
           const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
@@ -179,6 +185,8 @@ export default {
           }
         })
         // console.log('this.employeeList:', this.employeeList)
+
+        console.log('this.groupList:', this.groupList)
 
         this.employeeList = deepClone(this.groupList)
 
