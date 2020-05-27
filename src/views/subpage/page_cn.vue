@@ -6,7 +6,7 @@
       :type="filterType"
       @filtration="handleFilter"
     />
-    <el-row class="row-box" type="flex" justify="space-around" style="height: 300px">
+    <el-row class="row-box" type="flex" justify="space-around">
       <Row
         v-for="item in rowView"
         :key="item.id"
@@ -157,6 +157,7 @@ export default {
     }
     .row-box{
       margin-top: 30px;
+      height: 300px
     }
     .table-box{
       margin-top: 20px;

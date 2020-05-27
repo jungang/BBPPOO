@@ -139,6 +139,7 @@ export default {
     padding: 15px;
     .row-box{
       margin-top: 30px;
+      height: 300px
     }
     .table-box{
       margin-top: 40px;
