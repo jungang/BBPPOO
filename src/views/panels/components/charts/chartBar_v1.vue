@@ -122,7 +122,7 @@ export default {
         dimensions.push(subject.title)
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
-        debugger
+
         if (subject.dimension.length > 0) {
           subject.dimension[0].data.forEach((item, index, arr) => { // 组织
             const _v = source.find(date => date.time === item.time)
