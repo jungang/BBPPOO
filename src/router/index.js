@@ -170,7 +170,7 @@ export const asyncRoutes = [
           title: '数据管理',
           icon: 'component',
           // noCache: true,
-          roles: ['project_manager', 'group_captain']
+          roles: ['project_manager']
         }
       }
     ]
@@ -185,9 +185,9 @@ export const asyncRoutes = [
         name: 'Objectives',
         meta: {
           title: '项目目标',
-          icon: 'star'
+          icon: 'star',
           // noCache: true
-          // roles: ['project_manager', 'group_captain']
+          roles: ['project_manager']
         }
 
       }
