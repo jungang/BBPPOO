@@ -16,6 +16,7 @@
     <List :data="cardData.list" />
 
     <chartLine :data="cardData.dataSet" />
+
   </el-card>
 <!--  </div>-->
 </template>
