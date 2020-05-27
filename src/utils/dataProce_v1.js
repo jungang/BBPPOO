@@ -15,7 +15,8 @@ export async function getFullData(params) {
   const keyColumn = 'vf_id0'
   let res = {} // 返回数据
 
-  let day_s = 604800000 - 86400000
+  let day_s = 86400000 * 29
+  // const day30_s = 86400000 * 30
   const week_s = 3628800000 - 86400000
   let month_s = 15552000000
 

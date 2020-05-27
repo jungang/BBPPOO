@@ -119,25 +119,23 @@ export default {
         series.push({ type: 'bar' })
         if (subject.dimension.length > 0) {
           subject.dimension[0].data.forEach((item, index) => { // 组织
-            console.log(item.time)
-            console.log('index:', index)
-            // console.log(item.actualValue)
-
             const _v = source.find(date => date.time === item.time)
-            if (index >= 4) {
-              // console.log('_v:', _v)
+
+            // 最近2周数据（周）
+            if (item.time.toString().length < 11 || index >= 4) {
+            // console.log('_v:', _v)
               if (!_v) {
                 source.push({ // 创建维度并添加数据
                   time: item.time,
                   [subject.title]: item.actualValue,
                   type: item.type
                 })
-                // console.log('item.actualValue:', item.actualValue)
+              // console.log('item.actualValue:', item.actualValue)
               } else { // 添加数据
                 _v[subject.title] = item.actualValue
-                // console.log('item.actualValue:', item.actualValue)
+              // console.log('item.actualValue:', item.actualValue)
               }
-              // console.log('_v:', _v)
+            // console.log('_v:', _v)
             }
           })
         }

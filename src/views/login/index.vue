@@ -46,8 +46,8 @@
       </el-tooltip>
 
       <el-row type="flex" justify="end" class="btbox">
-        <el-col :span="5"><el-button type="text" @click.native.prevent="forgetpass">忘记密码?</el-button></el-col>
-        <el-col :span="7" :offset="4"><el-button :loading="loading" @click.native.prevent="restformdata">重置</el-button></el-col>
+        <!--        <el-col :span="5"><el-button type="text" @click.native.prevent="forgetpass">忘记密码?</el-button></el-col>-->
+        <!--        <el-col :span="7" :offset="4"><el-button :loading="loading" @click.native.prevent="restformdata">重置</el-button></el-col>-->
         <el-col :span="7" :offset="1"><el-button :loading="loading" type="primary" @click.native.prevent="handleLogin">登录</el-button></el-col>
       </el-row>
 
