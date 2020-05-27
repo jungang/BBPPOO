@@ -95,7 +95,7 @@ export default {
 
       // 图表数据
       this.cardData.dataSet = this.fullData.chartDate
-      console.log(this.cardData.dataSet)
+      // console.log(this.cardData.dataSet)
     }
   }
 }

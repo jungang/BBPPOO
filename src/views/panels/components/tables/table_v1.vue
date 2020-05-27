@@ -1,5 +1,6 @@
 <template>
   <div class="table-container">
+
     <el-table
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;"
@@ -25,7 +26,15 @@
         prop="dimension[0].data[0].actualValue"
         label="实际（万元）"
         :min-width="25"
-      />
+      >
+        <template slot-scope="{row}">
+          <span :class="row.dimension[0].data[0].highlightStyle">
+            {{ row.dimension[0].data[0].actualValue }}
+          </span>
+
+        </template>
+
+      </el-table-column>
       <el-table-column
         v-if="nowView.config.rowTitle ==='单人平均'"
         prop="dimension[0].data[0].actualValue"
@@ -90,7 +99,7 @@ export default {
       id: uuidv1(),
       nowView: {},
       tableData: [
-        {
+        /*        {
           id: 1,
           res_s_title: '业务结算',
           res_y_value: '19.08',
@@ -131,7 +140,8 @@ export default {
             res_y_value: '0.5',
             res_s_zb_value: '0.5'
           }]
-        }]
+        }*/
+      ]
     }
   },
   watch: {
@@ -144,6 +154,7 @@ export default {
   },
   created() {
     this.nowView = this.currentView
+    // console.log('tableData:', this.tableData)
     // console.log('nowView=>',this.nowView)
   },
   mounted() {
@@ -153,7 +164,7 @@ export default {
     formatDataSet(data) {
       this.tableData = data.list
       if (this.nowView.config.component.type === 'table_lirun') {
-        console.log('dasfd', this.tableData)
+        // console.log('dasfd', this.tableData)
         const employeeList = this.$store.state.group.employeeList
         const arrs = []
         const lirunArray = []
@@ -192,9 +203,10 @@ export default {
           }
         })
 
-        console.log('arrs=>', lirunArray)
+        // console.log('arrs=>', lirunArray)
         this.tableData = lirunArray
       }
+      console.log('this.tableData:', this.tableData)
     }
 
   }

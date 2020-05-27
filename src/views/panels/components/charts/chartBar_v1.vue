@@ -100,7 +100,7 @@ export default {
   methods: {
     formatDataSet(data) {
       // console.log('formatDataSet...')
-      console.log('柱状图=》', data.data)
+      // console.log('柱状图=》', data.data)
 
       // data.data = chartBarData;
 
