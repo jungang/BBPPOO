@@ -83,7 +83,7 @@
           width="50"
         />
         <el-table-column prop="res_y_title" label="科目" />
-        <el-table-column prop="res_y_value" label="金额">
+        <el-table-column prop="res_y_value" label="目标">
           <template slot-scope="{row}">
             {{ row.res_y_value }}
           </template>

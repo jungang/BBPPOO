@@ -48,8 +48,8 @@ export default {
         xAxis: {
           type: 'category',
           axisLabel: {
-            interval: 0,
-            rotate: 5
+            // interval: 0
+            // rotate: 5
           }
         },
         // 声明一个 Y 轴，数值轴。

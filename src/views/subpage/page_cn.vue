@@ -6,7 +6,7 @@
       :type="filterType"
       @filtration="handleFilter"
     />
-    <el-row class="row-box" type="flex" justify="space-around">
+    <el-row class="row-box" type="flex" justify="space-around" style="height: 300px">
       <Row
         v-for="item in rowView"
         :key="item.id"
