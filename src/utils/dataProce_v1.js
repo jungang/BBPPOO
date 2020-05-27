@@ -147,7 +147,7 @@ export async function getFullData(params) {
 
   // 处理日期参数
   if (params.query.dateType === 'week') {
-    console.log('按周查。。。', params.query)
+    // console.log('按周查。。。', params.query)
 
     // 周毫秒数  3628800000 =  1000   ×   60   ×   60   ×   24   ×   42
     // const week_s = 3628800000

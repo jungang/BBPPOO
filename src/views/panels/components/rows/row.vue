@@ -95,6 +95,9 @@ export default {
 
       // 图表数据
       this.cardData.dataSet = this.fullData.chartDate
+      this.cardData.dataSet.query = deepClone(this.query)
+      this.cardData.dataSet.query.date = this.query.date.getTime()
+      console.log('this.query.date:', this.query.date.getTime())
       // console.log(this.cardData.dataSet)
     }
   }

@@ -7,6 +7,7 @@
 <script>
 const echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
+import { parseTime } from '@/utils'
 // const chartBarData = require('../../../subpage/mock/chartBar');
 
 export default {
@@ -104,6 +105,10 @@ export default {
 
       // data.data = chartBarData;
 
+      const query = this.data.query
+
+      console.log('query:', query)
+
       const dimensions = ['time']
       const source = []
       const series = []
@@ -118,25 +123,45 @@ export default {
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
         if (subject.dimension.length > 0) {
-          subject.dimension[0].data.forEach((item, index) => { // 组织
+          subject.dimension[0].data.forEach((item, index, arr) => { // 组织
             const _v = source.find(date => date.time === item.time)
 
-            // 最近2周数据（周）
-            if (item.time.toString().length < 11 || index >= 4) {
-            // console.log('_v:', _v)
+            if (query.dateType === 'week') {
+              const current_w = parseTime(query.date, '{m}.{d}')
+              const last_w = parseTime(query.date - 86400000 * 7, '{m}.{d}')
+              const _arr = [current_w, last_w]
+              console.log('_arr:', _arr)
+              console.log('item.time:', item.time)
+              _arr.forEach(date => {
+                if (item.time.search(date) !== -1) {
+                  // console.log('item.time:', item.time)
+                  if (!_v) {
+                    source.push({
+                      time: item.time,
+                      [subject.title]: item.actualValue,
+                      type: item.type
+                    })
+                  } else {
+                    _v[subject.title] = item.actualValue
+                  }
+                }
+              })
+            } else {
+              // console.log('_v:', _v)
               if (!_v) {
                 source.push({ // 创建维度并添加数据
                   time: item.time,
                   [subject.title]: item.actualValue,
                   type: item.type
                 })
-              // console.log('item.actualValue:', item.actualValue)
+                // console.log('item.actualValue:', item.actualValue)
               } else { // 添加数据
                 _v[subject.title] = item.actualValue
-              // console.log('item.actualValue:', item.actualValue)
+                // console.log('item.actualValue:', item.actualValue)
               }
-            // console.log('_v:', _v)
             }
+
+            // console.log('_v:', _v)
           })
         }
       })
