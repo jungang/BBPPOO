@@ -123,21 +123,21 @@ export default {
 
       let _current = ''
 
-      switch (this.query.dateType) {
+      switch (this.$store.state.options.filterOptions.dateType) {
         case 'daily':
-          _current = parseTime(this.query.date.getTime(), '{y}{m}{d}')
+          _current = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}{m}{d}')
           break
         case 'week':
-          _current = parseTime(this.query.date.getTime(), '{m}.{d}')
+          _current = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{m}.{d}')
 
           console.log('_current:', _current)
 
           break
         case 'month':
-          _current = +parseTime(this.query.date.getTime(), '{y}{m}')
+          _current = +parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}{m}')
           break
         case 'year':
-          _current = +parseTime(this.query.date.getTime(), '{y}')
+          _current = +parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}')
           break
       }
 
@@ -147,9 +147,13 @@ export default {
         const _item = {}
         _item.slot1 = subject.title
 
+        console.log('_item.slot1:', _item.slot1)
+        // console.log('subject.dimension:', subject.dimension)
         if (subject.dimension.length > 0) {
-          // console.log('subject.dimension:', subject.dimension)
+          console.log('subject.dimension:', subject.dimension)
+          console.log('_current:', _current)
           const _v = subject.dimension[0].data.find(item => {
+            console.log('item:', item)
             item.time = item.time.toString()
             _current = _current.toString()
             return item.time.search(_current) !== -1
