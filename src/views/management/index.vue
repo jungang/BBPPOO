@@ -188,7 +188,7 @@ export default {
               type: 'warning'
             }).then(() => {
               console.log('跳转。。。')
-              this.$router.push('/panels/list') // 跳转到指定页面
+              this.$router.push('/panels/report') // 跳转到指定页面
             }).catch(() => {})
           }
         }

@@ -64,6 +64,7 @@ const state = {
   filterOptions: {
     date: new Date(),
     dateType: 'month', // 天 day | 周 week | 月 month | 年 year
+    group: 'null', // 选择组信息
     type: 'all' // 合集 all | 集团 group | 本地 local
   },
   views: [],

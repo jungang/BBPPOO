@@ -80,16 +80,18 @@ export default {
       if (!viewSubject) { // todo 降级参数
         viewSubject = this.currentView.items['*'] || ['']
       }
+      console.log('viewSubject:', viewSubject)
       viewSubject = viewSubject.map(item => {
+        // console.log('item:', item)
         return {
           name: item,
-          title: this.$store.state.options.subject.find(s => s.name === item).title
+          title: this.$store.state.options.subject.find(s => s.name === item) && this.$store.state.options.subject.find(s => s.name === item).title
         }
       })
 
       // console.log('viewSubject:', viewSubject)
 
-      this.currentView.query = this.query
+      this.currentView.query = this.$store.state.options.filterOptions
       this.fullData = await getFullData(this.currentView)
       console.log('this.fullData:::', this.fullData)
 

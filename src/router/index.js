@@ -187,7 +187,7 @@ export const asyncRoutes = [
           title: '项目目标',
           icon: 'star',
           // noCache: true
-          roles: ['project_manager']
+          roles: ['project_manager', 'manage_manager']
         }
 
       }

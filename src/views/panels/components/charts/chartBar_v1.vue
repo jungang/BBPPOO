@@ -105,7 +105,7 @@ export default {
 
       // data.data = chartBarData;
 
-      const query = this.data.query
+      const query = this.$store.state.options.filterOptions
 
       console.log('query:', query)
 

@@ -1,8 +1,8 @@
 <template>
   <div class="tab-container">
     <Table v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'" :data="cardData" :current-view="currentView" />
-    <chartLine v-if="data.config.component.type === 'chart_line'  && data.config.zoneName !== 'comparison'" :data="cardData.dataSet" />
-    <chartLineComparison v-if="data.config.component.type === 'chart_line' && data.config.zoneName === 'comparison'" :data="comparison" :query="currentView.query"/>
+    <chartLine v-if="data.config.component.type === 'chart_line' && data.config.zoneName !== 'comparison'" :data="cardData.dataSet" />
+    <chartLineComparison v-if="data.config.component.type === 'chart_line' && data.config.zoneName === 'comparison'" :data="comparison" :query="currentView.query" />
   </div>
 </template>
 
@@ -13,12 +13,12 @@ import { getFullData } from '@/utils/dataProce_v1'
 import chartLine from '../charts/chartLine_v1'
 import chartLineComparison from '../charts/chartLine2_v1'
 import Table from '../tables/table_v1'
-import { parseTime } from '@/utils'
+// import { parseTime } from '@/utils'
 // import _ from 'underscore'
 
 export default {
   name: 'Tab',
-  components: { chartLine, Table, chartLineComparison},
+  components: { chartLine, Table, chartLineComparison },
   directives: { },
   props: {
     data: {
@@ -46,8 +46,8 @@ export default {
           data: []
         }
       },
-      comparison:{
-        data:[]
+      comparison: {
+        data: []
       }
     }
   },
@@ -72,7 +72,7 @@ export default {
         this.cardData.dataSet.legendSelectMode = this.data.config.component.legendSelectMode
       }
       this.currentView = deepClone(this.data)
-      this.currentView.query = this.query
+      this.currentView.query = this.$store.state.options.filterOptions
       // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
       // console.log('this.fullData:::', this.fullData.res)
@@ -99,16 +99,15 @@ export default {
 
         // console.log('list=>',this.cardData.list)
       } else {
-
-        if(this.currentView.config.zoneName === 'comparison'){
-          this.comparison.data =  this.fullData.res;
-        }else{
+        if (this.currentView.config.zoneName === 'comparison') {
+          this.comparison.data = this.fullData.res
+        } else {
           this.cardData.dataSet.data = this.fullData.chartDate.data
         }
       }
 
-      //console.log(this.comparison)
-      //console.log(this.fullData.chartDate)
+      // console.log(this.comparison)
+      // console.log(this.fullData.chartDate)
     }
 
   }

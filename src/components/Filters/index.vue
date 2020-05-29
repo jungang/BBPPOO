@@ -21,10 +21,10 @@
       />
     </el-select>
 
-    <span v-if="query.group" style="margin-left: 20px">选择组织：</span>
+    <span v-if="$store.state.options.filterOptions.group" style="margin-left: 20px">选择组织：</span>
 
     <el-cascader
-      v-if="query.group"
+      v-if="$store.state.options.filterOptions.group"
       v-model="q"
       :options="qlist"
       style="width: 100px;"
@@ -41,9 +41,9 @@
     />-->
 
     <el-cascader
-      v-if="query.group && query.multiple"
+      v-if="$store.state.options.filterOptions.group && query.multiple"
       ref="cascader"
-      v-model="query.group"
+      v-model="$store.state.options.filterOptions.group"
       :options="employeeList"
       :props="props"
       collapse-tags
@@ -52,9 +52,9 @@
     />
 
     <el-cascader
-      v-if="query.group && !query.multiple"
+      v-if="$store.state.options.filterOptions.group && !query.multiple"
       ref="cascader"
-      v-model="query.group"
+      v-model="$store.state.options.filterOptions.group"
       :options="employeeList"
       style="margin-left: 20px;"
       show-all-levels
@@ -62,7 +62,7 @@
       :props="{ checkStrictly: true }"
     />
 
-    <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
+    <span v-if="$store.state.options.filterOptions.type" style="margin-left: 20px">业务线条：</span>
     <el-select
       v-if="$store.state.options.filterOptions.type"
       v-model="query.type"
@@ -156,8 +156,8 @@ export default {
       this.employeeList = []
       this.query.group = 'null'
       // console.log('handleChange...', this.query.date)
-      this.month = +parseTime(this.query.date.getTime(), '{m}')
-      this.year = parseTime(this.query.date.getTime(), '{y}')
+      this.month = +parseTime(this.$store.state.options.filterOptions.date.getTime(), '{m}')
+      this.year = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}')
 
       this.query.group = []
 
