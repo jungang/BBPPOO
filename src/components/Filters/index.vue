@@ -1,7 +1,7 @@
 <template>
   <div class="filters-container">
     <el-date-picker
-      v-model="query.date"
+      v-model="$store.state.options.filterOptions.date"
       type="date"
       placeholder="选择日期"
       format="yyyy 年 MM 月 dd 日"
@@ -9,7 +9,7 @@
       @change="handleChange"
     />
     <el-select
-      v-model="query.dateType"
+      v-model="$store.state.options.filterOptions.dateType"
       placeholder="请选择"
       style="width: 60px; margin-left: 20px;"
     >
@@ -64,7 +64,7 @@
 
     <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
     <el-select
-      v-if="query.type"
+      v-if="$store.state.options.filterOptions.type"
       v-model="query.type"
       placeholder="请选择"
       style="width: 100px"
@@ -145,10 +145,14 @@ export default {
   created() {
     // console.log('----query:', this.query)
     // this.getEmployee()
+    // console.log('this.$store.state.options:', this.$store.state.options.filterOptions.date)
   },
   methods: {
     handleChange() {
-      console.log('this.query.date:', this.query.date)
+      // console.log('this.query.date:', this.query.date)
+      // console.log('this.query:', this.query)
+      this.$store.dispatch('options/setFilterOptions', this.$store.state.options.filterOptions || this.query)
+
       this.employeeList = []
       this.query.group = 'null'
       // console.log('handleChange...', this.query.date)
@@ -186,7 +190,7 @@ export default {
         })
         // console.log('this.employeeList:', this.employeeList)
 
-        console.log('this.groupList:', this.groupList)
+        // console.log('this.groupList:', this.groupList)
 
         this.employeeList = deepClone(this.groupList)
 

@@ -61,6 +61,11 @@ const state = {
     { label: '30日', key: 30 },
     { label: '31日', key: 31 }
   ],
+  filterOptions: {
+    date: new Date(),
+    dateType: 'month', // 天 day | 周 week | 月 month | 年 year
+    type: 'all' // 合集 all | 集团 group | 本地 local
+  },
   views: [],
   subject: [],
   API: ''
@@ -123,6 +128,11 @@ const mutations = {
     })
     // console.log('state.views:', state.views)
   },
+  SET_FILTER: (state, options) => {
+    // console.log('SET_FILTER:')
+    state.filterOptions = options
+    // console.log('state.filterOptions:', state.filterOptions)
+  },
   SET_API: (state) => {
     state.API = process.env.VUE_APP_BASE_API
     // console.log('state.views:', state.views)
@@ -136,6 +146,9 @@ const mutations = {
 const actions = {
   changeOptions({ commit }, data) {
     commit('CHANGE_OPTIONS', data)
+  },
+  setFilterOptions({ commit }, options) {
+    commit('SET_FILTER', options)
   },
   getView({ commit, state }) {
     commit('SET_API')

@@ -184,7 +184,7 @@ export default {
       })
 
       // 图表数据
-      console.log('this.fullData.chartDate:', this.fullData.chartDate)
+      // console.log('this.fullData.chartDate:', this.fullData.chartDate)
       this.cardData.dataSet = this.fullData.chartDate
     }
   }
