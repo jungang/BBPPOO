@@ -1,7 +1,7 @@
 <template>
   <div class="filters-container">
     <el-date-picker
-      v-model="$store.state.options.filterOptions.date"
+      v-model="query.date"
       type="date"
       placeholder="选择日期"
       format="yyyy 年 MM 月 dd 日"
@@ -9,7 +9,7 @@
       @change="handleChange"
     />
     <el-select
-      v-model="$store.state.options.filterOptions.dateType"
+      v-model="query.dateType"
       placeholder="请选择"
       style="width: 60px; margin-left: 20px;"
     >
@@ -21,10 +21,10 @@
       />
     </el-select>
 
-    <span v-if="$store.state.options.filterOptions.group" style="margin-left: 20px">选择组织：</span>
+    <span v-if="query.group" style="margin-left: 20px">选择组织：</span>
 
     <el-cascader
-      v-if="$store.state.options.filterOptions.group"
+      v-if="query.group"
       v-model="q"
       :options="qlist"
       style="width: 100px;"
@@ -41,9 +41,9 @@
     />-->
 
     <el-cascader
-      v-if="$store.state.options.filterOptions.group && query.multiple"
+      v-if="query.group && query.multiple"
       ref="cascader"
-      v-model="$store.state.options.filterOptions.group"
+      v-model="query.group"
       :options="employeeList"
       :props="props"
       collapse-tags
@@ -52,9 +52,9 @@
     />
 
     <el-cascader
-      v-if="$store.state.options.filterOptions.group && !query.multiple"
+      v-if="query.group && !query.multiple"
       ref="cascader"
-      v-model="$store.state.options.filterOptions.group"
+      v-model="query.group"
       :options="employeeList"
       style="margin-left: 20px;"
       show-all-levels
@@ -62,9 +62,9 @@
       :props="{ checkStrictly: true }"
     />
 
-    <span v-if="$store.state.options.filterOptions.type" style="margin-left: 20px">业务线条：</span>
+    <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
     <el-select
-      v-if="$store.state.options.filterOptions.type"
+      v-if="query.type"
       v-model="query.type"
       placeholder="请选择"
       style="width: 100px"
@@ -82,148 +82,155 @@
 
 <script>
 
-import { fetchData } from '@/api/panel'
-import { deepClone, parseTime } from '@/utils'
-import permission from '@/directive/permission/index.js'
-// import store from '../../store'
+  import { fetchData } from '@/api/panel'
+  import { deepClone, parseTime } from '@/utils'
+  import permission from '@/directive/permission/index.js'
+  // import store from '../../store'
 
-export default {
-  name: 'Filters',
-  directives: { permission },
-  props: {
-    query: {
-      type: Object,
-      required: true
-    },
-    type: {
-      type: Array,
-      required: true
-    }
-  },
-  data() {
-    return {
-      props: {
-        multiple: this.query.multiple,
-        checkStrictly: true
-        // emitPath: false
+  export default {
+    name: 'Filters',
+    directives: { permission },
+    props: {
+      query: {
+        type: Object,
+        required: true
       },
-      options: [
-        {
-          value: 'daily',
-          label: '日'
-        }, {
-          value: 'week',
-          label: '周'
-        }, {
-          value: 'month',
-          label: '月'
-        },
-        {
-          value: 'year',
-          label: '年'
-        }
-      ],
-      q: 'wf',
-      qlist: [{
-        value: 'wf',
-        label: '网服'
-      }],
-      groupList: [],
-      employeeList: [],
-      day: '',
-      month: '',
-      year: ''
-    }
-  },
-  computed: {
-  },
-  mounted: function() {
-    this.$nextTick(() => {
-      this.handleChange()
-    })
-  },
-  created() {
-    // console.log('----query:', this.query)
-    // this.getEmployee()
-    // console.log('this.$store.state.options:', this.$store.state.options.filterOptions.date)
-  },
-  methods: {
-    handleChange() {
-      // console.log('this.query.date:', this.query.date)
-      // console.log('this.query:', this.query)
-      this.$store.dispatch('options/setFilterOptions', this.$store.state.options.filterOptions || this.query)
-
-      this.employeeList = []
-      this.query.group = 'null'
-      // console.log('handleChange...', this.query.date)
-      this.month = +parseTime(this.$store.state.options.filterOptions.date.getTime(), '{m}')
-      this.year = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}')
-
-      this.query.group = []
-
-      this.getEmployee()
-    },
-    getEmployee() {
-      const data = {
-        'dir': 'Sample Reports/employee',
-        'projectId': this.$store.state.user.apiTemplate.projectId,
-        'vf_id': 0,
-        'month': this.month,
-        'year': this.year,
-        'vf_file': 'dashboard.efwvf'
+      type: {
+        type: Array,
+        required: true
       }
-      fetchData(data).then(response => {
-        this.$store.dispatch('group/person', response)
-        this.groupList = []
-        // 构建组结构
-        response.forEach(item => {
-          const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
-          // console.log('_v:', _v)
-          if (!_v) {
-            this.groupList.push({
-              type: 'group',
-              v_project_work_id: item.v_project_work_id,
-              value: item.v_group_name,
-              label: item.v_group_name + '组'
-            })
+    },
+    data() {
+      return {
+        props: {
+          multiple: this.query.multiple,
+          checkStrictly: true
+          // emitPath: false
+        },
+        options: [
+          {
+            value: 'daily',
+            label: '日'
+          }, {
+            value: 'week',
+            label: '周'
+          }, {
+            value: 'month',
+            label: '月'
+          },
+          {
+            value: 'year',
+            label: '年'
           }
-        })
-        // console.log('this.employeeList:', this.employeeList)
-
-        // console.log('this.groupList:', this.groupList)
-
-        this.employeeList = deepClone(this.groupList)
-
-        // 构建人员
-        response.forEach(item => {
-          // console.log(item)
-          const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
-          group.children = group.children || []
-          group.children.push({
-            v_project_work_id: item.v_project_work_id,
-            value: item.v_project_work_id,
-            label: item.v_name
-          }
-          )
-        })
-
-        this.$store.dispatch('group/employeelist', this.employeeList)
-
-        // console.log('employeeList:', this.employeeList)
-        // console.log('person:', this.$store.state.group.persons)
+        ],
+        q: 'wf',
+        qlist: [{
+          value: 'wf',
+          label: '网服'
+        }],
+        groupList: [],
+        employeeList: [],
+        day: '',
+        month: '',
+        year: ''
+      }
+    },
+    computed: {
+    },
+    mounted: function() {
+      this.$nextTick(() => {
+        this.handleChange()
       })
     },
-    handleCurrentChange(val) {
-      this.$emit('filtration', { })
+    created() {
+      // console.log('----query:', this.query)
+      // this.getEmployee()
+
+      if(!this.query.isStore){
+        this.query.date = this.$store.state.options.filterOptions.date;
+        this.query.type = this.$store.state.options.filterOptions.type;
+        this.query.dateType = this.$store.state.options.filterOptions.dateType;
+        this.query.group = this.$store.state.options.filterOptions.group;
+      }
+    },
+    methods: {
+      handleChange() {
+        console.log('this.query:', this.query)
+        console.log('filterOptions:', this.$store.state.options.filterOptions)
+        this.employeeList = []
+        this.query.group = 'null'
+        // console.log('handleChange...', this.query.date)
+        if(this.query.isStore){
+          this.$store.dispatch('options/setFilterOptions', this.query)
+        }
+        this.month = +parseTime(this.query.date.getTime(), '{m}')
+        this.year = parseTime(this.query.date.getTime(), '{y}')
+
+        this.query.group = []
+
+        this.getEmployee()
+      },
+      getEmployee() {
+        const data = {
+          'dir': 'Sample Reports/employee',
+          'projectId': this.$store.state.user.apiTemplate.projectId,
+          'vf_id': 0,
+          'month': this.month,
+          'year': this.year,
+          'vf_file': 'dashboard.efwvf'
+        }
+        fetchData(data).then(response => {
+          this.$store.dispatch('group/person', response)
+          this.groupList = []
+          // 构建组结构
+          response.forEach(item => {
+            const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
+            // console.log('_v:', _v)
+            if (!_v) {
+              this.groupList.push({
+                type: 'group',
+                v_project_work_id: item.v_project_work_id,
+                value: item.v_group_name,
+                label: item.v_group_name + '组'
+              })
+            }
+          })
+          // console.log('this.employeeList:', this.employeeList)
+
+          //console.log('this.groupList:', this.groupList)
+
+          this.employeeList = deepClone(this.groupList)
+
+          // 构建人员
+          response.forEach(item => {
+            // console.log(item)
+            const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
+            group.children = group.children || []
+            group.children.push({
+                v_project_work_id: item.v_project_work_id,
+                value: item.v_project_work_id,
+                label: item.v_name
+              }
+            )
+          })
+
+          this.$store.dispatch('group/employeelist', this.employeeList)
+
+          // console.log('employeeList:', this.employeeList)
+          // console.log('person:', this.$store.state.group.persons)
+        })
+      },
+      handleCurrentChange(val) {
+        this.$emit('filtration', { })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.filters-container {
-  background: #fff;
-  text-align: left;
-  padding: 0 0 10px 0 ;
-}
+  .filters-container {
+    background: #fff;
+    text-align: left;
+    padding: 0 0 10px 0 ;
+  }
 </style>
