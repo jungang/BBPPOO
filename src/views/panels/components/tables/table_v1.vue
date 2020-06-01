@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import uuidv1 from 'uuid/v1'
+// import uuidv1 from 'uuid/v1'、
 
 export default {
   name: 'Table',
@@ -162,15 +162,14 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-
-      //console.log('list=>',data.list)
+      // console.log('list=>',data.list)
 
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('dasfd', this.tableData)
         const employeeList = this.$store.state.group.employeeList
-        const arrs = [];
-        let lirunArray=[];
-        let _idd = 0;
+        const arrs = []
+        const lirunArray = []
+        // const _idd = 0
 
         data.list[0].dimension.forEach((item) => {
           if (item.v_group_name) {
@@ -195,9 +194,9 @@ export default {
             })
           }
         })
-        let __id = 0;
+        let __id = 0
         arrs.forEach((dt) => {
-          dt.id = __id;
+          dt.id = __id
           if (!dt.v_id) {
             lirunArray.push(dt)
             arrs.forEach((_dt) => {
@@ -206,13 +205,12 @@ export default {
               }
             })
           }
-          __id ++;
+          __id++
         })
 
-        this.tableData = lirunArray;
-
-      }else{
-        this.findChildrow(data.list,this.tableData);
+        this.tableData = lirunArray
+      } else {
+        this.findChildrow(data.list, this.tableData)
       /*  let _id=0;
         this.tableData.forEach((items) => {
           items.id = _id;
@@ -222,24 +220,23 @@ export default {
 
       console.log('this.tableData:', this.tableData)
     },
-    findChildrow(arr,listArray){
+    findChildrow(arr, listArray) {
       arr.forEach((items) => {
-
-        if(items.dimension.length > 0){
-          let _obj = {};
+        if (items.dimension.length > 0) {
+          const _obj = {}
           _obj.id = this.id
           _obj.res_s_title = items.title
           _obj.res_y_value = items.dimension[0].data[0].actualValue
           _obj.res_s_zb_value = items.dimension[0].data[0].targetValue
           _obj.res_highlight = items.dimension[0].data[0].highlight
           _obj.res_highlightStyle = items.dimension[0].data[0].highlightStyle
-          this.id ++;
-          if(items.childrenRow.length > 0){
-            _obj.childrenRow = [];
-            this.findChildrow(items.childrenRow,_obj.childrenRow);
+          this.id++
+          if (items.childrenRow.length > 0) {
+            _obj.childrenRow = []
+            this.findChildrow(items.childrenRow, _obj.childrenRow)
           }
 
-          listArray.push(_obj);
+          listArray.push(_obj)
         }
       })
     }
