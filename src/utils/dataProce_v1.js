@@ -93,6 +93,7 @@ export async function getFullData(params) {
 
   const __arr = store.state.group.employeeList
   // console.log('__arr=>', __arr)
+  // console.log('params.query.group:', params.query.group)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
@@ -112,8 +113,10 @@ export async function getFullData(params) {
     params.query.group.forEach(item => data.dimension.push(item.length === 1 ? { v_group_name: item[0] } : { v_id: item[1] })
     )
   } else {
+    // console.log('params.query.group:', params.query.group)
     // 单选
     if (params.config.component.type === 'table_lirun') {
+      // console.log('params.query.group:', params.query.group)
       data.dimension.push({ v_group_name: params.query.group[0] })
 
       if (params.query.group.length === 1) {
@@ -131,7 +134,18 @@ export async function getFullData(params) {
         data.dimension.push({ v_id: params.query.group[1].toString() })
       }
     } else {
-      data.dimension.push(params.query.group.length === 1 ? { v_group_name: params.query.group[0] } : { v_id: params.query.group[1].toString() })
+      console.log('params.query.group:', params.query.group)
+      switch (params.query.group.length) {
+        case 1:
+          data.dimension.push({ v_company: params.query.group[0] })
+          break
+        case 2:
+          data.dimension.push({ v_group_name: params.query.group[1] })
+          break
+        case 3:
+          data.dimension.push({ v_id: params.query.group[2].toString() })
+          break
+      }
     }
   }
 

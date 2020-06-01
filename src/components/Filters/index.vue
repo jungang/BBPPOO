@@ -23,12 +23,12 @@
 
     <span v-if="$store.state.options.filterOptions.group" style="margin-left: 20px">选择组织：</span>
 
-    <el-cascader
-      v-if="$store.state.options.filterOptions.group"
-      v-model="q"
-      :options="qlist"
-      style="width: 100px;"
-    />
+    <!--    <el-cascader-->
+    <!--      v-if="$store.state.options.filterOptions.group"-->
+    <!--      v-model="$store.state.options.filterOptions.company"-->
+    <!--      :options="companyList"-->
+    <!--      style="width: 100px;"-->
+    <!--    />-->
 
     <!--
     <el-cascader
@@ -44,7 +44,7 @@
       v-if="$store.state.options.filterOptions.group && query.multiple"
       ref="cascader"
       v-model="$store.state.options.filterOptions.group"
-      :options="employeeList"
+      :options="companyList"
       :props="props"
       collapse-tags
       clearable
@@ -55,7 +55,7 @@
       v-if="$store.state.options.filterOptions.group && !query.multiple"
       ref="cascader"
       v-model="$store.state.options.filterOptions.group"
-      :options="employeeList"
+      :options="companyList"
       style="margin-left: 20px;"
       show-all-levels
       clearable
@@ -83,7 +83,8 @@
 <script>
 
 import { fetchData } from '@/api/panel'
-import { deepClone, parseTime } from '@/utils'
+import { parseTime } from '@/utils'
+// import { deepClone, parseTime } from '@/utils'
 import permission from '@/directive/permission/index.js'
 // import store from '../../store'
 
@@ -124,10 +125,7 @@ export default {
         }
       ],
       q: 'wf',
-      qlist: [{
-        value: 'wf',
-        label: '网服'
-      }],
+      companyList: [],
       groupList: [],
       employeeList: [],
       day: '',
@@ -143,6 +141,13 @@ export default {
     })
   },
   created() {
+
+    // if(true){
+    //   query = query
+    // }else {
+    //   query = store....
+    // }
+
     // console.log('----query:', this.query)
     // this.getEmployee()
     // console.log('this.$store.state.options:', this.$store.state.options.filterOptions.date)
@@ -151,6 +156,8 @@ export default {
     handleChange() {
       // console.log('this.query.date:', this.query.date)
       // console.log('this.query:', this.query)
+
+      // if()
       this.$store.dispatch('options/setFilterOptions', this.$store.state.options.filterOptions || this.query)
 
       this.employeeList = []
@@ -174,38 +181,90 @@ export default {
       }
       fetchData(data).then(response => {
         this.$store.dispatch('group/person', response)
-        this.groupList = []
-        // 构建组结构
+        // console.log('response:', response)
+
+        this.companyList = []
+        // 构建公司结构（外包商）
         response.forEach(item => {
-          const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
+          // console.log('item.v_company:', item.v_company)
+          const _v = this.companyList.find(company => company.label === item.v_company)
           // console.log('_v:', _v)
           if (!_v) {
-            this.groupList.push({
-              type: 'group',
-              v_project_work_id: item.v_project_work_id,
-              value: item.v_group_name,
-              label: item.v_group_name + '组'
+            this.companyList.push({
+              value: item.v_company,
+              label: item.v_company,
+              children: []
             })
           }
         })
-        // console.log('this.employeeList:', this.employeeList)
+        // console.log('this.companyList:', this.companyList)
 
-        // console.log('this.groupList:', this.groupList)
-
-        this.employeeList = deepClone(this.groupList)
-
-        // 构建人员
+        // 构建组结构
         response.forEach(item => {
+          const _company = this.companyList.find(company => company.label === item.v_company)
+          const _v = _company.children.find(group => group.label === item.v_group_name + '组')
+          if (!_v) {
+            _company.children.push({
+              type: 'group',
+              v_project_work_id: item.v_project_work_id,
+              value: item.v_group_name,
+              label: item.v_group_name + '组',
+              children: []
+            })
+          }
+          // console.log('_v:', _v)
+        })
+
+        // 构建人员结构
+        response.forEach(item => {
+          const _company = this.companyList.find(company => company.label === item.v_company)
           // console.log(item)
-          const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
-          group.children = group.children || []
-          group.children.push({
+          const _group = _company.children.find(group => group.label === item.v_group_name + '组')
+
+          console.log('_group:', _group)
+
+          _group.children.push({
             v_project_work_id: item.v_project_work_id,
             value: item.v_project_work_id,
             label: item.v_name
           }
           )
         })
+
+        console.log('this.companyList:', this.companyList)
+
+        // this.groupList = []
+        // 构建组结构
+        // response.forEach(item => {
+        //   const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
+        //   // console.log('_v:', _v)
+        //   if (!_v) {
+        //     this.groupList.push({
+        //       type: 'group',
+        //       v_project_work_id: item.v_project_work_id,
+        //       value: item.v_group_name,
+        //       label: item.v_group_name + '组'
+        //     })
+        //   }
+        // })
+        // console.log('this.employeeList:', this.employeeList)
+
+        // console.log('this.groupList:', this.groupList)
+
+        // this.employeeList = deepClone(this.groupList)
+
+        // 构建人员
+        // response.forEach(item => {
+        //   // console.log(item)
+        //   const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
+        //   group.children = group.children || []
+        //   group.children.push({
+        //     v_project_work_id: item.v_project_work_id,
+        //     value: item.v_project_work_id,
+        //     label: item.v_name
+        //   }
+        //   )
+        // })
 
         this.$store.dispatch('group/employeelist', this.employeeList)
 

@@ -80,7 +80,7 @@ export default {
       if (!viewSubject) { // todo 降级参数
         viewSubject = this.currentView.items['*'] || ['']
       }
-      console.log('viewSubject:', viewSubject)
+      // console.log('viewSubject:', viewSubject)
       viewSubject = viewSubject.map(item => {
         // console.log('item:', item)
         return {
@@ -147,13 +147,13 @@ export default {
         const _item = {}
         _item.slot1 = subject.title
 
-        console.log('_item.slot1:', _item.slot1)
+        // console.log('_item.slot1:', _item.slot1)
         // console.log('subject.dimension:', subject.dimension)
         if (subject.dimension.length > 0) {
           console.log('subject.dimension:', subject.dimension)
           console.log('_current:', _current)
           const _v = subject.dimension[0].data.find(item => {
-            console.log('item:', item)
+            // console.log('item:', item)
             item.time = item.time.toString()
             _current = _current.toString()
             return item.time.search(_current) !== -1
