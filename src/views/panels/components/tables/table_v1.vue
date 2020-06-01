@@ -4,32 +4,32 @@
     <el-table
       :data="tableData"
       style="width: 100%;margin-bottom: 20px;"
-      row-key="index"
+      row-key="id"
       border
       default-expand-all
       :tree-props="{children: 'childrenRow', hasChildren: 'hasChildren'}"
     >
       <el-table-column
         v-if="nowView.config.rowTitle !=='单人利润'"
-        prop="title"
+        prop="res_s_title"
         label="名称"
         :min-width="50"
       />
       <el-table-column
         v-if="nowView.config.compare"
-        prop="dimension[0].data[0].targetValue"
+        prop="res_s_zb_value"
         label="目标（万元）"
         :min-width="25"
       />
       <el-table-column
         v-if="nowView.config.rowTitle ==='收入' || nowView.config.rowTitle ==='成本'"
-        prop="dimension[0].data[0].actualValue"
+        prop="res_y_value"
         label="实际（万元）"
         :min-width="25"
       >
         <template slot-scope="{row}">
-          <span :class="row.dimension[0].data[0].highlightStyle">
-            {{ row.dimension[0].data[0].actualValue }}
+          <span :class="row.res_highlightStyle">
+            {{ row.res_y_value }}
           </span>
 
         </template>
@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column
         v-if="nowView.config.rowTitle ==='单人平均'"
-        prop="dimension[0].data[0].actualValue"
+        prop="res_y_value"
         label="达成值（万元）"
         :min-width="25"
       />
@@ -96,7 +96,7 @@ export default {
   },
   data() {
     return {
-      id: uuidv1(),
+      id: 1,
       nowView: {},
       tableData: [
         /*        {
@@ -162,13 +162,17 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      this.tableData = data.list
+
+      //console.log('list=>',data.list)
+
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('dasfd', this.tableData)
         const employeeList = this.$store.state.group.employeeList
-        const arrs = []
-        const lirunArray = []
-        this.tableData[0].dimension.forEach((item) => {
+        const arrs = [];
+        let lirunArray=[];
+        let _idd = 0;
+
+        data.list[0].dimension.forEach((item) => {
           if (item.v_group_name) {
             item.data[0].v_group_name = item.v_group_name + '组'
             item.data[0].v_name = item.v_group_name + '组'
@@ -191,8 +195,9 @@ export default {
             })
           }
         })
-
+        let __id = 0;
         arrs.forEach((dt) => {
+          dt.id = __id;
           if (!dt.v_id) {
             lirunArray.push(dt)
             arrs.forEach((_dt) => {
@@ -201,12 +206,42 @@ export default {
               }
             })
           }
+          __id ++;
         })
 
-        // console.log('arrs=>', lirunArray)
-        this.tableData = lirunArray
+        this.tableData = lirunArray;
+
+      }else{
+        this.findChildrow(data.list,this.tableData);
+      /*  let _id=0;
+        this.tableData.forEach((items) => {
+          items.id = _id;
+          _id ++;
+        })*/
       }
+
       console.log('this.tableData:', this.tableData)
+    },
+    findChildrow(arr,listArray){
+      arr.forEach((items) => {
+
+        if(items.dimension.length > 0){
+          let _obj = {};
+          _obj.id = this.id
+          _obj.res_s_title = items.title
+          _obj.res_y_value = items.dimension[0].data[0].actualValue
+          _obj.res_s_zb_value = items.dimension[0].data[0].targetValue
+          _obj.res_highlight = items.dimension[0].data[0].highlight
+          _obj.res_highlightStyle = items.dimension[0].data[0].highlightStyle
+          this.id ++;
+          if(items.childrenRow.length > 0){
+            _obj.childrenRow = [];
+            this.findChildrow(items.childrenRow,_obj.childrenRow);
+          }
+
+          listArray.push(_obj);
+        }
+      })
     }
 
   }
