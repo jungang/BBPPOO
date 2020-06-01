@@ -4,7 +4,6 @@
     <!--    query 参数-->
     <Filters
       :query.sync="query"
-      :multiple="true"
       :type="filterType"
       @filtration="handleFilter"
     />
@@ -101,7 +100,7 @@ export default {
         }
       ],
       query: {
-        multiple: false
+        multiple: true
       },
       fullData: {}
     }

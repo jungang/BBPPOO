@@ -98,6 +98,8 @@ export async function getFullData(params) {
     // 空选项
     data.dimension.push({})
 
+    console.log('params.query:', params.query)
+
     if (params.config.component.type === 'table_lirun') {
       __arr.forEach((item) => {
         data.dimension.push({ v_group_name: item.value })
@@ -109,9 +111,23 @@ export async function getFullData(params) {
       })
     }
   } else if (params.query.multiple) {
+    console.log('params.query.multiple:', params.query.multiple)
     // 多选
-    params.query.group.forEach(item => data.dimension.push(item.length === 1 ? { v_group_name: item[0] } : { v_id: item[1] })
-    )
+
+    params.query.group.forEach(item => {
+      // console.log('params.query.group:', params.query.group)
+      switch (item.length) {
+        case 1:
+          data.dimension.push({ v_company: params.query.group[0] })
+          break
+        case 2:
+          data.dimension.push({ v_group_name: params.query.group[1] })
+          break
+        case 3:
+          data.dimension.push({ v_id: params.query.group[2].toString() })
+          break
+      }
+    })
   } else {
     // console.log('params.query.group:', params.query.group)
     // 单选
@@ -134,7 +150,7 @@ export async function getFullData(params) {
         data.dimension.push({ v_id: params.query.group[1].toString() })
       }
     } else {
-      console.log('params.query.group:', params.query.group)
+      // console.log('params.query.group:', params.query.group)
       switch (params.query.group.length) {
         case 1:
           data.dimension.push({ v_company: params.query.group[0] })

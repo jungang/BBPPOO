@@ -92,6 +92,8 @@ export default {
       // console.log('viewSubject:', viewSubject)
 
       this.currentView.query = this.$store.state.options.filterOptions
+      this.currentView.query.multiple = this.query.multiple
+
       this.fullData = await getFullData(this.currentView)
       console.log('this.fullData:::', this.fullData)
 
