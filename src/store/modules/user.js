@@ -11,6 +11,7 @@ const state = {
   api_dir: 'Sample Reports/',
   apiTemplate: {
     projectId: '',
+    description: '',
     vf_file: 'dashboard.efwvf'
   }
 }
@@ -31,8 +32,10 @@ const mutations = {
   SET_ROLES: (state, roles) => {
     state.roles = roles
   },
-  SET_PROJECT_ID: (state, projectId) => {
-    state.apiTemplate.projectId = projectId
+  SET_PROJECT: (state, project) => {
+    console.log('project:', project)
+    state.apiTemplate.projectId = project.id
+    state.apiTemplate.description = project.description
   }
 }
 
@@ -94,7 +97,8 @@ const actions = {
   },
 
   setProjectId({ commit, state, dispatch }, project) {
-    commit('SET_PROJECT_ID', project.id)
+    // console.log('project:', project)
+    commit('SET_PROJECT', project)
   },
 
   // user logout

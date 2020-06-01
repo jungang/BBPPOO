@@ -213,7 +213,8 @@ export const asyncRoutes = [
         meta: {
           title: '经营月报',
           view: 'index',
-          icon: 'list'
+          icon: 'list',
+          noCache: true
         }
       },
       {
@@ -223,26 +224,27 @@ export const asyncRoutes = [
         meta: {
           title: 'P&L',
           icon: 'list',
-          roles: ['admin', 'manage_manager', 'project_manager']
+          roles: ['admin', 'manage_manager', 'project_manager'],
+          noCache: true
         }
       },
       {
         path: 'view_capacity',
         component: () => import('@/views/subpage/page_cn'),
         name: 'Capacity',
-        meta: { title: '产能', icon: 'list' }
+        meta: { title: '产能', icon: 'list', noCache: true }
       },
       {
         path: 'view_quality',
         component: () => import('@/views/subpage/page_zl'),
         name: 'Quality',
-        meta: { title: '质量', icon: 'list' }
+        meta: { title: '质量', icon: 'list', noCache: true }
       },
       {
         path: 'view_personnel',
         component: () => import('@/views/subpage/page_ry'),
         name: 'Personnel',
-        meta: { title: '人员', icon: 'list' }
+        meta: { title: '人员', icon: 'list', noCache: true }
       },
       {
         path: 'view/:id(\\S+)',

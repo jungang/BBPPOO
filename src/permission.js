@@ -67,7 +67,8 @@ router.beforeEach(async(to, from, next) => {
             console.log('未选择队列...')
             next(`/project`)
           } else {
-            console.log('项目id:', store.state.user.apiTemplate.projectId)
+            // console.log('store.state.user.apiTemplat:', store.state.user.apiTemplat)
+            // console.log('项目id:', store.state.user.apiTemplate.projectId)
             await store.dispatch('options/getView')
             await store.dispatch('options/getSubject')
 

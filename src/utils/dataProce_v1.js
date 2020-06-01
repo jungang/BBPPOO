@@ -75,7 +75,7 @@ export async function getFullData(params) {
     dateType: params.query.dateType,
     start: '', // 起始日期（如果是日粒度，就是时间选框日期减去30天，如果是周，就是前推6周的周一的日期（注意，还是日期，不过日期是前推6周的周一，需要计算一下），如果是月，就是6个月前的YYYYmm，如201909）
     end: '', // 结束日期（如果是日粒度，就是时间选框日期，如果是周，就是所选日期的礼拜天的日期，如果是月，就是所选日期的当前月）
-    dimension: [], // 查询的切片，json数组，里面每项就是一个查询条件。如:[{"v_id":"1561"},{"v_group_name":"李红英"},{"v_phase":"实习期","v_group_name":"李红英"}]，分别查询人员id为1561的员工，小组名称为"李红英"的小组，以及小组名称为"李红英"的小组里面阶段为"实习期"的信息，并且把这三种不同维度信息一并给查询出来。
+    dimension: [], // 查询的切片，json数组，里面每项就是一个查询条件。如:[{"v_company": "永基","v_id":"1561"},{"v_group_name":"李红英"},{"v_phase":"实习期","v_group_name":"李红英"}]，分别查询人员id为1561的员工，小组名称为"李红英"的小组，以及小组名称为"李红英"的小组里面阶段为"实习期"的信息，并且把这三种不同维度信息一并给查询出来。
     subject: subject, // 查询的科目，json数组，里面每项就是一个科目。如:["income","AHT"]
     table: 'statistics', // 查询的是目标还是实际，默认不填写，就是实际，查询目标需要填写成 target
     // year: +params.drill_parameters.year,
@@ -83,6 +83,7 @@ export async function getFullData(params) {
     ...store.state.user.apiTemplate
   }
 
+  // console.log('params.query.group:', params)
   // console.log('params.query.group:', params)
   // console.log('params.query.group:', params.query)
   // console.log('params.query.group:', params.query.group)
