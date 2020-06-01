@@ -1,7 +1,7 @@
 <template>
   <div class="filters-container">
     <el-date-picker
-      v-model="$store.state.options.filterOptions.date"
+      v-model="query.date"
       type="date"
       placeholder="选择日期"
       format="yyyy 年 MM 月 dd 日"
@@ -9,7 +9,7 @@
       @change="handleChange"
     />
     <el-select
-      v-model="$store.state.options.filterOptions.dateType"
+      v-model="query.dateType"
       placeholder="请选择"
       style="width: 60px; margin-left: 20px;"
     >
@@ -21,7 +21,7 @@
       />
     </el-select>
 
-    <span v-if="$store.state.options.filterOptions.group" style="margin-left: 20px">选择组织：</span>
+    <span v-if="query.group" style="margin-left: 20px">选择组织：</span>
 
     <!--    <el-cascader-->
     <!--      v-if="$store.state.options.filterOptions.group"-->
@@ -41,9 +41,9 @@
     />-->
 
     <el-cascader
-      v-if="$store.state.options.filterOptions.group && query.multiple"
+      v-if="query.group && query.multiple"
       ref="cascader"
-      v-model="$store.state.options.filterOptions.group"
+      v-model="query.group"
       :options="companyList"
       :props="props"
       collapse-tags
@@ -52,9 +52,9 @@
     />
 
     <el-cascader
-      v-if="$store.state.options.filterOptions.group && !query.multiple"
+      v-if="query.group && !query.multiple"
       ref="cascader"
-      v-model="$store.state.options.filterOptions.group"
+      v-model="query.group"
       :options="companyList"
       style="margin-left: 20px;"
       show-all-levels
@@ -62,9 +62,9 @@
       :props="{ checkStrictly: true }"
     />
 
-    <span v-if="$store.state.options.filterOptions.type" style="margin-left: 20px">业务线条：</span>
+    <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
     <el-select
-      v-if="$store.state.options.filterOptions.type"
+      v-if="query.type"
       v-model="query.type"
       placeholder="请选择"
       style="width: 100px"
@@ -141,30 +141,28 @@ export default {
     })
   },
   created() {
-
-    // if(true){
-    //   query = query
-    // }else {
-    //   query = store....
-    // }
-
     // console.log('----query:', this.query)
     // this.getEmployee()
-    // console.log('this.$store.state.options:', this.$store.state.options.filterOptions.date)
+
+    if (!this.query.isStore) {
+      this.query.date = this.$store.state.options.filterOptions.date
+      this.query.type = this.$store.state.options.filterOptions.type
+      this.query.dateType = this.$store.state.options.filterOptions.dateType
+      this.query.group = this.$store.state.options.filterOptions.group
+    }
   },
   methods: {
     handleChange() {
-      // console.log('this.query.date:', this.query.date)
-      // console.log('this.query:', this.query)
-
-      // if()
-      this.$store.dispatch('options/setFilterOptions', this.$store.state.options.filterOptions || this.query)
-
+      console.log('this.query:', this.query)
+      console.log('filterOptions:', this.$store.state.options.filterOptions)
       this.employeeList = []
       this.query.group = 'null'
       // console.log('handleChange...', this.query.date)
-      this.month = +parseTime(this.$store.state.options.filterOptions.date.getTime(), '{m}')
-      this.year = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}')
+      if (this.query.isStore) {
+        this.$store.dispatch('options/setFilterOptions', this.query)
+      }
+      this.month = +parseTime(this.query.date.getTime(), '{m}')
+      this.year = parseTime(this.query.date.getTime(), '{y}')
 
       this.query.group = []
 
@@ -280,9 +278,9 @@ export default {
 </script>
 
 <style scoped>
-.filters-container {
-  background: #fff;
-  text-align: left;
-  padding: 0 0 10px 0 ;
-}
+  .filters-container {
+    background: #fff;
+    text-align: left;
+    padding: 0 0 10px 0 ;
+  }
 </style>

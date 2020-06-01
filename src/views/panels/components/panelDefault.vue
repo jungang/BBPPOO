@@ -100,7 +100,12 @@ export default {
         }
       ],
       query: {
-        multiple: true
+        dateType: 'month', // 天 day | 周 week | 月 month | 年 year
+        date: new Date(), // 日期20200501
+        multiple: true,
+        group: 'null', // 选择组信息
+        type: 'all', // 合集 all | 集团 group | 本地 local
+        isStore: true
       },
       fullData: {}
     }
