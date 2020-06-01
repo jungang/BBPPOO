@@ -115,16 +115,16 @@ export async function getFullData(params) {
     // 多选
 
     params.query.group.forEach(item => {
-      // console.log('params.query.group:', params.query.group)
+      console.log('params.query.group:', params.query.group)
       switch (item.length) {
         case 1:
-          data.dimension.push({ v_company: params.query.group[0] })
+          data.dimension.push({ v_company: item[0] })
           break
         case 2:
-          data.dimension.push({ v_group_name: params.query.group[1] })
+          data.dimension.push({ v_group_name: item[1] })
           break
         case 3:
-          data.dimension.push({ v_id: params.query.group[2].toString() })
+          data.dimension.push({ v_id: item[2].toString() })
           break
       }
     })
