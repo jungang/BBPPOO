@@ -124,19 +124,25 @@ export default {
       // console.log('this.$route.name:', this.$route.name)
       // 处理当前页
 
-      if (item.config.pagesName === this.$route.meta.view && ViewAuth(item)) {
+      // console.log('item.config.dashboardName:', item.config.dashboardName)
+      // console.log('alias:', this.$store.state.user.alias)
+      if (
+        item.config.dashboardName === this.$store.state.user.alias &&
+        item.config.pagesName === this.$route.meta.view &&
+        ViewAuth(item)
+      ) {
         // wf_P&L_default_trend_tabIndex
         // wf_P&L_default_trend_rowIndex
 
         // console.log('item.location:', item.location)
         switch (item.location) {
-          case 'wf_index_default_cards':
+          case 'index_default_cards':
             this.cardList.push(item)
             break
-          case 'wf_P&L_default_trend_rowIndex':
+          case 'P&L_default_trend_rowIndex':
             this.zoneTrend.rowList.push(item)
             break
-          case 'wf_P&L_default_trend_tabIndex':
+          case 'P&L_default_trend_tabIndex':
             // item.config.tabIndex = Math.ceil(Math.random() * 1000000000 % 2) // test 1|2
             console.log('item.config.tabIndex:', item.config.tabIndex)
             this.zoneTrend['tabList_' + item.config.tabIndex].push(item)

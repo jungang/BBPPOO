@@ -41,6 +41,7 @@ export default {
   methods: {
     async linkTo(item) {
       localStorage.projectId = item.id
+      localStorage.alias = item.alias
       await this.$store.dispatch('user/setProjectId', item)
       this.$router.push(`/`)
     },

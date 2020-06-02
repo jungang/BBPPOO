@@ -14,7 +14,8 @@ const state = {
     projectId: '',
     description: '',
     vf_file: 'dashboard.efwvf'
-  }
+  },
+  alias: ''
 }
 
 const mutations = {
@@ -37,6 +38,7 @@ const mutations = {
     console.log('project.description:', project.description)
     state.apiTemplate.projectId = project.id
     state.apiTemplate.description = project.description
+    state.alias = project.alias
   }
 }
 
@@ -101,7 +103,7 @@ const actions = {
     // console.log('project:', project)
     commit('SET_PROJECT', project)
     await store.dispatch('options/getView')
-    console.log('async setProjectId...:')
+    // console.log('async setProjectId...:')
   },
 
   // user logout

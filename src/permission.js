@@ -57,9 +57,9 @@ router.beforeEach(async(to, from, next) => {
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
 
-          if (localStorage.projectId) {
-            store.state.user.apiTemplate.projectId = localStorage.projectId
-          }
+          store.state.user.apiTemplate.projectId = localStorage.projectId
+
+          store.state.user.alias = localStorage.alias
 
           // 获取视图列表
 
