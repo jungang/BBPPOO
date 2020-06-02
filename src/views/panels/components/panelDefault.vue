@@ -113,7 +113,7 @@ export default {
   computed: { },
   watch: { },
   created() {
-    console.log('this.$store.state.options.views:', this.$store.state.options.views)
+    // console.log('this.$store.state.options.views:', this.$store.state.options.views)
 
     this.$store.state.options.views.forEach(item => {
       // console.log('item.location:', item.location)
@@ -146,7 +146,7 @@ export default {
       }
     })
 
-    console.log('this.cardList:', this.cardList)
+    // console.log('this.cardList:', this.cardList)
 
     if (this.cardList.length > 0) {
       this.cardList = cardSort(this.cardList)

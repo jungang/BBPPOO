@@ -152,8 +152,8 @@ export default {
         // console.log('_item.slot1:', _item.slot1)
         // console.log('subject.dimension:', subject.dimension)
         if (subject.dimension.length > 0) {
-          console.log('subject.dimension:', subject.dimension)
-          console.log('_current:', _current)
+          // console.log('subject.dimension:', subject.dimension)
+          // console.log('_current:', _current)
           const _v = subject.dimension[0].data.find(item => {
             // console.log('item:', item)
             item.time = item.time.toString()

@@ -113,7 +113,7 @@ export default {
       const source = []
       const series = []
 
-      console.log('data.data:', data.data)
+      // console.log('data.data:', data.data)
 
       // const _data = data.data.slice(2, 4)
       // console.log('_data:', _data)

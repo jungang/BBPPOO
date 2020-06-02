@@ -250,7 +250,7 @@ export default {
       this.listLoading = true
       this.list.listQuery.batch = this.temp.year + this.temp.month
       fetchList(this.list.listQuery).then(response => {
-        console.log('response:', response)
+        // console.log('response:', response)
         this.list.items = response.data
         // this.list.total = response.data.total
         this.listLoading = false

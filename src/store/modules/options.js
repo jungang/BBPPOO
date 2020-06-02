@@ -172,6 +172,7 @@ const actions = {
         // })
 
         commit('SET_VIEWS', response)
+        // console.log('response:', response)
         console.info('v', pkg.version)
         resolve(response)
       }).catch(error => {

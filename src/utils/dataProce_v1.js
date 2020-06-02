@@ -98,7 +98,7 @@ export async function getFullData(params) {
     // 空选项
     data.dimension.push({})
 
-    console.log('params.query:', params.query)
+    // console.log('params.query:', params.query)
 
     if (params.config.component.type === 'table_lirun') {
       __arr.forEach((item) => {

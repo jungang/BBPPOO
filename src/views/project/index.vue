@@ -13,11 +13,9 @@
         <img :src="bg" class="image">
         <el-row style="margin: 10px">{{ item.description }}</el-row>
         <el-row style="margin: 20px">
-          <router-link to="/">
-            <el-button type="primary" @click="linkTo(item)">
-              进入
-            </el-button>
-          </router-link>
+          <el-button type="primary" @click="linkTo(item)">
+            进入
+          </el-button>
         </el-row>
 
         <!--        <span style="font-size: 5px">{{ item.create_time || "2020-00" }}</span>-->
@@ -41,14 +39,14 @@ export default {
     this.getList()
   },
   methods: {
-    linkTo(item) {
-      this.$store.dispatch('user/setProjectId', item)
+    async linkTo(item) {
       localStorage.projectId = item.id
+      await this.$store.dispatch('user/setProjectId', item)
+      this.$router.push(`/`)
     },
 
     getList() {
       this.listLoading = true
-
       const data = {
         'vf_id': 0,
         'dir': 'Sample Reports/project',

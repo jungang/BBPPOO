@@ -21,14 +21,7 @@
       />
     </el-select>
 
-    <span v-if="query.group" style="margin-left: 20px">选择组织：</span>
-
-    <!--    <el-cascader-->
-    <!--      v-if="$store.state.options.filterOptions.group"-->
-    <!--      v-model="$store.state.options.filterOptions.company"-->
-    <!--      :options="companyList"-->
-    <!--      style="width: 100px;"-->
-    <!--    />-->
+    <span v-if="query.group" style="margin-left: 20px">{{ $store.state.user.apiTemplate.description }}队列 选择组织：</span>
 
     <!--
     <el-cascader
@@ -125,6 +118,10 @@ export default {
         }
       ],
       q: 'wf',
+      qlist: [{
+        value: 'wf',
+        label: '网服'
+      }],
       companyList: [],
       groupList: [],
       employeeList: [],
@@ -153,8 +150,8 @@ export default {
   },
   methods: {
     handleChange() {
-      console.log('this.query:', this.query)
-      console.log('filterOptions:', this.$store.state.options.filterOptions)
+      // console.log('this.query:', this.query)
+      // console.log('filterOptions:', this.$store.state.options.filterOptions)
       this.employeeList = []
       this.query.group = 'null'
       // console.log('handleChange...', this.query.date)
@@ -229,7 +226,7 @@ export default {
           )
         })
 
-        console.log('this.companyList:', this.companyList)
+        // console.log('this.companyList:', this.companyList)
 
         // this.groupList = []
         // 构建组结构

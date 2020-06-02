@@ -1,4 +1,5 @@
 import { login, logout, getInfo } from '@/api/user'
+import store from '@/store'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -33,7 +34,7 @@ const mutations = {
     state.roles = roles
   },
   SET_PROJECT: (state, project) => {
-    console.log('project:', project)
+    console.log('project.description:', project.description)
     state.apiTemplate.projectId = project.id
     state.apiTemplate.description = project.description
   }
@@ -96,9 +97,11 @@ const actions = {
     })
   },
 
-  setProjectId({ commit, state, dispatch }, project) {
+  async setProjectId({ commit, state, dispatch }, project) {
     // console.log('project:', project)
     commit('SET_PROJECT', project)
+    await store.dispatch('options/getView')
+    console.log('async setProjectId...:')
   },
 
   // user logout
