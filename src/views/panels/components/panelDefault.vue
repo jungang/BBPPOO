@@ -104,7 +104,7 @@ export default {
         date: new Date(), // 日期20200501
         multiple: true,
         group: 'null', // 选择组信息
-        type: 'all', // 合集 all | 集团 group | 本地 local
+        type: this.$store.state.user.alias === 'ts' ? false : 'all', // 合集 all | 集团 group | 本地 local
         isStore: true
       },
       fullData: {}
@@ -134,7 +134,8 @@ export default {
         // wf_P&L_default_trend_tabIndex
         // wf_P&L_default_trend_rowIndex
 
-        // console.log('item.location:', item.location)
+        console.log('item.location:', item.location)
+        console.log('item:', item)
         switch (item.location) {
           case 'index_default_cards':
             this.cardList.push(item)

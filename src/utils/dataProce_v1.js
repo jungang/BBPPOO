@@ -40,11 +40,15 @@ export async function getFullData(params) {
   // console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
+  console.log('params.query.type:', params.query.type)
+
   let subject = params.items[`${params.query.type}`]
   // console.log('subject:', subject)
   if (!subject) { // todo 降级参数
     subject = params.items['*'] || ['']
   }
+
+  // console.log('subject:', subject)
 
   const viewSubject = subject.map(item => {
     let _title = ''

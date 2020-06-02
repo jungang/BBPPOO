@@ -43,6 +43,8 @@ export default {
       localStorage.projectId = item.id
       localStorage.alias = item.alias
       await this.$store.dispatch('user/setProjectId', item)
+      await this.$store.dispatch('options/getView')
+      await this.$store.dispatch('options/getSubject')
       this.$router.push(`/`)
     },
 
