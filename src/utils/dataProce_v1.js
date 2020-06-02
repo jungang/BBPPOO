@@ -40,7 +40,7 @@ export async function getFullData(params) {
   // console.log('params:', params)
   // console.log('params.query.type:', params.query.type)
 
-  console.log('params.query.type:', params.query.type)
+  // console.log('params.query.type:', params.query.type)
 
   let subject = params.items[`${params.query.type}`]
   // console.log('subject:', subject)

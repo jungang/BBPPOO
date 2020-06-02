@@ -215,9 +215,7 @@ export default {
           const _company = this.companyList.find(company => company.label === item.v_company)
           // console.log(item)
           const _group = _company.children.find(group => group.label === item.v_group_name + '组')
-
-          console.log('_group:', _group)
-
+          // console.log('_group:', _group)
           _group.children.push({
             v_project_work_id: item.v_project_work_id,
             value: item.v_project_work_id,
@@ -225,41 +223,6 @@ export default {
           }
           )
         })
-
-        // console.log('this.companyList:', this.companyList)
-
-        // this.groupList = []
-        // 构建组结构
-        // response.forEach(item => {
-        //   const _v = this.groupList.find(group => group.label === item.v_group_name + '组')
-        //   // console.log('_v:', _v)
-        //   if (!_v) {
-        //     this.groupList.push({
-        //       type: 'group',
-        //       v_project_work_id: item.v_project_work_id,
-        //       value: item.v_group_name,
-        //       label: item.v_group_name + '组'
-        //     })
-        //   }
-        // })
-        // console.log('this.employeeList:', this.employeeList)
-
-        // console.log('this.groupList:', this.groupList)
-
-        // this.employeeList = deepClone(this.groupList)
-
-        // 构建人员
-        // response.forEach(item => {
-        //   // console.log(item)
-        //   const group = this.employeeList.find(group => group.label === item.v_group_name + '组')
-        //   group.children = group.children || []
-        //   group.children.push({
-        //     v_project_work_id: item.v_project_work_id,
-        //     value: item.v_project_work_id,
-        //     label: item.v_name
-        //   }
-        //   )
-        // })
 
         this.$store.dispatch('group/employeelist', this.employeeList)
 

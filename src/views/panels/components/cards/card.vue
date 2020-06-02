@@ -90,6 +90,7 @@ export default {
       })
 
       // console.log('viewSubject:', viewSubject)
+      // console.log('this.$store.state.options.filterOptions:', this.$store.state.options.filterOptions)
 
       this.currentView.query = this.$store.state.options.filterOptions
       this.currentView.query.multiple = this.query.multiple
