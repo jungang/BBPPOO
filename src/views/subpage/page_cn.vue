@@ -58,6 +58,7 @@
 import Filters from '@/components/Filters'
 import Row from '../panels/components/rows/row'
 import Tab from '../panels/components/tabs/tab'
+import { sortArray } from '../../utils/sortArray'
 import _ from 'underscore'
 export default {
   name: 'Capacity',
@@ -142,6 +143,10 @@ export default {
       // console.log('comparisonChartLineView=>',this.comparisonChartLineView)
 
       this.chartBar.len = this.rowView.length
+
+      this.rowView = sortArray(this.rowView)
+      this.trendChartLineView = sortArray(this.trendChartLineView)
+      this.comparisonChartLineView = sortArray(this.comparisonChartLineView)
     },
     defaultTab() {
       this.tab1_activeName = this.trendChartLineView[0].name

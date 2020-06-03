@@ -37,6 +37,7 @@
 import Filters from '@/components/Filters'
 import Row from '../panels/components/rows/row'
 import Tab from '../panels/components/tabs/tab'
+import { sortArray } from '../../utils/sortArray'
 import _ from 'underscore'
 export default {
   name: 'Quality',
@@ -99,11 +100,10 @@ export default {
         return this.currentView
       })
 
-      // console.log('currentView=>',JSON.stringify(this.currentView))
-      // console.log('rowView=>',this.rowView)
-      // console.log('tabView=>',this.tabView)
-
       this.chartBar.len = this.rowView.length
+
+      this.rowView = sortArray(this.rowView)
+      this.tableView = sortArray(this.tableView)
     },
     defaultTab() {
       this.tab1_activeName = this.tabView[0].name

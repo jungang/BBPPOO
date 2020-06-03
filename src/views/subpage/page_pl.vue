@@ -44,7 +44,7 @@
           :query="query"
         />
       </el-tab-pane>
-    </el-tabs>
+    </el-tabs>-->
   </div>
 
 </template>
@@ -53,6 +53,8 @@
 import Filters from '@/components/Filters'
 import Row from '../panels/components/rows/row'
 import Tab from '../panels/components/tabs/tab'
+import { sortArray } from '../../utils/sortArray'
+
 import _ from 'underscore'
 
 export default {
@@ -123,9 +125,11 @@ export default {
 
       this.chartBar.len = this.rowView.length
 
-      this.tableView = _.sortBy(this.tableView, (item) => {
-        return item.config.tabIndex
-      })
+      this.rowView = sortArray(this.rowView)
+      this.tableView = sortArray(this.tableView)
+      this.chartLineView = sortArray(this.chartLineView)
+
+
     },
     defaultTab() {
       this.tab1_activeName = this.chartLineView[0].name
