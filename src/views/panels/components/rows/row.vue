@@ -63,7 +63,7 @@ export default {
       // console.log('currentView:', this.currentView)
       // console.log('query:', this.query)
       this.currentView = deepClone(this.data)
-      this.currentView.query = this.$store.state.options.filterOptions
+      this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
       // console.log('this.fullData:::', this.fullData)
 

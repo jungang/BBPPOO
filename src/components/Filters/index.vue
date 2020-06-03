@@ -141,25 +141,25 @@ export default {
     // console.log('----query:', this.query)
     // this.getEmployee()
 
-    if (!this.query.isStore) {
-      this.query.date = this.$store.state.options.filterOptions.date
-      this.query.type = this.$store.state.options.filterOptions.type
-      this.query.dateType = this.$store.state.options.filterOptions.dateType
-      this.query.group = this.$store.state.options.filterOptions.group
-    }
-  },
-  methods: {
-    handleChange() {
-      // console.log('this.query:', this.query)
-      // console.log('filterOptions:', this.$store.state.options.filterOptions)
-      this.employeeList = []
-      this.query.group = 'null'
-      // console.log('handleChange...', this.query.date)
-      if (this.query.isStore) {
-        this.$store.dispatch('options/setFilterOptions', this.query)
+      if(this.query.isStore === 'false'){
+        this.query.date = this.$store.state.options.filterOptions.date;
+        this.query.type = this.$store.state.options.filterOptions.type;
+        this.query.dateType = this.$store.state.options.filterOptions.dateType;
+        this.query.group = this.$store.state.options.filterOptions.group;
       }
-      this.month = +parseTime(this.query.date.getTime(), '{m}')
-      this.year = parseTime(this.query.date.getTime(), '{y}')
+    },
+    methods: {
+      handleChange() {
+        //console.log('this.query:', this.query)
+        //console.log('filterOptions:', this.$store.state.options.filterOptions)
+        this.employeeList = []
+        this.query.group = 'null'
+        // console.log('handleChange...', this.query.date)
+        if(this.query.isStore === 'true'){
+          this.$store.dispatch('options/setFilterOptions', this.query)
+        }
+        this.month = +parseTime(this.query.date.getTime(), '{m}')
+        this.year = parseTime(this.query.date.getTime(), '{y}')
 
       this.query.group = []
 
@@ -224,7 +224,7 @@ export default {
           )
         })
 
-        this.$store.dispatch('group/employeelist', this.employeeList)
+        this.$store.dispatch('group/employeelist', this.companyList)
 
         // console.log('employeeList:', this.employeeList)
         // console.log('person:', this.$store.state.group.persons)

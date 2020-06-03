@@ -72,7 +72,7 @@ export default {
         this.cardData.dataSet.legendSelectMode = this.data.config.component.legendSelectMode
       }
       this.currentView = deepClone(this.data)
-      this.currentView.query = this.$store.state.options.filterOptions
+      this.currentView.query = this.query;
       // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
       // console.log('this.fullData:::', this.fullData.res)
