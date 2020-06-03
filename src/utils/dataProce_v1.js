@@ -115,11 +115,13 @@ export async function getFullData(params) {
       })
     }
   } else if (params.query.multiple) {
-    console.log('params.query.multiple:', params.query.multiple)
+    // console.log('params.query.multiple:', params.query.multiple)
     // 多选
 
+    // console.log('params.query.group:', params.query.group)
+
     params.query.group.forEach(item => {
-      console.log('params.query.group:', params.query.group)
+      // console.log('params.query.group:', params.query.group)
       switch (item.length) {
         case 1:
           data.dimension.push({ v_company: item[0] })

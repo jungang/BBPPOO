@@ -141,25 +141,25 @@ export default {
     // console.log('----query:', this.query)
     // this.getEmployee()
 
-      if(this.query.isStore === 'false'){
-        this.query.date = this.$store.state.options.filterOptions.date;
-        this.query.type = this.$store.state.options.filterOptions.type;
-        this.query.dateType = this.$store.state.options.filterOptions.dateType;
-        this.query.group = this.$store.state.options.filterOptions.group;
+    if (this.query.isStore === 'false') {
+      this.query.date = this.$store.state.options.filterOptions.date
+      this.query.type = this.$store.state.options.filterOptions.type
+      this.query.dateType = this.$store.state.options.filterOptions.dateType
+      this.query.group = this.$store.state.options.filterOptions.group
+    }
+  },
+  methods: {
+    handleChange() {
+      // console.log('this.query:', this.query)
+      // console.log('filterOptions:', this.$store.state.options.filterOptions)
+      this.employeeList = []
+      this.query.group = 'null'
+      // console.log('handleChange...', this.query.date)
+      if (this.query.isStore === 'true') {
+        this.$store.dispatch('options/setFilterOptions', this.query)
       }
-    },
-    methods: {
-      handleChange() {
-        //console.log('this.query:', this.query)
-        //console.log('filterOptions:', this.$store.state.options.filterOptions)
-        this.employeeList = []
-        this.query.group = 'null'
-        // console.log('handleChange...', this.query.date)
-        if(this.query.isStore === 'true'){
-          this.$store.dispatch('options/setFilterOptions', this.query)
-        }
-        this.month = +parseTime(this.query.date.getTime(), '{m}')
-        this.year = parseTime(this.query.date.getTime(), '{y}')
+      this.month = +parseTime(this.query.date.getTime(), '{m}')
+      this.year = parseTime(this.query.date.getTime(), '{y}')
 
       this.query.group = []
 
