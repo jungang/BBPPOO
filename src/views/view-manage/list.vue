@@ -4,36 +4,36 @@
       <el-table-column align="center" label="name" prop="name" width="150" />
       <el-table-column align="center" label="title" prop="title" width="150" />
       <el-table-column align="center" label="description" prop="description" width="150" />
-      <!--            <el-table-column align="left" label="items" width="300">-->
-      <!--        <template slot-scope="{row}">-->
+      <el-table-column align="left" label="items" width="300">
+        <template slot-scope="{row}">
 
-      <!--          <el-row v-if="row.items.all" type="flex" align="middle" style="border-bottom: solid 1px #d3d3d3">-->
-      <!--            <el-col :span="5"><el-tag>all</el-tag></el-col>-->
-      <!--            <el-col :span="19">-->
-      <!--              <span v-for="item in row.items.all" :key="item"> {{ item }}<br></span>-->
-      <!--            </el-col>-->
-      <!--          </el-row>-->
-      <!--          <el-row v-if="row.items.group" type="flex" align="middle" style="border-bottom: solid 1px #d3d3d3">-->
-      <!--            <el-col :span="5"><el-tag>group</el-tag></el-col>-->
-      <!--            <el-col :span="19">-->
-      <!--              <span v-for="item in row.items.group" :key="item"> {{ item }}<br></span>-->
-      <!--            </el-col>-->
-      <!--          </el-row>-->
-      <!--          <el-row v-if="row.items.local" type="flex" align="middle">-->
-      <!--            <el-col :span="5"><el-tag>local</el-tag></el-col>-->
-      <!--            <el-col :span="19">-->
-      <!--              <span v-for="item in row.items.local" :key="item"> {{ item }}<br></span>-->
-      <!--            </el-col>-->
-      <!--          </el-row>-->
-      <!--          <el-row v-if="row.items['*']" type="flex" align="middle">-->
-      <!--            <el-col :span="5"><el-tag>*</el-tag></el-col>-->
-      <!--            <el-col :span="19">-->
-      <!--              <span v-for="(item, index) in row.items['*']" :key="index"> {{ item }}<br></span>-->
-      <!--            </el-col>-->
-      <!--          </el-row>-->
+          <el-row v-if="row.items.all" type="flex" align="middle" style="border-bottom: solid 1px #d3d3d3">
+            <el-col :span="5"><el-tag>all</el-tag></el-col>
+            <el-col :span="19">
+              <span v-for="item in row.items.all" :key="item"> {{ item }}<br></span>
+            </el-col>
+          </el-row>
+          <el-row v-if="row.items.group" type="flex" align="middle" style="border-bottom: solid 1px #d3d3d3">
+            <el-col :span="5"><el-tag>group</el-tag></el-col>
+            <el-col :span="19">
+              <span v-for="item in row.items.group" :key="item"> {{ item }}<br></span>
+            </el-col>
+          </el-row>
+          <el-row v-if="row.items.local" type="flex" align="middle">
+            <el-col :span="5"><el-tag>local</el-tag></el-col>
+            <el-col :span="19">
+              <span v-for="item in row.items.local" :key="item"> {{ item }}<br></span>
+            </el-col>
+          </el-row>
+          <el-row v-if="row.items['*']" type="flex" align="middle">
+            <el-col :span="5"><el-tag>*</el-tag></el-col>
+            <el-col :span="19">
+              <span v-for="(item, index) in row.items['*']" :key="index"> {{ item }}<br></span>
+            </el-col>
+          </el-row>
 
-      <!--        </template>-->
-      <!--      </el-table-column>-->
+        </template>
+      </el-table-column>
       <!--      <el-table-column align="center" label="location" prop="location" width="100" />-->
       <!--      <el-table-column align="center" label="parameters" prop="parameters" width="100" />-->
       <!--      <el-table-column align="center" label="config.rule" width="150">-->
