@@ -32,6 +32,7 @@
         selectRadio:1,
         options: {
           legend: {
+            show:false
           },
           grid: {
             left: 70,
@@ -92,18 +93,17 @@
         this.initData();
       },
       formatDataSet(response) {
-       // console.log('response=>',response.data)
+      //  console.log('response=>',response.data)
 
         //init
         this.options.dataset.dimensions = [];
         this.options.dataset.source = [];
         this.options.series = [];
 
-        console.log('清除=>',this.options)
-
+       // console.log('清除=>',this.options)
         let _data = [];
         let num = 0;
-        if(this.query.group === 'null'){
+        if(this.query.group === 'null' || this.query.group.length === 0){
           response.data.forEach((item) => {
             num ++ ;
             let obj = {};
@@ -113,15 +113,21 @@
             obj.source = [];
             obj.dimensions = ['time'];
 
+            obj.dimensions.push(item.title)
+
             item.dimension[0].data.forEach((_item) => {
               obj.source.push({time: _item.time, [item.title]: _item.actualValue})
             });
 
+            this.options.series.push({ type: 'line' });
+
             _data.push(obj);
           });
+
         }else{
-          console.log(this.$store.state.group.persons)
-         // console.log(this.query.group)
+         // console.log('persons=>',this.$store.state.group.persons)
+         // console.log('group=>',this.query.group)
+
           let _obj = {
             source:[],
             dimensions:['time']
@@ -130,14 +136,18 @@
           //this.options.series = [];//清除type=line
 
           this.query.group.forEach((item) => {
-            if(item.length === 1){
-              _obj.dimensions.push(item[0])
-            }else{
-              _obj.dimensions.push(_.find(this.$store.state.group.persons,items => {return item[1] == items.v_project_work_id}).v_name)
+            if(item.length === 2){
+              _obj.dimensions.push(item[1])
+            }
+
+            if(item.length === 3){
+              _obj.dimensions.push(_.find(this.$store.state.group.persons,items => {return item[2] == items.v_project_work_id}).v_name)
             }
 
             this.options.series.push({ type: 'line' });
           });
+
+         // console.log(' _obj.dimensions=>',_obj.dimensions)
 
           let __data = [];
 
@@ -179,7 +189,7 @@
             _obj1.index = _num;
 
             let arr =_.where(__data,{title:_item.title});
-            console.log('arr=>',arr);
+            //console.log('arr=>',arr);
             let __arr = [];
 
             _.forEach(arr,(__item) => {
@@ -200,12 +210,12 @@
 
 
             });
-            console.log(_obj1.title)
+            //console.log(_obj1.title)
             _obj1.source = __arr;
             _obj1.dimensions = _obj.dimensions;
             _data.push(_obj1);
 
-            console.log('_data',_data)
+            //console.log('_data',_data)
 
           })
 
@@ -213,7 +223,7 @@
 
         this.chartData = _.sortBy(_data, 'index');
 
-        console.log('chartData=>',this.chartData);
+        //console.log('chartData=>',this.chartData);
 
         this.initData();
       },
@@ -227,15 +237,12 @@
         this.chart.setOption(this.options)
       },
       initData(){
-        console.log(this.chartData[this.selectRadio - 1])
 
         this.options.dataset.source = this.chartData[this.selectRadio - 1].source;
         this.options.dataset.dimensions = [];
-        console.log('dimensions',this.chartData[this.selectRadio - 1].dimensions);
-        this.options.dataset.dimensions = this.chartData[this.selectRadio - 1].dimensions
+        this.options.dataset.dimensions = this.chartData[this.selectRadio - 1].dimensions;
 
         console.log('options=>',this.options)
-
 
         this.$nextTick(() => {
           this.chart.clear();
