@@ -92,14 +92,14 @@ export default {
         date: new Date(), // 日期20200501
         multiple: false,
         group: 'null', // 选择组信息
-        isStore:'false',
+        isStore: 'false',
         type: 'all' // 合集 all | 集团 group | 本地 local
       },
       querycn: {
         dateType: 'month', // 天 day | 周 week | 月 month | 年 year
         date: new Date(), // 日期20200501
         multiple: true,
-        isStore:'duibi',
+        isStore: 'duibi',
         group: 'null', // 选择组信息
         type: 'all' // 合集 all | 集团 group | 本地 local
       }

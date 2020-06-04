@@ -42,6 +42,7 @@ export default {
     async linkTo(item) {
       localStorage.projectId = item.id
       localStorage.alias = item.alias
+      localStorage.description = item.description
       await this.$store.dispatch('user/setProjectId', item)
       await this.$store.dispatch('options/getView')
       await this.$store.dispatch('options/getSubject')

@@ -276,39 +276,40 @@ export const asyncRoutes = [
         meta: { title: '权限管理', icon: 'component', noCache: true }
       }
     ]
-  },*/
+  },
+  */
   {
-    path: '/example',
+    path: '/view-manage',
     // hidden: true,
     component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
-    hidden: true,
+    redirect: '/view-manage/list',
+    name: 'ViewManage\'',
+    // hidden: true,
     meta: {
-      title: 'debug-',
+      title: '视图管理',
       icon: 'example'
     },
     children: [
       {
+        path: 'list',
+        // hidden: true,
+        component: () => import('@/views/view-manage/list'),
+        name: 'ViewList2',
+        meta: { title: 'view List', icon: 'list' }
+      },
+      {
         path: 'create',
-        hidden: true,
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
+        // hidden: true,
+        component: () => import('@/views/view-manage/create'),
+        name: 'CreateView',
+        meta: { title: 'Create view', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
-        hidden: true,
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' }
-      },
-      {
-        path: 'list',
-        hidden: true,
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList2',
-        meta: { title: 'Article List', icon: 'list' }
+        // hidden: true,
+        component: () => import('@/views/view-manage/edit'),
+        name: 'EditView',
+        meta: { title: 'Edit view', noCache: true, activeMenu: '/view-manage/list' }
       }
       /*    {
         path: 'dev',
@@ -318,7 +319,50 @@ export const asyncRoutes = [
       }*/
     ]
   },
+
   /*  {
+    path: '/view-manage',
+    // hidden: true,
+    component: Layout,
+    redirect: '/example/list',
+    name: 'Example',
+    // hidden: true,
+    meta: {
+      title: '视图管理',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        // hidden: true,
+        component: () => import('@/views/example/create'),
+        name: 'CreateArticle',
+        meta: { title: 'Create Article', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        // hidden: true,
+        component: () => import('@/views/example/edit'),
+        name: 'EditArticle',
+        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' }
+      },
+      {
+        path: 'list',
+        // hidden: true,
+        component: () => import('@/views/example/list'),
+        name: 'ArticleList2',
+        meta: { title: 'Article List', icon: 'list' }
+      }
+      /!*    {
+        path: 'dev',
+        component: () => import('@/views/panels/components/charts/dev'),
+        name: 'ArticleList3',
+        meta: { title: 'dev', icon: 'bug' }
+      }*!/
+    ]
+  },*/
+  /*
+    {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',

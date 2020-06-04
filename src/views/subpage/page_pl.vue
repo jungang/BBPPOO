@@ -88,7 +88,7 @@ export default {
         dateType: 'month', // 天 day | 周 week | 月 month | 年 year
         date: new Date(), // 日期20200501
         multiple: false,
-        isStore:'false',
+        isStore: 'false',
         group: 'null', // 选择组信息
         type: 'all' // 合集 all | 集团 group | 本地 local
       }
@@ -128,8 +128,6 @@ export default {
       this.rowView = sortArray(this.rowView)
       this.tableView = sortArray(this.tableView)
       this.chartLineView = sortArray(this.chartLineView)
-
-
     },
     defaultTab() {
       this.tab1_activeName = this.chartLineView[0].name
