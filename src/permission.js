@@ -60,6 +60,7 @@ router.beforeEach(async(to, from, next) => {
           store.state.user.apiTemplate.projectId = localStorage.projectId
 
           store.state.user.alias = localStorage.alias
+          store.state.user.apiTemplate.description = localStorage.description
 
           // 获取视图列表
 
