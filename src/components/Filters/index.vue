@@ -226,7 +226,11 @@ export default {
 
         this.$store.dispatch('group/employeelist', this.companyList)
 
-        // console.log('employeeList:', this.employeeList)
+        if (this.companyList.length > 0) {
+          console.log('this.companyList.length:', this.companyList.length)
+          this.companyList.unshift({ label: '全台', value: 'all' })
+        }
+
         // console.log('person:', this.$store.state.group.persons)
       })
     },
