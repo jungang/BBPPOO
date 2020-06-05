@@ -96,29 +96,38 @@ export async function getFullData(params) {
   // console.log('params.query.group:', params.query.group)
 
   const __arr = store.state.group.employeeList
-  // console.log('__arr=>', __arr)
-  // console.log('params.query.group:', params.query.group)
+   console.log('__arr=>', __arr)
+   //console.log('params.query.group:', params.query.group)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
 
-    // console.log('params.query:', params.query)
-
     if (params.config.component.type === 'table_lirun') {
-      __arr.forEach((item) => {
-        data.dimension.push({ v_group_name: item.value })
-        item.children.forEach((_item) => {
-          const __obj = {}
-          __obj.v_id = _item.v_project_work_id
-          data.dimension.push(__obj)
-        })
-      })
-    }
-  } else if (params.query.multiple) {
-    // console.log('params.query.multiple:', params.query.multiple)
-    // 多选
 
-    // console.log('params.query.group:', params.query.group)
+      if(__arr.length >0){
+        data.dimension = [];
+        __arr.forEach((item) => {
+          let obj = {};
+          obj.v_company = item.value;
+          data.dimension.push(obj);
+          item.children.forEach((_item) => {
+            let _obj = {};
+            _obj.v_group_name = _item.value;
+            data.dimension.push(_obj);
+            _item.children.forEach((__item) => {
+              let __obj = {};
+              __obj.v_id = __item.value;
+              data.dimension.push(__obj);
+            })
+          })
+        })
+      }
+      //console.log('data.dimension=>',data.dimension)
+    }
+
+
+
+  } else if (params.query.multiple) {
 
     params.query.group.forEach(item => {
       // console.log('params.query.group:', params.query.group)
@@ -135,26 +144,26 @@ export async function getFullData(params) {
       }
     })
   } else {
-    // console.log('params.query.group:', params.query.group)
     // 单选
     if (params.config.component.type === 'table_lirun') {
-      // console.log('params.query.group:', params.query.group)
-      data.dimension.push({ v_group_name: params.query.group[0] })
+      data.dimension.push({ v_group_name: params.query.group[1] })
 
-      if (params.query.group.length === 1) {
-        // console.log('__arr', __arr)
+      if (params.query.group.length === 2) {
         __arr.forEach((item) => {
-          if (item.value === params.query.group[0]) {
-            item.children.forEach((_item) => {
-              const __obj = {}
-              __obj.v_id = _item.v_project_work_id
-              data.dimension.push(__obj)
-            })
-          }
+          item.children.forEach((_item)=>{
+            if (_item.value === params.query.group[1]) {
+              _item.children.forEach((__item) => {
+                const __obj = {}
+                __obj.v_id = __item.v_project_work_id
+                data.dimension.push(__obj)
+              })
+            }
+          })
         })
       } else {
-        data.dimension.push({ v_id: params.query.group[1].toString() })
+        data.dimension.push({ v_id: params.query.group[2].toString() })
       }
+
     } else {
       // console.log('params.query.group:', params.query.group)
       switch (params.query.group.length) {
@@ -253,7 +262,7 @@ export async function getFullData(params) {
       data.vf_id = 3
       break
   }
-  // console.log('data:', data)
+ //  console.log('data:', data)
 
   // 实际数据
   res = await getData(data, res, 'actual') // return res.vf_id0
@@ -303,7 +312,7 @@ export async function getFullData(params) {
   // 集成整合
   const chartDate = formatDataSet(params.query.dateType, res)
   const tableDate = integration(res)
-
+//  console.log('tableDate=>',tableDate)
   // 处理表格折叠行
   const foldTableDate = planeToHierarchy(params.query, tableDate)
   // const foldTableDate = []

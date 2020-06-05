@@ -165,8 +165,9 @@ export default {
       // console.log('list=>',data.list)
 
       if (this.nowView.config.component.type === 'table_lirun') {
-        // console.log('dasfd', this.tableData)
+        // console.log('data.list=>', data.list)
         const employeeList = this.$store.state.group.employeeList
+        //console.log('employeeList=>', employeeList)
         const arrs = []
         const lirunArray = []
         // const _idd = 0
@@ -182,11 +183,13 @@ export default {
               if (_item.v_id) {
                 employeeList.forEach((__item) => {
                   __item.children.forEach((___item) => {
-                    if (_item.v_id === ___item.value) {
-                      _item['v_name'] = ___item.label
-                      _item['v_group_name'] = __item.label
-                      _item['v_cu'] = ''
-                    }
+                    ___item.children.forEach((____item) => {
+                      if (_item.v_id === ____item.value) {
+                        _item['v_name'] = ____item.label
+                        _item['v_group_name'] = ___item.value + '组'
+                        _item['v_cu'] = ''
+                      }
+                    })
                   })
                 })
                 arrs.push(_item)
@@ -194,11 +197,13 @@ export default {
             })
           }
         })
+
         let __id = 0
         arrs.forEach((dt) => {
           dt.id = __id
           if (!dt.v_id) {
-            lirunArray.push(dt)
+            lirunArray.push(dt);
+
             arrs.forEach((_dt) => {
               if (_dt.v_id && (_dt.v_group_name === dt.v_group_name)) {
                 lirunArray.push(_dt)
@@ -208,6 +213,7 @@ export default {
           __id++
         })
 
+        //console.log('lirunArray=>',lirunArray)
         this.tableData = lirunArray
       } else {
         this.findChildrow(data.list, this.tableData)
@@ -218,7 +224,7 @@ export default {
         })*/
       }
 
-      console.log('this.tableData:', this.tableData)
+     // console.log('this.tableData:', this.tableData)
     },
     findChildrow(arr, listArray) {
       arr.forEach((items) => {
