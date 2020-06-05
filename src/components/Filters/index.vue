@@ -229,7 +229,7 @@ export default {
 
         if (this.companyList.length > 0) {
           console.log('this.companyList.length:', this.companyList.length)
-          this.companyList.unshift({ label: '全台', value: 'all' })
+          // this.companyList.unshift({ label: '全台', value: 'all' })
         }
 
         // console.log('person:', this.$store.state.group.persons)
