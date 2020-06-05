@@ -225,6 +225,7 @@ export default {
         })
 
         this.$store.dispatch('group/employeelist', this.companyList)
+        console.log(' this.companyList:', this.companyList)
 
         if (this.companyList.length > 0) {
           console.log('this.companyList.length:', this.companyList.length)

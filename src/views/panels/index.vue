@@ -25,6 +25,15 @@ export default {
   computed: { },
   watch: { },
   created() {
+    if (localStorage.refresh) {
+      this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
+        console.log('visitedViews:', visitedViews)
+      })
+      localStorage.removeItem('refresh')
+      // location.reload()
+    }
+
+    // DEL_OTHERS_VISITED_VIEWS
   },
   methods: {
   }

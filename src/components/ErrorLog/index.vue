@@ -62,7 +62,7 @@ export default {
   methods: {
     clearAll() {
       this.dialogTableVisible = false
-      this.$store.dispatch('errorLog/clearErrorLog')
+      this.$store.dispatch('errorLog/delOthersVisitedViews')
     }
   }
 }
