@@ -44,7 +44,7 @@
           :query="query"
         />
       </el-tab-pane>
-    </el-tabs>-->
+    </el-tabs>
   </div>
 
 </template>
@@ -128,10 +128,22 @@ export default {
       this.rowView = sortArray(this.rowView)
       this.tableView = sortArray(this.tableView)
       this.chartLineView = sortArray(this.chartLineView)
+
+      //console.log('this.currentView=>',this.currentView)
+      //console.log('this.currentView=>',JSON.stringify(this.currentView))
+      //console.log('this.rowView=>',this.rowView)
+     // console.log('this.tableView=>',this.tableView)
+     // console.log('this.chartLineView=>',this.chartLineView)
     },
     defaultTab() {
-      this.tab1_activeName = this.chartLineView[0].name
-      this.tab2_activeName = this.tableView[0].name
+      if(this.chartLineView.length > 0){
+        this.tab1_activeName = this.chartLineView[0].name
+      }
+
+      if(this.tableView.length > 0){
+        this.tab2_activeName = this.tableView[0].name
+      }
+
     }
   }
 }

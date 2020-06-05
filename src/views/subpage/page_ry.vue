@@ -20,7 +20,7 @@
       <el-tab-pane
         v-for="item in tabView"
         :key="item.id"
-        :label="item.title"
+        :label="item.config.tabTitle"
         :name="item.name"
       >
         <Tab
@@ -105,7 +105,9 @@ export default {
       this.tableView = sortArray(this.tableView)
     },
     defaultTab() {
-      this.tab1_activeName = this.tabView[0].name
+      if(this.tabView.length > 0){
+        this.tab1_activeName = this.tabView[0].name
+      }
     }
   }
 }
