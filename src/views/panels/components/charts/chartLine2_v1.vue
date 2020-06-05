@@ -69,11 +69,14 @@
     },
     methods: {
       handleFormatter(params) {
-        let res = ''
-        res += `${params.seriesName} : ${params.value[params.seriesName]}`
-        const _v = this.data.data.find(item => item.title === params.seriesName)
+        let res = '';
+        if(params.dimensionNames.length > 2){
+          res += `${params.dimensionNames[params.dataIndex + 1]} : ${params.value[params.dimensionNames[params.dataIndex + 1]]}`
+        }else{
+          res += `${params.seriesName} : ${params.value[params.seriesName]}`
+        }
 
-        switch (_v.type) {
+        switch (this.data.data[this.selectRadio -1].type) {
           case 'Percentage':
             res += `%`
             break
@@ -237,6 +240,8 @@
         this.chart.setOption(this.options)
       },
       initData(){
+
+        this.options.series.push({ type: 'line',name: this.chartData[this.selectRadio - 1].title  });
 
         this.options.dataset.source = this.chartData[this.selectRadio - 1].source;
         this.options.dataset.dimensions = [];
