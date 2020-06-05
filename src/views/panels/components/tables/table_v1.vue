@@ -182,15 +182,17 @@ export default {
             item.data.forEach((_item) => {
               if (_item.v_id) {
                 employeeList.forEach((__item) => {
-                  __item.children.forEach((___item) => {
-                    ___item.children.forEach((____item) => {
-                      if (_item.v_id === ____item.value) {
-                        _item['v_name'] = ____item.label
-                        _item['v_group_name'] = ___item.value + '组'
-                        _item['v_cu'] = ''
-                      }
+                  if(__item.children){
+                    __item.children.forEach((___item) => {
+                      ___item.children.forEach((____item) => {
+                        if (_item.v_id === ____item.value) {
+                          _item['v_name'] = ____item.label
+                          _item['v_group_name'] = ___item.value + '组'
+                          _item['v_cu'] = ''
+                        }
+                      })
                     })
-                  })
+                  }
                 })
                 arrs.push(_item)
               }

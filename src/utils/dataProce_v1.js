@@ -107,19 +107,22 @@ export async function getFullData(params) {
       if(__arr.length >0){
         data.dimension = [];
         __arr.forEach((item) => {
-          let obj = {};
-          obj.v_company = item.value;
-          data.dimension.push(obj);
-          item.children.forEach((_item) => {
-            let _obj = {};
-            _obj.v_group_name = _item.value;
-            data.dimension.push(_obj);
-            _item.children.forEach((__item) => {
-              let __obj = {};
-              __obj.v_id = __item.value;
-              data.dimension.push(__obj);
+          if(item.children){
+            let obj = {};
+            obj.v_company = item.value;
+            data.dimension.push(obj);
+            item.children.forEach((_item) => {
+              let _obj = {};
+              _obj.v_group_name = _item.value;
+              data.dimension.push(_obj);
+              _item.children.forEach((__item) => {
+                let __obj = {};
+                __obj.v_id = __item.value;
+                data.dimension.push(__obj);
+              })
             })
-          })
+          }
+
         })
       }
       //console.log('data.dimension=>',data.dimension)
@@ -150,15 +153,17 @@ export async function getFullData(params) {
 
       if (params.query.group.length === 2) {
         __arr.forEach((item) => {
-          item.children.forEach((_item)=>{
-            if (_item.value === params.query.group[1]) {
-              _item.children.forEach((__item) => {
-                const __obj = {}
-                __obj.v_id = __item.v_project_work_id
-                data.dimension.push(__obj)
-              })
-            }
-          })
+          if(item.children){
+            item.children.forEach((_item)=>{
+              if (_item.value === params.query.group[1]) {
+                _item.children.forEach((__item) => {
+                  const __obj = {}
+                  __obj.v_id = __item.v_project_work_id
+                  data.dimension.push(__obj)
+                })
+              }
+            })
+          }
         })
       } else {
         data.dimension.push({ v_id: params.query.group[2].toString() })
