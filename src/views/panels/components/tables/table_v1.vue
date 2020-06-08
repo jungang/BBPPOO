@@ -163,11 +163,11 @@ export default {
   methods: {
     formatDataSet(data) {
       // console.log('list=>',data.list)
-      this.tableData = [];
+      this.tableData = []
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('data.list=>', data.list)
         const employeeList = this.$store.state.group.employeeList
-        //console.log('employeeList=>', employeeList)
+        // console.log('employeeList=>', employeeList)
         const arrs = []
         const lirunArray = []
         // const _idd = 0
@@ -182,7 +182,7 @@ export default {
             item.data.forEach((_item) => {
               if (_item.v_id) {
                 employeeList.forEach((__item) => {
-                  if(__item.children){
+                  if (__item.children) {
                     __item.children.forEach((___item) => {
                       ___item.children.forEach((____item) => {
                         if (_item.v_id === ____item.value) {
@@ -204,7 +204,7 @@ export default {
         arrs.forEach((dt) => {
           dt.id = __id
           if (!dt.v_id) {
-            lirunArray.push(dt);
+            lirunArray.push(dt)
 
             arrs.forEach((_dt) => {
               if (_dt.v_id && (_dt.v_group_name === dt.v_group_name)) {
@@ -215,7 +215,7 @@ export default {
           __id++
         })
 
-        //console.log('lirunArray=>',lirunArray)
+        // console.log('lirunArray=>',lirunArray)
         this.tableData = lirunArray
       } else {
         this.findChildrow(data.list, this.tableData)
@@ -226,7 +226,7 @@ export default {
         })*/
       }
 
-     // console.log('this.tableData:', this.tableData)
+      // console.log('this.tableData:', this.tableData)
     },
     findChildrow(arr, listArray) {
       arr.forEach((items) => {

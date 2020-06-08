@@ -174,6 +174,7 @@ export default {
         'year': this.year,
         'vf_file': 'dashboard.efwvf'
       }
+      console.log('data:', data)
       fetchData(data).then(response => {
         this.$store.dispatch('group/person', response)
         // console.log('response:', response)
