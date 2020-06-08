@@ -169,7 +169,7 @@ export default {
       const data = {
         'dir': 'Sample Reports/employee',
         'projectId': this.$store.state.user.apiTemplate.projectId,
-        'vf_id': 0,
+        'vf_id': 2,
         'month': this.month,
         'year': this.year,
         'vf_file': 'dashboard.efwvf'
@@ -196,6 +196,11 @@ export default {
 
         // 构建组结构
         response.forEach(item => {
+          if (item.v_group_name === 'Null') {
+            item.v_group_name = '未分'
+          }
+
+          console.log('item.v_group_name:', item.v_group_name)
           const _company = this.companyList.find(company => company.label === item.v_company)
           const _v = _company.children.find(group => group.label === item.v_group_name + '组')
           if (!_v) {

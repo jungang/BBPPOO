@@ -257,6 +257,7 @@ export function format(...arg) {
 }
 
 export async function getData(...arg) {
+  console.log('arg:', arg)
   const [currentView, data] = arg
   // console.log(data)
   let res_s = []
@@ -307,6 +308,7 @@ export async function getData(...arg) {
 
   res_s = await fetchData(data0)
 
+  console.log('currentView:', currentView)
   // 预计
   if (currentView.compare) {
     res_y = await fetchData(data1)

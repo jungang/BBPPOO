@@ -163,15 +163,24 @@ export default {
       this.listLoading = true
 
       const data = {
-        _drillName: 'monthly_items_list',
+        _drillName: 'targetView',
         drillName: '',
         parameters: {
           year: row.year,
           month: row.month
         }
       }
+
+      if (!this.currentView) {
+        this.currentView = {
+          name: 'true',
+          compare: true
+        }
+      }
+
+      // console.log('this.currentView:', this.currentView)
       const mixed = standardize(await getData(this.currentView, data))
-      console.log(mixed)
+      // console.log(mixed)
       this.detailList.items = []
 
       mixed.res_y.forEach((item, index) => {
