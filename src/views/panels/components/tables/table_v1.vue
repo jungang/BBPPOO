@@ -163,7 +163,7 @@ export default {
   methods: {
     formatDataSet(data) {
       // console.log('list=>',data.list)
-
+      this.tableData = [];
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('data.list=>', data.list)
         const employeeList = this.$store.state.group.employeeList
