@@ -307,6 +307,7 @@ export async function getData(...arg) {
   // console.log({ data0, data1, data2, data3 })
 
   res_s = await fetchData(data0)
+  console.log('res_s:', res_s)
 
   console.log('currentView:', currentView)
   // 预计
@@ -314,7 +315,7 @@ export async function getData(...arg) {
     res_y = await fetchData(data1)
   }
 
-  // currentView.ratio = false // todo 暂时取消占比数据读取
+  currentView.ratio = true // todo 暂时取消占比数据读取
   if (currentView.ratio) {
     // 实际  占比
     res_s_zb = await fetchData(data2)

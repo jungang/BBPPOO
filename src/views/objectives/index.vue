@@ -183,7 +183,9 @@ export default {
       // console.log(mixed)
       this.detailList.items = []
 
+      console.log('mixed:', mixed)
       mixed.res_y.forEach((item, index) => {
+        // console.log('item:', item)
         this.detailList.items.push({
           res_y_title: mixed.res_y[index].title,
           res_y_value: mixed.res_y[index].value,
@@ -191,6 +193,7 @@ export default {
           res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
         })
       })
+      console.log('this.detailList.items:', this.detailList.items)
       // fetchDetail(this.detailList.listQuery).then(response => {
       //   this.detailList.items = response.data.items
       //   this.detailList.total = response.data.total

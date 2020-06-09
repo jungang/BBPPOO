@@ -16,7 +16,7 @@
         :query="query"
       />
     </el-row>
-    <el-tabs v-model="tab1_activeName" type="border-card" v-if="tabView.length > 0">
+    <el-tabs v-if="tabView.length > 0" v-model="tab1_activeName" type="border-card">
       <el-tab-pane
         v-for="item in tabView"
         :key="item.id"
@@ -106,10 +106,9 @@ export default {
       this.tableView = sortArray(this.tableView)
     },
     defaultTab() {
-      if(this.tabView.length > 0){
+      if (this.tabView.length > 0) {
         this.tab1_activeName = this.tabView[0].name
       }
-
     }
   }
 }

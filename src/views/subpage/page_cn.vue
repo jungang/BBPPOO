@@ -31,14 +31,14 @@
       </el-tab-pane>
     </el-tabs>
     <Filters
+      v-if="comparisonChartLineView.length > 0"
       :query.sync="querycn"
       :multiple="true"
       :type="filterType"
       class="filter-box"
       @filtration="handleCNFilter"
-      v-if="comparisonChartLineView.length > 0"
     />
-    <el-tabs v-model="tab2_activeName" type="border-card" class="table-box" v-if="comparisonChartLineView.length > 0">
+    <el-tabs v-if="comparisonChartLineView.length > 0" v-model="tab2_activeName" type="border-card" class="table-box">
       <el-tab-pane
         v-for="item in comparisonChartLineView"
         :key="item.id"
@@ -141,7 +141,7 @@ export default {
       // console.log('currentView=>',this.currentView)
       // console.log('rowView=>',this.rowView)
       // console.log('trendChartLineView=>',this.trendChartLineView)
-       console.log('comparisonChartLineView=>',this.comparisonChartLineView)
+      console.log('comparisonChartLineView=>', this.comparisonChartLineView)
 
       this.chartBar.len = this.rowView.length
 
@@ -150,14 +150,13 @@ export default {
       this.comparisonChartLineView = sortArray(this.comparisonChartLineView)
     },
     defaultTab() {
-      if(this.trendChartLineView.length > 0){
+      if (this.trendChartLineView.length > 0) {
         this.tab1_activeName = this.trendChartLineView[0].name
       }
 
-      if(this.comparisonChartLineView.length > 0){
+      if (this.comparisonChartLineView.length > 0) {
         this.tab2_activeName = this.comparisonChartLineView[0].name
       }
-
     }
   }
 }

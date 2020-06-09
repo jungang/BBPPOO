@@ -129,21 +129,20 @@ export default {
       this.tableView = sortArray(this.tableView)
       this.chartLineView = sortArray(this.chartLineView)
 
-      //console.log('this.currentView=>',this.currentView)
-      //console.log('this.currentView=>',JSON.stringify(this.currentView))
-      //console.log('this.rowView=>',this.rowView)
-     // console.log('this.tableView=>',this.tableView)
-     // console.log('this.chartLineView=>',this.chartLineView)
+      // console.log('this.currentView=>',this.currentView)
+      // console.log('this.currentView=>',JSON.stringify(this.currentView))
+      // console.log('this.rowView=>',this.rowView)
+      // console.log('this.tableView=>',this.tableView)
+      // console.log('this.chartLineView=>',this.chartLineView)
     },
     defaultTab() {
-      if(this.chartLineView.length > 0){
+      if (this.chartLineView.length > 0) {
         this.tab1_activeName = this.chartLineView[0].name
       }
 
-      if(this.tableView.length > 0){
+      if (this.tableView.length > 0) {
         this.tab2_activeName = this.tableView[0].name
       }
-
     }
   }
 }

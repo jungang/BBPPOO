@@ -105,7 +105,7 @@ export default {
       this.tableView = sortArray(this.tableView)
     },
     defaultTab() {
-      if(this.tabView.length > 0){
+      if (this.tabView.length > 0) {
         this.tab1_activeName = this.tabView[0].name
       }
     }

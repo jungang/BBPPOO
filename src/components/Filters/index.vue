@@ -175,6 +175,9 @@ export default {
         'vf_file': 'dashboard.efwvf'
       }
       console.log('data:', data)
+      if (this.$store.state.user.apiTemplate.projectId === '00000000-0000-0000-0000-000000000000') {
+        data.vf_id = 0
+      }
       fetchData(data).then(response => {
         this.$store.dispatch('group/person', response)
         // console.log('response:', response)
