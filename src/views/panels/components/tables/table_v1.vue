@@ -28,7 +28,7 @@
         :min-width="25"
       >
         <template slot-scope="{row}">
-          <span :class="row.res_highlightStyle">
+          <span :class="row">
             {{ row.res_y_value }}
           </span>
 
@@ -226,7 +226,7 @@ export default {
         })*/
       }
 
-      // console.log('this.tableData:', this.tableData)
+      console.log('this.tableData:', this.tableData)
     },
     findChildrow(arr, listArray) {
       arr.forEach((items) => {
