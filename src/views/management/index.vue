@@ -52,7 +52,6 @@
         <template slot-scope="{row}">
 
           <el-upload
-            v-if="!loading"
             ref="upload"
             :data="{
               fileName:row.name,
@@ -61,17 +60,14 @@
               batch:temp.year + temp.month}"
             :show-file-list="false"
             :action="$store.state.options.API+'/upload/all'"
-            :on-progress="handleProgress"
             :on-success="handleSuccess"
             :on-error="handleError"
             :auto-upload="true"
             style="width: 60px;display: inline-block;"
           >
-            <el-button size="mini" :disabled="loading" type="primary" @click="curRowIndex=row.$index">上传</el-button>
+            <el-button size="mini" type="primary" @click="curRowIndex=row.$index">上传</el-button>
             <!--            /*主要特别注意这里新增的@click方法将当前的index值赋值一个变量，否则无法获取到对应的行信息*/-->
           </el-upload>
-
-          <el-button v-if="loading" size="mini" disabled type="primary">上传</el-button>
 
           <a v-if="!row.id" href="javascript:void(0)">
             <el-button v-if="!row.id" size="mini" disabled>
@@ -124,7 +120,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       timer: {},
       calstatusPending: false, // false 未在计算中 ，true 正在计算中
       pageClick: false, // 手动开始计算
@@ -188,7 +183,7 @@ export default {
               type: 'warning'
             }).then(() => {
               console.log('跳转。。。')
-              this.$router.push('/panels/report') // 跳转到指定页面
+              this.$router.push('/panels/list') // 跳转到指定页面
             }).catch(() => {})
           }
         }
@@ -229,12 +224,8 @@ export default {
         })
         .catch(err => { console.error(err) })
     },
-    handleProgress(response) {
-      this.loading = true
-    },
     handleSuccess(response) {
       this.getList()
-      this.loading = false
       this.$message({
         message: '文件上传成功。',
         type: 'success'
@@ -250,9 +241,8 @@ export default {
       this.listLoading = true
       this.list.listQuery.batch = this.temp.year + this.temp.month
       fetchList(this.list.listQuery).then(response => {
-        // console.log('response:', response)
+        console.log('response:', response)
         this.list.items = response.data
-        // this.list.total = response.data.total
         this.listLoading = false
       })
     }
