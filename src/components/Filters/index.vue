@@ -174,7 +174,7 @@ export default {
         'year': this.year,
         'vf_file': 'dashboard.efwvf'
       }
-      console.log('data:', data)
+      // console.log('data:', data)
       if (this.$store.state.user.apiTemplate.projectId === '00000000-0000-0000-0000-000000000000') {
         data.vf_id = 0
       }
@@ -204,7 +204,7 @@ export default {
             item.v_group_name = '未分'
           }
 
-          console.log('item.v_group_name:', item.v_group_name)
+          // console.log('item.v_group_name:', item.v_group_name)
           const _company = this.companyList.find(company => company.label === item.v_company)
           const _v = _company.children.find(group => group.label === item.v_group_name + '组')
           if (!_v) {
@@ -234,7 +234,7 @@ export default {
         })
 
         this.$store.dispatch('group/employeelist', this.companyList)
-        console.log(' this.companyList:', this.companyList)
+        // console.log(' this.companyList:', this.companyList)
 
         if (this.companyList.length > 0) {
           console.log('this.companyList.length:', this.companyList.length)
