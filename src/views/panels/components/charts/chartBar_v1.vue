@@ -8,6 +8,9 @@
 const echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
 import { parseTime } from '@/utils'
+
+import moment from 'moment'; //导入模块
+moment.locale('zh-cn'); //设置语言 或 moment.lang('zh-cn');
 // const chartBarData = require('../../../subpage/mock/chartBar');
 
 export default {
@@ -100,30 +103,39 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      // console.log('formatDataSet...')
-      // console.log('柱状图=》', data.data)
+      let _arry = [];
 
-      // data.data = chartBarData;
+      if(data.query.dateType === 'week'){
+        data.data.forEach((item) => {
+          let __obj = {};
+          __obj.index = item.index;
+          __obj.name = item.name;
+          __obj.title = item.title;
+          __obj.dimension = [];
+          __obj.dimension.push({data:[],v_group_name:''});
+          __obj.dimension[0].v_group_name = item.dimension[0].v_group_name
+          __obj.dimension[0].data = this.findDateData(item.dimension[0].data,data.query.date);
+          _arry.push(__obj);
+        });
+      }else{
+        _arry = data.data
+      }
 
       const query = this.$store.state.options.filterOptions
 
-      console.log('query:', query)
+     // console.log('query:', query)
 
       const dimensions = ['time']
       const source = []
       const series = []
 
-      // console.log('data.data:', data.data)
-
-      // const _data = data.data.slice(2, 4)
-      // console.log('_data:', _data)
-
-      data.data.forEach(subject => { // subject
+      _arry.forEach(subject => { // subject
         dimensions.push(subject.title)
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
 
         if (subject.dimension.length > 0) {
+          console.log('ddd',subject.dimension[0].data)
           subject.dimension[0].data.forEach((item, index, arr) => { // 组织
             const _v = source.find(date => date.time === item.time)
 
@@ -183,6 +195,22 @@ export default {
       !this.chart.id && this.initChart()
       this.chart.hideLoading()
       this.chart.setOption(this.options)
+    },
+    findDateData(_arr,selectTime){
+      let timeArray = [];
+      let _data =[];
+      timeArray.push(moment(selectTime).subtract('days', 13).format('MM.DD')+'-'+ moment(selectTime).subtract('days', 7).format('MM.DD'))
+      timeArray.push(moment(selectTime).subtract('days', 6).format('MM.DD')+'-'+ moment(selectTime).format('MM.DD'))
+
+
+      _arr.forEach((item) => {
+
+        if((item.time === timeArray[0]) || (item.time === timeArray[1])){
+          _data.push(item);
+        }
+      });
+
+      return _data;
     }
 
   }
