@@ -71,7 +71,7 @@ export default {
         multiple: false,
         isStore: 'false',
         group: 'null', // 选择组信息
-        type: 'all' // 合集 all | 集团 group | 本地 local
+        type: this.$store.state.user.alias === 'ts' ? false : 'all' // 合集 all | 集团 group | 本地 local
       }
     }
   },

@@ -150,8 +150,8 @@ export default {
         const _item = {}
         _item.slot1 = subject.title
 
-        console.log('subject.title:', subject.title)
-        console.log('subject:', subject)
+        // console.log('subject.title:', subject.title)
+        // console.log('subject:', subject)
         // console.log('_item.slot1:', _item.slot1)
         // console.log('subject.dimension:', subject.dimension)
         if (subject.dimension.length > 0) {
@@ -166,8 +166,8 @@ export default {
           // console.log('_v:', _v)
           if (_v) {
             const _type = _v.type
-            console.log('_v.actualValue:', _v.actualValue)
-            console.log('_type:', _type)
+            // console.log('_v.actualValue:', _v.actualValue)
+            // console.log('_type:', _type)
             const _suffix = _type === 'Percentage' ? '%' : ''
 
             if (_v.type === 'Double') {

@@ -94,7 +94,7 @@ export default {
         multiple: false,
         group: 'null', // 选择组信息
         isStore: 'false',
-        type: 'all' // 合集 all | 集团 group | 本地 local
+        type: this.$store.state.user.alias === 'ts' ? false : 'all' // 合集 all | 集团 group | 本地 local
       },
       querycn: {
         dateType: 'month', // 天 day | 周 week | 月 month | 年 year
@@ -102,7 +102,7 @@ export default {
         multiple: true,
         isStore: 'duibi',
         group: 'null', // 选择组信息
-        type: 'all' // 合集 all | 集团 group | 本地 local
+        type: this.$store.state.user.alias === 'ts' ? false : 'all' // 合集 all | 集团 group | 本地 local
       }
     }
   },
