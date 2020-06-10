@@ -55,9 +55,9 @@
       :props="{ checkStrictly: true }"
     />
 
-    <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
+    <span v-if="query.type && $store.state.user.alias !=='ts'" style="margin-left: 20px">业务线条：</span>
     <el-select
-      v-if="query.type"
+      v-if="query.type && $store.state.user.alias !=='ts'"
       v-model="query.type"
       placeholder="请选择"
       style="width: 100px"
