@@ -4,6 +4,7 @@ import { Base64 } from 'js-base64'
 
 export function fetchData(data) {
   // console.log(data)
+
   return request2({
     url: `/visualizeData?vf_id=${data.vf_id}
     &pid=${data.projectId}

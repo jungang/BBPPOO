@@ -196,6 +196,11 @@ export default {
             })
           }
         })
+
+        if (response.find(item => item.v_company === '通软')) {
+          this.query.group.push('通软')
+        }
+
         // console.log('this.companyList:', this.companyList)
 
         // 构建组结构
@@ -245,6 +250,7 @@ export default {
       })
     },
     handleCurrentChange(val) {
+      console.log('this.query:', this.query)
       this.$emit('filtration', { })
     }
   }

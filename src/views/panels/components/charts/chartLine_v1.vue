@@ -26,7 +26,7 @@ export default {
         },
         grid: {
           left: 70,
-          top: 30,
+          top: 50,
           bottom: 20
         },
         tooltip: {
