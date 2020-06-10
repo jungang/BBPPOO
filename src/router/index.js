@@ -280,7 +280,7 @@ export const asyncRoutes = [
   */
   {
     path: '/view-manage',
-    // hidden: true,
+    hidden: true,
     component: Layout,
     redirect: '/view-manage/list',
     name: 'ViewManage\'',
