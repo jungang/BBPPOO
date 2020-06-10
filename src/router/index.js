@@ -292,7 +292,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'list',
-        // hidden: true,
+        hidden: true,
         component: () => import('@/views/view-manage/list'),
         name: 'ViewList2',
         meta: { title: 'view List', icon: 'list' }

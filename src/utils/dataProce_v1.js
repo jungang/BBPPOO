@@ -357,7 +357,7 @@ export function calcHighlight(data) {
         // console.log('item.highlight:', item.highlight)
         item.highlightStyle = ''
 
-        if (item.targetValue) {
+        if (item.targetValue !== undefined) {
           if (item.highlight === 'true') {
             item.highlightStyle = item.actualValue < item.targetValue ? 'danger' : 'blue'
           }

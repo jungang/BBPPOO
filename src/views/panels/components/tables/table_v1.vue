@@ -17,19 +17,19 @@
       />
       <el-table-column
         v-if="nowView.config.compare"
-        prop="res_s_zb_value"
+        prop="res_y_value"
         label="目标（万元）"
         :min-width="25"
       />
       <el-table-column
         v-if="nowView.config.rowTitle ==='收入' || nowView.config.rowTitle ==='成本'"
-        prop="res_y_value"
+        prop="res_s_value"
         label="实际（万元）"
         :min-width="25"
       >
         <template slot-scope="{row}">
-          <span :class="row">
-            {{ row.res_y_value }}
+          <span :class="row.res_highlightStyle">
+            {{ row.res_s_value }}
           </span>
 
         </template>
@@ -226,7 +226,7 @@ export default {
         })*/
       }
 
-      console.log('this.tableData:', this.tableData)
+       //console.log('this.tableData:', this.tableData)
     },
     findChildrow(arr, listArray) {
       arr.forEach((items) => {
@@ -234,8 +234,8 @@ export default {
           const _obj = {}
           _obj.id = this.id
           _obj.res_s_title = items.title
-          _obj.res_y_value = items.dimension[0].data[0].actualValue
-          _obj.res_s_zb_value = items.dimension[0].data[0].targetValue
+          _obj.res_s_value = items.dimension[0].data[0].actualValue
+          _obj.res_y_value = items.dimension[0].data[0].targetValue
           _obj.res_highlight = items.dimension[0].data[0].highlight
           _obj.res_highlightStyle = items.dimension[0].data[0].highlightStyle
           this.id++
