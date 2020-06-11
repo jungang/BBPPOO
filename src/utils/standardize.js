@@ -185,14 +185,22 @@ export function standardize(data, params) {
       const _d = deepClone(item.dimension[0].data[0])
       _d.time = +date
       _d.actualValue = 0
-      _d.original = 0
       _d.targetValue = 0
+      _d.original = 0
       const _v = item.dimension[0].data.find(time => time.time === +date)
-      // console.log('_v:', _v)
+      if (_v) {
+        console.log('_v:', _v)
+        _v.actualValue = _v.actualValue || 0
+        _v.targetValue = _v.targetValue || 0
+      }
       return _v || _d
     })
-    console.log('_date:', _date)
-    item.dimension[0].data = _date
+    // console.log('params:', params.query.dateType)
+
+    // todo
+    if (params.query.dateType !== 'week') {
+      item.dimension[0].data = _date
+    }
   })
 
   // console.log('resDate:', resDate)
@@ -233,9 +241,7 @@ export function createDateRuler(params, n) {
     res.unshift(i)
   }
 
-  console.log('res:', res)
   const end_date = parseTime(params.query.date, '{y}{m}{d}')
-
   switch (params.query.dateType) {
     case 'daily':
       res = res.map(item => moment(end_date).subtract(item, 'days').format('YYYYMMDD'))
