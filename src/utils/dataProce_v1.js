@@ -48,7 +48,12 @@ export async function getFullData(params) {
     subject = params.items['*'] || ['']
   }
 
-  // console.log('subject:', subject)
+  //去除空格
+  let _subject = []
+  subject.forEach((items) => {
+    _subject.push(items.trim());
+  });
+  subject =  _subject;
 
   const viewSubject = subject.map(item => {
     let _title = ''
