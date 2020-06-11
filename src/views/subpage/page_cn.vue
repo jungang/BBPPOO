@@ -8,7 +8,7 @@
       class="filter-box"
       @filtration="handleCNFilter"
     />
-    <el-row class="row-box" type="flex" justify="space-around" v-if="contrastView.length > 0">
+    <el-row v-if="contrastView.length > 0" class="row-box" type="flex" justify="space-around">
       <Row
         v-for="item in contrastView"
         :key="item.id"
@@ -163,7 +163,7 @@ export default {
       // console.log('currentView=>',this.currentView)
       // console.log('rowView=>',this.rowView)
       // console.log('trendChartLineView=>',this.trendChartLineView)
-     // console.log('contrastView=>', this.contrastView)
+      // console.log('contrastView=>', this.contrastView)
 
       this.chartBar.len = this.rowView.length
 
