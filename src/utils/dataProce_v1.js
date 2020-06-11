@@ -49,13 +49,18 @@ export async function getFullData(params) {
     subject = params.items['*'] || ['']
   }
 
-  // console.log('subject:', subject)
+  //去除空格
+  let _subject = []
+  subject.forEach((items) => {
+    _subject.push(items.trim());
+  });
+  subject =  _subject;
 
   const viewSubject = subject.map(item => {
     let _title = ''
 
     const _v = store.state.options.subject.find(s => {
-      return s.name === item
+      return s.name === item.trim();
     })
 
     // console.log('_v:', _v)

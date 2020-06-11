@@ -1,7 +1,8 @@
 <template>
   <el-col :span="24/chartBarlen.len -1" style="position: relative">
     <div class="title">{{ data.config.rowTitle }}</div>
-    <chartBar :data="cardData.dataSet" />
+    <chartBar :data="cardData.dataSet"  v-if="data.config.zoneName !== 'contrast'"/>
+    <ChartsBarContrast :data="cardData.dataSet" v-if="data.config.zoneName === 'contrast'"/>
   </el-col>
 </template>
 
@@ -9,10 +10,11 @@
 import { deepClone } from '@/utils'
 import { getFullData } from '@/utils/dataProce_v1'
 import chartBar from '../charts/chartBar_v1'
+import ChartsBarContrast from '../charts/chartBar2_v1'
 
 export default {
   name: 'Row',
-  components: { chartBar },
+  components: { chartBar,ChartsBarContrast },
   directives: { },
   props: {
     data: {
@@ -65,7 +67,8 @@ export default {
       this.currentView = deepClone(this.data)
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
-      // console.log('this.fullData:::', this.fullData)
+
+       console.log(this.data.config.zoneName)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {

@@ -1,24 +1,6 @@
 <template>
   <div class="zone-box">
     <Filters
-      v-if="contrastView.length > 0"
-      :query.sync="querycn"
-      :multiple="true"
-      :type="filterType"
-      class="filter-box"
-      @filtration="handleCNFilter"
-    />
-    <el-row class="row-box" type="flex" justify="space-around" v-if="contrastView.length > 0">
-      <Row
-        v-for="item in contrastView"
-        :key="item.id"
-        ref="componentcn"
-        :chart-barlen="chartBar"
-        :data="item"
-        :query="query"
-      />
-    </el-row>
-    <Filters
       :query.sync="query"
       :multiple="true"
       :type="filterType"
@@ -91,7 +73,6 @@ export default {
       },
       trendChartLineView: [],
       comparisonChartLineView: [],
-      contrastView: [],
       currentView: [],
       tab1_activeName: '',
       tab2_activeName: '',
@@ -153,9 +134,6 @@ export default {
           if ((_val.config.indexType === 'tabIndex') && (_val.config.component.type === 'chart_line') && (_val.config.zoneName === 'comparison')) {
             this.comparisonChartLineView.push(_val)
           }
-          if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar') && (_val.config.zoneName === 'contrast')) {
-            this.contrastView.push(_val)
-          }
         }
         return this.currentView
       })
@@ -163,7 +141,7 @@ export default {
       // console.log('currentView=>',this.currentView)
       // console.log('rowView=>',this.rowView)
       // console.log('trendChartLineView=>',this.trendChartLineView)
-     // console.log('contrastView=>', this.contrastView)
+      console.log('comparisonChartLineView=>', this.comparisonChartLineView)
 
       this.chartBar.len = this.rowView.length
 
