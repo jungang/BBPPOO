@@ -54,7 +54,7 @@ export async function getFullData(params) {
     let _title = ''
 
     const _v = store.state.options.subject.find(s => {
-      return s.name === item
+      return s.name === item.trim();
     })
 
     // console.log('_v:', _v)
