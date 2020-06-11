@@ -37,7 +37,7 @@
       </el-table-column>
       <el-table-column
         v-if="nowView.config.rowTitle ==='单人平均'"
-        prop="res_y_value"
+        prop="res_s_value"
         label="达成值（万元）"
         :min-width="25"
       />
