@@ -6,16 +6,16 @@
       :multiple="true"
       :type="filterType"
       class="filter-box"
-      @filtration="handleCNFilter"
+      @filtration="handleDBFilter"
     />
-    <el-row v-if="contrastView.length > 0" class="row-box" type="flex" justify="space-around">
+    <el-row v-if="contrastView.length > 0" class="row-box2" type="flex" justify="space-around">
       <Row
         v-for="item in contrastView"
         :key="item.id"
-        ref="componentcn"
-        :chart-barlen="chartBar"
+        ref="componentdb"
+        :chart-barlen="chartBar2"
         :data="item"
-        :query="query"
+        :query="querycn"
       />
     </el-row>
     <Filters
@@ -89,6 +89,9 @@ export default {
       chartBar: {
         len: 0
       },
+      chartBar2: {
+        len: 0
+      },
       trendChartLineView: [],
       comparisonChartLineView: [],
       contrastView: [],
@@ -138,6 +141,9 @@ export default {
     handleCNFilter() {
       this.$refs.componentcn.forEach((item) => item.getData())
     },
+    handleDBFilter() {
+      this.$refs.componentdb.forEach((item) => item.getData())
+    },
     getCurrentView() {
       _.map(this.$store.state.options.views, (_val, _index, _list) => {
         if (_val.config.pagesName === this.$route.meta.title) {
@@ -154,7 +160,8 @@ export default {
             this.comparisonChartLineView.push(_val)
           }
           if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar') && (_val.config.zoneName === 'contrast')) {
-            this.contrastView.push(_val)
+            this.contrastView.push(_val);
+            this.chartBar2.len = 1;
           }
         }
         return this.currentView
@@ -193,6 +200,10 @@ export default {
     .row-box{
       margin-top: 30px;
       height: 300px
+    }
+    .row-box2{
+      margin-top: 30px;
+      height: 35vh
     }
     .table-box{
       margin-top: 20px;
