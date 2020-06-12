@@ -49,18 +49,18 @@ export async function getFullData(params) {
     subject = params.items['*'] || ['']
   }
 
-  //去除空格
-  let _subject = []
+  // 去除空格
+  const _subject = []
   subject.forEach((items) => {
-    _subject.push(items.trim());
-  });
-  subject =  _subject;
+    _subject.push(items.trim())
+  })
+  subject = _subject
 
   const viewSubject = subject.map(item => {
     let _title = ''
 
     const _v = store.state.options.subject.find(s => {
-      return s.name === item.trim();
+      return s.name === item.trim()
     })
 
     // console.log('_v:', _v)
@@ -297,9 +297,14 @@ export async function getFullData(params) {
   // 数组长度统一,格式
   res = standardize(res, params)
 
+  // console.log('res1:', res)
   // 排序
   res = resSort(res, viewSubject)
 
+  // 补齐科目数据
+  res = fillSubject(res, params)
+
+  // console.log('res2:', res)
   // 转换成数字
   // res = valueToNumber(res)
 
@@ -315,6 +320,8 @@ export async function getFullData(params) {
   if (params.config.completion) {
     res = calcHighlight(res)
   }
+
+  // console.log('res:', res)
 
   // 集成整合
   const chartDate = formatDataSet(params.query.dateType, res)
@@ -433,6 +440,27 @@ export function resSort(data, viewSubject) {
   // console.log('viewSubject:', viewSubject)
   // console.log('data:', data)
   return viewSubject
+}
+
+// 补齐科目
+export function fillSubject(res, params) {
+  console.log('res:', res)
+
+  const _date = params.dateRuler.map(item => {
+    return {
+      actualValue: 0,
+      time: item
+    }
+  })
+  console.log('_date:', _date)
+  res.forEach(item => {
+    console.log('item:', item)
+    if (item.dimension.length <= 0) {
+      item.dimension.push({ data: _date })
+    }
+  })
+
+  return res
 }
 
 // 数据层级折叠

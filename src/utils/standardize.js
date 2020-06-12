@@ -4,7 +4,7 @@ import { parseTime, unique, deepClone } from '@/utils/index'
 // 拉齐长度，填平空位
 export function standardize(data, params) {
   // console.log('standardize...:')
-  console.log('params:', params)
+  // console.log('params:', params)
 
   data.actual.forEach(item => {
     // console.log(item.title, item.value)
@@ -104,10 +104,10 @@ export function standardize(data, params) {
     data.actual.push({})
   }
 
-  console.log('data.actual:', data.actual)
+  // console.log('data.actual:', data.actual)
   resDate = unique(resDate) // 去重
 
-  console.log('resDate:', resDate)
+  // console.log('resDate:', resDate)
 
   resDate.forEach(item => {
     // item.name 类目名称
@@ -187,16 +187,20 @@ export function standardize(data, params) {
 
     // 补齐步长
     // console.log('item:', item.dimension[0].data)
+    console.log('dateRuler:', params.query.dateType)
+
     const _date = params.dateRuler.map(date => {
       const _d = deepClone(item.dimension[0].data[0])
       _d.time = +date
       _d.actualValue = 0
+      _d.highlightStyle = ''
       // _d.targetValue = 0
       _d.original = 0
       const _v = item.dimension[0].data.find(time => time.time === +date)
       if (_v) {
-        console.log('_v:', _v)
+        // console.log('_v:', _v)
         _v.actualValue = _v.actualValue || 0
+        _v.highlightStyle = _v.highlightStyle || ''
         // _v.targetValue = _v.targetValue || 0
       }
       return _v || _d
