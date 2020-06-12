@@ -146,7 +146,7 @@ export default {
 
       // console.log('_current:', _current)
 
-      this.fullData.tableDate.forEach(subject => {
+      this.fullData.fillDate.forEach(subject => {
         const _item = {}
         _item.slot1 = subject.title
 
@@ -197,7 +197,7 @@ export default {
 
       // 图表数据
       // console.log('this.fullData.chartDate:', this.fullData.chartDate)
-      this.cardData.dataSet = this.fullData.chartDate
+      this.cardData.dataSet = this.fullData.fillChartDate
     }
   }
 }

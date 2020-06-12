@@ -15,6 +15,7 @@ export async function getFullData(params) {
   // eslint-disable-next-line no-unused-vars
   const keyColumn = 'vf_id0'
   let res = {} // 返回数据
+  let fill_res = {} // 补齐步长
 
   let day_s = 86400000 * 29
   // const day30_s = 86400000 * 30
@@ -295,11 +296,13 @@ export async function getFullData(params) {
   params.dateRuler = createDateRuler(params, 6)
 
   // 数组长度统一,格式
+
+  fill_res = standardize(deepClone(res), params, true) // 代偿
   res = standardize(res, params)
 
-  // console.log('res1:', res)
   // 排序
-  res = resSort(res, viewSubject)
+  res = resSort(res, deepClone(viewSubject))
+  fill_res = resSort(fill_res, deepClone(viewSubject))
 
   // 补齐科目数据
   // res = fillSubject(res, params)
@@ -314,17 +317,20 @@ export async function getFullData(params) {
 
   if (params.config.completion) {
     res = calcCompletion(res)
+    fill_res = calcCompletion(fill_res)
   }
 
   // 计算高亮
   if (params.config.completion) {
     res = calcHighlight(res)
+    fill_res = calcHighlight(fill_res)
   }
 
   // console.log('res:', res)
 
   // 集成整合
   const chartDate = formatDataSet(params.query.dateType, res)
+  const fillChartDate = formatDataSet(params.query.dateType, fill_res)
   const tableDate = integration(res)
   //  console.log('tableDate=>',tableDate)
   // 处理表格折叠行
@@ -337,7 +343,9 @@ export async function getFullData(params) {
     chartDate: chartDate,
     tableDate: foldTableDate,
     // foldTableDate: foldTableDate,
-    res: res
+    res: res,
+    fillChartDate: fillChartDate,
+    fillDate: fill_res
     // tableDate: standardize(res)
   }
 }
