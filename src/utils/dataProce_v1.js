@@ -302,7 +302,7 @@ export async function getFullData(params) {
   res = resSort(res, viewSubject)
 
   // 补齐科目数据
-  res = fillSubject(res, params)
+  // res = fillSubject(res, params)
 
   // console.log('res2:', res)
   // 转换成数字

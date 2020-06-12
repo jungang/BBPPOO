@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { parseTime, unique, deepClone } from '@/utils/index'
+import { parseTime, unique } from '@/utils/index'
 
 // 拉齐长度，填平空位
 export function standardize(data, params) {
@@ -187,9 +187,8 @@ export function standardize(data, params) {
 
     // 补齐步长
     // console.log('item:', item.dimension[0].data)
-    console.log('dateRuler:', params.query.dateType)
 
-    const _date = params.dateRuler.map(date => {
+    /*    const _date = params.dateRuler.map(date => {
       const _d = deepClone(item.dimension[0].data[0])
       _d.time = +date
       _d.actualValue = 0
@@ -204,13 +203,13 @@ export function standardize(data, params) {
         // _v.targetValue = _v.targetValue || 0
       }
       return _v || _d
-    })
+    })*/
     // console.log('params:', params.query.dateType)
 
     // todo
-    if (params.query.dateType !== 'week') {
-      item.dimension[0].data = _date
-    }
+    // if (params.query.dateType !== 'week') {
+    //   item.dimension[0].data = _date
+    // }
   })
 
   // console.log('resDate:', resDate)
