@@ -100,14 +100,20 @@ export function standardize(data, params) {
     }
   })
 
+  if (data.actual.length <= 0) {
+    data.actual.push({})
+  }
+
+  console.log('data.actual:', data.actual)
   resDate = unique(resDate) // 去重
 
-  // console.log('resDate:', resDate)
+  console.log('resDate:', resDate)
 
   resDate.forEach(item => {
     // item.name 类目名称
     // 添加实际数据
     // data.actual.forEach =>...
+    // console.log('data.actual:', data.actual)
     data.actual.forEach(a => {
       // console.log('a.title:', a.title)
       // console.log('a:', a)
@@ -185,13 +191,13 @@ export function standardize(data, params) {
       const _d = deepClone(item.dimension[0].data[0])
       _d.time = +date
       _d.actualValue = 0
-      _d.targetValue = 0
+      // _d.targetValue = 0
       _d.original = 0
       const _v = item.dimension[0].data.find(time => time.time === +date)
       if (_v) {
         console.log('_v:', _v)
         _v.actualValue = _v.actualValue || 0
-        _v.targetValue = _v.targetValue || 0
+        // _v.targetValue = _v.targetValue || 0
       }
       return _v || _d
     })
