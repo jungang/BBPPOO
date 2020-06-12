@@ -187,8 +187,7 @@ export function standardize(data, params, fill) {
 
     // 补齐步长
     // console.log('item:', item.dimension[0].data)
-
-    if (fill) {
+    if (fill && params.query.dateType !== 'year') {
       const _month_date = params.dateRuler.map(date => {
         const _d = deepClone(item.dimension[0].data[0])
         _d.time = +date
