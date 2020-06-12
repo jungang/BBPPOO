@@ -1,8 +1,8 @@
 import moment from 'moment'
-import { parseTime, unique } from '@/utils/index'
+import { parseTime, unique, deepClone } from '@/utils/index'
 
 // 拉齐长度，填平空位
-export function standardize(data, params) {
+export function standardize(data, params, fill) {
   // console.log('standardize...:')
   // console.log('params:', params)
 
@@ -192,29 +192,30 @@ export function standardize(data, params) {
 
     // 补齐步长
     // console.log('item:', item.dimension[0].data)
+    if (fill && params.query.dateType !== 'year') {
+      const _month_date = params.dateRuler.map(date => {
+        const _d = deepClone(item.dimension[0].data[0])
+        _d.time = +date
+        _d.actualValue = 0
+        _d.highlightStyle = ''
+        // _d.targetValue = 0
+        _d.original = 0
+        const _v = item.dimension[0].data.find(time => time.time === +date)
+        if (_v) {
+          // console.log('_v:', _v)
+          _d.actualValue = _v.actualValue || 0
+          _d.highlightStyle = _v.highlightStyle || ''
+          _d.targetValue = _v.targetValue || 0
+        }
+        return _d
+      })
 
-    /*    const _date = params.dateRuler.map(date => {
-      const _d = deepClone(item.dimension[0].data[0])
-      _d.time = +date
-      _d.actualValue = 0
-      _d.highlightStyle = ''
-      // _d.targetValue = 0
-      _d.original = 0
-      const _v = item.dimension[0].data.find(time => time.time === +date)
-      if (_v) {
-        // console.log('_v:', _v)
-        _v.actualValue = _v.actualValue || 0
-        _v.highlightStyle = _v.highlightStyle || ''
-        // _v.targetValue = _v.targetValue || 0
+      if (params.query.dateType !== 'week') {
+        item.dimension[0].data = _month_date
       }
-      return _v || _d
-    })*/
-    // console.log('params:', params.query.dateType)
+    }
 
-    // todo
-    // if (params.query.dateType !== 'week') {
-    //   item.dimension[0].data = _date
-    // }
+    // console.log('item:', item)
   })
 
   // console.log('resDate:', resDate)
