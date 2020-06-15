@@ -140,6 +140,7 @@ export function standardize(data, params, fill) {
 
         // console.log(a.dimension.v_group_name)
         const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
+        const _c = item.dimension.find(dimension => dimension.v_company === a.dimension.v_company)
         // console.log('_v', _v)
         if (!_v) {
           // item.type = a.type // todo
