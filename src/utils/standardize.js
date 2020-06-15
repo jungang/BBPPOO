@@ -147,7 +147,12 @@ export function standardize(data, params, fill) {
             v_group_name: a.dimension.v_group_name,
             data: [_data]
           })
-        } else { // 添加数据
+        } else if(!_c) { // 添加数据
+          item.dimension.push({ // 创建维度并添加数据
+            v_company: a.dimension.v_company,
+            data: [_data]
+          })
+        }else {
           _v.data.push(_data)
         }
       }

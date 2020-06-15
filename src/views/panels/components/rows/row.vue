@@ -1,6 +1,6 @@
 <template>
   <el-col :span="24/chartBarlen.len -1" style="position: relative">
-    <div class="title">{{ data.config.rowTitle }}</div>
+    <div class="title" v-if="data.config.zoneName !== 'contrast'">{{ data.config.rowTitle }}</div>
     <chartBar :data="cardData.dataSet"  v-if="data.config.zoneName !== 'contrast'"/>
     <ChartsBarContrast :data="cardData.dataSet" v-if="data.config.zoneName === 'contrast'"/>
   </el-col>
@@ -68,7 +68,7 @@ export default {
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
 
-       console.log(this.data.config.zoneName)
+//       console.log(this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
@@ -116,7 +116,8 @@ export default {
     font-weight: 400;
     position: absolute;
     display: block;
-    top: 30px;
+    top:30px
   }
+
 
 </style>
