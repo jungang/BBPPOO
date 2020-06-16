@@ -169,8 +169,10 @@ export async function getFullData(params) {
             })
           }
         })
-      } else {
+      } else if(params.query.group.length === 3){
         data.dimension.push({ v_id: params.query.group[2].toString() })
+      }else{
+        data.dimension.push({ v_company: params.query.group[0] })
       }
     } else {
       // console.log('params.query.group:', params.query.group)
