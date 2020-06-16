@@ -198,7 +198,7 @@ export default {
         })
 
         if (response.find(item => item.v_company === '通软')) {
-          this.query.group.push('通软')
+          this.query.group.push(['通软'])
         }
 
         // console.log('this.companyList:', this.companyList)
