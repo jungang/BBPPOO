@@ -139,23 +139,21 @@ export function standardize(data, params, fill) {
         }
 
         // console.log(a.dimension.v_group_name)
+
         const _v = item.dimension.find(dimension => dimension.v_group_name === a.dimension.v_group_name)
         const _c = item.dimension.find(dimension => dimension.v_company === a.dimension.v_company)
-        // console.log('_v', _v)
-        if (!_v) {
-          // item.type = a.type // todo
-          item.dimension.push({ // 创建维度并添加数据
-            v_group_name: a.dimension.v_group_name,
-            data: [_data]
-          })
-        } else if (!_c) { // 添加数据
-          item.dimension.push({ // 创建维度并添加数据
-            v_company: a.dimension.v_company,
-            data: [_data]
-          })
-        } else {
-          _v.data.push(_data)
+
+        let _obj ={};
+        if(!_c){
+          _obj.v_company = a.dimension.v_company
         }
+
+        if(!_v){
+          _obj.v_group_name = a.dimension.v_group_name
+        }
+        _obj.data = [];
+        _obj.data.push(_data);
+        item.dimension.push(_obj);
       }
     })
 
