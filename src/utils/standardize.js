@@ -219,7 +219,9 @@ export function standardize(data, params, fill) {
     // console.log('item:', item)
   })
 
-  // console.log('resDate:', resDate)
+  console.log('resDate:', resDate)
+  const newResDate = generateTemplate(params)
+  console.log('newResDate:', newResDate)
 
   return resDate
 }
@@ -272,6 +274,47 @@ export function createDateRuler(params, n) {
       res = moment(end_date).format('YYYY')
       break
   }
+  return res
+}
 
+/**
+ * 数据模板，先结构框架后填充数据
+ * @param params
+ * @returns {[]}
+ */
+export function generateTemplate(params) {
+  const res = deepClone(params.viewSubject)
+  const _params = deepClone(params)
+  if (!_params.query.multiple) {
+    const _g = [..._params.query.group]
+    _params.query.group = []
+    _params.query.group.push(_g)
+  }
+  console.log('_params:', _params)
+  console.log('params.query.group:', _params.query.group)
+  const _group = []
+  _params.query.group.forEach(item => {
+    switch (item.length) {
+      case 1:
+        _group.push({ v_company: item[0] })
+        break
+      case 2:
+        _group.push({ v_group_name: item[1] })
+        break
+      case 3:
+        _group.push({ v_id: item[2].toString() })
+        break
+    }
+  })
+  console.log('_group:', _group)
+
+  // console.log('params:', params.query.group)
+  res.forEach(item => {
+    // console.log('item:', item)
+    item.dimension = _group
+  })
+
+  // console.log('generateTemplate...:')
+  // console.log('params:', params.viewSubject)
   return res
 }

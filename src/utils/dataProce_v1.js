@@ -68,10 +68,12 @@ export async function getFullData(params) {
     // console.log('_v:', JSON.parse(_v.config))
 
     if (_v) {
+      // console.log('_v:', _v)
       _title = _v.config.show_name || _v.title
+      _v.title = _v.config.show_name || _v.title
     }
 
-    return {
+    return _v || {
       name: item,
       title: _title
     }
@@ -79,6 +81,7 @@ export async function getFullData(params) {
 
   // console.log('viewSubject:', viewSubject)
   // console.log('subject:', subject)
+  params.viewSubject = deepClone(viewSubject)
 
   const data = { // 请求参数
     vf_id: undefined,
@@ -452,19 +455,20 @@ export function resSort(data, viewSubject) {
 
 // 补齐科目
 export function fillSubject(res, params) {
-  console.log('res:', res)
-
   const _date = params.dateRuler.map(item => {
     return {
-      actualValue: 0,
+      actualValue: '',
       time: item
     }
   })
-  console.log('_date:', _date)
+  // console.log('_date:', _date)
   res.forEach(item => {
-    console.log('item:', item)
+    // console.log('item:', item)
     if (item.dimension.length <= 0) {
-      item.dimension.push({ data: _date })
+      item.dimension.push({
+        v_group_name: undefined,
+        data: _date
+      })
     }
   })
 
