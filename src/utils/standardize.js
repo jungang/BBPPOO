@@ -286,9 +286,8 @@ export function generateTemplate(params) {
   const res = deepClone(params.viewSubject)
   const _params = deepClone(params)
   if (!_params.query.multiple) {
-    const _g = [..._params.query.group]
     _params.query.group = []
-    _params.query.group.push(_g)
+    _params.query.group.push(params.query.group)
   }
   console.log('_params:', _params)
   console.log('params.query.group:', _params.query.group)
