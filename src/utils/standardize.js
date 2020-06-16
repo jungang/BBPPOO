@@ -6,8 +6,6 @@ export function standardize(data, params, fill) {
   // console.log('standardize...:')
   // console.log('params:', params)
 
-  generateTemplate(params)
-
   data.actual.forEach(item => {
     // console.log(item.title, item.value)
   })
@@ -276,16 +274,4 @@ export function createDateRuler(params, n) {
   }
 
   return res
-}
-
-/**
- *
- * @param params
- * @param n 步数
- * @returns {[]}
- */
-export function generateTemplate(params) {
-  console.log('generateTemplate...:')
-  console.log('params:', params)
-  return {}
 }
