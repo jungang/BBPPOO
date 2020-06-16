@@ -217,9 +217,9 @@ export function standardize(data, params, fill) {
     // console.log('item:', item)
   })
 
-  console.log('resDate:', resDate)
+  // console.log('resDate:', resDate)
   const newResDate = generateTemplate(params)
-  console.log('newResDate:', newResDate)
+  // console.log('newResDate:', newResDate)
 
   return resDate
 }
@@ -287,23 +287,44 @@ export function generateTemplate(params) {
     _params.query.group = []
     _params.query.group.push(params.query.group)
   }
-  console.log('_params:', _params)
-  console.log('params.query.group:', _params.query.group)
+  // console.log('_params:', _params)
+  // console.log('params.query.group:', _params.query.group)
   const _group = []
+  const _data = params.dateRuler.map(item=>{
+    return {
+      actualValue: '',
+      time:item
+    }
+  })
   _params.query.group.forEach(item => {
     switch (item.length) {
       case 1:
-        _group.push({ v_company: item[0] })
+        _group.push({
+          v_company: item[0],
+          data:_data
+        })
         break
       case 2:
-        _group.push({ v_group_name: item[1] })
+        _group.push({
+          v_group_name: item[1],
+          data:_data
+        })
         break
       case 3:
-        _group.push({ v_id: item[2].toString() })
+        _group.push({
+          v_id: item[2].toString(),
+          data:_data
+        })
+        break
+      default:
+        _group.push({
+          v_company: undefined,
+          data:_data
+        })
         break
     }
   })
-  console.log('_group:', _group)
+  // console.log('_group:', _group)
 
   // console.log('params:', params.query.group)
   res.forEach(item => {
