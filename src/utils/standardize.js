@@ -148,12 +148,12 @@ export function standardize(data, params, fill) {
             v_group_name: a.dimension.v_group_name,
             data: [_data]
           })
-        } else if(!_c) { // 添加数据
+        } else if (!_c) { // 添加数据
           item.dimension.push({ // 创建维度并添加数据
             v_company: a.dimension.v_company,
             data: [_data]
           })
-        }else {
+        } else {
           _v.data.push(_data)
         }
       }
@@ -197,14 +197,14 @@ export function standardize(data, params, fill) {
       const _month_date = params.dateRuler.map(date => {
         const _d = deepClone(item.dimension[0].data[0])
         _d.time = +date
-        _d.actualValue = 0
+        _d.actualValue = ''
         _d.highlightStyle = ''
         // _d.targetValue = 0
         _d.original = 0
         const _v = item.dimension[0].data.find(time => time.time === +date)
         if (_v) {
           // console.log('_v:', _v)
-          _d.actualValue = _v.actualValue || 0
+          _d.actualValue = _v.actualValue || ''
           _d.highlightStyle = _v.highlightStyle || ''
           _d.targetValue = _v.targetValue || 0
         }

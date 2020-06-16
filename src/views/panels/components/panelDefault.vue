@@ -134,8 +134,8 @@ export default {
         // wf_P&L_default_trend_tabIndex
         // wf_P&L_default_trend_rowIndex
 
-        console.log('item.location:', item.location)
-        console.log('item:', item)
+        // console.log('item.location:', item.location)
+        // console.log('item:', item)
         switch (item.location) {
           case 'index_default_cards':
             this.cardList.push(item)
@@ -153,7 +153,7 @@ export default {
       }
     })
 
-    // console.log('this.cardList:', this.cardList)
+    console.log('this.cardList:', this.cardList)
 
     if (this.cardList.length > 0) {
       this.cardList = cardSort(this.cardList)

@@ -22,6 +22,15 @@ export function fetchData(data) {
   })
 }
 
+export function dashboard(query) {
+  return request({
+    url: '/dashboard/list',
+    method: 'get',
+    params: query,
+    baseURL: 'http://rap2api.taobao.org/app/mock/249653/dev-api'
+  })
+}
+
 export function fetchPanel(id) {
   return request({
     url: '/chart/get',

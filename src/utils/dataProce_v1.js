@@ -452,19 +452,20 @@ export function resSort(data, viewSubject) {
 
 // 补齐科目
 export function fillSubject(res, params) {
-  console.log('res:', res)
-
   const _date = params.dateRuler.map(item => {
     return {
-      actualValue: 0,
+      actualValue: '',
       time: item
     }
   })
-  console.log('_date:', _date)
+  // console.log('_date:', _date)
   res.forEach(item => {
-    console.log('item:', item)
+    // console.log('item:', item)
     if (item.dimension.length <= 0) {
-      item.dimension.push({ data: _date })
+      item.dimension.push({
+        v_group_name: undefined,
+        data: _date
+      })
     }
   })
 

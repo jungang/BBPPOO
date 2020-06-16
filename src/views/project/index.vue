@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     async linkTo(item) {
+      console.log('item:', item)
       localStorage.projectId = item.id
       localStorage.alias = item.alias
       localStorage.description = item.description

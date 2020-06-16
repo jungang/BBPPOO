@@ -1,4 +1,4 @@
-import { fetchData } from '@/api/panel'
+import { fetchData, dashboard } from '@/api/panel'
 import store from '@/store'
 const pkg = require('../../../package.json')
 
@@ -142,6 +142,10 @@ const mutations = {
   SET_SUBJECT: (state, response) => {
     state.subject = response
     // console.log('state.views:', state.views)
+  },
+  SET_DASHBOARD: (state, response) => {
+    state.dashboard = response
+    // console.log('state.views:', state.views)
   }
 }
 
@@ -151,6 +155,16 @@ const actions = {
   },
   setFilterOptions({ commit }, options) {
     commit('SET_FILTER', options)
+  },
+  getDashboard({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      dashboard().then(response => {
+        commit('SET_DASHBOARD', response.data)
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
   },
   getView({ commit, state }) {
     commit('SET_API')

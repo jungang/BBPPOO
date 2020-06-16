@@ -70,6 +70,7 @@ router.beforeEach(async(to, from, next) => {
           } else {
             // console.log('store.state.user.apiTemplat:', store.state.user.apiTemplat)
             // console.log('项目id:', store.state.user.apiTemplate.projectId)
+            await store.dispatch('options/getDashboard')
             await store.dispatch('options/getView')
             await store.dispatch('options/getSubject')
 
