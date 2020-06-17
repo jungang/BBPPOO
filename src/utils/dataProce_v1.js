@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { deepClone, parseTime, sort, unique, washValue } from '@/utils'
-import { standardize, createDateRuler } from '@/utils/standardize'
+import { standardize, standardizeFill, createDateRuler } from '@/utils/standardize'
 import store from '@/store'
 import { fetchData } from '@/api/panel'
 // import { dataType } from '@/filters'
@@ -169,9 +169,9 @@ export async function getFullData(params) {
             })
           }
         })
-      } else if(params.query.group.length === 3){
+      } else if (params.query.group.length === 3) {
         data.dimension.push({ v_id: params.query.group[2].toString() })
-      }else{
+      } else {
         data.dimension.push({ v_company: params.query.group[0] })
       }
     } else {
@@ -300,14 +300,15 @@ export async function getFullData(params) {
   // 生成时间轴线
   params.dateRuler = createDateRuler(params, 6)
 
-  // 数组长度统一,格式
+  res = dimensionStringify(res)
 
-  fill_res = standardize(deepClone(res), params, true) // 代偿
+  // 数组长度统一,格式
+  fill_res = standardizeFill(deepClone(res), params) // 代偿
   res = standardize(res, params)
 
   // 排序
-  res = resSort(res, deepClone(viewSubject))
-  fill_res = resSort(fill_res, deepClone(viewSubject))
+  // res = resSort(res, deepClone(viewSubject))
+  // fill_res = resSort(fill_res, deepClone(viewSubject))
 
   // 补齐科目数据
   // res = fillSubject(res, params)
@@ -373,7 +374,15 @@ function formatDataSet(dateType, data) {
 
 async function getData(data, res, key) {
   res[key] = await fetchData(data)
+  // console.log('res[key]:', res[key])
+  res[key].forEach(item => {
+    item._dimension = item.dimension.replace(' ', '')
+  })
   return res
+}
+
+function dimensionStringify(data) {
+  return data
 }
 
 // 计算高亮
@@ -382,7 +391,7 @@ export function calcHighlight(data) {
 
   data.forEach(subject => {
     subject.dimension.forEach(dimension => {
-      dimension.data.forEach(item => {
+      dimension.date.forEach(item => {
         // console.log('item.highlight:', item.highlight)
         item.highlightStyle = ''
 
@@ -406,9 +415,12 @@ export function calcHighlight(data) {
 // 计算完成率
 export function calcCompletion(data) {
   data.forEach(subject => {
+    // console.log('subject:', subject)
     subject.dimension.forEach(group => {
+      // console.log('group.data:', group.data)
+      // console.log('group:', group)
       // console.log(data)
-      group.data.forEach(item => {
+      group.date.forEach(item => {
         // console.log('item:', item)
         let _rate = (item.actualValue / item.targetValue * 100).toFixed(2)
         _rate = washValue(_rate)
@@ -444,9 +456,9 @@ export function resSort(data, viewSubject) {
     const _v = data.find(s => s.name === item.name)
     // console.log('_v:', _v)
     if (_v) {
-      // console.log('_v:', _v.dimension[0].data[0].type)
+      // console.log('_v.dimension:', _v.dimension)
       item.index = _v.index
-      item.type = _v.dimension[0].data[0].type
+      item.type = _v.dimension[0].date[0].type
       item.dimension = _v.dimension
     }
   })
@@ -456,6 +468,7 @@ export function resSort(data, viewSubject) {
 }
 
 // 补齐科目
+/*
 export function fillSubject(res, params) {
   const _date = params.dateRuler.map(item => {
     return {
@@ -476,6 +489,7 @@ export function fillSubject(res, params) {
 
   return res
 }
+*/
 
 // 数据层级折叠
 export function planeToHierarchy(_query, arr) {
@@ -511,7 +525,7 @@ export function planeToHierarchy(_query, arr) {
     }
 
     if (item.dimension[0]) {
-      item.dimension[0].data.forEach(items => {
+      item.dimension[0].date.forEach(items => {
         if (items.time === parseInt(_date)) {
           item.children = JSON.parse(items.children) // fixJson 字符串 =>>变数组
         }

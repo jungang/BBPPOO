@@ -135,8 +135,8 @@ export default {
         series.push({ type: 'bar' })
 
         if (subject.dimension.length > 0) {
-          console.log('ddd', subject.dimension[0].data)
-          subject.dimension[0].data.forEach((item, index, arr) => { // 组织
+          console.log('ddd', subject.dimension[0].date)
+          subject.dimension[0].date.forEach((item, index, arr) => { // 组织
             const _v = source.find(date => date.time === item.time)
 
             if (query.dateType === 'week') {

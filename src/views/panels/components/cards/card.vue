@@ -157,7 +157,7 @@ export default {
         if (subject.dimension.length > 0) {
           // console.log('subject.dimension:', subject.dimension)
           // console.log('_current:', _current)
-          const _v = subject.dimension[0].data.find(item => {
+          const _v = subject.dimension[0].date.find(item => {
             // console.log('item:', item)
             item.time = item.time.toString()
             _current = _current.toString()

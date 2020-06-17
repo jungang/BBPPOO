@@ -96,7 +96,7 @@ export default {
         series.push({ type: 'line' })
         // console.log(subject.dimension[0].data)
         if (subject.dimension.length > 0) {
-          subject.dimension[0].data.forEach(item => { // 组织
+          subject.dimension[0].date.forEach(item => { // 组织
             // console.log(item.time)
             // console.log(item.actualValue)
             const _v = source.find(date => date.time === item.time)
