@@ -140,10 +140,7 @@ export default {
     console.log('----query:', this.query)
     const _a = this.$store.state.user.alias
     const _d = this.$store.state.options.dashboard
-    // console.log('this.$store.state.options:', this.$store.state.options.dashboard)
     const currentDashboard = _d.find(item => item.dashboardName === _a)
-    // console.log('currentDashboard:', currentDashboard)
-    // console.log('currentDashboard.defaultFilterOptionType:', currentDashboard.defaultFilterOptionType)
     this.query.type = currentDashboard.defaultFilterOptionType
     // this.getEmployee()
 
@@ -203,9 +200,9 @@ export default {
           }
         })
 
-        if (response.find(item => item.v_company === '通软')) {
-          this.query.group.push('通软')
-        }
+        // if (response.find(item => item.v_company === '通软')) {
+        //   this.query.group.push('通软')
+        // }
 
         // console.log('this.companyList:', this.companyList)
 
