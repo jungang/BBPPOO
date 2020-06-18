@@ -27,7 +27,7 @@
         style="text-align: right; font-size: 12px"
       >
         <el-col :span="7">{{ item.slot1 }}</el-col>
-        <el-col :span="7"> <span v-if="item.slot3" class="emphasize" :class="item.highlightStyle"> {{ item.slot3 }}</span></el-col>
+        <el-col :span="7"> <span v-if="item.slot3" style="text-align: right; font-size: 12px" :class="item.highlightStyle"> {{ item.slot3 }}</span></el-col>
       </el-row>
     </div>
 
