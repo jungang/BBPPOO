@@ -104,7 +104,7 @@ export default {
         date: new Date(), // 日期20200501
         multiple: false,
         group: 'null', // 选择组信息
-        type: this.$store.state.user.alias === 'ts' ? false : 'all', // 合集 all | 集团 group | 本地 local
+        type: false, // 合集 all | 集团 group | 本地 local  todo  store.state.options.dashboard
         isStore: 'true'
       },
       fullData: {}
@@ -113,6 +113,7 @@ export default {
   computed: { },
   watch: { },
   created() {
+    // console.log('this.query:', this.query)
     // console.log('this.$store.state.options.views:', this.$store.state.options.views)
 
     this.$store.state.options.views.forEach(item => {

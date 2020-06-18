@@ -13,22 +13,28 @@
         </el-col>
         <el-col :span="3">
           <span v-if="row.slot2" class="gray" style="width: 80px; display: inline-block;text-align:left; text-indent: 5px">
-            (目标 <span style="color: #5e5eff">{{ row.slot2 }}</span>)
+            (目标 <span style="color: #5e5eff; font-weight: bold">{{ row.slot2 }}</span>)
           </span>
 
         </el-col>
         <el-col v-if="row.slot3 && row.slot2" :span="5" style="text-align: right">{{ row.slot5 && row.slot5+ '%' }}</el-col>
         <br>
       </el-row>
-      <el-row
-        v-for="(item,index) in row.property"
-        :key="index"
-        class="row"
-        style="text-align: right; font-size: 12px"
-      >
-        <el-col :span="7">{{ item.slot1 }}</el-col>
-        <el-col :span="7"> <span v-if="item.slot3" style="text-align: right; font-size: 12px" :class="item.highlightStyle"> {{ item.slot3 }}</span></el-col>
-      </el-row>
+
+      <div v-if="row.property">
+        <!--        {{ row.property }}-->
+        <el-row
+          v-for="(item,index) in row.property"
+          :key="index"
+          class="row"
+          style="text-align: right; font-size: 12px"
+        >
+          <!--          {{ typeof item }}-->
+          <el-col :span="7">{{ item.slot1 }}</el-col>
+          <el-col :span="7"> <span v-if="item.slot3" style="text-align: right; font-size: 12px" :class="item.highlightStyle"> {{ item.slot3 }}</span></el-col>
+        </el-row>
+      </div>
+
     </div>
 
   </div>
@@ -69,27 +75,27 @@ export default {
       this.listData = deepClone(this.data)
       const _del = []
       if (_relation) {
+        // console.log('_relation:', _relation)
         _relation.forEach(item => {
           const _main = this.data.find(a => a.name === item.main)
-          _main.property = item.property.map(a => {
-            _del.push(a)
-            // if (_v) {
-            //   const _index = this.data.findIndex(b => b.name === _v.name)
-            //   this.data.splice(_index, 1)
-            // }
-            return this.data.find(b => b.name === a)
-          })
+          if (_main) {
+            _main.property = item.property.map(a => {
+              _del.push(a)
+              return this.data.find(b => b.name === a)
+            })
+            console.log(' _main.property:', _main.property)
+          }
           // console.log('_main:', _main)
         })
 
         const _data = this.data.filter(item => {
-          console.log('item:', item)
+          // console.log('item:', item)
           const _v = _del.includes(item.name)
           return _v ? false : deepClone(item)
         })
-        console.log(' _data:', _data)
+        // console.log(' _data:', _data)
         this.listData = _data
-        console.log('this.listData:', this.listData)
+        // console.log('this.listData:', this.listData)
       }
     }
   }
@@ -107,8 +113,8 @@ export default {
 
     .emphasize{
       /*color: #131313;*/
-      font-size: 16px;
-      /*font-weight: bold;*/
+      font-size: 26px;
+      font-weight: bold;
     }
 
     .gray{

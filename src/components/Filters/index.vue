@@ -54,10 +54,9 @@
       clearable
       :props="{ checkStrictly: true }"
     />
-
-    <span v-if="query.type && $store.state.user.alias !=='ts'" style="margin-left: 20px">业务线条：</span>
+    <span v-if="query.type" style="margin-left: 20px">业务线条：</span>
     <el-select
-      v-if="query.type && $store.state.user.alias !=='ts'"
+      v-if="query.type"
       v-model="query.type"
       placeholder="请选择"
       style="width: 100px"
@@ -138,7 +137,14 @@ export default {
     })
   },
   created() {
-    // console.log('----query:', this.query)
+    console.log('----query:', this.query)
+    const _a = this.$store.state.user.alias
+    const _d = this.$store.state.options.dashboard
+    // console.log('this.$store.state.options:', this.$store.state.options.dashboard)
+    const currentDashboard = _d.find(item => item.dashboardName === _a)
+    console.log('currentDashboard:', currentDashboard)
+    console.log('currentDashboard.defaultFilterOptionType:', currentDashboard.defaultFilterOptionType)
+    this.query.type = currentDashboard.defaultFilterOptionType
     // this.getEmployee()
 
     if (this.query.isStore === 'false') {
