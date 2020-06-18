@@ -142,8 +142,8 @@ export default {
     const _d = this.$store.state.options.dashboard
     // console.log('this.$store.state.options:', this.$store.state.options.dashboard)
     const currentDashboard = _d.find(item => item.dashboardName === _a)
-    console.log('currentDashboard:', currentDashboard)
-    console.log('currentDashboard.defaultFilterOptionType:', currentDashboard.defaultFilterOptionType)
+    // console.log('currentDashboard:', currentDashboard)
+    // console.log('currentDashboard.defaultFilterOptionType:', currentDashboard.defaultFilterOptionType)
     this.query.type = currentDashboard.defaultFilterOptionType
     // this.getEmployee()
 
