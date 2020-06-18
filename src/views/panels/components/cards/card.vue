@@ -13,7 +13,7 @@
       {{ data.title }}
     </div>
 
-    <List :data="cardData.list" />
+    <List :data="cardData.list" :view="data" />
 
     <chartLine :data="cardData.dataSet" />
 
@@ -61,6 +61,7 @@ export default {
   watch: { },
   created() {
     this.getData()
+    // console.log('this.data:', this.data)
   },
   mounted() {
   },
@@ -149,6 +150,7 @@ export default {
       this.fullData.fillDate.forEach(subject => {
         const _item = {}
         _item.slot1 = subject.title
+        _item.name = subject.name
 
         // console.log('subject.title:', subject.title)
         // console.log('subject:', subject)
@@ -157,6 +159,7 @@ export default {
         if (subject.dimension.length > 0) {
           // console.log('subject.dimension:', subject.dimension)
           // console.log('_current:', _current)
+          // console.log('subject.dimension[0].date:', subject.dimension[0].date)
           const _v = subject.dimension[0].date.find(item => {
             // console.log('item:', item)
             item.time = item.time.toString()

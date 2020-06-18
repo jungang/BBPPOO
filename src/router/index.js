@@ -280,13 +280,13 @@ export const asyncRoutes = [
   */
   {
     path: '/view-manage',
-    hidden: true,
+    // hidden: true,
     component: Layout,
     redirect: '/view-manage/list',
     name: 'ViewManage\'',
     // hidden: true,
     meta: {
-      title: '视图管理',
+      title: 'DEBUG',
       icon: 'example'
     },
     children: [

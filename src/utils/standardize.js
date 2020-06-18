@@ -197,7 +197,7 @@ export function standardize(data, params) {
 
 // 模板填充方式（新0617）
 export function standardizeFill(data, params) {
-  console.log('data:', data)
+  // console.log('data:', data)
   // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间  Hour 小时 Second 秒  Time 分钟 7‘11”
   Object.keys(data).forEach((key) => { // 统一格式
     data[key].forEach(item => {
@@ -303,7 +303,7 @@ export function standardizeFill(data, params) {
             +item.time === +date.time
         })
         if (_t) {
-          console.log('_t:', _t)
+          // console.log('_t:', _t)
           date.targetValue = _t.value
         }
         // console.log('date:', date)
