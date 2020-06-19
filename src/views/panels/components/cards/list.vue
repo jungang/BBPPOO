@@ -83,7 +83,7 @@ export default {
               _del.push(a)
               return this.data.find(b => b.name === a)
             })
-            console.log(' _main.property:', _main.property)
+            // console.log(' _main.property:', _main.property)
           }
           // console.log('_main:', _main)
         })

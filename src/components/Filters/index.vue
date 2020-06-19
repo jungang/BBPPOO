@@ -95,6 +95,7 @@ export default {
   },
   data() {
     return {
+      currentDashboard: {},
       props: {
         multiple: this.query.multiple,
         checkStrictly: true
@@ -140,8 +141,12 @@ export default {
     console.log('----query:', this.query)
     const _a = this.$store.state.user.alias
     const _d = this.$store.state.options.dashboard
-    const currentDashboard = _d.find(item => item.dashboardName === _a)
-    this.query.type = currentDashboard.defaultFilterOptionType
+    this.currentDashboard = _d.find(item => item.dashboardName === _a)
+    console.log('currentDashboard:', this.currentDashboard)
+    this.query.type = this.currentDashboard.defaultFilterOptionType
+    // console.log('this.query.group:', this.query.group)
+    // console.log('typeof:', typeof this.query.group)
+    // this.query.group = [currentDashboard.defaultFilterOptionGroupValue]
     // this.getEmployee()
 
     if (this.query.isStore === 'false') {
@@ -200,16 +205,16 @@ export default {
           }
         })
 
-        // if (response.find(item => item.v_company === '通软')) {
-        //   this.query.group.push('通软')
-        // }
+        if (response.find(item => item.v_company === this.currentDashboard.defaultFilterOptionGroupValue)) {
+          this.query.group.push(this.currentDashboard.defaultFilterOptionGroupValue)
+        }
 
         // console.log('this.companyList:', this.companyList)
 
         // 构建组结构
         response.forEach(item => {
           if (item.v_group_name === 'Null') {
-            item.v_group_name = '未分'
+            // item.v_group_name = '未分'  // todo
           }
 
           // console.log('item.v_group_name:', item.v_group_name)
@@ -253,7 +258,7 @@ export default {
       })
     },
     handleCurrentChange(val) {
-      // console.log('this.query:', this.query)
+      console.log('this.query:', this.query)
       this.$emit('filtration', { })
     }
   }
