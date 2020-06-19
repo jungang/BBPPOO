@@ -97,7 +97,7 @@ export default {
       this.currentView.query.multiple = this.query.multiple
 
       this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:::', this.fullData)
+      //console.log('this.fullData:::', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
@@ -146,6 +146,7 @@ export default {
       }
 
       // console.log('_current:', _current)
+       console.log('card_fullData:', this.fullData)
 
       this.fullData.fillDate.forEach(subject => {
         const _item = {}
@@ -184,7 +185,8 @@ export default {
             // }
 
             _item.slot2 = (_v.targetValue !== undefined) && _v.targetValue + _suffix
-            _item.slot3 = (_v.actualValue !== undefined) && _v.actualValue + _suffix
+            //_item.slot3 = (_v.actualValue !== undefined) && _v.actualValue + _suffix
+            _item.slot3 = ((_v.actualValue !== undefined) && (_v.actualValue !== ''))?_v.actualValue + _suffix:'-';
             _item.slot4 = _v.unit
             _item.slot5 = _v.finish_rate
             _item.highlightStyle = _v.highlightStyle
