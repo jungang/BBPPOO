@@ -197,6 +197,8 @@ export function standardize(data, params) {
 
 // 模板填充方式（新0617）
 export function standardizeFill(data, params) {
+  if (params.query.dateType === 'week') data = transWeekDate(data, params)
+
   // console.log('data:', data)
   // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间  Hour 小时 Second 秒  Time 分钟 7‘11”
   Object.keys(data).forEach((key) => { // 统一格式
@@ -335,10 +337,26 @@ export function standardizeFill(data, params) {
     }
   })*/
 
-  // console.log('newResDate:', newResDate)
+  console.log('newResDate:', newResDate)
   // debugger
   return newResDate
   // return resDate
+}
+
+function transWeekDate(data, params) {
+  // console.log('transWeekDate:', data)
+  // data.actual
+  const end_date = parseTime(params.query.date, '{y}{m}{d}')
+  Object.keys(data).forEach((key) => { // 统一格式
+    data[key].forEach(item => {
+      // console.log('item.time:', item.time)
+      item.time = moment(end_date).subtract(7 - item.time, 'week').add(1, 'days').format('YYYYMMDD')
+      // console.log('_w:', _w)
+      // console.log('item:', item)
+    })
+  })
+
+  return data
 }
 
 function translateTime(time, params) {
@@ -379,7 +397,7 @@ export function createDateRuler(params) {
   const end_date = parseTime(params.query.date, '{y}{m}{d}')
   const dates = {
     daily: res.map(item => moment(end_date).subtract(item, 'days').format('YYYYMMDD')),
-    week: res.map(item => moment(end_date).subtract(item, 'week').format('YYYYMMDD')),
+    week: res.map(item => moment(end_date).subtract(item + 1, 'week').add(1, 'days').format('YYYYMMDD')),
     month: res.map(item => moment(end_date).subtract(item, 'months').format('YYYYMM')),
     year: res.map(item => moment(end_date).format('YYYY'))
   }

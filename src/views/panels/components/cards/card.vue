@@ -134,9 +134,10 @@ export default {
           _current = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{y}{m}{d}')
           break
         case 'week':
-          _current = parseTime(this.$store.state.options.filterOptions.date.getTime(), '{m}.{d}')
+          // console.log('this.$store.state.options.filterOptions.date.getTime():', this.$store.state.options.filterOptions.date.getTime())
+          _current = parseTime(this.$store.state.options.filterOptions.date.getTime() - 517400000, '{y}{m}{d}')
 
-          console.log('_current:', _current)
+          // console.log('_current:', _current)
 
           break
         case 'month':
@@ -164,9 +165,10 @@ export default {
           // console.log('_current:', _current)
           // console.log('subject.dimension[0].date:', subject.dimension[0].date)
           const _v = subject.dimension[0].date.find(item => {
-            // console.log('item:', item)
             item.time = item.time.toString()
             _current = _current.toString()
+            // console.log('item.time:', item.time)
+            // console.log('_current:', _current)
             return item.time.search(_current) !== -1
           })
           // console.log('_v:', _v)
@@ -204,6 +206,7 @@ export default {
 
       // 图表数据
       // console.log('this.fullData.chartDate:', this.fullData.chartDate)
+      this.fullData.fillChartDate.query = this.query
       this.cardData.dataSet = this.fullData.fillChartDate
     }
   }

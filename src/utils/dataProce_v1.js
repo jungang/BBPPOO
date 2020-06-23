@@ -260,21 +260,21 @@ export async function getFullData(params) {
 
   // data.start = 202002
   // data.end = 202002
-
-  switch (params.query.dateType) {
-    case 'daily':
-      data.vf_id = 0
-      break
-    case 'week':
-      data.vf_id = 1
-      break
-    case 'month':
-      data.vf_id = 2
-      break
-    case 'year':
-      data.vf_id = 3
-      break
-  }
+  //
+  // switch (params.query.dateType) {
+  //   case 'daily':
+  //     data.vf_id = 0
+  //     break
+  //   case 'week':
+  //     data.vf_id = 1
+  //     break
+  //   case 'month':
+  //     data.vf_id = 2
+  //     break
+  //   case 'year':
+  //     data.vf_id = 3
+  //     break
+  // }
   //  console.log('data:', data)
 
   // 实际数据
@@ -309,6 +309,7 @@ export async function getFullData(params) {
   fill_res = standardizeFill(deepClone(res), params) // 代偿
   res = standardize(res, params)
 
+  // console.log('fill_res:', fill_res)
   // 排序
   // res = resSort(res, deepClone(viewSubject))
   // fill_res = resSort(fill_res, deepClone(viewSubject))

@@ -6,6 +6,7 @@
 
 <script>
 const echarts = require('echarts')
+import { formatWeek } from '@/utils'
 import uuidv1 from 'uuid/v1'
 
 export default {
@@ -82,9 +83,11 @@ export default {
 
       return res
     },
+
     formatDataSet(data) {
       // console.log('formatDataSet...')
       // console.log('data=>',data)
+      // console.log('data:', data)
 
       const dimensions = ['time']
       const source = []
@@ -97,13 +100,12 @@ export default {
         // console.log(subject.dimension[0].data)
         if (subject.dimension.length > 0) {
           subject.dimension[0].date.forEach(item => { // 组织
-            // console.log(item.time)
-            // console.log(item.actualValue)
             const _v = source.find(date => date.time === item.time)
             // console.log('_v:', _v)
             if (!_v) {
               source.push({ // 创建维度并添加数据
-                time: item.time,
+                time: formatWeek(item.time, this.data.query),
+                // time: item.time,
                 [subject.title]: item.actualValue
               })
 

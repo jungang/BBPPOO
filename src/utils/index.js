@@ -1,5 +1,6 @@
 import { Message } from 'element-ui'
 import store from '@/store'
+import moment from 'moment'
 
 /**
  * Created by PanJiaChen on 16/11/18.
@@ -187,6 +188,21 @@ export function byteLength(str) {
     if (code >= 0xDC00 && code <= 0xDFFF) i--
   }
   return s
+}
+
+/**
+ * @returns {Array}
+ * @param date
+ * @param query
+ */
+export function formatWeek(date, query) {
+  let res = date
+  if (query.dateType === 'week') {
+    console.log('date:', date)
+    res = moment(date).format('MM.DD') + '-' + moment(date).add(6, 'days').format('MM.DD')
+  }
+  console.log('res:', res)
+  return res
 }
 
 /**
