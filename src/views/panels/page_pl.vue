@@ -106,7 +106,7 @@ export default {
     },
     getCurrentView() {
       _.map(this.$store.state.options.views, (_val, _index, _list) => {
-        console.log('_val:', _val)
+        // console.log('_val:', _val)
         if (_val.config.pagesName === this.$route.meta.title) {
           this.currentView.push(_val)
           if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar')) {

@@ -14,7 +14,13 @@
         prop="res_s_title"
         label="名称"
         :min-width="50"
-      />
+      >
+        <template slot-scope="{row}">
+          {{ row.title }}
+          <br>
+          <!--          {{ row }}-->
+        </template>
+      </el-table-column>
       <el-table-column
         v-if="nowView.config.compare"
         prop="res_y_value"
@@ -162,11 +168,12 @@ export default {
   },
   methods: {
     formatDataSet(data) {
+      // console.log('data:', data)
       // console.log('list=>',data.list)
       this.tableData = []
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('data.list=>', data.list)
-        const employeeList = this.$store.state.group.employeeList
+        // const employeeList = this.$store.state.group.employeeList
         // console.log('employeeList=>', employeeList)
         const arrs = []
         const lirunArray = []
@@ -174,33 +181,33 @@ export default {
 
         if (data.list.length <= 0) return
 
-        data.list[0].dimension.forEach((item) => {
-          if (item.v_group_name) {
-            item.data[0].v_group_name = item.v_group_name + '组'
-            item.data[0].v_name = item.v_group_name + '组'
-            item.data[0].v_cu = 'jiacu'
-            arrs.push(item.data[0])
-          } else {
-            item.data.forEach((_item) => {
-              if (_item.v_id) {
-                employeeList.forEach((__item) => {
-                  if (__item.children) {
-                    __item.children.forEach((___item) => {
-                      ___item.children.forEach((____item) => {
-                        if (_item.v_id === ____item.value) {
-                          _item['v_name'] = ____item.label
-                          _item['v_group_name'] = ___item.value + '组'
-                          _item['v_cu'] = ''
-                        }
-                      })
-                    })
-                  }
-                })
-                arrs.push(_item)
-              }
-            })
-          }
-        })
+        // data.list[0].dimension.forEach((item) => {
+        //   if (item.v_group_name) {
+        //     item.data[0].v_group_name = item.v_group_name + '组'
+        //     item.data[0].v_name = item.v_group_name + '组'
+        //     item.data[0].v_cu = 'jiacu'
+        //     arrs.push(item.data[0])
+        //   } else {
+        //     item.data.forEach((_item) => {
+        //       if (_item.v_id) {
+        //         employeeList.forEach((__item) => {
+        //           if (__item.children) {
+        //             __item.children.forEach((___item) => {
+        //               ___item.children.forEach((____item) => {
+        //                 if (_item.v_id === ____item.value) {
+        //                   _item['v_name'] = ____item.label
+        //                   _item['v_group_name'] = ___item.value + '组'
+        //                   _item['v_cu'] = ''
+        //                 }
+        //               })
+        //             })
+        //           }
+        //         })
+        //         arrs.push(_item)
+        //       }
+        //     })
+        //   }
+        // })
 
         let __id = 0
         arrs.forEach((dt) => {
@@ -220,7 +227,7 @@ export default {
         // console.log('lirunArray=>',lirunArray)
         this.tableData = lirunArray
       } else {
-        this.findChildrow(data.list, this.tableData)
+        // this.findChildrow(data.list, this.tableData)
       /*  let _id=0;
         this.tableData.forEach((items) => {
           items.id = _id;
@@ -228,30 +235,32 @@ export default {
         })*/
       }
 
-      // console.log('this.tableData:', this.tableData)
-    },
-    findChildrow(arr, listArray) {
-      arr.forEach((items) => {
-        if (items.dimension.length > 0) {
-          // console.log('items:', items)
-          // console.log('items.dimension[0].data:', items.dimension[0].data)
-          const _obj = {}
-          _obj.id = this.id
-          _obj.res_s_title = items.title
-          _obj.res_s_value = items.dimension[0].data[0].actualValue
-          _obj.res_y_value = items.dimension[0].data[0].targetValue
-          _obj.res_highlight = items.dimension[0].data[0].highlight
-          _obj.res_highlightStyle = items.dimension[0].data[0].highlightStyle
-          this.id++
-          if (items.childrenRow.length > 0) {
-            _obj.childrenRow = []
-            this.findChildrow(items.childrenRow, _obj.childrenRow)
-          }
-
-          listArray.push(_obj)
-        }
-      })
+      // console.log('data.list:', data.list)
+      this.tableData = data.list
+      console.log('this.tableData:', this.tableData)
     }
+    // findChildrow(arr, listArray) {
+    //   arr.forEach((items) => {
+    //     if (items.dimension.length > 0) {
+    //       // console.log('items:', items)
+    //       // console.log('items.dimension[0].data:', items.dimension[0].data)
+    //       const _obj = {}
+    //       _obj.id = this.id
+    //       _obj.res_s_title = items.title
+    //       _obj.res_s_value = items.dimension[0].data[0].actualValue
+    //       _obj.res_y_value = items.dimension[0].data[0].targetValue
+    //       _obj.res_highlight = items.dimension[0].data[0].highlight
+    //       _obj.res_highlightStyle = items.dimension[0].data[0].highlightStyle
+    //       this.id++
+    //       if (items.childrenRow.length > 0) {
+    //         _obj.childrenRow = []
+    //         this.findChildrow(items.childrenRow, _obj.childrenRow)
+    //       }
+    //
+    //       listArray.push(_obj)
+    //     }
+    //   })
+    // }
 
   }
 }

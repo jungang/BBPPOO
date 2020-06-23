@@ -344,6 +344,7 @@ export async function getFullData(params) {
   //  console.log('tableDate=>',tableDate)
   // 处理表格折叠行
   const foldTableDate = planeToHierarchy(params.query, tableDate)
+  const fillFoldTableDate = planeToHierarchy(params.query, fill_res)
   // const foldTableDate = []
 
   // console.log('res=>',res)
@@ -351,7 +352,8 @@ export async function getFullData(params) {
   return {
     chartDate: chartDate,
     tableDate: foldTableDate,
-    // foldTableDate: foldTableDate,
+    foldTableDate: foldTableDate,
+    fillFoldTableDate: fillFoldTableDate,
     res: res,
     fillChartDate: fillChartDate,
     fillDate: fill_res
