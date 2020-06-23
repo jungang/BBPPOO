@@ -1,7 +1,14 @@
 <template>
   <div class="tab-container">
-    <Table v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'" :data="cardData" :current-view="currentView" />
-    <chartLine v-if="data.config.component.type === 'chart_line' && data.config.zoneName !== 'comparison'" :data="cardData.dataSet" />
+    <Table
+      v-if="data.config.component.type === 'table' || data.config.component.type === 'table_lirun'"
+      :data="cardData"
+      :current-view="currentView"
+    />
+    <chartLine
+      v-if="data.config.component.type === 'chart_line' && data.config.zoneName !== 'comparison'"
+      :data="cardData.dataSet"
+    />
     <chartLineComparison v-if="data.config.component.type === 'chart_line' && data.config.zoneName === 'comparison'" :data="comparison" :query="currentView.query" />
   </div>
 </template>
@@ -95,14 +102,15 @@ export default {
 
       if (this.currentView.config.component.type === 'table' || this.currentView.config.component.type === 'table_lirun') {
         this.cardData.list = []
-        this.cardData.list = this.fullData.tableDate
+        // this.cardData.list = this.fullData.tableDate
+        this.cardData.list = this.fullData.fillDate
 
         // console.log('list=>',this.cardData.list)
       } else {
         if (this.currentView.config.zoneName === 'comparison') {
           this.comparison.data = this.fullData.res
         } else {
-          this.cardData.dataSet.data = this.fullData.chartDate.data
+          this.cardData.dataSet.data = this.fullData.fillChartDate.data
         }
       }
 

@@ -17,11 +17,12 @@ export async function getFullData(params) {
   let res = {} // 返回数据
   let fill_res = {} // 补齐步长
 
-  let day_s = 86400000 * 29
+  const day_s = 86400000 * 29
   // const day30_s = 86400000 * 30
   const week_s = 3628800000 - 86400000
-  let month_s = 15552000000
+  const month_s = 15552000000
 
+  /*
   if (params.config.component.type === 'chart_bar') {
     day_s = 86400000
     // week_s = 604800000
@@ -31,6 +32,7 @@ export async function getFullData(params) {
       month_s = 2592000000
     }
   }
+*/
 
   /**
    * params 请求参数信息 该视图的配置信息
@@ -105,6 +107,7 @@ export async function getFullData(params) {
 
   // console.log('params.query.group:', params.query.group)
 
+  // console.log('length:', params.query.group.length)
   const __arr = store.state.group.employeeList
   // console.log('__arr=>', __arr)
   // console.log('params.query.group:', params.query.group)

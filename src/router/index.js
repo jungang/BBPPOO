@@ -219,7 +219,7 @@ export const asyncRoutes = [
       },
       {
         path: 'view_pl',
-        component: () => import('@/views/subpage/page_pl'),
+        component: () => import('@/views/panels/page_pl'),
         name: 'PL',
         meta: {
           title: 'P&L',

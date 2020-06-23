@@ -172,6 +172,8 @@ export default {
         const lirunArray = []
         // const _idd = 0
 
+        if (data.list.length <= 0) return
+
         data.list[0].dimension.forEach((item) => {
           if (item.v_group_name) {
             item.data[0].v_group_name = item.v_group_name + '组'
@@ -226,11 +228,13 @@ export default {
         })*/
       }
 
-       //console.log('this.tableData:', this.tableData)
+      // console.log('this.tableData:', this.tableData)
     },
     findChildrow(arr, listArray) {
       arr.forEach((items) => {
         if (items.dimension.length > 0) {
+          // console.log('items:', items)
+          // console.log('items.dimension[0].data:', items.dimension[0].data)
           const _obj = {}
           _obj.id = this.id
           _obj.res_s_title = items.title

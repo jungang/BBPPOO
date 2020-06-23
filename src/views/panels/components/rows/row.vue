@@ -1,8 +1,8 @@
 <template>
   <el-col :span="24/chartBarlen.len -1" style="position: relative">
-    <div class="title" v-if="data.config.zoneName !== 'contrast'">{{ data.config.rowTitle }}</div>
-    <chartBar :data="cardData.dataSet"  v-if="data.config.zoneName !== 'contrast'"/>
-    <ChartsBarContrast :data="cardData.dataSet" v-if="data.config.zoneName === 'contrast'"/>
+    <div v-if="data.config.zoneName !== 'contrast'" class="title">{{ data.config.rowTitle }}</div>
+    <chartBar v-if="data.config.zoneName !== 'contrast'" :data="cardData.dataSet" />
+    <ChartsBarContrast v-if="data.config.zoneName === 'contrast'" :data="cardData.dataSet" />
   </el-col>
 </template>
 
@@ -14,7 +14,7 @@ import ChartsBarContrast from '../charts/chartBar2_v1'
 
 export default {
   name: 'Row',
-  components: { chartBar,ChartsBarContrast },
+  components: { chartBar, ChartsBarContrast },
   directives: { },
   props: {
     data: {
@@ -56,11 +56,6 @@ export default {
   mounted() {
   },
   methods: {
-    linkTo() {
-      // console.log('linkTo...')
-      // console.log(this.data.name)
-      this.$router.push({ path: this.data.name })
-    },
     async getData() {
       // console.log('currentView:', this.currentView)
       // console.log('query:', this.query)
@@ -68,7 +63,7 @@ export default {
       this.currentView.query = this.query
       this.fullData = await getFullData(this.currentView)
 
-//       console.log(this.fullData)
+      console.log('fullData:', this.fullData)
 
       // data.forEach(subject => {
       //   subject.dimension.forEach(group => {
@@ -97,7 +92,7 @@ export default {
       })*/
 
       // 图表数据
-      this.cardData.dataSet = this.fullData.chartDate
+      this.cardData.dataSet = this.fullData.fillChartDate
       this.cardData.dataSet.query = deepClone(this.query)
       this.cardData.dataSet.query.date = this.query.date.getTime()
       // console.log('this.query.date:', this.query.date.getTime())
@@ -118,6 +113,5 @@ export default {
     display: block;
     top:30px
   }
-
 
 </style>

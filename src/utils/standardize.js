@@ -296,17 +296,21 @@ export function standardizeFill(data, params) {
           date.original = _v.original
         }
 
-        // 目标数据
-        const _t = data.target.find(item => {
-          return item.name === subject.name &&
-            JSON.stringify(item.dimension) === dimension._dimension &&
-            +item.time === +date.time
-        })
-        if (_t) {
-          // console.log('_t:', _t)
-          date.targetValue = _t.value
+        // console.log('data.target:', data.target)
+
+        if (data.target) {
+          // 目标数据
+          const _t = data.target.find(item => {
+            return item.name === subject.name &&
+              JSON.stringify(item.dimension) === dimension._dimension &&
+              +item.time === +date.time
+          })
+          if (_t) {
+            // console.log('_t:', _t)
+            date.targetValue = _t.value
+          }
+          // console.log('date:', date)
         }
-        // console.log('date:', date)
       })
     })
     // console.log('subject.dimension:', subject.dimension[0].date)

@@ -106,8 +106,9 @@
 import waves from '@/directive/waves' // waves directive
 import { fetchData } from '@/api/panel'
 import Pagination from '@/components/Pagination'
-import { getData, standardize } from '@/utils/chart-data' // Secondary package based on el-pagination
+// import { getData, standardize } from '@/utils/chart-data' // Secondary package based on el-pagination
 import permission from '@/directive/permission/index.js'
+import { getFullData } from '@/utils/dataProce_v1'
 
 export default {
   name: 'Objectives',
@@ -116,6 +117,7 @@ export default {
   filters: {},
   data() {
     return {
+      fullData: {},
       currentView: {},
       temp: {
         year: 2020,
@@ -148,7 +150,8 @@ export default {
   },
   created() {
     this.getList()
-    this.currentView = this.$store.state.options.views.find(item => item.name === 'monthly_items_list')
+    this.currentView = this.$store.state.options.views.find(item => item.name === 'view_pl')
+    console.log('currentView:', this.currentView)
     console.log(this.$store.state.options.API)
   },
   methods: {
@@ -162,37 +165,33 @@ export default {
       // console.log(row)
       this.listLoading = true
 
-      const data = {
-        _drillName: 'targetView',
-        drillName: '',
-        parameters: {
-          year: row.year,
-          month: row.month
-        }
+      console.log('row:', row)
+      this.currentView.query = {
+        type: undefined,
+        dateType: 'month',
+        date: new Date(row.year, row.month - 1, 1),
+        group: [{}]
       }
 
-      if (!this.currentView) {
-        this.currentView = {
-          name: 'true',
-          compare: true
-        }
-      }
-
+      console.log('this.currentView:', this.currentView)
+      this.fullData = await getFullData(this.currentView)
+      console.log('this.fullData:', this.fullData)
       // console.log('this.currentView:', this.currentView)
-      const mixed = standardize(await getData(this.currentView, data))
+      // const mixed = standardize(await getData(this.currentView, data))
+      // const mixed = standardize(await getData(this.currentView, data))
       // console.log(mixed)
       this.detailList.items = []
 
-      console.log('mixed:', mixed)
-      mixed.res_y.forEach((item, index) => {
-        // console.log('item:', item)
-        this.detailList.items.push({
-          res_y_title: mixed.res_y[index].title,
-          res_y_value: mixed.res_y[index].value,
-          // res_y_zb_title: mixed.res_y_zb[index].title,
-          res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
-        })
-      })
+      // console.log('mixed:', mixed)
+      // mixed.res_y.forEach((item, index) => {
+      //   // console.log('item:', item)
+      //   this.detailList.items.push({
+      //     res_y_title: mixed.res_y[index].title,
+      //     res_y_value: mixed.res_y[index].value,
+      //     // res_y_zb_title: mixed.res_y_zb[index].title,
+      //     res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
+      //   })
+      // })
       console.log('this.detailList.items:', this.detailList.items)
       // fetchDetail(this.detailList.listQuery).then(response => {
       //   this.detailList.items = response.data.items
@@ -212,7 +211,7 @@ export default {
       return new Promise((resolve, reject) => {
         fetchData(data).then(response => {
           this.list.items = response
-          console.log(this.list)
+          console.log('this.list:', this.list)
         })
       })
     },
