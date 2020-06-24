@@ -197,11 +197,12 @@ export function byteLength(str) {
  */
 export function formatWeek(date, query) {
   let res = date
+  // console.log('query:', query)
   if (query.dateType === 'week') {
-    console.log('date:', date)
+    // console.log('date:', date)
     res = moment(date).format('MM.DD') + '-' + moment(date).add(6, 'days').format('MM.DD')
   }
-  console.log('res:', res)
+  // console.log('res:', res)
   return res
 }
 

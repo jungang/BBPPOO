@@ -258,7 +258,7 @@ export default {
       })
     },
     handleCurrentChange(val) {
-      console.log('this.query:', this.query)
+      // console.log('this.query:', this.query)
       this.$emit('filtration', { })
     }
   }

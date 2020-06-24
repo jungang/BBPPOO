@@ -95,6 +95,7 @@ export default {
       this.cardData.dataSet = this.fullData.fillChartDate
       this.cardData.dataSet.query = deepClone(this.query)
       this.cardData.dataSet.query.date = this.query.date.getTime()
+      this.cardData.dataSet.currentView = deepClone(this.currentView)
       // console.log('this.query.date:', this.query.date.getTime())
       // console.log(this.cardData.dataSet)
     }

@@ -113,6 +113,7 @@ export default {
           this.cardData.dataSet.data = this.fullData.fillChartDate.data
         }
       }
+      this.cardData.dataSet.query = deepClone(this.query)
 
       // console.log(this.comparison)
       // console.log(this.fullData.chartDate)

@@ -7,9 +7,9 @@
 <script>
 const echarts = require('echarts')
 import uuidv1 from 'uuid/v1'
-import { parseTime } from '@/utils'
-
+import { deepClone, formatWeek } from '@/utils'
 import moment from 'moment' // 导入模块
+
 moment.locale('zh-cn') // 设置语言 或 moment.lang('zh-cn');
 // const chartBarData = require('../../../subpage/mock/chartBar');
 
@@ -103,10 +103,16 @@ export default {
   },
   methods: {
     formatDataSet(data) {
+      // console.log('data:', data)
+      // 限制条目数
+      if (data.currentView.config.component.limit) data = this.limitHandle(deepClone(data), data.currentView.config.component.limit)
+
       let _arry = []
 
-      if (data.query.dateType === 'week') {
+      /*  if (data.query.dateType === 'week') {
         data.data.forEach((item) => {
+          console.log('item:', item)
+
           const __obj = {}
           __obj.index = item.index
           __obj.name = item.name
@@ -120,8 +126,9 @@ export default {
       } else {
         _arry = data.data
       }
-
-      const query = this.$store.state.options.filterOptions
+*/
+      _arry = data.data
+      // const query = this.$store.state.options.filterOptions
 
       // console.log('query:', query)
 
@@ -134,45 +141,46 @@ export default {
         // console.log('subject.title:', subject.title)
         series.push({ type: 'bar' })
 
-        if (subject.dimension.length > 0) {
+        if (subject.dimension.length > 0 && subject.dimension[0].date) {
           // console.log('ddd', subject.dimension[0].date)
           subject.dimension[0].date.forEach((item, index, arr) => { // 组织
             const _v = source.find(date => date.time === item.time)
 
-            if (query.dateType === 'week') {
-              const current_w = parseTime(query.date, '{m}.{d}')
-              const last_w = parseTime(query.date - 86400000 * 7, '{m}.{d}')
-              const _arr = [current_w, last_w]
-              console.log('_arr:', _arr)
-              console.log('item.time:', item.time)
-              _arr.forEach(date => {
-                if (item.time.search(date) !== -1) {
-                  // console.log('item.time:', item.time)
-                  if (!_v) {
-                    source.push({
-                      time: item.time,
-                      [subject.title]: item.actualValue,
-                      type: item.type
-                    })
-                  } else {
-                    _v[subject.title] = item.actualValue
-                  }
-                }
+            // if (query.dateType === 'week') {
+            //   const current_w = parseTime(query.date, '{m}.{d}')
+            //   const last_w = parseTime(query.date - 86400000 * 7, '{m}.{d}')
+            //   const _arr = [current_w, last_w]
+            //   console.log('_arr:', _arr)
+            //   console.log('item.time:', item.time)
+            //   _arr.forEach(date => {
+            //     if (item.time.search(date) !== -1) {
+            //       // console.log('item.time:', item.time)
+            //       if (!_v) {
+            //         console.log('this.data.query:', this.data.query)
+            //         source.push({
+            //           time:item.time,
+            //           [subject.title]: item.actualValue,
+            //           type: item.type
+            //         })
+            //       } else {
+            //         _v[subject.title] = item.actualValue
+            //       }
+            //     }
+            //   })
+            // } else {
+            // console.log('_v:', _v)
+            if (!_v) {
+              source.push({ // 创建维度并添加数据
+                time: formatWeek(item.time, this.data.query),
+                [subject.title]: item.actualValue,
+                type: item.type
               })
-            } else {
-              // console.log('_v:', _v)
-              if (!_v) {
-                source.push({ // 创建维度并添加数据
-                  time: item.time,
-                  [subject.title]: item.actualValue,
-                  type: item.type
-                })
-                // console.log('item.actualValue:', item.actualValue)
-              } else { // 添加数据
-                _v[subject.title] = item.actualValue
-                // console.log('item.actualValue:', item.actualValue)
-              }
+              // console.log('item.actualValue:', item.actualValue)
+            } else { // 添加数据
+              _v[subject.title] = item.actualValue
+              // console.log('item.actualValue:', item.actualValue)
             }
+            // }
 
             // console.log('_v:', _v)
           })
@@ -196,21 +204,33 @@ export default {
       this.chart.hideLoading()
       this.chart.setOption(this.options)
     },
-    findDateData(_arr, selectTime) {
-      const timeArray = []
-      const _data = []
-      timeArray.push(moment(selectTime).subtract('days', 13).format('MM.DD') + '-' + moment(selectTime).subtract('days', 7).format('MM.DD'))
-      timeArray.push(moment(selectTime).subtract('days', 6).format('MM.DD') + '-' + moment(selectTime).format('MM.DD'))
+    // findDateData(_arr, selectTime) {
+    //   const timeArray = []
+    //   const _data = []
+    //   timeArray.push(moment(selectTime).subtract('days', 13).format('MM.DD') + '-' + moment(selectTime).subtract('days', 7).format('MM.DD'))
+    //   timeArray.push(moment(selectTime).subtract('days', 6).format('MM.DD') + '-' + moment(selectTime).format('MM.DD'))
+    //
+    //   if (_arr) {
+    //     console.log('_arr:', _arr)
+    //     _arr.forEach((item) => {
+    //       if ((item.time === timeArray[0]) || (item.time === timeArray[1])) {
+    //         _data.push(item)
+    //       }
+    //     })
+    //   }
+    //
+    //   return _data
+    // }
 
-      _arr.forEach((item) => {
-        if ((item.time === timeArray[0]) || (item.time === timeArray[1])) {
-          _data.push(item)
-        }
+    limitHandle(data, limit) {
+      data.data.forEach(dimension => {
+        dimension.dimension.forEach(date => {
+          date.date = date.date.slice(date.date.length - limit)
+          // console.log('_date:', _date)
+        })
       })
-
-      return _data
+      return data
     }
-
   }
 }
 

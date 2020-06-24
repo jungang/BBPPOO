@@ -103,6 +103,7 @@ export default {
             const _v = source.find(date => date.time === item.time)
             // console.log('_v:', _v)
             if (!_v) {
+              // console.log('this.data.query:', this.data.query)
               source.push({ // 创建维度并添加数据
                 time: formatWeek(item.time, this.data.query),
                 // time: item.time,
