@@ -203,7 +203,8 @@ export function standardizeFill(data, params) {
   // Currency 金额、 Integer 整数、 Percentage 百分比、 Duration 时间  Hour 小时 Second 秒  Time 分钟 7‘11”
   Object.keys(data).forEach((key) => { // 统一格式
     data[key].forEach(item => {
-      // console.log(item)
+      item.children = JSON.parse(item.children)
+      // console.log(typeof item.children)
       item.unit = item.unit === 'Null' ? undefined : item.unit
 
       item.original = item.value

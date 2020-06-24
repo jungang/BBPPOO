@@ -502,44 +502,34 @@ export function planeToHierarchy(_query, arr) {
   // 1.标记父级，从而可以从高级向低级组织结构
   arr = deepClone(arr)
   const resArr = []
-  let _date
-
-  // console.log('planeToHierarchy...')
 
   // console.log(arr)
   // 初始化准备
-  arr = arr.map(item => {
-    if (item.children) {
-      item.children = item.children === 'Null' ? '[]' : item.children
+  arr = arr.map(subject => {
+    // console.log('subject:', subject)
+    if (subject.children) {
+      subject.children = subject.children === 'Null' ? '[]' : subject.children
     } else {
-      item.children = []
+      subject.children = []
     }
 
-    switch (_query.dateType) {
-      case 'daily':
-        _date = parseTime(_query.date, '{y}{m}{d}')
-        break
-      case 'week':
-        // _date = parseTime(_query.date,'{y}{m}{d}')
-        break
-      case 'month':
-        _date = parseTime(_query.date, '{y}{m}')
-        break
-      case 'year':
-        _date = parseTime(_query.date, '{y}{m}{d}')
-        break
+    if (subject.dimension[0]) {
+      // console.log('subject.dimension[0].date:', subject.dimension[0].date)
+      const _pop = subject.dimension[0].date.pop()
+      // console.log('_pop:', _pop)
+      if (_pop.children) {
+        if (typeof _pop.children === 'string') _pop.children = JSON.parse(_pop.children)
+        subject.children = _pop.children
+      }
+      subject.actualValue = _pop.actualValue
+      subject.targetValue = _pop.targetValue
+      // console.log('subject:', subject)
+      // console.log('_pop:', _pop)
     }
 
-    if (item.dimension[0]) {
-      item.dimension[0].date.forEach(items => {
-        if (items.time === parseInt(_date)) {
-          item.children = JSON.parse(items.children) // fixJson 字符串 =>>变数组
-        }
-      })
-    }
-    item.childrenRow = [] // 默认无子元素
-    item.parent = undefined // 默认父级未定义
-    return item
+    subject.childrenRow = [] // 默认无子元素
+    subject.parent = undefined // 默认父级未定义
+    return subject
   })
 
   // 标记父级

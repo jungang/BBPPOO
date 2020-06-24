@@ -406,7 +406,7 @@ export default {
 
       this.fullData = await getFullData(this.currentView)
 
-      console.log('fullData:', this.fullData)
+      // console.log('fullData:', this.fullData)
 
       // todo 重构数据API E
 

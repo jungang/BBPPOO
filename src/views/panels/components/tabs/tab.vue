@@ -103,7 +103,7 @@ export default {
       if (this.currentView.config.component.type === 'table' || this.currentView.config.component.type === 'table_lirun') {
         this.cardData.list = []
         // this.cardData.list = this.fullData.tableDate
-        this.cardData.list = this.fullData.fillDate
+        this.cardData.list = this.fullData.fillFoldTableDate
 
         // console.log('list=>',this.cardData.list)
       } else {
@@ -114,6 +114,7 @@ export default {
         }
       }
       this.cardData.dataSet.query = deepClone(this.query)
+      this.cardData.currentView = this.currentView
 
       // console.log(this.comparison)
       // console.log(this.fullData.chartDate)
