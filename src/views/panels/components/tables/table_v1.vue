@@ -9,78 +9,20 @@
       default-expand-all
       :tree-props="{children: 'childrenRow', hasChildren: 'hasChildren'}"
     >
+
       <el-table-column
-        v-if="nowView.config.rowTitle !=='单人利润'"
-        prop="res_s_title"
-        label="名称"
-        :min-width="50"
-      >
-        <template slot-scope="{row}">
-          {{ row.title }}
-          <br>
-          <!--          {{ row }}-->
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="nowView.config.compare"
-        prop="targetValue"
-        label="目标（万元）"
-        :min-width="25"
-      />
-      <el-table-column
-        v-if="nowView.config.rowTitle ==='收入' || nowView.config.rowTitle ==='成本'"
-        prop="actualValue"
-        label="实际（万元）"
-        :min-width="25"
+        v-for="(item,index) in currentView.config.component.columns"
+        :key="index"
+        :label="item.title"
       >
         <template slot-scope="{row}">
           <span :class="row.res_highlightStyle">
-
-            {{ row.actualValue }}
+            {{ row[item.value] }}
           </span>
-
+          <br>
         </template>
-
       </el-table-column>
-      <el-table-column
-        v-if="nowView.config.rowTitle ==='单人平均'"
-        prop="res_s_value"
-        label="达成值（万元）"
-        :min-width="25"
-      />
-      <el-table-column
-        v-if="nowView.config.rowTitle ==='单人利润'"
-        prop="v_group_name"
-        label="组别"
-        :min-width="25"
-      >
-        <template slot-scope="{row}">
-          <span :class="row.v_cu"> {{ row.v_group_name }}</span>
-        </template>
 
-      </el-table-column>
-      <el-table-column
-        v-if="nowView.config.rowTitle ==='单人利润'"
-        prop="v_name"
-        label="姓名"
-        :min-width="25"
-      >
-        <template slot-scope="{row}">
-          <span :class="row.v_cu"> {{ row.v_name }}</span>
-        </template>
-
-      </el-table-column>
-      <el-table-column
-        v-if="nowView.config.rowTitle ==='单人利润'"
-        prop="actualValue"
-        label="毛利（万元）"
-        :min-width="25"
-      >
-        <template slot-scope="{row}">
-          <span :class="row.v_cu"> {{ row.actualValue }}</span>
-        </template>
-
-      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -172,6 +114,7 @@ export default {
     formatDataSet(data) {
       // console.log('data:', data)
       // console.log('list=>',data.list)
+      console.log('currentView:', this.currentView)
       this.tableData = []
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('data.list=>', data.list)
