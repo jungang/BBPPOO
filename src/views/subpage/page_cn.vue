@@ -8,12 +8,11 @@
       class="filter-box"
       @filtration="handleDBFilter"
     />
-    <el-row v-if="contrastView.length > 0" class="row-box2" type="flex" justify="space-around">
-      <Row
+    <el-row v-if="contrastView.length > 0" type="flex" justify="space-around">
+      <RowBox
         v-for="item in contrastView"
         :key="item.id"
         ref="componentdb"
-        :chart-barlen="chartBar2"
         :data="item"
         :query="querycn"
       />
@@ -76,20 +75,18 @@
 <script>
 import Filters from '@/components/Filters'
 import Row from '../panels/components/rows/row'
+import RowBox from '../panels/components/rows/rowbox'
 import Tab from '../panels/components/tabs/tab'
 import { sortArray } from '../../utils/sortArray'
 import _ from 'underscore'
 export default {
   name: 'Capacity',
-  components: { Filters, Row, Tab },
+  components: { Filters, Row, Tab ,RowBox},
   props: { },
   data() {
     return {
       rowView: [],
       chartBar: {
-        len: 0
-      },
-      chartBar2: {
         len: 0
       },
       trendChartLineView: [],
@@ -159,9 +156,8 @@ export default {
           if ((_val.config.indexType === 'tabIndex') && (_val.config.component.type === 'chart_line') && (_val.config.zoneName === 'comparison')) {
             this.comparisonChartLineView.push(_val)
           }
-          if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar') && (_val.config.zoneName === 'contrast')) {
+          if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar_duibi') && (_val.config.zoneName === 'contrast')) {
             this.contrastView.push(_val);
-            this.chartBar2.len = 1;
           }
         }
         return this.currentView
@@ -204,6 +200,10 @@ export default {
     .row-box2{
       margin-top: 30px;
       height: 35vh
+    }
+    .row-box3{
+      margin-top: 30px;
+      height: 75vh
     }
     .table-box{
       margin-top: 20px;
