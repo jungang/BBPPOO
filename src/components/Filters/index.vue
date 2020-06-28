@@ -138,7 +138,7 @@ export default {
     })
   },
   created() {
-    console.log('----query:', this.query)
+    // console.log('----query:', this.query)
     const _a = this.$store.state.user.alias
     const _d = this.$store.state.options.dashboard
     this.currentDashboard = _d.find(item => item.dashboardName === _a)

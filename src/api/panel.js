@@ -5,6 +5,9 @@ import { Base64 } from 'js-base64'
 export function fetchData(data) {
   // console.log(data)
 
+  // console.log('data.dimension:', data.dimension)
+  const _dimension = data.dimension ? data.dimension[0] : undefined
+
   return request2({
     url: `/visualizeData?vf_id=${data.vf_id}
     &pid=${data.projectId}
@@ -12,7 +15,7 @@ export function fetchData(data) {
     &start=${data.start}
     &end=${data.end}
     &table=${data.table}
-    &dimension=${JSON.stringify(data.dimension)}
+    &dimension=${JSON.stringify(_dimension)}
     &subject=${JSON.stringify(data.subject)}
     `,
     method: 'post',

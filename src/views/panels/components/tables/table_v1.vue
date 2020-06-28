@@ -16,7 +16,7 @@
         :label="item.title"
       >
         <template slot-scope="{row}">
-          <span :class="row.res_highlightStyle">
+          <span :class="item.highlight ? row.highlightStyle : ''">
             {{ row[item.value] }}
           </span>
           <br>
@@ -112,8 +112,7 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      // console.log('data:', data)
-      // console.log('list=>',data.list)
+      console.log('data.list:', data.list)
       console.log('currentView:', this.currentView)
       this.tableData = []
       if (this.nowView.config.component.type === 'table_lirun') {

@@ -521,8 +521,12 @@ export function planeToHierarchy(_query, arr) {
         if (typeof _pop.children === 'string') _pop.children = JSON.parse(_pop.children)
         subject.children = _pop.children
       }
+
+      // console.log('subject:', subject)
+      // console.log('_pop:', _pop)
       subject.actualValue = _pop.actualValue
       subject.targetValue = _pop.targetValue
+      subject.highlightStyle = _pop.highlightStyle
       // console.log('subject:', subject)
       // console.log('_pop:', _pop)
     }
@@ -546,12 +550,15 @@ export function planeToHierarchy(_query, arr) {
     }
   })
 
-  //
+  // console.log('arr:', arr)
   arr.forEach(item => {
+    // 是否为一级元素（即判断是否有父元素）
     if (!item.parent) {
       resArr.push(item)
+      // 是否包含子元素，如果有，则递归调用
       if (item.children.length > 0) {
-        findChildren(item, arr)
+        // item 当前元素  ，arr 全部元素
+        findChildren(item, deepClone(arr))
       }
     }
   })
@@ -559,21 +566,23 @@ export function planeToHierarchy(_query, arr) {
   // console.log('-----------------------------------------------------')
 
   // console.log('arr:', arr)
+  // console.log('resArr:', resArr)
   return resArr
 }
 
 // tooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
 
-// 递归子元素
+// 表格折叠行 递归子元素
 // const n = 1
 function findChildren(parent, arr) {
   parent.children.forEach(childrenName => {
     const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
     if (childrenItem) {
-      parent.childrenRow.push(childrenItem)
-      if (childrenItem.children.length > 0) {
+      parent.childrenRow.push(deepClone(childrenItem))
+      // fix exit rule parent.name !== childrenName
+      if (childrenItem.children.length > 0 && parent.name !== childrenName) {
         // console.log(childrenItem.children)
-        findChildren(childrenItem, arr)
+        findChildren(childrenItem, deepClone(arr))
       }
     }
   })
