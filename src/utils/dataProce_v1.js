@@ -108,17 +108,18 @@ export async function getFullData(params) {
   // console.log('params.query.group:', params.query.group)
 
   // console.log('length:', params.query.group.length)
-  const __arr = store.state.group.employeeList
+  const employeeList = store.state.group.employeeList
   // console.log('__arr=>', __arr)
   // console.log('params.query.group:', params.query.group)
+  // console.log('params.query:', params.query)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
 
     if (params.config.component.type === 'table_lirun') {
-      if (__arr.length > 0) {
+      if (employeeList.length > 0) {
         data.dimension = []
-        __arr.forEach((item) => {
+        employeeList.forEach((item) => {
           if (item.children) {
             const obj = {}
             obj.v_company = item.value
@@ -136,7 +137,7 @@ export async function getFullData(params) {
           }
         })
       }
-      // console.log('data.dimension=>',data.dimension)
+      // console.log('data.dimension:', data.dimension)
     }
   } else if (params.query.multiple) {
     params.query.group.forEach(item => {
@@ -156,10 +157,12 @@ export async function getFullData(params) {
   } else {
     // 单选
     if (params.config.component.type === 'table_lirun') {
-      data.dimension.push({ v_group_name: params.query.group[1] })
+      console.log('.....:')
+      console.log('params.query.group[1]:', params.query.group[0])
+      data.dimension.push({ v_group_name: params.query.group[0] })
 
       if (params.query.group.length === 2) {
-        __arr.forEach((item) => {
+        employeeList.forEach((item) => {
           if (item.children) {
             item.children.forEach((_item) => {
               if (_item.value === params.query.group[1]) {

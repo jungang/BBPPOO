@@ -160,8 +160,8 @@ export default {
             this.comparisonChartLineView.push(_val)
           }
           if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar') && (_val.config.zoneName === 'contrast')) {
-            this.contrastView.push(_val);
-            this.chartBar2.len = 1;
+            this.contrastView.push(_val)
+            this.chartBar2.len = 1
           }
         }
         return this.currentView

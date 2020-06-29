@@ -82,7 +82,7 @@ export default {
       this.currentView.query = this.query
       // console.log('currentView=>',this.currentView)
       this.fullData = await getFullData(this.currentView)
-      // console.log('this.fullData:::', this.fullData.res)
+      // console.log('this.fullData:::', this.fullData)
 
       // 摘要数据
       this.cardData.list = []

@@ -112,8 +112,8 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      console.log('data.list:', data.list)
-      console.log('currentView:', this.currentView)
+      // console.log('data.list:', data.list)
+      // console.log('currentView:', this.currentView.title)
       this.tableData = []
       if (this.nowView.config.component.type === 'table_lirun') {
         // console.log('data.list=>', data.list)
@@ -181,7 +181,7 @@ export default {
 
       // console.log('data.list:', data.list)
       this.tableData = data.list
-      console.log('this.tableData:', this.tableData)
+      // console.log('this.tableData:', this.tableData)
     }
     // findChildrow(arr, listArray) {
     //   arr.forEach((items) => {
