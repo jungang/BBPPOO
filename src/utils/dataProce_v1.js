@@ -404,7 +404,8 @@ function handleProfit(res) {
 
   data.sort((a, b) => {
     return a.v_group_name.localeCompare(b.v_group_name)
-  })
+  }
+  )
   return data
 }
 // toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
