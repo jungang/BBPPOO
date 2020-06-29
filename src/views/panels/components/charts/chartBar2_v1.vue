@@ -40,8 +40,7 @@
         chart: {},
         initWidth:'',
         options: {
-          // title: { text: this.data.view.title },
-          // legend: {},
+          color: ['#333436', '#eab018', '#e22339'],
           tooltip: {
             formatter: (params) => {
               const str = params.data.type === 'Percentage' ? params.seriesName + ':' + params.data[params.seriesName] + '%' : params.seriesName + ':' + params.data[params.seriesName]
@@ -75,11 +74,7 @@
               }
             }
           },
-          series: [
-            {type: 'bar'},
-            {type: 'bar'},
-            {type: 'bar'}
-          ]
+          series: []
         },
         chartData: []
       }
@@ -150,7 +145,7 @@
         this.options.dataset.source = this.sortCurrent(source);
         this.options.dataset.dimensions = dimensions
         this.options.series = series
-         console.log(this.options)
+         //console.log(this.options)
         this.$nextTick(() => {
           this.chart.setOption(this.options)
         })
@@ -200,7 +195,7 @@
           return item[_keyword]
         })
 
-        console.log('_arr=>',_arr)
+        //console.log('_arr=>',_arr)
 
         return _arr.reverse()
       }
