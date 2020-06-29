@@ -8,7 +8,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <ChartsBarContrast v-for="item in barData.dataSet.data" :key="item.id" :data="item" :current-view="currentView" />
+      <ChartsBarContrast v-for="item in barData.dataSet.data" :key="item.id" :data="item" :qurey="barData.dataSet.query" :current-view="barData.dataSet.currentView" />
     </el-row>
   </el-col>
 </template>
@@ -41,7 +41,6 @@ export default {
   },
   data() {
     return {
-      currentView: {},
       checkedList: [],
       barData: {
         dataSet: {
@@ -93,7 +92,6 @@ export default {
 
       // console.log('barData=>',this.barData)
       // console.log('checkedList=>',this.checkedList)
-
       this.barData.dataSet.query = deepClone(this.query)
       this.barData.dataSet.query.date = this.query.date.getTime()
       this.barData.dataSet.currentView = deepClone(this.currentView)

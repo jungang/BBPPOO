@@ -6,7 +6,7 @@
       :type="filterType"
       @filtration="handleFilter"
     />
-    <el-row class="row-box" type="flex" justify="space-around">
+    <el-row class="row-box" justify="space-around">
       <Row
         v-for="item in rowView"
         :key="item.id"
@@ -100,7 +100,7 @@ export default {
         return this.currentView
       })
 
-      this.chartBar.len = this.rowView.length
+      this.chartBar.len = this.rowView.length / 2
 
       this.rowView = sortArray(this.rowView)
       this.tableView = sortArray(this.tableView)
@@ -121,8 +121,8 @@ export default {
       margin-top: 40px;
     }
     .row-box{
-      margin-top: 30px;
-      height: 300px
+      margin-top: 30px
+      // height: 300px
     }
     .table-box{
       margin-top: 20px;
