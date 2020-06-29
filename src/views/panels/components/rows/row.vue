@@ -1,5 +1,5 @@
 <template>
-  <el-col :span="24/chartBarlen.len -1" style="position: relative">
+  <el-col :span="24/chartBarlen.len" style="position: relative">
     <div class="title">{{ data.config.rowTitle }}</div>
     <chartBar :data="cardData.dataSet" />
   </el-col>
