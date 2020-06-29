@@ -206,9 +206,7 @@ export default {
         })
 
         if (response.find(item => item.v_company === this.currentDashboard.defaultFilterOptionGroupValue)) {
-          var _arr = [];
-          _arr.push(this.currentDashboard.defaultFilterOptionGroupValue);
-          this.query.group.push(_arr)
+          this.query.group.push(this.currentDashboard.defaultFilterOptionGroupValue)
         }
 
 
