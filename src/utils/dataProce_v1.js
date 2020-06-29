@@ -384,7 +384,7 @@ function handleProfit(res) {
     // console.log('item:', item)
 
     const _item = item.date[0]
-    console.log('_item:', _item)
+    // console.log('_item:', _item)
 
     if (item.v_group_name) {
       _item.v_group_name = item.v_group_name
@@ -402,8 +402,9 @@ function handleProfit(res) {
   })
   // console.log('data:', data)
 
-  data.sort((a, b) => a.v_group_name.localeCompare(b.v_group_name))
-
+  data.sort((a, b) => {
+    return a.v_group_name.localeCompare(b.v_group_name)
+  })
   return data
 }
 // toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
