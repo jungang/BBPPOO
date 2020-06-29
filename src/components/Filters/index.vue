@@ -262,16 +262,17 @@ export default {
     },
     handleCurrentChange(val) {
       this.query.group_all = this.getAll()
+      console.log('this.query:', this.query)
       this.$emit('filtration', { })
     },
-    getAll() {
-      // 不选 = 全台 = 所有人员
-      let res = []
-      const group = this.$store.state.group
-      const all = { c: [], g: [], v: [] }
 
+    handleGroup(data) {
+      const res = []
+      const all = { c: [], g: [], v: [] }
       // 分类 v_company v_group_name v_id
-      group.employeeList_res.forEach(item => {
+
+      data.forEach(item => {
+        // console.log('item:', item)
         all.c.push({
           name: item.v_company,
           type: 'v_company'
@@ -286,28 +287,45 @@ export default {
         })
       })
 
-      // 整体全部元素
-      const whole = []
       // 排重
       Object.keys(all).forEach((key) => {
         all[key] = unique(all[key])
         all[key].forEach(item => {
           // console.log('item:', item)
-          whole.push(
+          res.push(
             { [item.type]: item.name }
           )
         })
       })
 
+      // fix res undefined
+      if (res.length <= 0)res.push({})
+
+      return res
+    },
+    getAll() {
+      // 不选 = 全台 = 所有人员
+      let res = []
+      let _data = []
+      const group = this.$store.state.group.employeeList_res
       if (this.query.group.length <= 0) {
         // 未选即全部、全体成员
-        res = whole
-      } else {
-        console.log('this.query.group:', this.query.group)
+        res = this.handleGroup(group)
+      } else if (!this.query.multiple) {
+        switch (this.query.group.length) {
+          case 1:
+            _data = group.filter(item => item.v_company === this.query.group[0])
+            res = this.handleGroup(_data)
+            break
+          case 2:
+            _data = group.filter(item => item.v_group_name === this.query.group[1])
+            res = this.handleGroup(_data)
+            break
+          case 3:
+            res = [{ v_id: this.query.group[2] }]
+            break
+        }
       }
-
-      // console.log('all:', all)
-
       return res
     }
   }

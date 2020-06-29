@@ -104,6 +104,7 @@ export default {
         this.cardData.list = []
         // this.cardData.list = this.fullData.tableDate
         this.cardData.list = this.fullData.fillFoldTableDate
+        this.cardData.res = this.fullData.res
 
         // console.log('list=>',this.cardData.list)
       } else {

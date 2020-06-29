@@ -1,228 +1,186 @@
 <template>
-  <div class="charts-container">
-    <el-radio-group v-model="selectRadio" class="radiobox" @change="radioChange">
-      <el-radio :label="item.index" v-for="item in chartData">{{item.title}}</el-radio>
-    </el-radio-group>
-    <div :id="id" class="chart" style="width:100%; height:30vh;"/>
-  </div>
+  <el-col :span="8" :class="[data.isShow?'showBar':'hideBar']">
+    <div class="title">{{ data.title }}</div>
+    <div class="charts-container">
+      <div :id="id" class="chart" style="width:100%; height:30vh;" />
+    </div>
+  </el-col>
 </template>
 
 <script>
-  const echarts = require('echarts')
-  import uuidv1 from 'uuid/v1'
-  import {parseTime} from '@/utils'
-  import moment from 'moment' // 导入模块
-  import _ from 'underscore'
-  moment.locale('zh-cn') // 设置语言 或 moment.lang('zh-cn');
+const echarts = require('echarts')
+import uuidv1 from 'uuid/v1'
+import { deepClone } from '@/utils'
+import moment from 'moment' // 导入模块
 
-  export default {
-    name: 'ChartsBarContrast',
-    components: {},
-    props: {
-      data: {
-        type: Object,
-        required: true
-      }
+moment.locale('zh-cn') // 设置语言 或 moment.lang('zh-cn');
+
+export default {
+  name: 'ChartsBarContrast',
+  components: {},
+  props: {
+    data: {
+      type: Object,
+      required: true
     },
-    data() {
-      return {
-        id: uuidv1(),
-        selectRadio: 0,
-        chart: {},
-        itemStyle: {
-          normal: {
-            color: function(params) {
-              var colorList = ['#feb64d', '#6ad9d5', '#48b885', '#60acfc', '#fd4b4f', '#9287e7']
-              return colorList[params.dataIndex]
-            }
+    currentView: {
+      type: Object,
+      required: true
+    }
+  },
+  data() {
+    return {
+      id: uuidv1(),
+      chart: {},
+      options: {
+        // title: { text: this.data.view.title },
+        // legend: {},
+        tooltip: {
+          formatter: (params) => {
+            const str = params.data.type === 'Percentage' ? params.seriesName + ':' + params.data[params.seriesName] + '%' : params.seriesName + ':' + params.data[params.seriesName]
+            return str
           }
         },
-        options: {
-          tooltip: {
-            //formatter: (params) => this.handleFormatter(params)
-          },
-          grid: {
-            left: '20%'
-          },
-          dataset: {
-            dimensions: ['company', '202001', '202002'],
-            source: [
-              {company: '通软', '202001': 50, '202002': 40},
-              {company: '惟帆', '202001': 100, '202002': 80}
-            ]
-
-          },
-          // 声明一个 X 轴，类目轴（category）。默认情况下，类目轴对应到 dataset 第一列。
-          xAxis: {
-            type: 'category',
-            axisLabel: {}
-          },
-          yAxis: {
-            axisLabel: {
-              formatter: (value) => {
-                return value
-              }
-            }
-          },
-          series: [
-           /* {type: 'bar'},
-            {type: 'bar'}*/
+        grid: {
+          left: '20%'
+        },
+        dataset: {
+          // 提供一份数据。
+          // dimensions: ['v_company', '201912', '202001', '增长'],
+          source: [
+            /* { v_company: '通软', '201912': 50,'202001': 60 ,'增长':10},
+                  { v_company: '电发', '201912': 80 ,'202001': 70,'增长':-10},
+                  { v_company: '众齐', '201912': 60 ,'202001': 90,'增长':30},
+                  { v_company: '惟帆', '201912': 100 ,'202001': 130,'增长':30}*/
           ]
         },
-        chartData: []
-      }
-    },
-    watch: {
-      data: {
-        deep: true,
-        handler() {
-          this.formatDataSet(this.data)
-        }
-      }
-    },
-    created() {
-    },
-    mounted() {
-      this.renderChart()
-    },
-    methods: {
-      formatDataSet(data) {
-        this.chartData = [];
-        this.options.dataset.dimensions = [];
-        this.options.dataset.source = [];
-        this.options.series = [];
-
-        let _arr = [];
-        let _num = 0;
-        //console.log('data.data',  data.data)
-        data.data.forEach((item) => {//遍历出有值的项
-          if(item.dimension.length > 0){
-            item.dimension.forEach((_item) => {
-              let obj ={};
-              if(_item.v_company){
-                obj.title = item.title;
-                obj.type = item.type;
-                obj.company = _item.v_company
-                obj.time = _item.data[0].time
-                obj.actualValue = _item.data[0].actualValue
-                obj.original = _item.data[0].original
-                _arr.push(obj);//遍历出有值的项
-              }
-            })
+        xAxis: {
+          type: 'category',
+          axisLabel: {
+            // interval: 0
+            // rotate: 5
           }
-        });
+        },
+        yAxis: {
+          axisLabel: {
+            formatter: (value) => {
+              return value
+            }
+          }
+        },
+        series: [
+          { type: 'bar' },
+          { type: 'bar' },
+          { type: 'bar' }
+        ]
+      },
+      chartData: []
+    }
+  },
+  watch: {
+    data: {
+      deep: true,
+      handler() {
+        this.formatDataSet(this.data)
+        // this.options.dataset = this.data
+      }
+    }
+  },
+  created() {
 
-        //console.log('_arr',  _arr)
+  },
+  mounted() {
+    this.renderChart()
+  },
+  methods: {
+    formatDataSet(data) {
+      // 限制条目数
+      if (this.currentView.config.component.limit) data = this.limitHandle(deepClone(data), this.currentView.config.component.limit)
 
-        data.data.forEach((_item) => {
-          let _obj = {};
-          _obj.index = _num;
-          _obj.title = _item.title;
-          _obj.dimensions = ['company'];
-          _obj.source = [];
+      let subject = []
 
-          let dimensionsArray = _.uniq(_arr,true,'time');
-          dimensionsArray.forEach((ti) => {
-            _obj.dimensions.push(ti.time)
-          })
+      subject = data
 
-          let arr =_.where(_arr,{title:_item.title});
+      const dimensions = ['v_company']
+      const source = []
+      const series = []
 
-
-          let __arr = [];
-          _.forEach(arr,(__item) => {
-            let __objs = {};
-            let isPush = _.find(__arr,(___item) => {
-              return __item.company == ___item.company;
-            });
-
-            if(!isPush){
-              __objs.company = __item.company;
-              __objs[__item.time] = __item.actualValue;
-              __arr.push(__objs);
-
-            }else{
-              isPush[__item.time] = __item.actualValue
+      if (subject.dimension.length > 0) {
+        subject.dimension.forEach((item, index) => {
+          item.date.forEach((_item) => {
+            const _f = dimensions.find(ff => ff === _item.time)
+            if (!_f) {
+              dimensions.push(_item.time)
             }
 
+            const _v = source.find(date => date.v_company === item.v_company)
+            if (!_v) {
+              source.push({ // 创建维度并添加数据
+                v_company: item.v_company,
+                [_item.time]: _item.actualValue
+              })
+              // console.log('item.actualValue:', item.actualValue)
+            } else { // 添加数据
+              _v[_item.time] = _item.actualValue
+            }
+          })
 
-          });
-          _obj.source = __arr;
-          _num ++;
-
-          this.chartData.push(_obj)
+          source[index]['增长'] = item.date[1].actualValue - item.date[0].actualValue
         })
 
-        console.log(this.chartData)
+        dimensions.push('增长')
 
-        this.initData();
-      },
-      initChart() {
-        this.chart = echarts.init(document.getElementById(this.id))
-      },
-      renderChart() {
-        !this.chart.id && this.initChart()
-        this.chart.hideLoading()
-        this.chart.setOption(this.options)
-      },
-      radioChange(value) {
-        this.selectRadio = value;
-        this.initData();
-      },
-      handleFormatter(params) {
-        console.log('params=>',params)
-        let res = '';
-        res += `${params.dimensionNames[params.dataIndex + 1]} : ${this.chartData[this.selectRadio].source[params.dataIndex]}`
-
-        switch (this.data.data[this.selectRadio].type) {
-          case 'Percentage':
-            res += `%`
-            break
-          case 'Integer':
-            // res +=
-            break
-          case 'Duration':
-            // res +=
-            break
+        for (let i = 0; i < dimensions.length - 1; i++) {
+          series.push({ type: 'bar' })
         }
-
-        return res
-      },
-      initData(){
-        this.options.series = [];
-        this.options.dataset.dimensions = [];
-
-        this.options.series.push({ type: 'bar',name: this.chartData[this.selectRadio].title  });
-        this.options.dataset.source = this.chartData[this.selectRadio].source;
-        this.options.dataset.dimensions = this.chartData[this.selectRadio].dimensions;
-
-        console.log('options=>',this.options)
-
-        this.$nextTick(() => {
-          this.chart.clear();
-          this.chart.setOption(this.options)
-        });
-
       }
 
+      // todo 测试数据
+      this.options.dataset.source = source
+      this.options.dataset.dimensions = dimensions
+      this.options.series = series
+      // console.log(this.options)
+      this.$nextTick(() => {
+        this.chart.setOption(this.options)
+      })
+    },
+    initChart() {
+      this.chart = echarts.init(document.getElementById(this.id))
+    },
+    renderChart() {
+      !this.chart.id && this.initChart()
+      this.chart.hideLoading()
+      this.chart.setOption(this.options)
+    },
+
+    limitHandle(data, limit) {
+      data.dimension.forEach(date => {
+        date.date = date.date.slice(date.date.length - limit)
+      })
+      return data
     }
   }
+}
 
 </script>
 
 <style lang="scss" scoped>
   .charts-container {
     width: 100%;
-    height: 35vh;
+    height: 30vh;
+  }
+  .title{
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+  }
+  .showBar{
+    display: block;
+  }
 
-    .radiobox {
-      height: 60px;
-      z-index: 999;
-      margin-left: 5%;
-      .el-radio {
-        margin-bottom: 5px;
-        margin-top: 5px;
-      }
-    }
+  .hideBar{
+    display: none;
   }
 </style>
