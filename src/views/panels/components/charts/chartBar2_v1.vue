@@ -1,8 +1,8 @@
 <template>
  <el-col :span="8" :class="[data.isShow?'showBar':'hideBar']">
    <div class="title">{{data.title }}</div>
-   <div class="charts-container">
-     <div :id="id" class="chart" style="width:100%; height:30vh;" />
+   <div id="chartBox" class="charts-container">
+     <div :id="id" style="width:100%; height:30vh;" />
    </div>
  </el-col>
 </template>
@@ -11,6 +11,8 @@
   const echarts = require('echarts')
   import uuidv1 from 'uuid/v1'
   import { deepClone, formatWeek } from '@/utils'
+  import { sortUtil } from '@/utils/SortUtil'
+  import _ from 'underscore'
   import moment from 'moment' // 导入模块
 
   moment.locale('zh-cn') // 设置语言 或 moment.lang('zh-cn');
@@ -26,12 +28,17 @@
       currentView:{
         type: Object,
         required: true
+      },
+      qurey:{
+        type: Object,
+        required: true
       }
     },
     data() {
       return {
         id: uuidv1(),
         chart: {},
+        initWidth:'',
         options: {
           // title: { text: this.data.view.title },
           // legend: {},
@@ -140,21 +147,26 @@
         }
 
         // todo 测试数据
-        this.options.dataset.source = source
+        this.options.dataset.source = this.sortCurrent(source);
         this.options.dataset.dimensions = dimensions
         this.options.series = series
-        // console.log(this.options)
+         console.log(this.options)
         this.$nextTick(() => {
           this.chart.setOption(this.options)
         })
       },
       initChart() {
         this.chart = echarts.init(document.getElementById(this.id))
+        this.initWidth = document.getElementById('chartBox').offsetWidth
       },
       renderChart() {
         !this.chart.id && this.initChart()
         this.chart.hideLoading()
+        const resize = {
+          width: this.initWidth
+        }
         this.chart.setOption(this.options)
+        this.chart.resize(resize)
       },
 
       limitHandle(data, limit) {
@@ -162,6 +174,35 @@
           date.date = date.date.slice(date.date.length - limit)
         })
         return data
+      },
+      sortCurrent(arr){
+        var _arr = [];
+        var _keyword = '';
+
+        switch (this.qurey.dateType) {
+          case 'year':
+            _keyword =  moment(this.qurey.date).format("YYYYMMDD")
+            break;
+          case 'month':
+            _keyword =  moment(this.qurey.date).format("YYYYMM")
+            break;
+          case 'week':
+            _keyword = moment(this.qurey.date).subtract('days', 6).format('YYYYMMDD')
+            break;
+          case 'daily':
+            _keyword =  moment(this.qurey.date).format("YYYYMMDD")
+            break;
+        }
+
+        //console.log('_keyword=>',_keyword)
+
+        _arr = _.sortBy(arr, (item) => {
+          return item[_keyword]
+        })
+
+        console.log('_arr=>',_arr)
+
+        return _arr.reverse()
       }
     }
   }
