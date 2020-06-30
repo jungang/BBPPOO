@@ -75,7 +75,7 @@
 <script>
 
 import { fetchData } from '@/api/panel'
-import { parseTime } from '@/utils'
+import { parseTime, unique } from '@/utils'
 // import { deepClone, parseTime } from '@/utils'
 import permission from '@/directive/permission/index.js'
 // import store from '../../store'
@@ -144,6 +144,8 @@ export default {
     this.currentDashboard = _d.find(item => item.dashboardName === _a)
     console.log('currentDashboard:', this.currentDashboard)
     this.query.type = this.currentDashboard.defaultFilterOptionType
+    // this.$store.state.options.filterOptions = this.currentDashboard.defaultFilterOptionType
+    console.log('this.query.type:', this.query.type)
     // console.log('this.query.group:', this.query.group)
     // console.log('typeof:', typeof this.query.group)
     // this.query.group = [currentDashboard.defaultFilterOptionGroupValue]
@@ -151,7 +153,7 @@ export default {
 
     if (this.query.isStore === 'false') {
       this.query.date = this.$store.state.options.filterOptions.date
-      this.query.type = this.$store.state.options.filterOptions.type
+      // this.query.type = this.$store.state.options.filterOptions.type
       this.query.dateType = this.$store.state.options.filterOptions.dateType
       this.query.group = this.$store.state.options.filterOptions.group
     }
@@ -209,7 +211,6 @@ export default {
           this.query.group.push(this.currentDashboard.defaultFilterOptionGroupValue)
         }
 
-
         // console.log('this.companyList:', this.companyList)
 
         // 构建组结构
@@ -233,6 +234,7 @@ export default {
           // console.log('_v:', _v)
         })
 
+        // console.log('response:', response)
         // 构建人员结构
         response.forEach(item => {
           const _company = this.companyList.find(company => company.label === item.v_company)
@@ -247,7 +249,7 @@ export default {
           )
         })
 
-        this.$store.dispatch('group/employeelist', this.companyList)
+        this.$store.dispatch('group/employeelist', { list: this.companyList, res: response })
         // console.log(' this.companyList:', this.companyList)
 
         if (this.companyList.length > 0) {
@@ -259,8 +261,72 @@ export default {
       })
     },
     handleCurrentChange(val) {
-      // console.log('this.query:', this.query)
+      this.query.group_all = this.getAll()
+      console.log('this.query:', this.query)
       this.$emit('filtration', { })
+    },
+
+    handleGroup(data) {
+      const res = []
+      const all = { c: [], g: [], v: [] }
+      // 分类 v_company v_group_name v_id
+
+      data.forEach(item => {
+        // console.log('item:', item)
+        all.c.push({
+          name: item.v_company,
+          type: 'v_company'
+        })
+        all.g.push({
+          name: item.v_group_name,
+          type: 'v_group_name'
+        })
+        all.v.push({
+          name: item.v_project_work_id,
+          type: 'v_id'
+        })
+      })
+
+      // 排重
+      Object.keys(all).forEach((key) => {
+        all[key] = unique(all[key])
+        all[key].forEach(item => {
+          // console.log('item:', item)
+          res.push(
+            { [item.type]: item.name }
+          )
+        })
+      })
+
+      // fix res undefined
+      if (res.length <= 0)res.push({})
+
+      return res
+    },
+    getAll() {
+      // 不选 = 全台 = 所有人员
+      let res = []
+      let _data = []
+      const group = this.$store.state.group.employeeList_res
+      if (this.query.group.length <= 0) {
+        // 未选即全部、全体成员
+        res = this.handleGroup(group)
+      } else if (!this.query.multiple) {
+        switch (this.query.group.length) {
+          case 1:
+            _data = group.filter(item => item.v_company === this.query.group[0])
+            res = this.handleGroup(_data)
+            break
+          case 2:
+            _data = group.filter(item => item.v_group_name === this.query.group[1])
+            res = this.handleGroup(_data)
+            break
+          case 3:
+            res = [{ v_id: this.query.group[2] }]
+            break
+        }
+      }
+      return res
     }
   }
 }

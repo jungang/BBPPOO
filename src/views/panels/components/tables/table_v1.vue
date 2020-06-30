@@ -112,10 +112,11 @@ export default {
   },
   methods: {
     formatDataSet(data) {
-      console.log('data.list:', data.list)
-      console.log('currentView:', this.currentView)
+      // console.log('data.list:', data.list)
+      // console.log('currentView:', this.currentView.title)
       this.tableData = []
       if (this.nowView.config.component.type === 'table_lirun') {
+        console.log('data:', data)
         // console.log('data.list=>', data.list)
         // const employeeList = this.$store.state.group.employeeList
         // console.log('employeeList=>', employeeList)
@@ -170,41 +171,10 @@ export default {
 
         // console.log('lirunArray=>',lirunArray)
         this.tableData = lirunArray
-      } else {
-        // this.findChildrow(data.list, this.tableData)
-      /*  let _id=0;
-        this.tableData.forEach((items) => {
-          items.id = _id;
-          _id ++;
-        })*/
       }
 
-      // console.log('data.list:', data.list)
       this.tableData = data.list
-      console.log('this.tableData:', this.tableData)
     }
-    // findChildrow(arr, listArray) {
-    //   arr.forEach((items) => {
-    //     if (items.dimension.length > 0) {
-    //       // console.log('items:', items)
-    //       // console.log('items.dimension[0].data:', items.dimension[0].data)
-    //       const _obj = {}
-    //       _obj.id = this.id
-    //       _obj.res_s_title = items.title
-    //       _obj.res_s_value = items.dimension[0].data[0].actualValue
-    //       _obj.res_y_value = items.dimension[0].data[0].targetValue
-    //       _obj.res_highlight = items.dimension[0].data[0].highlight
-    //       _obj.res_highlightStyle = items.dimension[0].data[0].highlightStyle
-    //       this.id++
-    //       if (items.childrenRow.length > 0) {
-    //         _obj.childrenRow = []
-    //         this.findChildrow(items.childrenRow, _obj.childrenRow)
-    //       }
-    //
-    //       listArray.push(_obj)
-    //     }
-    //   })
-    // }
 
   }
 }

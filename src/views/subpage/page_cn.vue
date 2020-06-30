@@ -81,7 +81,7 @@ import { sortArray } from '../../utils/sortArray'
 import _ from 'underscore'
 export default {
   name: 'Capacity',
-  components: { Filters, Row, Tab ,RowBox},
+  components: { Filters, Row, Tab, RowBox },
   props: { },
   data() {
     return {
@@ -157,7 +157,7 @@ export default {
             this.comparisonChartLineView.push(_val)
           }
           if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar_duibi') && (_val.config.zoneName === 'contrast')) {
-            this.contrastView.push(_val);
+            this.contrastView.push(_val)
           }
         }
         return this.currentView

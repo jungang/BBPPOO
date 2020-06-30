@@ -108,17 +108,23 @@ export async function getFullData(params) {
   // console.log('params.query.group:', params.query.group)
 
   // console.log('length:', params.query.group.length)
-  const __arr = store.state.group.employeeList
+  // const employeeList = store.state.group.employeeList
   // console.log('__arr=>', __arr)
   // console.log('params.query.group:', params.query.group)
+  // console.log('params.query:', params.query)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
 
-    if (params.config.component.type === 'table_lirun') {
-      if (__arr.length > 0) {
+    /*    if (params.config.component.type === 'table_lirun') {
+      console.log('单人利润:')
+      console.log('params.query:', params.query)
+      console.log('params.query.group_all:', params.query.group_all)
+      data.dimension = params.query.group_all
+
+      /!*     if (employeeList.length > 0) {
         data.dimension = []
-        __arr.forEach((item) => {
+        employeeList.forEach((item) => {
           if (item.children) {
             const obj = {}
             obj.v_company = item.value
@@ -135,9 +141,9 @@ export async function getFullData(params) {
             })
           }
         })
-      }
-      // console.log('data.dimension=>',data.dimension)
-    }
+      }*!/
+      console.log('data.dimension:', data.dimension)
+    }*/
   } else if (params.query.multiple) {
     params.query.group.forEach(item => {
       // console.log('params.query.group:', params.query.group)
@@ -155,11 +161,13 @@ export async function getFullData(params) {
     })
   } else {
     // 单选
-    if (params.config.component.type === 'table_lirun') {
-      data.dimension.push({ v_group_name: params.query.group[1] })
+    /*    if (params.config.component.type === 'table_lirun') {
+      // console.log('.....:')
+      // console.log('params.query.group[1]:', params.query.group[0])
+      data.dimension.push({ v_group_name: params.query.group[0] })
 
       if (params.query.group.length === 2) {
-        __arr.forEach((item) => {
+        employeeList.forEach((item) => {
           if (item.children) {
             item.children.forEach((_item) => {
               if (_item.value === params.query.group[1]) {
@@ -177,21 +185,23 @@ export async function getFullData(params) {
       } else {
         data.dimension.push({ v_company: params.query.group[0] })
       }
-    } else {
-      // console.log('params.query.group:', params.query.group)
-      switch (params.query.group.length) {
-        case 1:
-          data.dimension.push({ v_company: params.query.group[0] })
-          break
-        case 2:
-          data.dimension.push({ v_group_name: params.query.group[1] })
-          break
-        case 3:
-          data.dimension.push({ v_id: params.query.group[2].toString() })
-          break
-      }
+    } else {*/
+    // console.log('params.query.group:', params.query.group)
+    switch (params.query.group.length) {
+      case 1:
+        data.dimension.push({ v_company: params.query.group[0] })
+        break
+      case 2:
+        data.dimension.push({ v_group_name: params.query.group[1] })
+        break
+      case 3:
+        data.dimension.push({ v_id: params.query.group[2].toString() })
+        break
     }
+    // }
   }
+
+  if (params.config.component.type === 'table_lirun') data.dimension = params.query.group_all
 
   if (params.query.dateType === 'daily') {
     // console.log('按天查。。。', params.query)
@@ -345,10 +355,14 @@ export async function getFullData(params) {
   //  console.log('tableDate=>',tableDate)
   // 处理表格折叠行
   const foldTableDate = planeToHierarchy(params.query, tableDate)
-  const fillFoldTableDate = planeToHierarchy(params.query, fill_res)
+  let fillFoldTableDate = planeToHierarchy(params.query, fill_res)
   // const foldTableDate = []
 
   // console.log('res=>',res)
+
+  if (params.config.component.type === 'table_lirun') {
+    fillFoldTableDate = handleProfit(res)
+  }
 
   return {
     chartDate: chartDate,
@@ -362,6 +376,38 @@ export async function getFullData(params) {
   }
 }
 
+function handleProfit(res) {
+  const data = []
+  console.log('单人利润:')
+  console.log('data:', data)
+  res[0].dimension.forEach(item => {
+    // console.log('item:', item)
+
+    const _item = item.date[0]
+    // console.log('_item:', _item)
+
+    if (item.v_group_name) {
+      _item.v_group_name = item.v_group_name
+    }
+    if (_item.v_id) {
+      _item.name = _item.v_id
+      const _v = store.state.group.employeeList_res.find(item => item.v_project_work_id === _item.v_id)
+      if (_v) {
+        _item.name = _v.v_name
+        _item.v_group_name = _v.v_group_name
+      }
+    }
+
+    data.push(_item)
+  })
+  // console.log('data:', data)
+
+  data.sort((a, b) => {
+    return a.v_group_name.localeCompare(b.v_group_name)
+  }
+  )
+  return data
+}
 // toooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooools
 // 集成整合
 function integration(data) {
