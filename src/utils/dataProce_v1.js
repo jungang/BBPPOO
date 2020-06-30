@@ -648,25 +648,37 @@ function findChildren(parent, arr) {
       // console.log('parent.childrenRow:', parent.childrenRow)
       const _v = parent.childrenRow.find(item => item.name === childrenItem.name)
       if (!_v) parent.childrenRow.push(childrenItem)
-
-      // console.log('childrenName:', childrenName)
-      // console.log('childrenItem:', childrenItem)
-
       if (childrenItem.children.length > 0) {
-        // console.log('childrenItem.children:', childrenItem.children)
         // findChildren(childrenItem, arr) // todo  递归中有错误，待修复
 
         childrenItem.children.forEach(childrenName => {
           const childrenItem2 = arr.find(arrItem => arrItem.name === childrenName)
           if (childrenItem2) {
             const _v2 = childrenItem.childrenRow.find(item => item.name === childrenItem2.name)
-            // console.log('_v2:', _v2)
-            // console.log('childrenItem:', childrenItem)
             if (!_v2) childrenItem.childrenRow.push(deepClone(childrenItem2))
+            if (childrenItem2.children.length > 0) {
+              childrenItem2.children.forEach(childrenName => {
+                // console.log('childrenName:', childrenName)
+              })
+            }
           }
         })
       }
     }
+
+    // fix bug
+    parent.childrenRow.forEach(item => {
+      item.childrenRow.forEach(item2 => {
+        if (item2.children.length > 0) {
+          item2.children.forEach(item3 => {
+            const childrenItem = arr.find(arrItem => arrItem.name === item3)
+            console.log('childrenItem:', childrenItem)
+            console.log('item2.childrenRow:', item2.childrenRow)
+            item2.childrenRow.push(deepClone(childrenItem))
+          })
+        }
+      })
+    })
 
     // if (childrenItem) {
     //   // 添加子元素对象到父元素childrenRow中
