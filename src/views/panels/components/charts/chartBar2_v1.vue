@@ -136,7 +136,7 @@
           dimensions.push('增长')
 
           for(let i=0;i<dimensions.length - 1;i++){
-            series.push({ type: 'bar' })
+            series.push({ type: 'bar',barMaxWidth: 40 })
           }
 
         }
