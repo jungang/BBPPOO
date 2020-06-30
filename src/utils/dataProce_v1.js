@@ -610,22 +610,26 @@ export function planeToHierarchy(_query, arr) {
   })
 
   // console.log('arr:', arr)
+  // 最上级元素
   arr.forEach(item => {
     // 是否为一级元素（即判断是否有父元素）
     if (!item.parent) {
       resArr.push(item)
       // 是否包含子元素，如果有，则递归调用
-      if (item.children.length > 0) {
-        // item 当前元素  ，arr 全部元素
-        findChildren(item, deepClone(arr))
-      }
+      // if (item.children.length > 0) {
+      // item 当前元素  ，arr 全部元素
+      // findChildren(item, deepClone(arr))
+      // }
     }
   })
 
-  // console.log('-----------------------------------------------------')
-
-  // console.log('arr:', arr)
   // console.log('resArr:', resArr)
+  resArr.forEach(item => {
+    if (item.children.length > 0) {
+    // item 当前元素  ，arr 全部元素
+      findChildren(item, deepClone(arr))
+    }
+  })
   return resArr
 }
 
@@ -633,21 +637,50 @@ export function planeToHierarchy(_query, arr) {
 
 // 表格折叠行 递归子元素
 // const n = 1
-function findChildren(parent, arr) {
-  parent.children.forEach(childrenName => {
-    const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
+// parent 当前元素
 
+function findChildren(parent, arr) {
+  // parent.children 子元素名字列表 ['service_level_reward','','']
+  parent.children.forEach(childrenName => {
+    // childrenItem 查找子元素对象 'service_level_reward'
+    const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
     if (childrenItem) {
-      parent.childrenRow.push(deepClone(childrenItem))
-      if (parent.name === 'firstline_expanse') {
-        console.log('parent.name:', parent.name)
-        console.log('parent:', parent)
-      }
-      // fix exit rule parent.name !== childrenName
-      if (childrenItem.children.length > 0 && parent.name !== childrenName) {
-        // console.log(childrenItem.children)
-        findChildren(childrenItem, deepClone(arr))
+      // console.log('parent.childrenRow:', parent.childrenRow)
+      const _v = parent.childrenRow.find(item => item.name === childrenItem.name)
+      if (!_v) parent.childrenRow.push(childrenItem)
+
+      // console.log('childrenName:', childrenName)
+      // console.log('childrenItem:', childrenItem)
+
+      if (childrenItem.children.length > 0) {
+        // console.log('childrenItem.children:', childrenItem.children)
+        // findChildren(childrenItem, arr) // todo  递归中有错误，待修复
+
+        childrenItem.children.forEach(childrenName => {
+          const childrenItem2 = arr.find(arrItem => arrItem.name === childrenName)
+          if (childrenItem2) {
+            const _v2 = childrenItem.childrenRow.find(item => item.name === childrenItem2.name)
+            // console.log('_v2:', _v2)
+            // console.log('childrenItem:', childrenItem)
+            if (!_v2) childrenItem.childrenRow.push(deepClone(childrenItem2))
+          }
+        })
       }
     }
+
+    // if (childrenItem) {
+    //   // 添加子元素对象到父元素childrenRow中
+    //   parent.childrenRow.push(deepClone(childrenItem))
+    //
+    //   console.log('childrenItem:', childrenItem)
+    //   if (childrenName === childrenItem.name) {
+    //     console.log('!!!!!:', childrenItem)
+    //     return
+    //   }
+    //   // fix exit rule parent.name !== childrenName
+    //   if (childrenItem.children.length > 0) {
+    //     findChildren(childrenItem, arr)
+    //   }
+    // }
   })
 }

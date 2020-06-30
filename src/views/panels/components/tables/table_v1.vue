@@ -175,6 +175,8 @@ export default {
       }
 
       this.tableData = data.list
+
+      // console.log('this.tableData:', this.tableData)
     }
 
   }
