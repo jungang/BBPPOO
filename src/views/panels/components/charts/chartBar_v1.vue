@@ -69,6 +69,7 @@ export default {
         series: [
           {
             type: 'bar',
+            barMaxWidth: 40, // 最大宽度
             itemStyle: {
               normal: {
                 color: function(params) {

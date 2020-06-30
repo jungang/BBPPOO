@@ -130,7 +130,9 @@ export default {
           source[index]['增长'] = item.date[1].actualValue - item.date[0].actualValue
         })
 
-        dimensions.push('增长')
+        for (let i = 0; i < dimensions.length - 1; i++) {
+          series.push({ type: 'bar', barMaxWidth: 40 })
+        }
 
         for (let i = 0; i < dimensions.length - 1; i++) {
           series.push({ type: 'bar' })
