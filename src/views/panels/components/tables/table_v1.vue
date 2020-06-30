@@ -18,6 +18,7 @@
         <template slot-scope="{row}">
           <span :class="item.highlight ? row.highlightStyle : ''">
             {{ row[item.value] }}
+
           </span>
           <br>
         </template>

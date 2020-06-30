@@ -201,7 +201,9 @@ export async function getFullData(params) {
     // }
   }
 
-  if (params.config.component.type === 'table_lirun') data.dimension = params.query.group_all
+  if (params.config.component.type === 'table_lirun') data.dimension = params.query.group_all || [{}]
+  // console.log('params.config.component.type:', params.config.component.type)
+  // console.log('data.dimension:', data.dimension)
 
   if (params.query.dateType === 'daily') {
     // console.log('按天查。。。', params.query)
@@ -361,7 +363,7 @@ export async function getFullData(params) {
   // console.log('res=>',res)
 
   if (params.config.component.type === 'table_lirun') {
-    fillFoldTableDate = handleProfit(res)
+    if (res[0])fillFoldTableDate = handleProfit(res)
   }
 
   return {
@@ -377,9 +379,11 @@ export async function getFullData(params) {
 }
 
 function handleProfit(res) {
-  const data = []
-  console.log('单人利润:')
-  console.log('data:', data)
+  let data = []
+  // console.log('单人利润:')
+  // console.log('data:', data)
+  // console.log('res[0]:', res[0])
+
   res[0].dimension.forEach(item => {
     // console.log('item:', item)
 
@@ -387,14 +391,15 @@ function handleProfit(res) {
     // console.log('_item:', _item)
 
     if (item.v_group_name) {
-      _item.v_group_name = item.v_group_name
+      _item.v_group_name = item.v_group_name + '组'
+      _item.name = item.v_group_name + '组'
     }
     if (_item.v_id) {
       _item.name = _item.v_id
       const _v = store.state.group.employeeList_res.find(item => item.v_project_work_id === _item.v_id)
       if (_v) {
         _item.name = _v.v_name
-        _item.v_group_name = _v.v_group_name
+        _item.v_group_name = _v.v_group_name + '组'
       }
     }
 
@@ -402,7 +407,14 @@ function handleProfit(res) {
   })
   // console.log('data:', data)
 
+  data = data.filter(item => {
+    // console.log('item.v_group_name:', item.v_group_name)
+    return item.v_group_name || false
+  })
+
   data.sort((a, b) => {
+    // console.log('a.v_group_name:', a.v_group_name)
+    // a.v_group_name = a.v_group_name || ''
     return a.v_group_name.localeCompare(b.v_group_name)
   }
   )
@@ -582,10 +594,11 @@ export function planeToHierarchy(_query, arr) {
     return subject
   })
 
+  // console.log('arr:', arr)
   // 标记父级
   arr.forEach(item => {
     if (item.children.length !== 0) { // 有下级元素
-      // console.log("item.name:", item.name)
+      // console.log('item.name:', item.name)
       // console.log("item.children:", item.children)
       item.children.forEach(childrenName => {
         const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
@@ -623,8 +636,13 @@ export function planeToHierarchy(_query, arr) {
 function findChildren(parent, arr) {
   parent.children.forEach(childrenName => {
     const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
+
     if (childrenItem) {
       parent.childrenRow.push(deepClone(childrenItem))
+      if (parent.name === 'firstline_expanse') {
+        console.log('parent.name:', parent.name)
+        console.log('parent:', parent)
+      }
       // fix exit rule parent.name !== childrenName
       if (childrenItem.children.length > 0 && parent.name !== childrenName) {
         // console.log(childrenItem.children)
