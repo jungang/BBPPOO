@@ -90,7 +90,7 @@ export default {
         })
       }
 
-      // console.log('barData=>',this.barData)
+
       // console.log('checkedList=>',this.checkedList)
       this.barData.dataSet.query = deepClone(this.query)
       this.barData.dataSet.query.date = this.query.date.getTime()
