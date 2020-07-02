@@ -106,7 +106,6 @@ export default {
     },
     getCurrentView() {
       _.map(this.$store.state.options.views, (_val, _index, _list) => {
-        // console.log('_val:', _val)
         if (_val.config.pagesName === this.$route.meta.title) {
           this.currentView.push(_val)
           if ((_val.config.indexType === 'rowIndex') && (_val.config.component.type === 'chart_bar')) {
@@ -129,12 +128,6 @@ export default {
       this.rowView = sortArray(this.rowView)
       this.tableView = sortArray(this.tableView)
       this.chartLineView = sortArray(this.chartLineView)
-
-      // console.log('this.currentView=>',this.currentView)
-      // console.log('this.currentView=>',JSON.stringify(this.currentView))
-      // console.log('this.rowView=>',this.rowView)
-      // console.log('this.tableView=>',this.tableView)
-      // console.log('this.chartLineView=>',this.chartLineView)
     },
     defaultTab() {
       if (this.chartLineView.length > 0) {

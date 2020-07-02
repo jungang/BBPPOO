@@ -159,7 +159,6 @@ export default {
     },
     maxPanel() {
       this.maxVisible = true
-      console.log('maxPanel...')
       this.$nextTick(() => {
       })
     },
@@ -173,12 +172,9 @@ export default {
           item.value = item.value + '%'
         }
       })
-      console.log('mixed:', mixed)
       // console.log('this.currentView:', this.currentView)
       this.list = []
       mixed.res_s.forEach((item, index) => {
-        // console.log(item.name)
-        // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
 
         this.list.push({
           chartId: uuidv1(),

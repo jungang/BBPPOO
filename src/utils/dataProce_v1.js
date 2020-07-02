@@ -42,12 +42,8 @@ export async function getFullData(params) {
    */
 
   // console.log('params:', params)
-  // console.log('params.query.type:', params.query.type)
-
-  // console.log('params.query.type:', params.query.type)
 
   let subject = params.items[`${params.query.type}`]
-  // console.log('subject:', subject)
   if (!subject) { // todo 降级参数
     subject = params.items['*'] || ['']
   }
@@ -99,19 +95,7 @@ export async function getFullData(params) {
     ...store.state.user.apiTemplate
   }
 
-  // console.log('params.query.group:', params)
-  // console.log('params.query.group:', params)
-  // console.log('params.query.group:', params.query)
-  // console.log('params.query.group:', params.query.group)
   // 处理组、人员参数
-
-  // console.log('params.query.group:', params.query.group)
-
-  // console.log('length:', params.query.group.length)
-  // const employeeList = store.state.group.employeeList
-  // console.log('__arr=>', __arr)
-  // console.log('params.query.group:', params.query.group)
-  // console.log('params.query:', params.query)
   if (params.query.group === 'null' || params.query.group.length === 0) {
     // 空选项
     data.dimension.push({})
@@ -160,32 +144,6 @@ export async function getFullData(params) {
       }
     })
   } else {
-    // 单选
-    /*    if (params.config.component.type === 'table_lirun') {
-      // console.log('.....:')
-      // console.log('params.query.group[1]:', params.query.group[0])
-      data.dimension.push({ v_group_name: params.query.group[0] })
-
-      if (params.query.group.length === 2) {
-        employeeList.forEach((item) => {
-          if (item.children) {
-            item.children.forEach((_item) => {
-              if (_item.value === params.query.group[1]) {
-                _item.children.forEach((__item) => {
-                  const __obj = {}
-                  __obj.v_id = __item.v_project_work_id
-                  data.dimension.push(__obj)
-                })
-              }
-            })
-          }
-        })
-      } else if (params.query.group.length === 3) {
-        data.dimension.push({ v_id: params.query.group[2].toString() })
-      } else {
-        data.dimension.push({ v_company: params.query.group[0] })
-      }
-    } else {*/
     // console.log('params.query.group:', params.query.group)
     switch (params.query.group.length) {
       case 1:
@@ -438,7 +396,6 @@ function formatDataSet(dateType, data) {
 
 async function getData(data, res, key) {
   res[key] = await fetchData(data)
-  // console.log('res[key]:', res[key])
   res[key].forEach(item => {
     item._dimension = item.dimension.replace(' ', '')
   })
@@ -451,7 +408,6 @@ function dimensionStringify(data) {
 
 // 计算高亮
 export function calcHighlight(data) {
-  // console.log('data:', data)
 
   data.forEach(subject => {
     subject.dimension.forEach(dimension => {
@@ -479,10 +435,7 @@ export function calcHighlight(data) {
 // 计算完成率
 export function calcCompletion(data) {
   data.forEach(subject => {
-    // console.log('subject:', subject)
     subject.dimension.forEach(group => {
-      // console.log('group.data:', group.data)
-      // console.log('group:', group)
       // console.log(data)
       group.date.forEach(item => {
         // console.log('item:', item)
@@ -564,7 +517,6 @@ export function planeToHierarchy(_query, arr) {
   // console.log(arr)
   // 初始化准备
   arr = arr.map(subject => {
-    // console.log('subject:', subject)
     if (subject.children) {
       subject.children = subject.children === 'Null' ? '[]' : subject.children
     } else {
@@ -572,7 +524,6 @@ export function planeToHierarchy(_query, arr) {
     }
 
     if (subject.dimension[0]) {
-      // console.log('subject.dimension[0].date:', subject.dimension[0].date)
       const _pop = subject.dimension[0].date.pop()
       // console.log('_pop:', _pop)
       if (_pop.children) {
@@ -580,13 +531,9 @@ export function planeToHierarchy(_query, arr) {
         subject.children = _pop.children
       }
 
-      // console.log('subject:', subject)
-      // console.log('_pop:', _pop)
       subject.actualValue = _pop.actualValue
       subject.targetValue = _pop.targetValue
       subject.highlightStyle = _pop.highlightStyle
-      // console.log('subject:', subject)
-      // console.log('_pop:', _pop)
     }
 
     subject.childrenRow = [] // 默认无子元素
@@ -623,7 +570,6 @@ export function planeToHierarchy(_query, arr) {
     }
   })
 
-  // console.log('resArr:', resArr)
   resArr.forEach(item => {
     if (item.children.length > 0) {
     // item 当前元素  ，arr 全部元素
@@ -648,7 +594,6 @@ function findChildren(parent, arr) {
     // childrenItem 查找子元素对象 'service_level_reward'
     const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
     if (childrenItem) {
-      // console.log('parent.childrenRow:', parent.childrenRow)
       const _v = parent.childrenRow.find(item => item.name === childrenItem.name)
       if (!_v) parent.childrenRow.push(childrenItem)
       if (childrenItem.children.length > 0) {
@@ -670,8 +615,6 @@ function findChildren(parent, arr) {
         if (item2.children.length > 0) {
           item2.children.forEach(item3 => {
             const childrenItem = arr.find(arrItem => arrItem.name === item3)
-            // console.log('childrenItem:', childrenItem)
-            // console.log('item2.childrenRow:', item2.childrenRow)
             const _v = item2.childrenRow.find(item => item.name === childrenItem.name)
 
             if (!_v && childrenItem) {

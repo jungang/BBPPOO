@@ -31,12 +31,10 @@ export async function getFullData(params) {
     ...store.state.user.apiTemplate
   }
 
-  // console.log('data:', data)
   // 实际
   data.vf_id = 0
   res = await getData(data, res) // return res.vf_id0
 
-  // console.log('res.vf_id0:', res)
   // 预计
   if (params.compare) {
     data.vf_id = 1

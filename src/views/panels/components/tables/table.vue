@@ -197,8 +197,6 @@ export default {
 
       this.list = []
       mixed.res_s.forEach((item, index) => {
-        // console.log(item.name)
-        // console.log(this.currentView.items[item.name] || this.currentView.items['*'])
 
         this.list.push({
           chartId: uuidv1(),
@@ -222,9 +220,6 @@ export default {
       // console.log('this.list:', this.list)
 
       this.list = this.fold ? planeToHierarchy([...this.list]) : this.list
-
-      // console.log('this.currentView:', this.currentView)
-      // console.log('this.list:', this.list)
     }
   }
 }
