@@ -82,15 +82,16 @@
           label="序号"
           width="50"
         />
-        <el-table-column prop="res_y_title" label="科目" />
-        <el-table-column prop="res_y_value" label="目标">
-          <template slot-scope="{row}">
-            {{ row.res_y_value }}
-          </template>
+        <el-table-column prop="title" label="科目" />
+        <el-table-column prop="targetValue" label="目标">
+          <!--          <template slot-scope="{row}">-->
+          <!--            {{ row.targetValue }}-->
+          <!--          </template>-->
         </el-table-column>
-        <el-table-column prop="res_y_zb_value" label="占比">
+        <!--        <el-table-column prop="actualValue" label="实际" />-->
+        <el-table-column prop="calculate" label="占比">
           <template slot-scope="{row}">
-            {{ row.res_y_zb_value }}
+            {{ row.calculate }}
           </template>
         </el-table-column>
       </el-table>
@@ -109,7 +110,7 @@ import Pagination from '@/components/Pagination'
 // import { getData, standardize } from '@/utils/chart-data' // Secondary package based on el-pagination
 import permission from '@/directive/permission/index.js'
 import { getFullData } from '@/utils/dataProce_v1'
-
+import { handleCalculate } from '@/utils/standardize'
 export default {
   name: 'Objectives',
   components: { Pagination },
@@ -150,7 +151,7 @@ export default {
   },
   created() {
     this.getList()
-    this.currentView = this.$store.state.options.views.find(item => item.name === 'view_pl')
+    this.currentView = this.$store.state.options.views.find(item => item.name === 'view_calculate')
     console.log('currentView:', this.currentView)
     console.log(this.$store.state.options.API)
   },
@@ -166,38 +167,35 @@ export default {
       this.listLoading = true
 
       console.log('row:', row)
+      const _g = this.$store.state.options.currentDashboard.defaultFilterOptionGroupValue
       this.currentView.query = {
         type: undefined,
         dateType: 'month',
         date: new Date(row.year, row.month - 1, 1),
-        group: [{}]
+        group: _g ? [_g] : []
       }
 
-      console.log('this.currentView:', this.currentView)
-      this.fullData = await getFullData(this.currentView)
-      console.log('this.fullData:', this.fullData)
       // console.log('this.currentView:', this.currentView)
-      // const mixed = standardize(await getData(this.currentView, data))
-      // const mixed = standardize(await getData(this.currentView, data))
-      // console.log(mixed)
+      this.fullData = await getFullData(this.currentView)
+      // console.log('this.fullData.fillDate:', this.fullData.fillDate)
+
       this.detailList.items = []
 
-      // console.log('mixed:', mixed)
-      // mixed.res_y.forEach((item, index) => {
-      //   // console.log('item:', item)
-      //   this.detailList.items.push({
-      //     res_y_title: mixed.res_y[index].title,
-      //     res_y_value: mixed.res_y[index].value,
-      //     // res_y_zb_title: mixed.res_y_zb[index].title,
-      //     res_y_zb_value: mixed.res_y_zb[index].value && mixed.res_y_zb[index].value + '%'
-      //   })
-      // })
-      console.log('this.detailList.items:', this.detailList.items)
-      // fetchDetail(this.detailList.listQuery).then(response => {
-      //   this.detailList.items = response.data.items
-      //   this.detailList.total = response.data.total
-      //   this.listLoading = false
-      // })
+      // actualValue 实际值 占比值，二者共用字段，需要靠科目名参数区分
+      // targetValue 目标值
+      this.fullData.fillDate.forEach(item => {
+        let _date = {}
+        // console.log('item:', item)
+        const _pop = item.dimension[0].date.pop()
+        if (_pop) _date = _pop
+        _date.title = item.title
+        _date.name = item.name
+        this.detailList.items.push(_date)
+      })
+
+      this.detailList.items = handleCalculate(this.detailList.items)
+
+      // console.log('this.detailList.items:', this.detailList.items)
     },
 
     getList() {

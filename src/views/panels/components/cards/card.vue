@@ -96,7 +96,7 @@ export default {
       this.currentView.query = this.$store.state.options.filterOptions
       this.currentView.query.multiple = this.query.multiple
 
-      console.log('this.currentView.query:', this.currentView.query)
+      // console.log('this.currentView.query:', this.currentView.query)
 
       this.fullData = await getFullData(this.currentView)
       // console.log('this.fullData:::', this.fullData)
@@ -149,7 +149,7 @@ export default {
       }
 
       // console.log('_current:', _current)
-      console.log('card_fullData:', this.fullData)
+      // console.log('card_fullData:', this.fullData)
 
       this.fullData.fillDate.forEach(subject => {
         const _item = {}

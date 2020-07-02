@@ -75,6 +75,7 @@ router.beforeEach(async(to, from, next) => {
             await store.dispatch('options/getView')
             await store.dispatch('options/getSubject')
 
+            store.state.options.currentDashboard = localStorage.currentDashboard && JSON.parse(localStorage.currentDashboard)
             // checkSubject()
 
             // hack method to ensure that addRoutes is complete

@@ -656,11 +656,6 @@ function findChildren(parent, arr) {
           if (childrenItem2) {
             const _v2 = childrenItem.childrenRow.find(item => item.name === childrenItem2.name)
             if (!_v2) childrenItem.childrenRow.push(deepClone(childrenItem2))
-            if (childrenItem2.children.length > 0) {
-              childrenItem2.children.forEach(childrenName => {
-                // console.log('childrenName:', childrenName)
-              })
-            }
           }
         })
       }
@@ -672,9 +667,10 @@ function findChildren(parent, arr) {
         if (item2.children.length > 0) {
           item2.children.forEach(item3 => {
             const childrenItem = arr.find(arrItem => arrItem.name === item3)
-            console.log('childrenItem:', childrenItem)
-            console.log('item2.childrenRow:', item2.childrenRow)
-            item2.childrenRow.push(deepClone(childrenItem))
+            // console.log('childrenItem:', childrenItem)
+            // console.log('item2.childrenRow:', item2.childrenRow)
+            const _v = item2.childrenRow.find(item => item.name === childrenItem.name)
+            if (!_v)item2.childrenRow.push(deepClone(childrenItem))
           })
         }
       })

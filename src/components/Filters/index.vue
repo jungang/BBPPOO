@@ -139,13 +139,12 @@ export default {
   },
   created() {
     // console.log('----query:', this.query)
-    const _a = this.$store.state.user.alias
-    const _d = this.$store.state.options.dashboard
-    this.currentDashboard = _d.find(item => item.dashboardName === _a)
+    this.currentDashboard = this.$store.state.options.currentDashboard
     console.log('currentDashboard:', this.currentDashboard)
+
     this.query.type = this.currentDashboard.defaultFilterOptionType
     // this.$store.state.options.filterOptions = this.currentDashboard.defaultFilterOptionType
-    console.log('this.query.type:', this.query.type)
+    // console.log('this.query.type:', this.query.type)
     // console.log('this.query.group:', this.query.group)
     // console.log('typeof:', typeof this.query.group)
     // this.query.group = [currentDashboard.defaultFilterOptionGroupValue]
@@ -157,6 +156,14 @@ export default {
       this.query.dateType = this.$store.state.options.filterOptions.dateType
       this.query.group = this.$store.state.options.filterOptions.group
     }
+
+    // console.log('created....:')
+
+    // todo setTimeout是待优化问题，需要修改以达到更准确的页面异步更新，
+    setTimeout(() => {
+      // console.log('setTimeout....:')
+      this.handleCurrentChange()
+    }, 3000)
   },
   methods: {
     handleChange() {

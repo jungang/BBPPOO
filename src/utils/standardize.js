@@ -484,3 +484,29 @@ export function generateTemplate(params) {
   // console.log('res:', res)
   return deepClone(res)
 }
+
+/**
+ * 合并占比数据
+ * 科目占比参数后缀为 _calculate
+ * @returns {[]}
+ * @param data
+ */
+export function handleCalculate(data) {
+  data.forEach(subject => {
+    // console.log('item:', item)
+    if (subject.name.endsWith('_calculate')) {
+      // subject 科目占比值
+      const _name = subject.name.split('_calculate')[0]
+      // _v 原科目
+      const _v = data.find(item => item.name === _name)
+      // console.log('subject:', subject)
+      subject.actualValue = subject.actualValue ? subject.actualValue * 100 + '%' : '-'
+      if (_v) _v.calculate = subject.actualValue
+      // console.log('_v:', _v)
+    }
+  })
+
+  data = data.filter(subject => !subject.name.endsWith('_calculate'))
+
+  return data
+}

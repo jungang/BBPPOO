@@ -88,6 +88,7 @@ export default {
     data: {
       deep: true,
       handler() {
+        console.log('watch:...')
         this.formatDataSet(this.data)
         // this.options.dataset = this.data
       }

@@ -15,7 +15,8 @@ const state = {
     description: '',
     vf_file: 'dashboard.efwvf'
   },
-  alias: ''
+  alias: '',
+  currentProject: {}
 }
 
 const mutations = {
@@ -35,10 +36,12 @@ const mutations = {
     state.roles = roles
   },
   SET_PROJECT: (state, project) => {
+    // console.log('project:', project)
     console.log('project.description:', project.description)
     state.apiTemplate.projectId = project.id
     state.apiTemplate.description = project.description
     state.alias = project.alias
+    state.currentProject = project
   }
 }
 
@@ -100,7 +103,9 @@ const actions = {
   },
 
   async setProjectId({ commit, state, dispatch }, project) {
-    // console.log('project:', project)
+    const _d = store.state.options.dashboard.find(item => item.dashboardName === project.alias)
+    store.state.options.currentDashboard = _d
+    localStorage.currentDashboard = JSON.stringify(_d)
     commit('SET_PROJECT', project)
     await store.dispatch('options/getView')
     // console.log('async setProjectId...:')

@@ -144,6 +144,9 @@ const mutations = {
     // console.log('state.views:', state.views)
   },
   SET_DASHBOARD: (state, response) => {
+    console.log('dashboard:', response)
+    console.log('state:', state)
+
     state.dashboard = response
     // console.log('state.views:', state.views)
   }

@@ -214,7 +214,7 @@ export const asyncRoutes = [
           title: '经营月报',
           view: 'index',
           icon: 'list',
-          noCache: true
+          noCache: false
         }
       },
       {

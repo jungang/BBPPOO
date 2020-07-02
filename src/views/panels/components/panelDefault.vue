@@ -154,7 +154,7 @@ export default {
       }
     })
 
-    console.log('this.cardList:', this.cardList)
+    // console.log('this.cardList:', this.cardList)
 
     if (this.cardList.length > 0) {
       this.cardList = cardSort(this.cardList)

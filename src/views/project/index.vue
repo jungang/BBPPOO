@@ -32,7 +32,8 @@ export default {
   data() {
     return {
       projectList: [],
-      bg: bg
+      bg: bg,
+      currentDashboard: {}
     }
   },
   created() {
@@ -48,6 +49,9 @@ export default {
       await this.$store.dispatch('user/setProjectId', item)
       await this.$store.dispatch('options/getView')
       await this.$store.dispatch('options/getSubject')
+
+      // console.log('currentDashboard:', this.currentDashboard)
+
       this.$router.push(`/`)
       // location.reload()
     },
