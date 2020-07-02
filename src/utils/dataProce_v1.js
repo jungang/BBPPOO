@@ -641,6 +641,9 @@ export function planeToHierarchy(_query, arr) {
 
 function findChildren(parent, arr) {
   // parent.children 子元素名字列表 ['service_level_reward','','']
+
+  // console.log('parent.children:', parent.children)
+
   parent.children.forEach(childrenName => {
     // childrenItem 查找子元素对象 'service_level_reward'
     const childrenItem = arr.find(arrItem => arrItem.name === childrenName)
@@ -670,7 +673,10 @@ function findChildren(parent, arr) {
             // console.log('childrenItem:', childrenItem)
             // console.log('item2.childrenRow:', item2.childrenRow)
             const _v = item2.childrenRow.find(item => item.name === childrenItem.name)
-            if (!_v)item2.childrenRow.push(deepClone(childrenItem))
+
+            if (!_v && childrenItem) {
+              item2.childrenRow.push(deepClone(childrenItem))
+            }
           })
         }
       })
