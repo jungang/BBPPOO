@@ -103,7 +103,7 @@ export default {
 
       subject = data
 
-      //console.log('subject=>',subject)
+      // console.log('subject=>',subject)
 
       const dimensions = ['v_company']
       const source = []
@@ -129,13 +129,13 @@ export default {
             }
           })
 
-          source[index]['增长'] = item.date[1].actualValue === ""? -item.date[0].actualValue:item.date[1].actualValue - item.date[0].actualValue
+          source[index]['增长'] = item.date[1].actualValue === '' ? -item.date[0].actualValue : item.date[1].actualValue - item.date[0].actualValue
         })
 
         dimensions.push('增长')
 
         for (let i = 0; i < dimensions.length - 1; i++) {
-          series.push({ type: 'bar',barMaxWidth: 40 })
+          series.push({ type: 'bar', barMaxWidth: 40 })
         }
       }
 
@@ -143,9 +143,9 @@ export default {
       this.options.dataset.source = this.sortCurrent(source)
       this.options.dataset.dimensions = dimensions
       this.options.series = series
-       //console.log(this.options)
+      // console.log(this.options)
       this.$nextTick(() => {
-        this.chart.clear();
+        this.chart.clear()
         this.chart.setOption(this.options)
       })
     },
