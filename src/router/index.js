@@ -278,7 +278,7 @@ export const asyncRoutes = [
     ]
   },
   */
-  {
+  /*  {
     path: '/view-manage',
     // hidden: true,
     component: Layout,
@@ -311,14 +311,14 @@ export const asyncRoutes = [
         name: 'EditView',
         meta: { title: 'Edit view', noCache: true, activeMenu: '/view-manage/list' }
       }
-      /*    {
+      /!*    {
         path: 'dev',
         component: () => import('@/views/panels/components/charts/dev'),
         name: 'ArticleList3',
         meta: { title: 'dev', icon: 'bug' }
-      }*/
+      }*!/
     ]
-  },
+  },*/
 
   /*  {
     path: '/view-manage',

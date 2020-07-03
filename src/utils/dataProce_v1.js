@@ -408,7 +408,6 @@ function dimensionStringify(data) {
 
 // 计算高亮
 export function calcHighlight(data) {
-
   data.forEach(subject => {
     subject.dimension.forEach(dimension => {
       dimension.date.forEach(item => {
