@@ -176,6 +176,7 @@ export default {
       }
 
       // console.log('this.currentView:', this.currentView)
+      // console.log('Currency...:')
       this.fullData = await getFullData(this.currentView)
       // console.log('this.fullData.fillDate:', this.fullData.fillDate)
 

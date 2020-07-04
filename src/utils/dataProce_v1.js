@@ -257,6 +257,7 @@ export async function getFullData(params) {
     res = await getData(data, res, 'target') // return res.vf_id0
   }
 
+  // console.log('Currency.....:')
   // 根据view视图配置，发出请求
   // console.log(
   //   'title:', params.title,

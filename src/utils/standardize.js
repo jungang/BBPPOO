@@ -30,7 +30,9 @@ export function standardize(data, params) {
           item.value = item.value && (item.value * 1440).toFixed(2)
           break
         case 'Currency':
+
           item.value = item.value && item.value.toFixed(2)
+
           break
         case 'Double':
           // item.value = item.value && item.value.toFixed(2)
@@ -499,8 +501,13 @@ export function handleCalculate(data) {
       const _name = subject.name.split('_calculate')[0]
       // _v 原科目
       const _v = data.find(item => item.name === _name)
-      // console.log('subject:', subject)
-      subject.actualValue = subject.actualValue ? subject.actualValue * 100 + '%' : '-'
+      if (parseFloat(subject.actualValue)) {
+        // subject.actualValue = subject.actualValue * 100
+        subject.actualValue = +(subject.actualValue * 100).toFixed(2) + '%'
+      } else {
+        subject.actualValue = '-'
+      }
+
       if (_v) _v.calculate = subject.actualValue
       // console.log('_v:', _v)
     }
