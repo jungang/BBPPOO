@@ -188,9 +188,15 @@ export default {
         let _date = {}
         // console.log('item:', item)
         const _pop = item.dimension[0].date.pop()
+
         if (_pop) _date = _pop
+
         _date.title = item.title
         _date.name = item.name
+        if (_date.targetValue && _date.type === 'Percentage') {
+          _date.targetValue += '%'
+        }
+
         this.detailList.items.push(_date)
       })
 

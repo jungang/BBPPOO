@@ -209,10 +209,12 @@ export async function getFullData(params) {
   if (params.query.dateType === 'year') {
     console.log('按年查。。。', data)
 
-    data.start = parseTime(params.query.date, '{y}')
+    data.start = parseTime(params.query.date, '{y}') - 1 + ''
     data.end = parseTime(params.query.date, '{y}')
     data.vf_id = 3
     // res = await getData(data, res) // return res.vf_id0
+    console.log('data:', data)
+    console.log('createDateRuler(params, 6):', createDateRuler(params, 6))
   }
 
   // todo mock数据

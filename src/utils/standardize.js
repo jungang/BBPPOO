@@ -394,7 +394,7 @@ export function createDateRuler(params) {
     daily: 30,
     week: 6,
     month: 6,
-    year: 1
+    year: 2
   }
   for (let i = 0; i < steps[params.query.dateType]; i++) res.unshift(i)
   const end_date = parseTime(params.query.date, '{y}{m}{d}')
@@ -402,7 +402,7 @@ export function createDateRuler(params) {
     daily: res.map(item => moment(end_date).subtract(item, 'days').format('YYYYMMDD')),
     week: res.map(item => moment(end_date).subtract(item + 1, 'week').add(1, 'days').format('YYYYMMDD')),
     month: res.map(item => moment(end_date).subtract(item, 'months').format('YYYYMM')),
-    year: res.map(item => moment(end_date).format('YYYY'))
+    year: res.map(item => moment(end_date).subtract(item, 'years').format('YYYY'))
   }
   // console.log('dates[params.query.dateType]:', dates[params.query.dateType])
   return dates[params.query.dateType]
@@ -517,3 +517,4 @@ export function handleCalculate(data) {
 
   return data
 }
+
