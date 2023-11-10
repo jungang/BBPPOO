@@ -44,7 +44,7 @@
     "url": "https://github.com/jungang/BBPPOO/issues"
   },
   "dependencies": {
-    "axios": "0.19.2",
+    "axios": "1.6.0",
     "bump-version": "github:jungang/bump",
     "clipboard": "2.0.6",
     "codemirror": "5.53.2",
